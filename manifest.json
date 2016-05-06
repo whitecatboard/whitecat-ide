@@ -1,0 +1,23 @@
+{
+  "name": "Whitecat",
+  "version": "1",
+  "manifest_version": 2,
+  "permissions": [
+	  {"fileSystem": ["write"]},
+	  "serial",
+      "storage",
+      "http://*/",
+      "https://*/"
+  ],
+  "minimum_chrome_version": "23",
+  "app": {
+    "background": {
+      "scripts": ["launch.js"]
+    }
+  },
+  "icons": {
+    "16": "media/icon_16.png",
+    "128": "media/icon_128.png"
+  }
+}
+
