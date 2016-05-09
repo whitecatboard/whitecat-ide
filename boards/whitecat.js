@@ -52,6 +52,24 @@ Whitecat.analogPinsChannel = {
 	"13": "0",
 };
 
+Whitecat.pwmPins = {
+	"12": "pio.PB_2",
+	"14": "pio.PB_6",
+	"12": "pio.PB_1",
+	"13": "pio.PB_0",
+	"10": "pio.PB_3",
+	"16": "pio.PB_8",
+};
+
+Whitecat.pwmPinsChannel = {
+	"12": "1",
+	"14": "2",
+	"12": "4",
+	"13": "5",
+	"10": "7",
+	"16": "8",
+};
+
 var Board = Whitecat;
 
 Whitecat.ab2str = function(buf) {

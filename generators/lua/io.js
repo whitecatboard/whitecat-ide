@@ -72,6 +72,94 @@ Blockly.Lua['configureanalogpin'] = function(block) {
 	return code;
 };
 
+Blockly.Lua['configuredacpwmpin'] = function(block) {
+	var pin = block.getFieldValue('PIN');
+	var resolution = block.getFieldValue('RESOLUTION');
+	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);	
+	
+	if (!value) {
+		value = '0';
+	}
+	
+	var code = '';
+	
+	code += 'pwm.setup(' + Board.pwmPinsChannel[pin] + ', pwm.DAC, ' + resolution + ', ' + value + ')\n';
+
+	return code;
+}
+
+
+Blockly.Lua['configuredefaultpwmpin'] = function(block) {
+	var pin = block.getFieldValue('PIN');
+	var frequency = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE);	
+	var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE);	
+	
+
+	if (!frequency) {
+		frequency = '1000';
+	}
+
+	if (!duty) {
+		duty = '0';
+	}
+	
+	var code = '';
+	
+	code += 'pwm.setup(' + Board.pwmPinsChannel[pin] + ', pwm.DEFAULT, ' + frequency + ', ' + duty + ')\n';
+
+	return code;
+}
+
+Blockly.Lua['pwmstart'] = function(block) {
+	var pin = block.getFieldValue('PIN');
+	
+	var code = '';
+	
+	code += 'pwm.start(' + Board.pwmPinsChannel[pin] + ')\n';
+
+	return code;
+}
+
+Blockly.Lua['pwmstop'] = function(block) {
+	var pin = block.getFieldValue('PIN');
+	
+	var code = '';
+	
+	code += 'pwm.stop(' + Board.pwmPinsChannel[pin] + ')\n';
+
+	return code;
+}
+
+Blockly.Lua['pwmsetduty'] = function(block) {
+	var pin = block.getFieldValue('PIN');
+	var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE);	
+	
+	var code = '';
+
+	if (!duty) {
+		duty = '0';
+	}
+	
+	code += 'pwm.setduty(' + Board.pwmPinsChannel[pin] + ', ' + duty + ')\n';
+
+	return code;
+}
+
+Blockly.Lua['pwmwrite'] = function(block) {
+	var pin = block.getFieldValue('PIN');
+	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);	
+	
+	var code = '';
+
+	if (!value) {
+		value = '0';
+	}
+	
+	code += 'pwm.write(' + Board.pwmPinsChannel[pin] + ', ' + value + ')\n';
+
+	return code;
+}
+
 Blockly.Lua['setdigitalpin'] = function(block) {
 	var pin = block.getFieldValue('PIN');
 	var value = block.getFieldValue('VALUE');

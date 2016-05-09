@@ -409,3 +409,5 @@ Blockly.Msg.thread_create = 'crea fil';
 Blockly.Msg.thread_suspend = 'suspendre fil';
 Blockly.Msg.thread_resume = 'reprendre fil';
 Blockly.Msg.thread_stop = 'aturar fil';
+Blockly.Msg.configuredacpwmpin = 'cofigurar pin PWM';
+Blockly.Msg.INITIALVALUE = 'amb valor inicial';

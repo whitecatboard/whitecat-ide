@@ -87,6 +87,165 @@ Blockly.Blocks['configureanalogpin'] = {
   }
 };
 
+Blockly.Blocks['configuredacpwmpin'] = {
+  init: function() {
+	var pins = [];
+	
+	for(var key in Board.pwmPins) {
+		pins.push([key + ' - ' + Board.pwmPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
+	}  
+	
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.configuredacpwmpin)
+        .appendField(new Blockly.FieldDropdown(pins), "PIN");
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.WITH)
+        .appendField(new Blockly.FieldDropdown([["12", "12"], ["10", "10"], ["8", "8"], ["6", "6"]]), "RESOLUTION")
+        .appendField(' ' + Blockly.Msg.BITSOFRESOLUTION)
+        .appendField(Blockly.Msg.INITIALVALUE);
+	this.appendValueInput("VALUE")
+	    .setCheck('Number');
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.io.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['configuredefaultpwmpin'] = {
+  init: function() {
+	var pins = [];
+	
+	for(var key in Board.pwmPins) {
+		pins.push([key + ' - ' + Board.pwmPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
+	}  
+	
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.configuredefaultpwmpin)
+        .appendField(new Blockly.FieldDropdown(pins), "PIN");
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.FREQUENCY);
+	this.appendValueInput("FREQUENCY")
+	    .setCheck('Number');
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.HERTZS)
+        .appendField(Blockly.Msg.INITIALDUTY);		
+	this.appendValueInput("DUTY")
+	    .setCheck('Number');
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.PERCENT);
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.io.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['pwmstart'] = {
+  init: function() {
+	var pins = [];
+	
+	for(var key in Board.pwmPins) {
+		pins.push([key + ' - ' + Board.pwmPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
+	}  
+
+	this.appendDummyInput()
+	    .setAlign(Blockly.ALIGN_RIGHT)
+	    .appendField(Blockly.Msg.pwmstart)
+	    .appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.io.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['pwmstop'] = {
+  init: function() {
+	var pins = [];
+	
+	for(var key in Board.pwmPins) {
+		pins.push([key + ' - ' + Board.pwmPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
+	}  
+
+	this.appendDummyInput()
+	    .setAlign(Blockly.ALIGN_RIGHT)
+	    .appendField(Blockly.Msg.pwmstop)
+	    .appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.io.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['pwmsetduty'] = {
+  init: function() {
+	var pins = [];
+	
+	for(var key in Board.pwmPins) {
+		pins.push([key + ' - ' + Board.pwmPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
+	}  
+
+	this.appendDummyInput()
+	    .setAlign(Blockly.ALIGN_RIGHT)
+	    .appendField(Blockly.Msg.pwmsetduty)
+	    .appendField(new Blockly.FieldDropdown(pins), "PIN")
+	    .appendField(Blockly.Msg.WITHNEWVALUE);
+	
+	this.appendValueInput("DUTY")
+	    .setCheck('Number');
+
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.PERCENT);
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.io.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['pwmwrite'] = {
+  init: function() {
+	var pins = [];
+	
+	for(var key in Board.pwmPins) {
+		pins.push([key + ' - ' + Board.pwmPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
+	}  
+
+	this.appendDummyInput()
+	    .setAlign(Blockly.ALIGN_RIGHT)
+	    .appendField(Blockly.Msg.pwmwrite)
+	    .appendField(new Blockly.FieldDropdown(pins), "PIN")
+	    .appendField(Blockly.Msg.WITHNEWVALUE);
+	
+	this.appendValueInput("DUTY")
+	    .setCheck('Number');
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.io.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 Blockly.Blocks['setdigitalpin'] = {
   init: function() {
 	var pins = [];

@@ -409,3 +409,16 @@ Blockly.Msg.thread_create = 'create thread';
 Blockly.Msg.thread_suspend = 'suspend thread';
 Blockly.Msg.thread_resume = 'resume thread';
 Blockly.Msg.thread_stop = 'stop thread';
+Blockly.Msg.configuredacpwmpin = 'cofigure PWM pin';
+Blockly.Msg.INITIALVALUE = 'with initial value';
+
+Blockly.Msg.configuredefaultpwmpin = 'cofigure PWM pin';
+Blockly.Msg.FREQUENCY = 'with frequency of';
+Blockly.Msg.HERTZS = 'hertzs';
+Blockly.Msg.INITIALDUTY = 'with initial duty of';
+Blockly.Msg.PERCENT = '%';
+Blockly.Msg.pwmstart = 'start PWM on pin';
+Blockly.Msg.pwmstop = 'stop PWM on pin';
+Blockly.Msg.pwmsetduty = 'set PWM duty on pin';
+Blockly.Msg.WITHNEWVALUE = 'with new value';
+Blockly.Msg.pwmwrite = 'write PWM value on pin';
