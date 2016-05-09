@@ -327,6 +327,8 @@ Code.init = function() {
   Code.initLanguage();
 
   jQuery("#catThreads").attr("colour",Blockly.Blocks.threads.HUE);
+  jQuery("#catIO").attr("colour",Blockly.Blocks.io.HUE);
+  jQuery("#catControl").attr("colour",Blockly.Blocks.control.HUE);
   
   var rtl = Code.isRtl();
   var container = document.getElementById('content_area');
