@@ -1,36 +1,39 @@
-/**
- * @license
- * Visual Blocks Language
+/*
+ * Whitecat Blocky Environment, thread block code generation
  *
- * Copyright 2016 Google Inc.
- * https://developers.google.com/blockly/
+ * Copyright (C) 2015 - 2016
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * 
+ * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
+ * 
+ * All rights reserved.  
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission to use, copy, modify, and distribute this software
+ * and its documentation for any purpose and without fee is hereby
+ * granted, provided that the above copyright notice appear in all
+ * copies and that both that the copyright notice and this
+ * permission notice and warranty disclaimer appear in supporting
+ * documentation, and that the name of the author not be used in
+ * advertising or publicity pertaining to distribution of the
+ * software without specific, written prior permission.
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
- * @fileoverview Generating Lua for logic blocks.
- * @author rodrigoq@google.com (Rodrigo Queiro)
+ * The author disclaim all warranties with regard to this
+ * software, including all implied warranties of merchantability
+ * and fitness.  In no event shall the author be liable for any
+ * special, indirect or consequential damages or any damages
+ * whatsoever resulting from loss of use, data or profits, whether
+ * in an action of contract, negligence or other tortious action,
+ * arising out of or in connection with the use or performance of
+ * this software.
  */
 'use strict';
 
-goog.provide('Blockly.Lua.io');
+goog.provide('Blockly.Lua.threads');
 
 goog.require('Blockly.Lua');
 
-
 Blockly.Lua['thread_start'] = function(block) {
-	var thid = Blockly.Lua.valueToCode(block, 'THID', Blockly.Lua.ORDER_NONE);
+	var thid = Blockly.Lua.valueToCode(block, 'THID', Blockly.Lua.ORDER_NONE);	
 	var thread_code = Blockly.Lua.statementToCode(block, 'DO');
 	
 	if (thid != '') {
@@ -39,6 +42,56 @@ Blockly.Lua['thread_start'] = function(block) {
 	var code = thid + 'thread.start(function()\r\n' +
 			   thread_code + 
 			   'end)\r\n';
+	
+	return code;
+};
+
+Blockly.Lua['thread_create'] = function(block) {
+	var thid = Blockly.Lua.valueToCode(block, 'THID', Blockly.Lua.ORDER_NONE);	
+	var thread_code = Blockly.Lua.statementToCode(block, 'DO');
+	
+	if (thid != '') {
+		thid = thid + ' = ';
+	}
+	var code = thid + 'thread.create(function()\r\n' +
+			   thread_code + 
+			   'end)\r\n';
+	
+	return code;
+};
+
+Blockly.Lua['thread_stop'] = function(block) {
+	var thid = block.getFieldValue('THID');
+	
+	if (thid == 'all') {
+		thid = "";
+	}
+
+	var code = 'thread.stop(' + thid + ')\r\n';
+	
+	return code;
+};
+
+Blockly.Lua['thread_resume'] = function(block) {
+	var thid = block.getFieldValue('THID');
+	
+	if (thid == 'all') {
+		thid = "";
+	}
+
+	var code = 'thread.resume(' + thid + ')\r\n';
+	
+	return code;
+};
+
+Blockly.Lua['thread_suspend'] = function(block) {
+	var thid = block.getFieldValue('THID');
+	
+	if (thid == 'all') {
+		thid = "";
+	}
+
+	var code = 'thread.suspend(' + thid + ')\r\n';
 	
 	return code;
 };

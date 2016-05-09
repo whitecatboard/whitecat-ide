@@ -406,3 +406,6 @@ Blockly.Msg.thread_sleep = 'sleep';
 Blockly.Msg.wait_for = 'wait';
 Blockly.Msg.THREAD_RETURN = 'return id';
 Blockly.Msg.thread_create = 'create thread';
+Blockly.Msg.thread_suspend = 'suspend thread';
+Blockly.Msg.thread_resume = 'resume thread';
+Blockly.Msg.thread_stop = 'stop thread';

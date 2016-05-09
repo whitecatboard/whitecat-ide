@@ -406,3 +406,6 @@ Blockly.Msg.thread_sleep = 'dormir';
 Blockly.Msg.wait_for = 'esperar';
 Blockly.Msg.THREAD_RETURN = 'retorna identificador';
 Blockly.Msg.thread_create = 'crea fil';
+Blockly.Msg.thread_suspend = 'suspendre fil';
+Blockly.Msg.thread_resume = 'reprendre fil';
+Blockly.Msg.thread_stop = 'aturar fil';
