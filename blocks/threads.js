@@ -32,6 +32,14 @@ goog.provide('Blockly.Blocks.threads');
 
 goog.require('Blockly.Blocks');
 
+/**
+ * Common HSV hue for all blocks in this category.
+ */
+Blockly.Blocks.threads.HUE = 20;
+
+/*
+ * Common code for rename a variable in thread blocks
+ */
 Blockly.Blocks.threads.renameVar = function(instance, oldName, newName) {
 	var thid = instance.getField("THID");
 	
@@ -73,11 +81,6 @@ Blockly.Blocks.threads.dropdownVariables = function() {
 
 	return variableList;
 }
-
-/**
- * Common HSV hue for all blocks in this category.
- */
-Blockly.Blocks.threads.HUE = 20;
   
 Blockly.Blocks['thread_start'] = {
 	  init: function() {

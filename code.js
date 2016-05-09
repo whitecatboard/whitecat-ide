@@ -326,6 +326,8 @@ function termHandler() {
 Code.init = function() {
   Code.initLanguage();
 
+  jQuery("#catThreads").attr("colour",Blockly.Blocks.threads.HUE);
+  
   var rtl = Code.isRtl();
   var container = document.getElementById('content_area');
   var onresize = function(e) {
