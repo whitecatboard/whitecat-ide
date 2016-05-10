@@ -208,9 +208,6 @@ Blockly.Blocks['pwmsetduty'] = {
 	this.appendValueInput("DUTY")
 	    .setCheck('Number');
 
-    this.appendDummyInput()
-        .appendField(Blockly.Msg.PERCENT);
-
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -234,7 +231,7 @@ Blockly.Blocks['pwmwrite'] = {
 	    .appendField(new Blockly.FieldDropdown(pins), "PIN")
 	    .appendField(Blockly.Msg.WITHNEWVALUE);
 	
-	this.appendValueInput("DUTY")
+	this.appendValueInput("VALUE")
 	    .setCheck('Number');
 
     this.setInputsInline(true);
