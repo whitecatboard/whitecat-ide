@@ -765,6 +765,8 @@ Code.workspaceRefresh = function() {
 		}
 		Code.editorCurrentFile = Code.blocksCurrentFile;
 	} else if (Code.selected == 'editor') {
+		editor.focus();
+		
 	  	var count = Code.workspace.getAllBlocks().length;
 	
 		if (count > 0) {
