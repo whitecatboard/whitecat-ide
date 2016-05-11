@@ -1,5 +1,3 @@
-var parser = require('luaparse');
-
 var LuaToBlocks = {};
 
 LuaToBlocks.genUid = function() {
@@ -239,24 +237,10 @@ LuaToBlocks.body = function(ast) {
 }
 
 LuaToBlocks.convert = function(code) {
-	var ast = parser.parse(code);	
+	var ast = luaparse.parse(code);	
 	var xml = LuaToBlocks.body(ast.body);
 
 	xml = '<xml xmlns="http://www.w3.org/1999/xhtml">' + xml + '<xml>';
 	
 	return xml;
 }
-
-var code = 'a=12 \
-	while a == 12 do \
-	a=12 \
-	b = 10 \
-	c=40 \
-		while true do \
-			d=10\
-			end \
-			while true do end \
-				while true do end \
-	end';
-
-console.log(LuaToBlocks.convert(code));

@@ -30,6 +30,8 @@ var editor;
  */
 var Code = {};
 
+Code.linked = true;
+
 Code.boardCurrentFile = {
 	path: '',
 	file: ''
@@ -240,6 +242,8 @@ Code.selected = 'blocks';
  * @param {string} clickedName Name of tab clicked.
  */
 Code.tabClick = function(clickedName) {	
+  var luaCode = editor.getValue();
+	
   if (document.getElementById('tab_blocks').className == 'tabon') {
     Code.workspace.setVisible(false);
   }
@@ -261,6 +265,20 @@ Code.tabClick = function(clickedName) {
   
   if (clickedName == 'blocks') {
     Code.workspace.setVisible(true);
+	
+	if (Code.linked) {
+		var xml = '';
+		var code = '';
+	
+		Code.workspace.clear();
+	
+		xml = LuaToBlocks.convert(luaCode);
+
+	    xml = Blockly.Xml.textToDom(xml);
+	    Blockly.Xml.domToWorkspace(xml, Code.workspace);
+	
+		Code.workspaceRefresh();
+	}
   }
 
   if (clickedName == 'board') {
@@ -392,6 +410,7 @@ Code.init = function() {
 
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
+	  Code.bindClick('linkWorkspaces', Code.linkWorkspaces);
 	  Code.bindClick('loadButton', Code.load);
 	  Code.bindClick('saveButton', Code.save);
 	  Code.bindClick('stopButton', Code.stop);
@@ -481,6 +500,16 @@ Code.initLanguage = function() {
   for (var i = 0, listVar; listVar = listVars[i]; i++) {
     listVar.textContent = MSG['listVariable'];
   }
+};
+
+Code.linkWorkspaces = function() {
+	Code.linked = !Code.linked;
+	
+	if (Code.linked) {
+		jQuery("#linkWorkspaces").find("span").css('color','red');
+	} else {
+		jQuery("#linkWorkspaces").find("span").css('color','black');		
+	}
 };
 
 Code.discard = function() {
@@ -731,13 +760,17 @@ Code.listBoardDirectory = function(target) {
 
 Code.workspaceRefresh = function() {
 	if (Code.selected == 'blocks') {
-		editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
+		if (Code.linked) {
+			editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
+		}
 		Code.editorCurrentFile = Code.blocksCurrentFile;
 	} else if (Code.selected == 'editor') {
 	  	var count = Code.workspace.getAllBlocks().length;
 	
 		if (count > 0) {
-			editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
+			if (Code.linked) {
+				editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
+			}
 			Code.editorCurrentFile = Code.blocksCurrentFile;
 		}
 	}
@@ -748,11 +781,11 @@ Code.workspaceRefresh = function() {
 
 Code.tabRefresh = function() {
 	if (Code.selected == 'blocks') {
-		jQuery("#trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 	} else if (Code.selected == 'editor') {
-		jQuery("#trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 	} else if (Code.selected == 'board') {
-		jQuery("#trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
+		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
 	}
 	
 	if ((!Board.connId) || (Board.connId == -1)) {
