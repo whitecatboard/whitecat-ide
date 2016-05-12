@@ -42,9 +42,9 @@
       <td colspan=2>
 		  <div>
 			  <ul class="nav nav-tabs" role="tablist">
+			    <li role="presentation" class="disabled"><a id="tab_board" role="tab" data-toggle="tab">...</a></li>
 			    <li role="presentation" class="active"><a id="tab_blocks" role="tab" data-toggle="tab">...</a></li>
 			    <li role="presentation"><a id="tab_editor" role="tab" data-toggle="tab">...</a></li>
-			    <li role="presentation" class="disabled"><a id="tab_board" role="tab" data-toggle="tab">...</a></li>
 			  </ul>		 
 		  <div>
 		  <div class="btn-toolbar" role="toolbar" style="background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);"> 
@@ -53,7 +53,7 @@
   			    <span class="icon icon-bin" aria-hidden="true"></span>
   			  </button>
   			  <button id="linkWorkspaces" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span style="color: red;" class="icon icon-link" aria-hidden="true"></span>
+  			    <span class="icon icon-link" aria-hidden="true"></span>
   			  </button>
   			  <button id="loadButton" type="button" class="btn btn-default" aria-label="Left Align">
   			    <span class="icon icon-folder-open" aria-hidden="true"></span>
@@ -79,11 +79,11 @@
       </td>
     </tr>
   </table>
+  <div id="content_board" class="content"></div>
   <div id="content_blocks" class="content"></div>
   <pre id="content_lua" class="content"></pre>
   <textarea id="content_xml" class="content" wrap="off"></textarea>
   <div id="content_editor" class="content"></div>
-  <div id="content_board" class="content"></div>
   <xml id="toolbox" style="display: none">
     <category id="catIO" colour="20">
 		<category id="catIODigital">

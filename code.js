@@ -30,7 +30,7 @@ var editor;
  */
 var Code = {};
 
-Code.linked = true;
+Code.linked = false;
 
 Code.boardCurrentFile = {
 	path: '',
