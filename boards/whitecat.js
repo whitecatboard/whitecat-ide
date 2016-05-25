@@ -1,8 +1,84 @@
 var Whitecat = {};
 
-Whitecat.connId = null;
-Whitecat.connPort = null;
 Whitecat.chunkSize = 255;
+
+Whitecat.ports = [];
+Whitecat.port = {};
+
+Whitecat.currentPort = function() {
+	for (var i = 0; i < Whitecat.ports.length; i++) {
+		if (Whitecat.ports[i].connId != null) {
+			return Whitecat.ports[i];
+		}
+	}
+
+	return null;	
+}
+
+Whitecat.isConnected = function() {
+	for (var i = 0; i < Whitecat.ports.length; i++) {
+		if (Whitecat.ports[i].connId != null) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+Whitecat.port.isNew = function(path) {
+	var finded = false;
+	
+	for (var i = 0; i < Whitecat.ports.length; i++) {
+		finded = (Whitecat.ports[i].path == path);
+		if (finded) break;
+	}
+	
+	return !finded;
+}
+
+Whitecat.port.isConnected = function(path) {
+	for (var i = 0; i < Whitecat.ports.length; i++) {
+		if (Whitecat.ports[i].path == path) {
+			if (Whitecat.ports[i].connId != null) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+Whitecat.port.add = function(path) {
+	Whitecat.ports.push({path: path, connId: null, forTest: true, forDelete: false, mode: null});
+}
+
+Whitecat.port.addTestMark = function(path) {
+	for (var i = 0; i < Whitecat.ports.length; i++) {
+		if (Whitecat.ports[i].path == path) {
+			Whitecat.ports[i].forTest = true;
+		}
+	}
+
+	return;
+}
+
+Whitecat.port.removeDeleteMark = function(path) {
+	for (var i = 0; i < Whitecat.ports.length; i++) {
+		if (Whitecat.ports[i].path == path) {
+			Whitecat.ports[i].forDelete = false;
+		}
+	}
+
+	return;
+}
+
+Whitecat.port.markAllForDelete = function() {
+	for (var i = 0; i < Whitecat.ports.length; i++) {
+		Whitecat.ports[i].forDelete = true;
+	}
+
+	return;
+}
 
 Whitecat.digitalPins = {
 	"8" : "pio.PB_5",
@@ -91,13 +167,13 @@ Whitecat.str2ab = function(str) {
 };
 
 Whitecat.checkConnection = function() {
-	if ((!Whitecat.connId) || (Whitecat.connId < 0)) {
-		 throw 'Invalid connection';
-	}	
+//	if ((!Whitecat.connId) || (Whitecat.connId < 0)) {
+//		 throw 'Invalid connection';
+//	}	
 }
 
 // Send a command to the whitecat, and wait for the response
-Whitecat.sendCommand = function(command, success, error) {
+Whitecat.sendCommand = function(port, command, success, error) {
 	var line = 0;
 	var commandEcho = false;
 	var commandResponse = "";
@@ -111,7 +187,7 @@ Whitecat.sendCommand = function(command, success, error) {
 	Whitecat.checkConnection();
 
 	function sendCommandListener(info) {
-	    if (info.connectionId == Whitecat.connId && info.data) {
+	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
 
 			for(var i = 0; i < str.length; i++) {
@@ -149,11 +225,11 @@ Whitecat.sendCommand = function(command, success, error) {
 		}		
 	}
 	
-	chrome.serial.flush(Whitecat.connId, function(result) {
+	chrome.serial.flush(port.connId, function(result) {
 		waitForCommandEcho = true;
 		waitForPrompt = false;
 		chrome.serial.onReceive.addListener(sendCommandListener);
-		chrome.serial.send(Whitecat.connId, Whitecat.str2ab(command + '\r\n'), function(info) {
+		chrome.serial.send(port.connId, Whitecat.str2ab(command + '\r\n'), function(info) {
 			if (info.bytesSent == 0) {
 				Whitecat.checkConnection();
 			}
@@ -162,7 +238,7 @@ Whitecat.sendCommand = function(command, success, error) {
 };
 
 // Receive file from the whitecat
-Whitecat.receiveFile = function(fileName, received) {
+Whitecat.receiveFile = function(port, fileName, received) {
 	var outputIndex = 0;
 	var currentReceived = "";
 	var fileReceiveCommand =  "io.send(\"" + fileName + "\")\r";
@@ -174,7 +250,7 @@ Whitecat.receiveFile = function(fileName, received) {
 	Whitecat.checkConnection();
 
 	function receiveChunkListener(info) {
-	    if (info.connectionId == Whitecat.connId && info.data) {
+	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
 			for(var i = 0; i < str.length; i++) {
 				Whitecat.checkConnection();
@@ -208,12 +284,12 @@ Whitecat.receiveFile = function(fileName, received) {
 		size = 0;
 		
 		chrome.serial.onReceive.addListener(receiveChunkListener);		
-		chrome.serial.send(Whitecat.connId, Whitecat.str2ab('C\n'), function() {
+		chrome.serial.send(port.connId, Whitecat.str2ab('C\n'), function() {
 		});
 	}
 	
 	function waitForCommandEcho(info) {
-	    if (info.connectionId == Whitecat.connId && info.data) {
+	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
 			for(var i = 0; i < str.length; i++) {
 				Whitecat.checkConnection();
@@ -231,18 +307,18 @@ Whitecat.receiveFile = function(fileName, received) {
 		}			
 	}
 
-	chrome.serial.flush(Whitecat.connId, function(result) {
+	chrome.serial.flush(port.connId, function(result) {
 		chrome.serial.onReceive.addListener(waitForCommandEcho);
 		
 		Whitecat.checkConnection();
-		chrome.serial.send(Whitecat.connId, Whitecat.str2ab(fileReceiveCommand), function() {
+		chrome.serial.send(port.connId, Whitecat.str2ab(fileReceiveCommand), function() {
 			Whitecat.checkConnection();
 		});
 	});
 };
 
 // Send file to the whitecat
-Whitecat.sendFile = function(fileName, content, sended) {
+Whitecat.sendFile = function(port, fileName, content, sended) {
 	var outputIndex = 0;
 	var currentReceived = "";
 	var fileSendCommand =  "io.receive(\"" + fileName + "\")\r";
@@ -256,12 +332,12 @@ Whitecat.sendFile = function(fileName, content, sended) {
 		var chunk = content.slice(outputIndex, outputIndex + Whitecat.chunkSize);
 
 		// Send size
-		chrome.serial.send(Whitecat.connId, Whitecat.str2ab(String.fromCharCode(chunk.length)), function(info) {
+		chrome.serial.send(port.connId, Whitecat.str2ab(String.fromCharCode(chunk.length)), function(info) {
 			Whitecat.checkConnection();
 			
 			if (chunk.length > 0) {
 				// Send chunk
-				chrome.serial.send(Whitecat.connId, Whitecat.str2ab(chunk), function(info) {					
+				chrome.serial.send(port.connId, Whitecat.str2ab(chunk), function(info) {					
 					waitForC = true;
 					waitForN = false;
 					
@@ -277,7 +353,7 @@ Whitecat.sendFile = function(fileName, content, sended) {
 	}
 	
 	function waitForSend(info) {
-	    if (info.connectionId == Whitecat.connId && info.data) {
+	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
 
 			for(var i = 0; i < str.length; i++) {
@@ -300,7 +376,7 @@ Whitecat.sendFile = function(fileName, content, sended) {
 	}
 	
 	function waitForCommandEcho(info) {
-	    if (info.connectionId == Whitecat.connId && info.data) {
+	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
 
 			for(var i = 0; i < str.length; i++) {
@@ -318,19 +394,19 @@ Whitecat.sendFile = function(fileName, content, sended) {
 		}			
 	}
 
-	chrome.serial.flush(Whitecat.connId, function(result) {
+	chrome.serial.flush(port.connId, function(result) {
 		chrome.serial.onReceive.addListener(waitForCommandEcho);
 		
 		Whitecat.checkConnection();
-		chrome.serial.send(Whitecat.connId, Whitecat.str2ab(fileSendCommand), function() {
+		chrome.serial.send(port.connId, Whitecat.str2ab(fileSendCommand), function() {
 			Whitecat.checkConnection();
 		});
 	});
 };
 
 // Check if a file exists in the whitecat
-Whitecat.fileExists = function(name, callback) {
-	Whitecat.sendCommand("do;local f = io.open('"+name+"',\"r\");if f ~= nil then io.close(f) print(\"true\") else print(\"false\") end end;", 
+Whitecat.fileExists = function(port, name, callback) {
+	Whitecat.sendCommand(port, "do;local f = io.open('"+name+"',\"r\");if f ~= nil then io.close(f) print(\"true\") else print(\"false\") end end;", 
 		function(resp) {
 			if (resp == "true") {
 				callback(true);
@@ -345,28 +421,32 @@ Whitecat.fileExists = function(name, callback) {
 }
 
 // Stop anything running on the whitecat, including scripts and threads
-Whitecat.stop = function(success, error) {
+Whitecat.stop = function(port, success, error) {
 	var currentReceived = "";
+	var currentTimeOut;
 	
 	Whitecat.checkConnection();
 
 	function stopThreads() {
-		Whitecat.sendCommand("do;thread.stop();local n = thread.list(\"*n\");print(n);end;", 
+		Whitecat.sendCommand(port, "do;thread.stop();local n = thread.list(\"*n\");print(n);end;", 
 			function(resp) {
 				if (resp == "0") {
-					Whitecat.sendCommand("do;local curr_os, curr_ver = os.version();print(curr_os);end;", 
+					Whitecat.sendCommand(port, "do;local curr_os, curr_ver = os.version();print(curr_os);end;", 
 						function(resp) {
 							if (resp == "LuaOS") {
+								clearTimeout(currentTimeOut);
 								success();
 							}
 						},
 						function(err) {
+							clearTimeout(currentTimeOut);
 							error(err);
 						}
 					);
 				}
 			},
 			function(err) {
+				clearTimeout(currentTimeOut);
 				error(err);
 			}
 		);		
@@ -375,7 +455,7 @@ Whitecat.stop = function(success, error) {
 	function stopListener(info) {
 		var mustStopThreads = false;
 		
-	    if (info.connectionId == Whitecat.connId && info.data) {
+	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
 						
 			for(var i = 0; i < str.length; i++) {
@@ -401,15 +481,25 @@ Whitecat.stop = function(success, error) {
 			stopThreads();
 		}
 	}
+	
+	function timeout() {
+		chrome.serial.onReceive.removeListener(stopListener);
+		error("timeout");
+	}
+
+	// Set a timeout
+	currentTimeOut = setTimeout(function(){
+		timeout();
+	}, 2000);
 
 	// Send a Ctrl-C for interrupt current running script
 	Whitecat.checkConnection();
-	chrome.serial.flush(Whitecat.connId, function(info) {
+	chrome.serial.flush(port.connId, function(info) {
 		Whitecat.checkConnection();
 		chrome.serial.onReceive.addListener(stopListener);
 		
 		Whitecat.checkConnection();
-		chrome.serial.send(Whitecat.connId, Whitecat.str2ab('\03'), function(info) {
+		chrome.serial.send(port.connId, Whitecat.str2ab('\03'), function(info) {
 			Whitecat.checkConnection();
 		});			
 	});
@@ -418,6 +508,7 @@ Whitecat.stop = function(success, error) {
 // Try to detect a Whitecat connected to serial port
 Whitecat.detect = function() {
 	var patt = /tty\.SLAB_USBtoUART/g;
+	var timeoutTestBootloader;
 	
 	function reeschelude() {
 		setTimeout(function(){
@@ -425,71 +516,143 @@ Whitecat.detect = function() {
 		}, 500);
 	}
 
+	function testBootloader(port, callback) {
+		stk500.detect(port, function(detected) {
+			if (detected) {
+				callback(true);
+			} else {
+				callback(false);
+			}
+		});	
+	}
+		
+	function testLuaOS(port, callback) {
+		chrome.serial.flush(port.connId, function(result) {
+			// Try to detect
+			Whitecat.stop(
+				port,
+				function() {
+					callback(true);				
+				},
+				function(error) {
+					callback(false);
+				}
+			);								
+		});			
+	}
+
 	function testPort(port) {
-		if (port.path != Whitecat.connPort) {
+		if (port.connId == null) {
 			// Try to connect
 			chrome.serial.connect(port.path, {bitrate: 115200, bufferSize: 4096}, function(connectionInfo) {
 				// Store connection id and name of port
-				Whitecat.connId = connectionInfo.connectionId;
-				Whitecat.connPort = port.path;
+				port.connId = connectionInfo.connectionId;
 				
-				chrome.serial.flush(Whitecat.connId, function(result) {
-					Whitecat.stop(
-						function() {
-							// There's a whitecat on this port
-							Code.boardConnected();
-							reeschelude();
-						},
-						function() {
-							// No whitecat connected to this port
-							Code.boardDisconnected();
-							reeschelude();
-						}
-					);		
-				});				
-			});			
+				testLuaOS(port, function(connected) {
+					if (connected) {
+						port.mode = "LuaOS";
+						Code.boardConnected();
+						reeschelude();
+						return;
+					} else {
+						setTimeout(function(){
+							testBootloader(port, function(connected) {
+								if (connected) {
+									port.mode = "Bootloader";
+									
+									Code.boardInBootloaderMode(function(upgrade) {
+										if (!upgrade) {
+											reeschelude();								
+										} else {
+											Whitecat.upgradeFirmware(port, function(data, error) {
+												port.mode = null;
+												
+												Code.showInformation(MSG['firmwareUpgraded']);
+												reeschelude();									
+											});
+										}
+									});
+								} else {
+									reeschelude();
+									return;									
+								}
+							});
+						}, 2000);
+					}
+				});
+			});						
 		} else {
-			reeschelude();
+			if (port.mode == null) {				
+				testLuaOS(port, function(connected) {
+					if (connected) {
+						port.mode = "LuaOS";
+						Code.boardConnected();
+						reeschelude();
+						return;
+					} else {
+						setTimeout(function(){
+							testBootloader(port, function(connected) {
+								if (connected) {
+									port.mode = "Bootloader";									
+								} else {
+									reeschelude();
+									return;									
+								}
+							});
+						}, 2000);
+					}
+				});
+			} else {
+				reeschelude();
+			}
 		}
 	}
 	
 	chrome.serial.getDevices(function(ports) {
 		var port;
 		
-		// Get ports that match an expected connected whitecat
-		for(port=0;port < ports.length;port++) {
+		// Remove all delete marks
+		Whitecat.port.markAllForDelete();
+		
+		// Process all ports and update previous ports with changes
+		for(port = 0;port < ports.length;port++) {
 			if (patt.test(ports[port].path)) {
-				// Port match
-				
-				// Check if port it's the current connected port
-				// If it's the connected port boar is still connect
-				if ((Whitecat.connId != -1) && (Whitecat.connPort == ports[port].path)) {
-					reeschelude();
-					break;
+				// This port matches, and may be connected to a whitecat
+				if (Whitecat.port.isNew(ports[port].path)) {
+					// Port is new
+					// Probably user has plug something once pluging is started
+					Whitecat.port.add(ports[port].path);
 				} else {
-					if (!(Whitecat.connId) || (Whitecat.connId == -1)) {
-						testPort(ports[port]);
-						break;
-					} else {
-						reeschelude();
+					// Port is not new
+					// If is not connected 2 things may happend: board is not respond to commands
+					// or board is in bootloader mode
+					if (!Whitecat.port.isConnected(ports[port].path)) {
+						Whitecat.port.addTestMark(ports[port].path);
 					}
+					
+					// Remove delete mark
+					Whitecat.port.removeDeleteMark(ports[port].path);
 				}
 			}
 		}
 		
-		if (port >= ports.length) {
-			if ((Whitecat.connId == null) || (Whitecat.connId != -1)) {
-				Whitecat.connId = -1;
-				Whitecat.connPort = null;
-				
+		// Process all ports
+		for(port = 0;port < Whitecat.ports.length;port++) {
+			// Port is for delete, inform the UI
+			if (Whitecat.ports[port].forDelete) {
+				Whitecat.ports.splice(port, 1);
 				Code.boardDisconnected();
+				reeschelude();
+				return;				
 			}
-			
-			Whitecat.connId = -1;
-			Whitecat.connPort = null;
 
-			reeschelude();
-		};
+			if (Whitecat.ports[port].forTest) {
+				testPort(Whitecat.ports[port]);
+				return;				
+			}
+		}
+		
+		reeschelude();
 	});	
 };
 
@@ -498,11 +661,11 @@ Whitecat.detect = function() {
 Whitecat.init = function() {
 	setTimeout(function(){
 		Whitecat.detect();
-	}, 1000);
+	}, 500);
 };
 
 // Run current generated code to the whitecat
-Whitecat.run = function(file, code, success, fail) {
+Whitecat.run = function(port, file, code, success, fail) {
 	var currentReceived = "";
 	
 	if (code.trim() == "") {
@@ -510,18 +673,19 @@ Whitecat.run = function(file, code, success, fail) {
 		return;
 	}
 		
-	chrome.serial.flush(Whitecat.connId, function() {
+	chrome.serial.flush(port.connId, function() {
 		// Stop anything running
 		Whitecat.stop(
+			port,
 			function() {
 				// Whitecat is stopped
 				// Send code
-				Whitecat.sendFile(file, code, 
+				Whitecat.sendFile(port, file, code, 
 					function() {
 						// Code is sended
 
 						//Now run it!
-						chrome.serial.send(Whitecat.connId,  Whitecat.str2ab("dofile(\"/sd/autorun.lua\")\r\n"), function() {
+						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\"/sd/autorun.lua\")\r\n"), function() {
 							success();
 						});
 				});		
@@ -534,8 +698,8 @@ Whitecat.run = function(file, code, success, fail) {
 };
 
 // List a directory from the whitecat, and return an array of entries
-Whitecat.listDirectory = function(name, success, error) {
-	Whitecat.sendCommand("os.ls('" + name + "')", 
+Whitecat.listDirectory = function(port, name, success, error) {
+	Whitecat.sendCommand(port, "os.ls('" + name + "')", 
 		function(resp) {
 			var entries = [];
 
@@ -558,4 +722,43 @@ Whitecat.listDirectory = function(name, success, error) {
 			error(err);
 		}
 	);			
+}
+
+Whitecat.upgradeFirmware = function(port, callback) {
+	function loadFile(fileEntry) {
+	    fileEntry.file(function(file) {
+			var reader = new FileReader();
+	    	reader.onload = function(e) {
+				if (Whitecat.isConnected()) {
+					chrome.serial.send(port.connId,  Whitecat.str2ab("os.exit()\r\n"), function() {
+						stk500.upgradeFirmware(port, intelHex.parse(e.target.result), function() {
+							callback();
+						});
+					});	
+				} else {					
+					stk500.upgradeFirmware(port, intelHex.parse(e.target.result), function() {
+						callback();
+					});
+				}
+	    	};
+	    	reader.readAsText(file);
+	    });
+	};
+	
+	var extension = "hex";
+	
+    chrome.fileSystem.chooseEntry({
+         type: 'openFile',
+         suggestedName: 'untitled.'+ extension,
+         accepts: [ { description: extension + ' files (*.' + extension + ')',
+                      extensions: [extension]} ],
+         acceptsAllTypes: false
+     }, loadFile);		
+}
+
+Whitecat.reboot = function(port) {
+	//Now run it!
+	chrome.serial.send(port.connId,  Whitecat.str2ab("os.exit()\r\n"), function() {
+		Whitecat.init();
+	});	
 }
