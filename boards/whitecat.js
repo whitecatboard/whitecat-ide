@@ -593,6 +593,7 @@ Whitecat.detect = function() {
 	// Phase 2: test for bootloader success
 	// Phase 3: test only for LuaOS
 	// Phase 4: test for LuaOS success
+	// Phase 5: rebooting
 	function testPort(port) {
 		if (port.phase == 0) {
 			testLuaOS(port, function(connected) {
@@ -796,17 +797,12 @@ Whitecat.upgradeFirmware = function(port, code, callback) {
 }
 
 Whitecat.reboot = function(port, success, error) {
-	setTimeout(function(){
-		chrome.serial.send(port.connId,  Whitecat.str2ab("os.exit()\r\n"), function() {
-			port.phase = 0;
-		
-			setTimeout(function(){
-				Whitecat.init(0);
-			}, 1000);		
-		
-			success();
-		});	
-	}, 2000);				
+	port.phase = 5;
+
+	chrome.serial.send(port.connId,  Whitecat.str2ab("\r\nos.exit()\r\n"), function() {	
+		success();
+		Whitecat.init(0);
+	});	
 }
 
 // Get version of the firmware installed on the board
