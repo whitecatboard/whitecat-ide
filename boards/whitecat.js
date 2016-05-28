@@ -33,6 +33,7 @@ Whitecat.chunkSize = 255;
 
 Whitecat.ports = [];
 Whitecat.port = {};
+Whitecat.status = {};
 
 Whitecat.ERR_TIMEOUT = -1;
 Whitecat.ERR_INVALID_RESPONSE = -2;
@@ -537,6 +538,7 @@ Whitecat.isRunning = function(port, success, error) {
 
 				if (currentReceived == "LuaOS") {
 					clearTimeout(currentTimeOut);
+					chrome.serial.onReceive.removeListener(isRunningListener);
 					success();					
 				}
 			}		
@@ -555,6 +557,29 @@ Whitecat.isRunning = function(port, success, error) {
 		});			
 	});
 };
+
+Whitecat.getStatus = function(port, success, error) {
+	Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\"}");end;', 1000,
+		function(resp) {
+			try {
+				resp = JSON.parse(resp);
+				
+				Whitecat.status.os = resp.os;
+				Whitecat.status.version = resp.version;
+				Whitecat.status.build = resp.build;
+				Whitecat.status.firmware = resp.os + "-" + resp.version.replace(" ","-") + "-" + resp.build;
+
+				success();
+			} catch (err) {
+				error(Whitecat.ERR_INVALID_RESPONSE);
+			}
+		
+		},
+		function(err) {
+			error(err);
+		}
+	);
+}
 
 // Try to detect a Whitecat connected to serial port
 Whitecat.detect = function() {
@@ -578,8 +603,16 @@ Whitecat.detect = function() {
 		Whitecat.isRunning(
 			port,
 			function() {
-				callback(true);				
-			},
+				Whitecat.getStatus(
+					port,
+					function() {
+						callback(true);
+					},
+					function() {
+						callback(false);						
+					}
+				);
+				},
 			function(error) {
 				callback(false);
 			}			

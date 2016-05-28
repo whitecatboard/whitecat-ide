@@ -286,9 +286,10 @@ Code.tabClick = function(clickedName) {
 	  Code.boardCurrentFile.path = '';
 	  Code.boardCurrentFile.file = '';
 	  
-	  jQuery("#content_board").append(jQuery('<i class="icon-upload icon-large">'));
+	  jQuery("#filesystem").append(jQuery('<i class="icon-upload icon-large">'));
 
 	  Code.listBoardDirectory();
+	  Code.updateStatus();
   }
 
   jQuery("#tab_blocks").text(MSG['blocks'] + ' ' + Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file);
@@ -725,6 +726,15 @@ Code.showError = function(err) {
 	Code.showAlert("Error: " + err);
 }
 
+Code.updateStatus = function() {
+	var container = jQuery('#boardStatus');	
+
+	var html;
+	
+	html = "Installed firmware: " + Whitecat.status.firmware;
+	container.html(html);
+}
+
 Code.listBoardDirectory = function(target) {
 	var container;
 	
@@ -733,7 +743,7 @@ Code.listBoardDirectory = function(target) {
 	if (target) {
 		container = target;
 	} else {
-		container = jQuery('#content_board');	
+		container = jQuery('#filesystem');	
 		container.html(Code.boardCurrentFile.path);	
 	}
 		
