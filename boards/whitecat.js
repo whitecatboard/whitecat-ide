@@ -559,7 +559,7 @@ Whitecat.isRunning = function(port, success, error) {
 };
 
 Whitecat.getStatus = function(port, success, error) {
-	Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\"}");end;', 1000,
+	Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();cpu = os.cpu();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\",\\"cpu\\":\\""..cpu.."\\"}");end;', 1000,
 		function(resp) {
 			try {
 				resp = JSON.parse(resp);
@@ -568,7 +568,7 @@ Whitecat.getStatus = function(port, success, error) {
 				Whitecat.status.version = resp.version;
 				Whitecat.status.build = resp.build;
 				Whitecat.status.firmware = resp.os + "-" + resp.version.replace(" ","-") + "-" + resp.build;
-
+				Whitecat.status.cpu = resp.cpu;
 				success();
 			} catch (err) {
 				error(Whitecat.ERR_INVALID_RESPONSE);
@@ -839,8 +839,10 @@ Whitecat.listDirectory = function(port, name, success, error) {
 }
 
 Whitecat.upgradeFirmware = function(port, code, callback) {
-	stk500.upgradeFirmware(port, intelHex.parse(code), function() {
-		callback();
+	chrome.serial.send(port.connId,  Whitecat.str2ab("\r\nos.exit()\r\n"), function() {	
+		stk500.upgradeFirmware(port, intelHex.parse(code), function() {
+			callback();
+		});
 	});
 }
 
@@ -854,7 +856,7 @@ Whitecat.reboot = function(port, success, error) {
 }
 
 // Get version of the firmware installed on the board
-Whitecat.getInstalledFirmwareVersion = function(success, error) {
+Whitecat.getInstalledFirmwareVersion = function(port, success, error) {
 	Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\"}");end;', 1000,
 		function(resp) {
 			try {
@@ -877,10 +879,12 @@ Whitecat.getLastFirmwareAvailableVersion = function(success, error) {
 
     xhr.onreadystatechange = function() {
        if (xhr.readyState == 4 && xhr.status == 200) {
-		   success(xhr.responseText);
+		   success(xhr.responseText.trim());
        } else {
-       	   error(Whitecat.ERR_CONNECTION_ERROR);
-       }
+		   if (xhr.readyState == 4 && xhr.status != 200) {
+			   error(Whitecat.ERR_CONNECTION_ERROR);
+		   }
+       }	   
     }
 
 	xhr.open("GET", "https://raw.githubusercontent.com/whitecatboard/LuaOS/master/releases/current", true);
@@ -898,12 +902,38 @@ Whitecat.getLastFirmwareAvailableCode = function(success, error) {
 		       if (xhr.readyState == 4 && xhr.status == 200) {
 				   success(xhr.responseText);
 		       } else {
-		       	   error(Whitecat.ERR_CONNECTION_ERROR);	       	
-		       }
+				   if (xhr.readyState == 4 && xhr.status != 200) {
+					   error(Whitecat.ERR_CONNECTION_ERROR);
+				   }
+		       }	   
 		    }
 
 			xhr.open("GET", "https://raw.githubusercontent.com/whitecatboard/LuaOS/master/releases/" + version, true);
 			xhr.send();	
+		},
+		function(err) {
+			error(err);
+		}
+	);
+}
+
+Whitecat.checkForNewFirmwareAvailability = function(port, success, error) {
+	Whitecat.getInstalledFirmwareVersion(port, 
+		function(installedVersion) {
+			installedVersion = installedVersion + ".hex";
+			
+			Whitecat.getLastFirmwareAvailableVersion(
+				function(lastVersion) {
+					if (installedVersion != lastVersion) {
+						success(true);						
+					} else {
+						success(false);
+					}
+				},
+				function(err) {
+					error(err);
+				}
+			);
 		},
 		function(err) {
 			error(err);

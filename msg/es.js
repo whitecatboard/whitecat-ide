@@ -43,4 +43,6 @@ var MSG = {
   notNow: 'Not now',	
   downloadingFirmware: 'Downloafing firmware',
   rebooting: 'Rebooting ...',
+  newFirmware: 'A new firmware version is availanle for your board. Do you want to upgrade?',
+  firmwareNoNewVersion: 'No new version available. Your board is up to date.',
 };

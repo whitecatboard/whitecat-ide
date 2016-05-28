@@ -1,5 +1,4 @@
 chrome.app.runtime.onLaunched.addListener(function() {
-	console.log("launch");
 	chrome.storage.sync.get(
 	  {
 	    language: 'en',

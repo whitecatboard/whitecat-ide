@@ -418,7 +418,6 @@ Code.init = function() {
 	  Code.bindClick('stopButton', Code.stop);
 	  Code.bindClick('runButton', Code.run);
 	  Code.bindClick('rebootButton', Code.reboot);
-	  Code.bindClick('upgradeButton', Code.upgradeBoard);
 	  
   // Disable the link button if page isn't backed by App Engine storage.
   //var linkButton = document.getElementById('linkButton');
@@ -621,19 +620,6 @@ Code.reboot = function() {
 	);
 }
 
-Code.upgradeBoard = function() {
-	Board.upgradeFirmware(Board.currentPort(),
-		function() {
-			Code.progressDialog = false;
-			BootstrapDialog.closeAll();
-			bootbox.hideAll();			
-			Code.showInformation(MSG['firmwareUpgraded']);
-			Board.init();
-		}
-	);
-}
-
-
 Code.save = function() {
 	function saveToFile(fileEntry) {
 		fileEntry.createWriter(function(fileWriter) {
@@ -705,7 +691,7 @@ Code.showInformation = function(text) {
 		onshow: function(dialogRef) {
             setTimeout(function(){
                 dialogRef.close();
-            }, 1500);
+            }, 2500);
 		}
 	});
 }
@@ -731,8 +717,24 @@ Code.updateStatus = function() {
 
 	var html;
 	
-	html = "Installed firmware: " + Whitecat.status.firmware;
+	html  = '<table class="table table-striped">';
+	html += '<thead>';
+	html += '<th>Item</th>';
+	html += '<th>Value</th>';
+	html += '</thead>';
+	html += '<tbody>';
+	html += '<tr><td>Installed firmware</td><td>'+Whitecat.status.firmware+'</td></tr>';
+	html += '<tr><td>CPU model</td><td>'+Whitecat.status.cpu+'</td></tr>';
+	html += '</tbody>';
+	html += '</table>';
+	html += '</table>';
+	html +='<button id="checkFirmwareButton" type="button" class="btn btn-default" aria-label="Left Align">';
+	html += 'Check for firmware updates ...';
+	html += '</button>';
+		
 	container.html(html);
+
+    Code.bindClick('checkFirmwareButton', Code.checkFirmware);
 }
 
 Code.listBoardDirectory = function(target) {
@@ -836,19 +838,13 @@ Code.tabRefresh = function() {
 	} else if (Code.selected == 'editor') {
 		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 	} else if (Code.selected == 'board') {
-		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton, #upgradeButton").addClass("disabled");
+		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
 	}
 	
 	if (!Board.isConnected()) {
-		jQuery("#stopButton, #runButton, #tab_board, #rebootButton, #content_board, #upgradeButton").addClass("disabled");
+		jQuery("#stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
 		jQuery("#tab_board").parent().addClass("disabled");		
 	} else {
-		if (Code.selected == 'board') {
-			jQuery("#upgradeButton").removeClass("disabled");
-		} else {
-			jQuery("#upgradeButton").addClass("disabled");			
-		}
-	
 		jQuery("#stopButton, #runButton, #rebootButton, #content_board").removeClass("disabled");
 		jQuery("#tab_board").parent().removeClass("disabled");
 	}
@@ -885,7 +881,7 @@ Code.boardInBootloaderMode = function(callback) {
 					  	);
 					  },
 					  function(err) {
-					  	Code.hideProgress();
+						  Code.showError(err);
 					  }
 				  );
 			  }
@@ -920,31 +916,51 @@ Code.upgradeFirmwareProgress = function(percent) {
 	}
 }
 
-Code.upgradeFirmware = function() {
-	function loadFile(fileEntry) {
-	    fileEntry.file(function(file) {
-			var reader = new FileReader();
-	    	reader.onload = function(e) {
-				stk500.upgradeFirmware(intelHex.parse(e.target.result), function(data, error) {
-					Code.progressDialog = false;
-					BootstrapDialog.closeAll();
-					bootbox.hideAll();
-					Board.init();
+Code.checkFirmware = function() {
+	Whitecat.checkForNewFirmwareAvailability(Board.currentPort(),
+		function(newFirmware) {
+			if (newFirmware) {
+				bootbox.dialog({
+				  message: MSG['newFirmware'],
+					buttons: {
+					    success: {
+					      label: MSG['installNow'],
+					      className: "btn-primary",
+					      callback: function() {
+	  						  Code.showProgress(MSG['downloadingFirmware']);
+	  						  Whitecat.getLastFirmwareAvailableCode(
+	  							  function(code) {
+			  						Code.showProgress(MSG['rebooting']);
+  	  								Board.upgradeFirmware(Board.currentPort(), code, 
+  	  								  function() {
+  	  									Code.showInformation(MSG['firmwareUpgraded']);
+  	  									Board.init(0);								
+  	  								  }
+  	  							  	);
+	  							  },
+	  							  function(err) {
+									  Code.showError(err);
+	  							  }
+	  						  );
+						  }
+					    },
+					    danger: {
+					      label: MSG['notNow'],
+					      className: "btn-danger",
+					      callback: function() {
+					      }
+					    },
+					},
+					closable: false
 				});
-	    	};
-	    	reader.readAsText(file);
-	    });
-	};
-	
-	var extension = "hex";
-	
-    chrome.fileSystem.chooseEntry({
-         type: 'openFile',
-         suggestedName: 'untitled.'+ extension,
-         accepts: [ { description: extension + ' files (*.' + extension + ')',
-                      extensions: [extension]} ],
-         acceptsAllTypes: false
-     }, loadFile);	
+			} else {
+				Code.showInformation(MSG['firmwareNoNewVersion']);
+			}
+		},
+		function(err) {
+			Code.showError(err);
+		}
+	);
 }
 
 // Load the Code demo's language strings.
