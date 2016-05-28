@@ -796,15 +796,17 @@ Whitecat.upgradeFirmware = function(port, code, callback) {
 }
 
 Whitecat.reboot = function(port, success, error) {
-	chrome.serial.send(port.connId,  Whitecat.str2ab("os.exit()\r\n"), function() {
-		port.phase = 0;
+	setTimeout(function(){
+		chrome.serial.send(port.connId,  Whitecat.str2ab("os.exit()\r\n"), function() {
+			port.phase = 0;
 		
-		setTimeout(function(){
-			Whitecat.init(0);
-		}, 1000);		
+			setTimeout(function(){
+				Whitecat.init(0);
+			}, 1000);		
 		
-		success();
-	});	
+			success();
+		});	
+	}, 2000);				
 }
 
 // Get version of the firmware installed on the board
