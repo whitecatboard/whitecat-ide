@@ -1,4 +1,5 @@
 chrome.app.runtime.onLaunched.addListener(function() {
+	console.log("launch");
 	chrome.storage.sync.get(
 	  {
 	    language: 'en',
@@ -6,10 +7,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
 	  function(items) {
 		  chrome.app.window.create('index.html?lang='+items.language, {
 		    id: "mainwin",
-		    innerBounds: {
-		      width: 320,
-		      height: 240
-		    }
+			state: "maximized"
 		  });  
 	  }
   	);	  

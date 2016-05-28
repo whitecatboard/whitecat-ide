@@ -602,18 +602,20 @@ Code.stop = function() {
 			
 		},
 		function(err) {
-			// TO DO
+			Code.showError(err);
 		}
 	);
 }
 
 Code.reboot = function() {
+	Code.showProgress(MSG['rebooting']);	
 	Board.reboot(Board.currentPort(),
 		function() {
-			
+			Code.tabClick('blocks');
+			Code.tabRefresh();
 		},
 		function(err) {
-			// TO DO
+			Code.showError(err);
 		}
 	);
 }
@@ -719,6 +721,10 @@ Code.showAlert = function(text) {
 	});
 }
 
+Code.showError = function(err) {
+	Code.showAlert("Error: " + err);
+}
+
 Code.listBoardDirectory = function(target) {
 	var container;
 	
@@ -786,7 +792,7 @@ Code.listBoardDirectory = function(target) {
 			});
   	    },
 		function(err) {
-			// TO DO
+			Code.showError();
 		}	
 	);
 }
@@ -850,14 +856,39 @@ Code.boardDisconnected = function() {
 }
 
 Code.boardInBootloaderMode = function(callback) {
-	bootbox.confirm(MSG['boardInBootloaderMode'], 
-	function(result) {
-		if (result) {
-			callback(true);
-		} else {
-			callback(false);
-		}
-	}); 	  
+	bootbox.dialog({
+	  message: MSG['boardInBootloaderMode'],
+		buttons: {
+		    success: {
+		      label: MSG['installNow'],
+		      className: "btn-primary",
+		      callback: function() {
+				  Code.showProgress(MSG['downloadingFirmware']);
+				  Whitecat.getLastFirmwareAvailableCode(
+					  function(code) {
+						Code.hideProgress();
+						Board.upgradeFirmware(Board.currentPort(), code, 
+						  function() {
+							Code.showInformation(MSG['firmwareUpgraded']);
+							Board.init(0);								
+						  }
+					  	);
+					  },
+					  function(err) {
+					  	Code.hideProgress();
+					  }
+				  );
+			  }
+		    },
+		    danger: {
+		      label: MSG['notNow'],
+		      className: "btn-danger",
+		      callback: function() {
+		      }
+		    },
+		},
+		closable: false
+	});
 }
 
 Code.upgradeFirmwareProgress = function(percent) {

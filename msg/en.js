@@ -37,6 +37,10 @@ var MSG = {
   catIODigital: 'Digital',
   catIOAnalog: 'Analog',
   catIOPwm: 'PWM',
-  boardInBootloaderMode: 'Your board is in bootloader mode and has not a firmware yet. Please, select a firmware and upgrade your board.',
+  boardInBootloaderMode: 'Your board is in bootloader mode and has not a firmware yet. Dou you want to install the firmware now?',
+  installNow: 'Yes, install now',
+  notNow: 'Not now',	
   firmwareUpgraded: 'Firmware upgraded',
+  downloadingFirmware: 'Downloafing firmware',
+  rebooting: 'Rebooting ...',
 };
