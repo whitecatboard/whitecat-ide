@@ -565,7 +565,6 @@ Code.run = function() {
 
 Code.load = function() {
 	function loadFile(fileEntry) {
-		console.log(fileEntry);
 	    fileEntry.file(function(file) {
 	        Code.workspace.clear();
 			
@@ -859,6 +858,35 @@ Code.boardDisconnected = function() {
 	Code.showInformation(MSG['boardDisconnected']);	
 	Code.tabClick('blocks');
 	Code.tabRefresh();
+}
+
+Code.boardRecover = function() {
+	Code.showProgress(MSG['recovering']);
+	Board.init(6);
+}
+
+Code.boardBadFirmware = function() {
+	bootbox.dialog({
+		title: MSG['boardBadFirmwareTitle'],
+	    message: MSG['boardBadFirmware'],
+		buttons: {
+		    success: {
+		      label: MSG['recover'],
+		      className: "btn-primary",
+		      callback: function() {
+				  setTimeout(function() {Code.boardRecover();},500);
+			  }
+		    },
+		    danger: {
+		      label: MSG['cancel'],
+		      className: "btn-danger",
+		      callback: function() {
+				  Board.init(0);
+		      }
+		    },
+		},
+		closable: false
+	});	
 }
 
 Code.boardInBootloaderMode = function(callback) {

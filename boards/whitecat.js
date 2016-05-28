@@ -40,7 +40,9 @@ Whitecat.ERR_INVALID_RESPONSE = -2;
 Whitecat.ERR_CONNECTION_ERROR = -4;
 
 Whitecat.inDetect = false;
+Whitecat.inRecover = false;
 Whitecat.detectInterval = null;
+Whitecat.detectRetries = 0;
 
 Whitecat.currentPort = function() {
 	for (var i = 0; i < Whitecat.ports.length; i++) {
@@ -559,7 +561,7 @@ Whitecat.isRunning = function(port, success, error) {
 };
 
 Whitecat.getStatus = function(port, success, error) {
-	Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();cpu = os.cpu();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\",\\"cpu\\":\\""..cpu.."\\"}");end;', 1000,
+	Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();local cpu = os.cpu();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\",\\"cpu\\":\\""..cpu.."\\"}");end;', 1000,
 		function(resp) {
 			try {
 				resp = JSON.parse(resp);
@@ -633,15 +635,19 @@ Whitecat.detect = function() {
 	// Phase 0: nothing has tested on this port, test for LuaOS
 	// Phase 1: test for LuaOS failed, test for bootloader
 	// Phase 2: test for bootloader success
-	// Phase 3: test only for LuaOS
+	// Phase 3: test for bootloader failed, bad firmware
 	// Phase 4: test for LuaOS success
-	// Phase 5: rebooting
+	// Phase 5: test only for LuaOS
+	// Phase 6: recover
+	// Phase 7: rebooting
 	function testPort(port) {
 		if (port.phase == 0) {
 			testLuaOS(port, function(connected) {
 				if (connected) {
 					port.phase = 4;
-					Code.boardConnected();
+					if (Whitecat.ports[port].phase != 6) {
+						Code.boardConnected();
+					}
 					Whitecat.inDetect = false;
 					return;
 				} else {
@@ -663,7 +669,7 @@ Whitecat.detect = function() {
 					Whitecat.inDetect = false;
 					return;
 				} else {
-					port.phase = 3;
+					port.phase = 5;
 					Whitecat.inDetect = false;
 					return;
 				}
@@ -671,21 +677,44 @@ Whitecat.detect = function() {
 		}
 				
 		if (port.phase == 3) {
-			testLuaOS(port, function(connected) {
+			Code.boardBadFirmware();
+		}
+
+		if (port.phase == 4) {
+			Whitecat.inDetect = false;
+		}
+
+		if (port.phase == 5) {
+			Whitecat.detectRetries++;
+			if (Whitecat.detectRetries > 5) {
+				port.phase = 3;
+				Whitecat.inDetect = false;
+				return;
+			} else {
+				testLuaOS(port, function(connected) {
+					if (connected) {
+						port.phase = 4;
+						Code.boardConnected();
+						Whitecat.inDetect = false;
+						return;
+					} else {
+						Whitecat.inDetect = false;
+						return;
+					}
+				});				
+			}
+		}
+
+		if (port.phase == 6) {
+			testBootloader(port, function(connected) {
 				if (connected) {
-					port.phase = 4;
-					Code.boardConnected();
-					Whitecat.inDetect = false;
+					Code.boardInBootloaderMode();
 					return;
 				} else {
 					Whitecat.inDetect = false;
 					return;
 				}
 			});
-		}
-
-		if (port.phase == 4) {
-			Whitecat.inDetect = false;
 		}
 	}
 	
@@ -730,8 +759,12 @@ Whitecat.detect = function() {
 			for(port = 0;port < Whitecat.ports.length;port++) {
 				// Port is for delete, inform the UI
 				if (Whitecat.ports[port].forDelete) {
-					Whitecat.ports.splice(port, 1);
-					Code.boardDisconnected();
+					if (Whitecat.ports[port].phase != 6) {
+						Whitecat.ports.splice(port, 1);
+						Code.boardDisconnected();
+					} else {
+						Whitecat.ports.splice(port, 1);
+					}
 				}
 			}	
 			
@@ -741,6 +774,10 @@ Whitecat.detect = function() {
 				if (Whitecat.ports[0].forTest) {
 					if (Whitecat.ports[0].connId == null) {
 						chrome.serial.connect(Whitecat.ports[0].path, {bitrate: 115200, bufferSize: 4096}, function(connectionInfo) {
+							if (Whitecat.inRecover) {
+								Whitecat.ports[0].phase = 6;
+							}
+							
 							// Store connection id and name of port
 							Whitecat.ports[0].connId = connectionInfo.connectionId;
 						
@@ -762,6 +799,7 @@ Whitecat.detect = function() {
 // configuration
 Whitecat.init = function(phase) {
 	Whitecat.inDetect = false;
+	Whitecat.detectRetries = 0;
 	
 	clearInterval(Whitecat.detectInterval);
 	
@@ -769,9 +807,16 @@ Whitecat.init = function(phase) {
 		Whitecat.ports[port].phase = phase;
 	}
 	
+	Whitecat.inRecover = (phase == 6);
+	
+	var timeout = 500;
+	if (Whitecat.inRecover) {
+		timeout = 100;
+	}
+	
 	Whitecat.detectInterval = setInterval(function(){
 		Whitecat.detect();
-	}, 500);
+	}, timeout);
 };
 
 // Run current generated code to the whitecat
@@ -940,4 +985,3 @@ Whitecat.checkForNewFirmwareAvailability = function(port, success, error) {
 		}
 	);
 }
-	

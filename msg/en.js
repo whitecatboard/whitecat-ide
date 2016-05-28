@@ -45,4 +45,13 @@ var MSG = {
   rebooting: 'Rebooting ...',
   newFirmware: 'A new firmware version is availanle for your board. Do you want to upgrade?',
   firmwareNoNewVersion: 'No new version available. Your board is up to date.',
+  boardBadFirmwareTitle: 'Bad firmware',
+  boardBadFirmware: 'It seems that your board has not a valid firmware, or firmware is corrupted.<br><br>' +
+					'If you want to try to recover your board, follow this instructions:<br><br>' +
+					'1) Click on the recover button<br>' +
+		 		    '2) Unplug your board and plug again in the next 20 seconds<br><br>' +
+					'Do you want to try to recover your board?.',
+  recover: 'Recover',
+  cancel: 'Cancel',
+  recovering: 'Recovering ...'
 };
