@@ -583,8 +583,17 @@ Whitecat.getStatus = function(port, success, error) {
 
 // Try to detect a Whitecat connected to serial port
 Whitecat.detect = function() {
-	var patt = /tty\.SLAB_USBtoUART/g;
+	var pathPattern;
+	var displayNamePattern;
 	var timeoutTestBootloader;
+
+	if (window.navigator.platform == 'MacIntel') {
+		pathPattern = /tty\.SLAB_USBtoUART/;
+		displayNamePattern = /.*USB to UART.*/;
+	} else if (window.navigator.platform == 'Win32') {
+		pathPattern = /COM\d+/;
+		displayNamePattern = /.*USB to UART.*/;
+	}
 	
 	if (Whitecat.inDetect) return;
 	Whitecat.inDetect = true;
@@ -688,23 +697,29 @@ Whitecat.detect = function() {
 		
 		// Process all ports and update previous ports with changes
 		for(port = 0;port < ports.length;port++) {
-			if (patt.test(ports[port].path)) {
-				// This port matches, and may be connected to a whitecat
-				if (Whitecat.port.isNew(ports[port].path)) {
-					// Port is new
-					// Probably user has plug something once pluging is started
-					Whitecat.port.add(ports[port].path);
-				} else {
-					// Port is not new
-					// If is not connected 2 things may happend: board is not respond to commands
-					// or board is in bootloader mode
-					if (!Whitecat.port.isConnected(ports[port].path)) {
-						Whitecat.port.addTestMark(ports[port].path);
-					}
-					
-					// Remove delete mark
-					Whitecat.port.removeDeleteMark(ports[port].path);
+			if (pathPattern.test(ports[port].path)) {
+				if (!displayNamePattern.test(ports[port].displayName)) {
+					continue;
 				}
+			} else {
+				continue;
+			}
+
+			// This port matches, and may be connected to a whitecat
+			if (Whitecat.port.isNew(ports[port].path)) {
+				// Port is new
+				// Probably user has plug something once pluging is started
+				Whitecat.port.add(ports[port].path);
+			} else {
+				// Port is not new
+				// If is not connected 2 things may happend: board is not respond to commands
+				// or board is in bootloader mode
+				if (!Whitecat.port.isConnected(ports[port].path)) {
+					Whitecat.port.addTestMark(ports[port].path);
+				}
+				
+				// Remove delete mark
+				Whitecat.port.removeDeleteMark(ports[port].path);
 			}
 		}
 		
