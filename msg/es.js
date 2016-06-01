@@ -33,7 +33,7 @@ var MSG = {
   sendingCode: "Enviando código ...",
   retrievingDirectory: "Obteniendo directorio ...",
   downloadingFile: "Descargando archivo",
-  DELETE_EDIT_CODE: "¿Quieres borrar el código que tienes actualmente en el editor?",
+  DELETE_EDIT_CODE: "¿Quieres borrar el código que estas editando actualmente?",
   catIODigital: 'Digital',
   catIOAnalog: 'Analógico',
   catIOPwm: 'PWM',

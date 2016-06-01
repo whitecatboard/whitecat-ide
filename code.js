@@ -552,7 +552,7 @@ Code.initLanguage = function() {
 };
 
 Code.discard = function() {
-	if (Code.selected == 'blocks') {
+	if (Code.mode == 'blocks') {
 	    var count = Code.workspace.getAllBlocks().length;
   
 	    if (count > 0) {
@@ -563,7 +563,7 @@ Code.discard = function() {
 	  		  }
 	  	  }); 	  
 	    }		
-	} else if (Code.selected == 'editor') {
+	} else if (Code.mode == 'editor') {
   	  bootbox.confirm(MSG['DELETE_EDIT_CODE'], 
   	  function(result) {
   		  if (result) {
@@ -656,6 +656,10 @@ Code.reboot = function() {
 
 Code.save = function() {
 	function saveToFile(fileEntry) {
+		if(chrome.runtime.lastError) {
+			return;
+		}
+
 		fileEntry.createWriter(function(fileWriter) {
 		      var truncated = false;
 		      var blob = new Blob([Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Code.workspace))]);

@@ -350,3 +350,7 @@ body.modal-open .modal .modal-dialog {
 	width: 100px;
 	position: absolute;	
 }
+
+.btn-toolbar {
+	min-height: 38px;
+}
