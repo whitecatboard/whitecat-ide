@@ -42,7 +42,6 @@ Whitecat.ERR_CONNECTION_ERROR = -4;
 Whitecat.inDetect = false;
 Whitecat.inRecover = false;
 Whitecat.detectInterval = null;
-Whitecat.detectRetries = 0;
 
 Whitecat.currentPort = function() {
 	for (var i = 0; i < Whitecat.ports.length; i++) {
@@ -56,7 +55,7 @@ Whitecat.currentPort = function() {
 
 Whitecat.isConnected = function() {
 	for (var i = 0; i < Whitecat.ports.length; i++) {
-		if ((Whitecat.ports[i].connId != null) && (Whitecat.ports[i].phase == 4)) {
+		if ((Whitecat.ports[i].connId != null) && (Whitecat.ports[i].state == Whitecat.CONNECTED_STATE)) {
 			return true;
 		}
 	}
@@ -88,7 +87,7 @@ Whitecat.port.isConnected = function(path) {
 }
 
 Whitecat.port.add = function(path) {
-	Whitecat.ports.push({path: path, connId: null, forTest: true, forDelete: false, phase: 0});
+	Whitecat.ports.push({path: path, connId: null, forTest: true, forDelete: false, state: Whitecat.BOOTING_STATE});
 }
 
 Whitecat.port.addTestMark = function(path) {
@@ -521,14 +520,70 @@ Whitecat.stop = function(port, success, error) {
 	});
 };
 
+// Detects if white is booting
+Whitecat.isBooting = function(port, success, error) {
+	var currentReceived = "";
+	var currentTimeOut;
+	var currentInterval;
+	
+	function timeout() {
+		clearInterval(currentInterval);
+		chrome.serial.onReceive.removeListener(isBootingListener);
+		error(false);
+	}
+
+	function isBootingListener(info) {
+	    if (info.connectionId == port.connId && info.data) {
+			var str = Whitecat.ab2str(info.data);
+			for(var i = 0; i < str.length; i++) {
+				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
+					if (currentReceived == "LuaOS-booting") {
+						clearInterval(currentInterval);
+						clearTimeout(currentTimeOut);
+						chrome.serial.onReceive.removeListener(isBootingListener);
+						success(true);	
+						break;				
+					} else if (currentReceived == "LuaOS-running") {
+						clearInterval(currentInterval);
+						clearTimeout(currentTimeOut);
+						chrome.serial.onReceive.removeListener(isBootingListener);
+						success(false);		
+						break;			
+					}
+					
+					currentReceived = "";
+				} else {
+					currentReceived = currentReceived + str.charAt(i);	
+				}
+			}		
+		}		
+	}
+	
+	// Set a timeout
+	currentTimeOut = setTimeout(function(){
+		timeout();
+	}, 5500);
+
+	// Send a Ctrl-D for test if LuaOS is booting
+	chrome.serial.onReceive.addListener(isBootingListener);
+	chrome.serial.flush(port.connId, function(result) {
+		currentInterval = setInterval(function() {
+			chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
+			});					
+		}, 1);
+	});
+};
+
 // Detects if white is running
 Whitecat.isRunning = function(port, success, error) {
 	var currentReceived = "";
 	var currentTimeOut;
+	var currentInterval;
 	
 	function timeout() {
+		clearInterval(currentInterval);
 		chrome.serial.onReceive.removeListener(isRunningListener);
-		error(Whitecat.ERR_TIMEOUT);
+		timeout(error);
 	}
 
 	function isRunningListener(info) {
@@ -536,27 +591,42 @@ Whitecat.isRunning = function(port, success, error) {
 			var str = Whitecat.ab2str(info.data);
 
 			for(var i = 0; i < str.length; i++) {
-				currentReceived = currentReceived + str.charAt(i);	
-
-				if (currentReceived == "LuaOS") {
-					clearTimeout(currentTimeOut);
-					chrome.serial.onReceive.removeListener(isRunningListener);
-					success();					
+				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
+					if (currentReceived == "LuaOS-booting") {
+						clearInterval(currentInterval);
+						clearTimeout(currentTimeOut);
+						chrome.serial.onReceive.removeListener(isRunningListener);
+						success(false);		
+						break;			
+					} else if (currentReceived == "LuaOS-running") {
+						clearInterval(currentInterval);
+						clearTimeout(currentTimeOut);
+						chrome.serial.onReceive.removeListener(isRunningListener);
+						success(true);	
+						break;				
+					}
+					
+					currentReceived = "";
+				} else {
+					currentReceived = currentReceived + str.charAt(i);	
 				}
 			}		
 		}		
 	}
 	
+	// Set a timeout
+	currentTimeOut = setTimeout(function(){
+		timeout();
+	}, 1500);
+
 	// Send a Ctrl-D for test if LuaOS is running
-	chrome.serial.flush(port.connId, function(info) {
-		chrome.serial.onReceive.addListener(isRunningListener);
-		
-		chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
-			// Set a timeout
-			currentTimeOut = setTimeout(function(){
-				timeout();
-			}, 500);
-		});			
+	chrome.serial.onReceive.addListener(isRunningListener);
+
+	chrome.serial.flush(port.connId, function(result) {
+		currentInterval = setInterval(function() {
+			chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
+			});					
+		}, 1);
 	});
 };
 
@@ -584,6 +654,25 @@ Whitecat.getStatus = function(port, success, error) {
 }
 
 // Try to detect a Whitecat connected to serial port
+//
+// When a whitecat is connect through an USB cord to the desktop:
+//
+// * During the first 2 seconds bootloader is executed
+// * Then, if a firmware is present jumps to the first instruction
+// * Then, LuaOS boots, at this point the board response with a
+//   LuaOS-booting during the boot process to a Ctlr-D char received
+//   through the console, and with a LuaOS-running when LuaOS is ready for
+//   response to commands.
+
+Whitecat.BOOTING_INTERVAL = 1;
+
+Whitecat.BOOTLOADER_STATE = 1;
+Whitecat.BOOTING_STATE    = 2;
+Whitecat.RUNNING_STATE    = 3;
+Whitecat.CONNECTED_STATE  = 4;
+Whitecat.BAD_STATE        = 5;
+Whitecat.RECOVER_STATE    = 6;
+
 Whitecat.detect = function() {
 	var pathPattern;
 	var displayNamePattern;
@@ -600,121 +689,72 @@ Whitecat.detect = function() {
 	if (Whitecat.inDetect) return;
 	Whitecat.inDetect = true;
 	
-	function testBootloader(port, callback) {
-		stk500.detect(port, function(detected) {
-			if (detected) {
-				callback(true);
-			} else {
-				callback(false);
-			}
-		});	
-	}
-		
-	function testLuaOS(port, callback) {
-		Whitecat.isRunning(
-			port,
-			function() {
-				Whitecat.getStatus(
-					port,
-					function() {
-						callback(true);
-					},
-					function() {
-						callback(false);						
-					}
-				);
-				},
-			function(error) {
-				callback(false);
-			}			
-		);
-	}
-
-	// Test on port has the following phases
-	//
-	// Phase 0: nothing has tested on this port, test for LuaOS
-	// Phase 1: test for LuaOS failed, test for bootloader
-	// Phase 2: test for bootloader success
-	// Phase 3: test for bootloader failed, bad firmware
-	// Phase 4: test for LuaOS success
-	// Phase 5: test only for LuaOS
-	// Phase 6: recover
-	// Phase 7: rebooting
 	function testPort(port) {
-		if (port.phase == 0) {
-			testLuaOS(port, function(connected) {
-				if (connected) {
-					port.phase = 4;
-					if (Whitecat.ports[port].phase != 6) {
-						Code.boardConnected();
+		if (port.state == Whitecat.PREBOOTING_STATE) {
+			Whitecat.inDetect = false;
+		} else if (port.state == Whitecat.BOOTLOADER_STATE) {
+			stk500.detect(port, function(detected) {
+				if (detected) {
+					port.state = Whitecat.BAD_STATE;
+					Code.boardInBootloaderMode();
+				} else {
+					port.state = Whitecat.BAD_STATE;
+					Code.boardBadFirmware();
+				}
+				Whitecat.inDetect = false;
+			});	
+		} else if (port.state == Whitecat.BOOTING_STATE) {
+			Whitecat.isBooting(port,
+				function(booting) {
+					if (booting) {
+						port.state = Whitecat.RUNNING_STATE;
+					} else {
+						port.state = Whitecat.RUNNING_STATE;
 					}
 					Whitecat.inDetect = false;
-					return;
-				} else {
-					setTimeout(function(){
-						port.phase = 1;
-						Whitecat.inDetect = false;
-					}, 2000);
-					return;
-				}
-			});
-		}
-		
-		if (port.phase == 1) {
-			testBootloader(port, function(connected) {
-				if (connected) {
-					port.phase = 2;
-					
-					Code.boardInBootloaderMode();
+				},
+				function() {
+					// Time out
+					port.state = Whitecat.BOOTLOADER_STATE
 					Whitecat.inDetect = false;
-					return;
-				} else {
-					port.phase = 5;
-					Whitecat.inDetect = false;
-					return;
 				}
-			});
-		}
-				
-		if (port.phase == 3) {
-			Code.boardBadFirmware();
-		}
-
-		if (port.phase == 4) {
-			Whitecat.inDetect = false;
-		}
-
-		if (port.phase == 5) {
-			Whitecat.detectRetries++;
-			if (Whitecat.detectRetries > 5) {
-				port.phase = 3;
-				Whitecat.inDetect = false;
-				return;
-			} else {
-				testLuaOS(port, function(connected) {
-					if (connected) {
-						port.phase = 4;
-						Code.boardConnected();
-						Whitecat.inDetect = false;
-						return;
+			);
+		} else if (port.state == Whitecat.RUNNING_STATE) {
+			Whitecat.isRunning(port,
+				function(running) {
+					if (running) {
+						Whitecat.getStatus(
+							port,
+							function() {
+								port.state = Whitecat.CONNECTED_STATE;
+								Code.boardConnected();
+								Whitecat.inDetect = false;
+							},
+							function() {
+								port.state = Whitecat.CONNECTED_STATE;
+								Code.boardConnected();
+								Whitecat.inDetect = false;
+							}
+						);	
 					} else {
 						Whitecat.inDetect = false;
-						return;
 					}
-				});				
-			}
-		}
-
-		if (port.phase == 6) {
-			testBootloader(port, function(connected) {
-				if (connected) {
-					Code.boardInBootloaderMode();
-					return;
+				},
+				function() {
+					port.state = Whitecat.BOOTLOADER_STATE
+					Whitecat.inDetect = false;
+				}
+			);
+		} else if (port.state == Whitecat.RECOVER_STATE) {
+			stk500.detect(port, function(detected) {
+				if (detected) {
+					Code.boardRecover();
 				} else {
 					Whitecat.inDetect = false;
-					return;
 				}
-			});
+			});	
+		} else {
+			Whitecat.inDetect = false;
 		}
 	}
 	
@@ -759,7 +799,10 @@ Whitecat.detect = function() {
 			for(port = 0;port < Whitecat.ports.length;port++) {
 				// Port is for delete, inform the UI
 				if (Whitecat.ports[port].forDelete) {
-					if (Whitecat.ports[port].phase != 6) {
+					if (Whitecat.ports[port].state != Whitecat.RECOVER_STATE) {
+						if (Whitecat.ports[port].state == Whitecat.BAD_STATE) {
+							bootbox.hideAll();
+						}
 						Whitecat.ports.splice(port, 1);
 						Code.boardDisconnected();
 					} else {
@@ -775,7 +818,7 @@ Whitecat.detect = function() {
 					if (Whitecat.ports[0].connId == null) {
 						chrome.serial.connect(Whitecat.ports[0].path, {bitrate: 115200, bufferSize: 4096}, function(connectionInfo) {
 							if (Whitecat.inRecover) {
-								Whitecat.ports[0].phase = 6;
+								Whitecat.ports[0].state = 6;
 							}
 							
 							// Store connection id and name of port
@@ -797,26 +840,22 @@ Whitecat.detect = function() {
 
 // Init the whitecat, connecting to a serial port matching with the expected
 // configuration
-Whitecat.init = function(phase) {
+Whitecat.init = function(state) {
 	Whitecat.inDetect = false;
-	Whitecat.detectRetries = 0;
-	
+	if (typeof state == 'undefined') {
+		state = Whitecat.BOOTING_STATE;
+	}
 	clearInterval(Whitecat.detectInterval);
 	
 	for(var port = 0;port < Whitecat.ports.length;port++) {
-		Whitecat.ports[port].phase = phase;
+		Whitecat.ports[port].state = state;
 	}
 	
-	Whitecat.inRecover = (phase == 6);
-	
-	var timeout = 500;
-	if (Whitecat.inRecover) {
-		timeout = 100;
-	}
+	Whitecat.inRecover = (state == 6);
 	
 	Whitecat.detectInterval = setInterval(function(){
 		Whitecat.detect();
-	}, timeout);
+	}, 100);
 };
 
 // Run current generated code to the whitecat
@@ -854,7 +893,7 @@ Whitecat.run = function(port, file, code, success, fail) {
 
 // List a directory from the whitecat, and return an array of entries
 Whitecat.listDirectory = function(port, name, success, error) {
-	Whitecat.sendCommand(port, "os.ls('" + name + "')", 4000, 
+	Whitecat.sendCommand(port, "os.ls('" + name + "')", 10000, 
 		function(resp) {
 			var entries = [];
 
@@ -891,12 +930,10 @@ Whitecat.upgradeFirmware = function(port, code, callback) {
 	});
 }
 
-Whitecat.reboot = function(port, success, error) {
-	port.phase = 5;
-
+Whitecat.reboot = function(port, callback) {
 	chrome.serial.send(port.connId,  Whitecat.str2ab("\r\nos.exit()\r\n"), function() {	
-		success();
-		Whitecat.init(0);
+		Whitecat.init(Whitecat.BOOTING_STATE);
+		callback();
 	});	
 }
 

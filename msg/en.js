@@ -53,5 +53,10 @@ var MSG = {
 					'Do you want to try to recover your board?.',
   recover: 'Recover',
   cancel: 'Cancel',
-  recovering: 'Recovering ...'
+  recovering: 'Recovering ...',
+  warning: "Warning",
+  switchToBlocksWarning: "You have changes on your Lua code. Switch to blocks from Lua is nor currently implemented. All Lua code changes will lost. Continue?.",
+  yes: 'Yes',
+  no: 'No', 
+  waitingForBoard: 'Waiting for board ...',
 };

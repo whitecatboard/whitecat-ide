@@ -4999,3 +4999,26 @@ p {
 .icon-IcoMoon:before {
 	content: "\ef46";
 }
+
+@keyframes anim-rotate {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.spinner {
+	display: inline-block;
+	font-size:20px;
+	animation: anim-rotate 2s infinite linear;
+	color: #66;
+	text-shadow: 0 0 .25em rgba(255,255,255, .3);
+}
+
+spinner--steps {
+	animation: anim-rotate 1s infinite steps(8);
+}
+.spinner--steps2 {
+	animation: anim-rotate 1s infinite steps(12);
+}

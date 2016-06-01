@@ -31,22 +31,16 @@
   <script src="generators/lua/threads.js"></script>
 </head>
 <body>
-  <table width="100%" height="100%">
-    <tr>
-      <td>
-		  <img src="media/whitecat.png" style="margin-bottom: 5px;"/>
-      </td>
-      <td class="farSide">
-        <select id="languageMenu"></select>
-      </td>
-    </tr>
+  <img id="logo" src="media/whitecat.png"/>
+  <select id="languageMenu"></select>
+  
+  <table width="100%" height="100%" style="margin-top: 25px;">
     <tr>
       <td colspan=2>
 		  <div>
 			  <ul class="nav nav-tabs" role="tablist">
-			    <li role="presentation" class="disabled"><a id="tab_board" role="tab" data-toggle="tab">...</a></li>
-			    <li role="presentation" class="active"><a id="tab_blocks" role="tab" data-toggle="tab">...</a></li>
-			    <li role="presentation"><a id="tab_editor" role="tab" data-toggle="tab">...</a></li>
+			    <li role="presentation"><a id="tab_board" role="tab" data-toggle="tab">...</a></li>
+			    <li role="presentation"><a id="tab_program" role="tab" data-toggle="tab">...</a></li>
 			  </ul>		 
 		  <div>
 		  <div class="btn-toolbar" role="toolbar" style="background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);"> 
@@ -54,8 +48,11 @@
   			  <button id="trashButton" type="button" class="btn btn-default" aria-label="Left Align">
   			    <span class="icon icon-bin" aria-hidden="true"></span>
   			  </button>
-  			  <button id="linkWorkspaces" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-link" aria-hidden="true"></span>
+  			  <button id="switchToBlocks" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-puzzle" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="switchToCode" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-code" aria-hidden="true"></span>
   			  </button>
   			  <button id="loadButton" type="button" class="btn btn-default" aria-label="Left Align">
   			    <span class="icon icon-folder-open" aria-hidden="true"></span>
@@ -82,42 +79,34 @@
     </tr>
   </table>
   <div id="content_board" class="content">
-  	<div class="container">			
-  		<div class="row">
-  			<div class="col-md-6 margin-bottom-30">
-  				<div class="portlet">
-  					<div class="portlet-title">
-  						<div class="caption">
-  							<i class="icon icon-file-stats"></i>
-  							<span class="caption-subject"> File System</span>
-  						</div>
-  					</div>
-  					<div class="portlet-body">
-					  	<div id="filesystem"></div>
-  					</div>
-  				</div>
-  			</div>
-
-  			<div class="col-md-6 margin-bottom-30">
-  				<div class="portlet">
-  					<div class="portlet-title">
-  						<div class="caption">
-  							<i class="icon icon-chip"></i>
-  							<span class="caption-subject"> Status</span>
-  						</div>
-  					</div>
-  					<div class="portlet-body">
-					  	<div id="boardStatus"></div>
-  					</div>
-  				</div>
-  			</div>
-  		</div>
+	<div class="portlet">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="icon icon-file-stats"></i>
+				<span class="caption-subject"> File System</span>
+			</div>
+		</div>
+		<div class="portlet-body">
+		  	<div id="filesystem" style="position: relative; left: -25px;"></div>
+		</div>
+	</div>
+	<div class="portlet">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="icon icon-chip"></i>
+				<span class="caption-subject"> Status</span>	
+			</div>
+		</div>
+		<div class="portlet-body">
+		  	<div id="boardStatus">
+		  	</div>
+		</div>
 	</div>
   </div>
-  <div id="content_blocks" class="content"></div>
-  <pre id="content_lua" class="content"></pre>
-  <textarea id="content_xml" class="content" wrap="off"></textarea>
-  <div id="content_editor" class="content"></div>
+  <div id="content_program">
+	  <div id="content_blocks" class="content"></div>
+  	  <div id="content_editor" class="content"></div>
+  </div>
   <xml id="toolbox" style="display: none">
     <category id="catIO" colour="20">
 		<category id="catIODigital">

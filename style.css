@@ -225,17 +225,28 @@ button {
 #content_board .dir-entry {
     margin: 0px 0px 0px 0px !important; 
 	list-style: none;
+	font-size: 15px;
+}
+
+#content_board .dir-entry .icon {
+	font-size: 15px !important;
+}
+
+#content_board .dir-entry .status {
+	margin-right: 5px;
+}
+
+#content_board .dir-entry .waiting {
+	margin-right: 5px;
 }
 
 #content_board .dir-entry-d {
 	padding-left: 25px;
-	background: url(media/folder-close.png) no-repeat top left;
 	cursor: pointer;
 }
 
 #content_board .dir-entry-f {
 	padding-left: 25px;
-	background: url(media/file-empty.png) no-repeat top left;
 	cursor: pointer;
 }
 
@@ -254,8 +265,10 @@ body.modal-open .modal .modal-dialog {
 
 /* Portlet */
 .portlet {
-	background: #fff;
-	padding: 20px;
+    background: #fff;
+    float: left;
+    margin-left: 20px;
+    min-width: 300px;
 }
 
 .portlet.portlet-gray {
@@ -324,4 +337,16 @@ body.modal-open .modal .modal-dialog {
 	color: #9eacb4;
 	font-size: 13px;
 	font-weight: 400;
+}
+
+.waitingForBoard {
+	vertical-align: middle;
+}
+
+.logo {
+}
+
+#logo img {
+	width: 100px;
+	position: absolute;	
 }

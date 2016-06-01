@@ -45,4 +45,9 @@ var MSG = {
   rebooting: 'Rebooting ...',
   newFirmware: 'A new firmware version is availanle for your board. Do you want to upgrade?',
   firmwareNoNewVersion: 'No new version available. Your board is up to date.',
+  warning: "Warning",
+  switchToBlocksWarning: "You have changes on your Lua code. Switch to blocks from Lua is nor currently implemented. All Lua code changes will lost. Continue?.",
+  yes: 'Yes',
+  no: 'No', 
+  waitingForBoard: 'Waiting for board ...',
 };

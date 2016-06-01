@@ -30,8 +30,8 @@ var editor;
  */
 var Code = {};
 
-Code.linked = false;
 Code.progressDialog = false;
+Code.mode = "blocks";
 
 Code.boardCurrentFile = {
 	path: '',
@@ -234,73 +234,57 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'editor', 'board'];
+Code.TABS_ = ['board', 'program'];
 
-Code.selected = 'blocks';
+Code.selected = 'board';
 
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} clickedName Name of tab clicked.
  */
 Code.tabClick = function(clickedName) {	
-  var luaCode = editor.getValue();
-	
-  if (document.getElementById('tab_blocks').className == 'tabon') {
-    Code.workspace.setVisible(false);
+ // var luaCode = editor.getValue();
+
+  if (document.getElementById('tab_program').className == 'tabon') {
+  	jQuery("#content_editor").css('visibility', 'hidden');
+	jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
+	jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
+	jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
+	jQuery("#content_blocks").css('visibility', 'hidden');
+	    
+	Code.workspace.setVisible(false);		
   }
+
   // Deselect all tabs and hide all panes.
   for (var i = 0; i < Code.TABS_.length; i++) {
     var name = Code.TABS_[i];
     document.getElementById('tab_' + name).className = 'taboff';
-    document.getElementById('content_' + name).style.visibility = 'hidden';
+	
+	jQuery("#" + 'content_' + name).css('visibility', 'hidden');	
   }
 
   // Select the active tab.
   Code.selected = clickedName;
   document.getElementById('tab_' + clickedName).className = 'tabon';
+  
   // Show the selected pane.
-  document.getElementById('content_' + clickedName).style.visibility =
-      'visible';
+  jQuery("#" + 'content_' + clickedName).css('visibility', 'visible');	
 	  
+  if (Code.mode == 'blocks') {
+	  jQuery("#tab_program").text(MSG['blocks']);
+  } else {
+	  jQuery("#tab_program").text(MSG['editor']);
+  }
+ 
   Code.renderContent();
   
-  if (clickedName == 'blocks') {
-    Code.workspace.setVisible(true);
-	
-	if (Code.linked) {
-		var xml = '';
-		var code = '';
-	
-		Code.workspace.clear();
-	
-		xml = LuaToBlocks.convert(luaCode);
-
-	    xml = Blockly.Xml.textToDom(xml);
-	    Blockly.Xml.domToWorkspace(xml, Code.workspace);
-	
-		Code.workspaceRefresh();
-	}
-  }
-
-  if (clickedName == 'board') {
-	  Code.boardCurrentFile.path = '';
-	  Code.boardCurrentFile.file = '';
-	  
-	  jQuery("#filesystem").append(jQuery('<i class="icon-upload icon-large">'));
-
-	  Code.listBoardDirectory();
-	  Code.updateStatus();
-  }
-
-  jQuery("#tab_blocks").text(MSG['blocks'] + ' ' + Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file);
-  jQuery("#tab_editor").text(MSG['editor'] + ' ' + Code.editorCurrentFile.path + '/' + Code.editorCurrentFile.file);
+  //jQuery("#tab_blocks").text(MSG['blocks'] + ' ' + Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file);
+  //jQuery("#tab_editor").text(MSG['editor'] + ' ' + Code.editorCurrentFile.path + '/' + Code.editorCurrentFile.file);
   jQuery("#tab_board").text(MSG['board']);
   
   jQuery("#" + 'tab_' + clickedName).trigger('click');
   
   Blockly.fireUiEvent(window, 'resize');
-  
-  Code.tabRefresh();
 };
 
 /**
@@ -309,6 +293,55 @@ Code.tabClick = function(clickedName) {
 Code.renderContent = function() {
   var content = document.getElementById('content_' + Code.selected);
   
+  Code.tabRefresh();
+    
+  if (Code.selected == 'board') {
+  	  Code.boardCurrentFile.path = '';
+  	  Code.boardCurrentFile.file = '';
+	  
+//  	  jQuery("#filesystem").append(jQuery('<i class="icon-upload icon-large">'));
+
+	  jQuery("#content_editor").css('visibility', 'hidden');
+	  jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
+	  jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
+	  jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
+	  jQuery("#content_blocks").css('visibility', 'hidden');
+  
+  	  Code.listBoardDirectory();
+  	  Code.updateStatus();
+  } else if (Code.selected == 'program') {
+  	if (Code.mode == 'blocks') {
+		jQuery("#content_editor").css('visibility', 'hidden');
+		jQuery(".blocklyWidgetDiv").css('visibility', 'visible');
+		jQuery(".blocklyTooltipDiv").css('visibility', 'visible');
+		jQuery(".blocklyToolboxDiv").css('visibility', 'visible');
+		jQuery("#content_blocks").css('visibility', 'visible');
+
+  		Code.workspace.setVisible(true);
+		Code.workspaceRefresh();
+  //	
+    //	  	if (Code.linked) {
+    	//  		var xml = '';
+    	//  		var code = '';
+	
+    	  //		Code.workspace.clear();
+	
+    	  	//	xml = LuaToBlocks.convert(luaCode);
+
+    	  //	    xml = Blockly.Xml.textToDom(xml);
+    	 // 	    Blockly.Xml.domToWorkspace(xml, Code.workspace);
+  	//
+    	  //		Code.workspaceRefresh();
+    	 // 	}
+  	} else {
+		jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
+		jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
+		jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
+		jQuery("#content_blocks").css('visibility', 'hidden');
+		jQuery("#content_editor").css('visibility', 'visible');
+  	}	
+  }
+
   // Initialize the pane.
   //if (content.id == 'content_editor') {
   //  var code = Blockly.Lua.workspaceToCode(Code.workspace);
@@ -322,24 +355,10 @@ Code.renderContent = function() {
   //}  
   
   Code.workspaceRefresh();
+  
+  Blockly.fireUiEvent(window, 'resize');
 };
 
-function termHandler() {
-     this.newLine();
-     var line = this.lineBuffer;
-     if (line != "") {
-		 Board.sendCommand(line,
-			 function() {
-			 	
-			 },
-			 function() {
-			 	
-			 }
-		 );
-     }
-     this.prompt();
-  }
-  
 /**
  * Initialize Blockly.  Called on page load.
  */
@@ -355,7 +374,25 @@ Code.init = function() {
   var onresize = function(e) {
     var bBox = Code.getBBox_(container);
     for (var i = 0; i < Code.TABS_.length; i++) {
-      var el = document.getElementById('content_' + Code.TABS_[i]);
+	  var el;
+	  if (Code.TABS_[i] == 'program') {
+		  if (Code.mode == 'blocks') {
+		  	el = document.getElementById('content_blocks');
+		  } else {
+	  	  	el = document.getElementById('content_editor');	  	
+		  }	  	
+
+	      el.style.top = bBox.y + 'px';
+	      el.style.left = bBox.x + 'px';
+	      // Height and width need to be set, read back, then set again to
+	      // compensate for scrollbars.
+	      el.style.height = bBox.height + 'px';
+	      el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
+	      el.style.width = bBox.width + 'px';
+	      el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+	  }
+      
+	  el = document.getElementById('content_' + Code.TABS_[i]);
       el.style.top = bBox.y + 'px';
       el.style.left = bBox.x + 'px';
       // Height and width need to be set, read back, then set again to
@@ -364,6 +401,18 @@ Code.init = function() {
       el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
       el.style.width = bBox.width + 'px';
       el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+	  
+	  el = document.getElementById('logo');
+	  el.style.position = 'absolute';
+	  el.style.width = '100px';
+	  el.style.top = 5 + 'px';
+	  el.style.left = (bBox.width - bBox.x - 110) + 'px';	  	  	
+
+	  el = document.getElementById('languageMenu');
+	  el.style.position = 'absolute';
+	  el.style.width = '100px';
+	  el.style.top = (bBox.y - 42) + 'px';
+	  el.style.left = (bBox.width - bBox.x - 110) + 'px';	  	  	
     }
     // Make the 'Blocks' tab line up with the toolbox.
     //if (Code.workspace && Code.workspace.toolbox_.width) {
@@ -412,22 +461,19 @@ Code.init = function() {
 
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
-	  Code.bindClick('linkWorkspaces', Code.linkWorkspaces);
+	  Code.bindClick('switchToCode', Code.switchToCode);
+	  Code.bindClick('switchToBlocks', Code.switchToBlocks);
 	  Code.bindClick('loadButton', Code.load);
 	  Code.bindClick('saveButton', Code.save);
 	  Code.bindClick('stopButton', Code.stop);
 	  Code.bindClick('runButton', Code.run);
 	  Code.bindClick('rebootButton', Code.reboot);
 	  
-  // Disable the link button if page isn't backed by App Engine storage.
-  //var linkButton = document.getElementById('linkButton');
-  if ('BlocklyStorage' in window) {
+	  if ('BlocklyStorage' in window) {
     BlocklyStorage['HTTPREQUEST_ERROR'] = MSG['httpRequestError'];
     BlocklyStorage['LINK_ALERT'] = MSG['linkAlert'];
     BlocklyStorage['HASH_ERROR'] = MSG['hashError'];
     BlocklyStorage['XML_ERROR'] = MSG['xmlError'];
-    //Code.bindClick(linkButton,
-    //    function() {BlocklyStorage.link(Code.workspace);});
   }
 
   for (var i = 0; i < Code.TABS_.length; i++) {
@@ -484,7 +530,6 @@ Code.initLanguage = function() {
   });
   
 
-//  document.getElementById('linkButton').title = MSG['linkTooltip'];
   document.getElementById('runButton').title = MSG['runTooltip'];
   document.getElementById('trashButton').title = MSG['trashTooltip'];
 
@@ -504,16 +549,6 @@ Code.initLanguage = function() {
   for (var i = 0, listVar; listVar = listVars[i]; i++) {
     listVar.textContent = MSG['listVariable'];
   }
-};
-
-Code.linkWorkspaces = function() {
-	Code.linked = !Code.linked;
-	
-	if (Code.linked) {
-		jQuery("#linkWorkspaces").find("span").css('color','red');
-	} else {
-		jQuery("#linkWorkspaces").find("span").css('color','black');		
-	}
 };
 
 Code.discard = function() {
@@ -545,10 +580,10 @@ Code.run = function() {
     var content = document.getElementById('content_' + Code.selected);
   	var path = "";
 		
-    if (content.id == 'content_blocks') {
+    if (Code.mode == 'blocks') {
     	code = Blockly.Lua.workspaceToCode(Code.workspace);
 		path = Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file
-    } else if (content.id == 'content_editor') {
+    } else if (Code.mode == 'editor') {
 		code = editor.getValue();
 		path = Code.editorCurrentFile.path + '/' + Code.editorCurrentFile.file;
 	}
@@ -565,6 +600,10 @@ Code.run = function() {
 
 Code.load = function() {
 	function loadFile(fileEntry) {
+		if(chrome.runtime.lastError) {
+			return;
+		}
+	   
 	    fileEntry.file(function(file) {
 	        Code.workspace.clear();
 			
@@ -580,19 +619,20 @@ Code.load = function() {
 	};
 	
 	var extension = "";
-	if (Code.selected == 'blocks') {
+	
+	if (Code.mode == 'blocks') {
 		extension = "xml";
-	} else if (Code.selected == 'editor') {
+	} else if (Code.mode == 'editor') {
 		extension = "lua";
 	}
 	
-    chrome.fileSystem.chooseEntry( {
+    chrome.fileSystem.chooseEntry({
          type: 'openFile',
          suggestedName: 'untitled.'+ extension,
          accepts: [ { description: extension + ' files (*.' + extension + ')',
                       extensions: [extension]} ],
          acceptsAllTypes: false
-       }, loadFile);
+    }, loadFile);				
 };
 
 Code.stop = function() {
@@ -601,20 +641,15 @@ Code.stop = function() {
 			
 		},
 		function(err) {
-			Code.showError(err);
+			Code.showError("1" + err);
 		}
 	);
 }
 
 Code.reboot = function() {
-	Code.showProgress(MSG['rebooting']);	
 	Board.reboot(Board.currentPort(),
 		function() {
-			Code.tabClick('blocks');
-			Code.tabRefresh();
-		},
-		function(err) {
-			Code.showError(err);
+			Code.renderContent();
 		}
 	);
 }
@@ -716,56 +751,91 @@ Code.updateStatus = function() {
 
 	var html;
 	
-	html  = '<table class="table table-striped">';
-	html += '<thead>';
-	html += '<th>Item</th>';
-	html += '<th>Value</th>';
-	html += '</thead>';
-	html += '<tbody>';
-	html += '<tr><td>Installed firmware</td><td>'+Whitecat.status.firmware+'</td></tr>';
-	html += '<tr><td>CPU model</td><td>'+Whitecat.status.cpu+'</td></tr>';
-	html += '</tbody>';
-	html += '</table>';
-	html += '</table>';
-	html +='<button id="checkFirmwareButton" type="button" class="btn btn-default" aria-label="Left Align">';
-	html += 'Check for firmware updates ...';
-	html += '</button>';
+	if (!Board.isConnected()) {
+		html = '<span class="waitingForBoard"><i class="spinner icon icon-spinner3"></i> ' + MSG['waitingForBoard'] + '</span>';		
+		container.html(html);	
+	} else {
+		html  = '<table class="table table-striped">';
+		html += '<thead>';
+		html += '<th>Item</th>';
+		html += '<th>Value</th>';
+		html += '</thead>';
+		html += '<tbody>';
+		html += '<tr><td>Installed firmware</td><td>'+Whitecat.status.firmware+'</td></tr>';
+		html += '<tr><td>CPU model</td><td>'+Whitecat.status.cpu+'</td></tr>';
+		html += '</tbody>';
+		html += '</table>';
+		html += '</table>';
+		html +='<button id="checkFirmwareButton" type="button" class="btn btn-default" aria-label="Left Align">';
+		html += 'Check for firmware updates ...';
+		html += '</button>';
 		
-	container.html(html);
-
-    Code.bindClick('checkFirmwareButton', Code.checkFirmware);
+		container.html(html);	
+		
+	    Code.bindClick('checkFirmwareButton', Code.checkFirmware);	
+	}
 }
 
 Code.listBoardDirectory = function(target) {
-	var container;
-	
-	Code.showProgress(MSG['retrievingDirectory']);
-	
-	if (target) {
+	var html;
+
+	var container = jQuery('#filesystem');	
+	if (!Board.isConnected()) {
+		html = '<span style="margin-left: 25px;" class="waitingForBoard"><i class="spinner icon icon-spinner3"></i> ' + MSG['waitingForBoard'] + '</span>';
+		container.html(html);	
+		
+		return;
+	}
+
+	if (typeof target != 'undefined') {
 		container = target;
 	} else {
-		container = jQuery('#filesystem');	
-		container.html(Code.boardCurrentFile.path);	
+		container.html('<div style="width: 20px;float: left;margin-left: 45px;"><i class="waiting"></i></div>');			
 	}
-		
+	
+	container.find(".waiting").addClass("spinner");
+	container.find(".waiting").addClass("icon");
+	container.find(".waiting").addClass("icon-spinner3");
+	
 	Whitecat.listDirectory(Whitecat.currentPort(), Code.boardCurrentFile.path, 
 		function(entries) {
-			Code.hideProgress();
-
 			var html = '<ul class="dir-entry list-unstyled">';
 
 			container.find("[data-path='"+Code.boardCurrentFile.path+"']").remove();
-
+			
+			container.find(".waiting").removeClass("spinner");
+			container.find(".waiting").removeClass("icon");
+			container.find(".waiting").removeClass("icon-spinner3");
+			
 			entries.forEach(function(entry) {
-			   html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-path="' + Code.boardCurrentFile.path + '" data-name="' + entry.name + '" data-type="' + entry.type + '">' + entry.name + '</li>'
+			   html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-path="' + Code.boardCurrentFile.path + '" data-name="' + entry.name + '" data-type="' + entry.type + '"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">' + entry.name + '</span></li>'
 			});
 
 			html = html + '</ul>';
 			container.append(html);
+			
+			var expanded = container.attr('data-expanded');
+			if (expanded == "true") {
+				container.find(".status:first").removeClass("icon-folder2");
+				container.find(".status:first").addClass("icon-folder-open");
+			} else {
+				container.find(".status:first").addClass("icon-folder2");
+				container.find(".status:first").removeClass("icon-folder-open");				
+			}
 
+			container.find(".dir-entry-d").find(".status").addClass("icon");
+			container.find(".dir-entry-d").find(".status").addClass("icon-folder2");
 
+			container.find(".dir-entry-f").find(".status").addClass("icon");
+			container.find(".dir-entry-f").find(".status").addClass("icon-file-text2");
+			
 			container.find('.dir-entry-d, .dir-entry-f').unbind().bind('click',function(e) {
 			  var target = jQuery(e.target);
+			  
+			  if (target.prop("tagName") != 'LI') {
+				  target = target.closest("li");
+			  }
+			  
 			  var entry = target.data('name');
 			  var path = target.data('path');
 			  var type = target.data('type');
@@ -779,7 +849,10 @@ Code.listBoardDirectory = function(target) {
 			  if (type == 'd') {			   
 				  if (expanded == "true") {
 				  	  target.attr('data-expanded','false');
-					  target.find(".dir-entry").remove();
+					  target.find(".dir-entry").remove();	
+					  
+	  				  target.find(".status:first").addClass("icon-folder2");
+				      target.find(".status:first").removeClass("icon-folder-open");				
 				  } else {
 				  	  target.attr('data-expanded','true');
 					  Code.boardCurrentFile.path = path + '/' + entry;
@@ -794,7 +867,8 @@ Code.listBoardDirectory = function(target) {
 				  Whitecat.receiveFile(Whitecat.currentPort(), path + '/' + entry, function(file) {
 					Code.hideProgress();
 				    editor.setValue(file, -1);	
-					Code.tabClick("editor");
+					Code.mode = "editor";
+					Code.tabClick("program");
 				    Code.workspaceRefresh();  
 				});	  	
 			  }
@@ -803,66 +877,80 @@ Code.listBoardDirectory = function(target) {
 			});
   	    },
 		function(err) {
-			Code.showError();
+			Code.showError(err);
 		}	
 	);
 }
 
 Code.workspaceRefresh = function() {
-	if (Code.selected == 'blocks') {
-		if (Code.linked) {
-			editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
-		}
-		Code.editorCurrentFile = Code.blocksCurrentFile;
-	} else if (Code.selected == 'editor') {
-		editor.focus();
-		
-	  	var count = Code.workspace.getAllBlocks().length;
+	//if (Code.mode == 'blocks') {
+	//	if (Code.linked) {
+	//		editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
+	//	}
+	//	Code.editorCurrentFile = Code.blocksCurrentFile;
+	//} else if (Code.selected == 'code') {
+	//	editor.focus();
+	//	
+	  //	var count = Code.workspace.getAllBlocks().length;
 	
-		if (count > 0) {
-			if (Code.linked) {
-				editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
-			}
-			Code.editorCurrentFile = Code.blocksCurrentFile;
-		}
-	}
+		//if (count > 0) {
+		//	if (Code.linked) {
+		//		editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
+		//	}
+		//	Code.editorCurrentFile = Code.blocksCurrentFile;
+		//}
+		//}
 
-    jQuery("#tab_blocks").text(MSG['blocks'] + ' ' + Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file);
-    jQuery("#tab_editor").text(MSG['editor'] + ' ' + Code.editorCurrentFile.path + '/' + Code.editorCurrentFile.file);
+    //jQuery("#tab_blocks").text(MSG['blocks'] + ' ' + Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file);
+    //jQuery("#tab_editor").text(MSG['editor'] + ' ' + Code.editorCurrentFile.path + '/' + Code.editorCurrentFile.file);
 }
 
 Code.tabRefresh = function() {
-	if (Code.selected == 'blocks') {
-		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
-	} else if (Code.selected == 'editor') {
-		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+	if ((Code.selected == 'program') && (Code.mode == 'blocks')) {
+		jQuery("#switchToCode, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("#switchToBlocks").addClass("disabled");
+	} else if ((Code.selected == 'program') && (Code.mode == 'editor')) {
+		jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("#switchToCode").addClass("disabled");
 	} else if (Code.selected == 'board') {
-		jQuery("#linkWorkspaces, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
+		jQuery("#switchToCode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
 	}
 	
 	if (!Board.isConnected()) {
 		jQuery("#stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
-		jQuery("#tab_board").parent().addClass("disabled");		
 	} else {
 		jQuery("#stopButton, #runButton, #rebootButton, #content_board").removeClass("disabled");
-		jQuery("#tab_board").parent().removeClass("disabled");
 	}
 }
 
 Code.boardConnected = function() {
-	Code.showInformation(MSG['boardConnected']);
-	Code.tabRefresh();
+	//Code.showInformation(MSG['boardConnected']);
+	Code.renderContent();
 }
 
 Code.boardDisconnected = function() {
-	Code.showInformation(MSG['boardDisconnected']);	
-	Code.tabClick('blocks');
-	Code.tabRefresh();
+//	Code.showInformation(MSG['boardDisconnected']);	
+//	Code.tabClick('blocks');
+//	Code.tabRefresh();
+	Code.renderContent();
 }
 
 Code.boardRecover = function() {
-	Code.showProgress(MSG['recovering']);
-	Board.init(6);
+  Code.showProgress(MSG['downloadingFirmware']);
+  Whitecat.getLastFirmwareAvailableCode(
+	  function(code) {
+		Code.hideProgress();
+		Board.upgradeFirmware(Board.currentPort(), code, 
+		  function() {
+			Code.showInformation(MSG['firmwareUpgraded']);
+			Board.init();								
+		  }
+	  	);
+	  },
+	  function(err) {
+		Code.showError("2" + err);
+	  }
+  );
 }
 
 Code.boardBadFirmware = function() {
@@ -874,14 +962,17 @@ Code.boardBadFirmware = function() {
 		      label: MSG['recover'],
 		      className: "btn-primary",
 		      callback: function() {
-				  setTimeout(function() {Code.boardRecover();},500);
+				  setTimeout(function() {
+				  	  Code.showProgress(MSG['recovering']);
+				  	  Board.init(Whitecat.RECOVER_STATE);
+				  },500);
 			  }
 		    },
 		    danger: {
 		      label: MSG['cancel'],
 		      className: "btn-danger",
 		      callback: function() {
-				  Board.init(0);
+				  Board.init();
 		      }
 		    },
 		},
@@ -904,12 +995,12 @@ Code.boardInBootloaderMode = function(callback) {
 						Board.upgradeFirmware(Board.currentPort(), code, 
 						  function() {
 							Code.showInformation(MSG['firmwareUpgraded']);
-							Board.init(0);								
+							Board.init();								
 						  }
 					  	);
 					  },
 					  function(err) {
-						  Code.showError(err);
+			  			Code.showError("3" + err);
 					  }
 				  );
 			  }
@@ -918,6 +1009,7 @@ Code.boardInBootloaderMode = function(callback) {
 		      label: MSG['notNow'],
 		      className: "btn-danger",
 		      callback: function() {
+				  Board.init();
 		      }
 		    },
 		},
@@ -962,12 +1054,12 @@ Code.checkFirmware = function() {
   	  								Board.upgradeFirmware(Board.currentPort(), code, 
   	  								  function() {
   	  									Code.showInformation(MSG['firmwareUpgraded']);
-  	  									Board.init(0);								
+  	  									Board.init();								
   	  								  }
   	  							  	);
 	  							  },
 	  							  function(err) {
-									  Code.showError(err);
+						  			Code.showError("4" + err);
 	  							  }
 	  						  );
 						  }
@@ -986,9 +1078,50 @@ Code.checkFirmware = function() {
 			}
 		},
 		function(err) {
-			Code.showError(err);
+			Code.showError("5" + err);
 		}
 	);
+}
+
+Code.switchToCode = function() {
+	var blockCode = Blockly.Lua.workspaceToCode(Code.workspace).trim();
+
+	Code.mode = "editor";
+	Code.tabClick("program");
+	editor.setValue(blockCode, -1);
+	editor.focus();
+}
+
+Code.switchToBlocks = function() {
+	var blockCode = Blockly.Lua.workspaceToCode(Code.workspace).replace(/\r|\n|\s/g,"");
+	var luaCode = editor.getValue().replace(/\r|\n|\s/g,"");
+	
+	if (blockCode != luaCode) {
+		bootbox.dialog({
+			title: MSG['warning'],
+		    message: MSG['switchToBlocksWarning'],
+			buttons: {
+			    success: {
+			      label: MSG['yes'],
+			      className: "btn-primary",
+			      callback: function() {
+				  	Code.mode = "blocks";
+				  	Code.tabClick("program");					  
+				  }
+			    },
+			    danger: {
+			      label: MSG['no'],
+			      className: "btn-danger",
+			      callback: function() {
+			      }
+			    },
+			},
+			closable: false
+		});	
+	} else {
+		Code.mode = "blocks";
+		Code.tabClick("program");
+	}
 }
 
 // Load the Code demo's language strings.
