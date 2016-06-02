@@ -879,7 +879,7 @@ Whitecat.run = function(port, file, code, success, fail) {
 						// Code is sended
 
 						//Now run it!
-						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\"/sd/autorun.lua\")\r\n"), function() {
+						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
 							success();
 						});
 				});		

@@ -31,8 +31,14 @@
   <script src="generators/lua/threads.js"></script>
 </head>
 <body>
-  <img id="logo" src="media/whitecat.png"/>
-  <select id="languageMenu"></select>
+  <img id="logo" src="media/whitecat.png" style="visibility: hidden;"/>
+
+  <div id="languageDiv" style="visibility: hidden;text-align: right;display: flex;align-items: center;justify-content:flex-end;">
+  	<select id="languageMenu"></select>
+  </div>
+
+  <div id="targetFile" style="visibility: hidden;text-align: right;display: flex;align-items: center;justify-content:flex-end;">
+  </div>
   
   <table width="100%" height="100%" style="margin-top: 25px;">
     <tr>

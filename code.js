@@ -1,4 +1,14 @@
 /**
+ *
+ * Whitecat Blocky Environment, whitecat board definition
+ *
+ * Copyright (C) 2015 - 2016
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * 
+ * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
+ *
+ * -----------------------------------------------------------------------
+ * 
  * Blockly Demos: Code
  *
  * Copyright 2012 Google Inc.
@@ -23,29 +33,16 @@
  */
 'use strict';
 
-var editor;
-
 /**
  * Create a namespace for the application.
  */
 var Code = {};
 
 Code.progressDialog = false;
-Code.mode = "blocks";
 
-Code.boardCurrentFile = {
+Code.currentFile = {
 	path: '',
 	file: ''
-};
-
-Code.blocksCurrentFile = {
-	path: '/sd',
-	file: 'autorun.lua'
-};
-
-Code.editorCurrentFile = {
-	path: '/sd',
-	file: 'autorun.lua'
 };
 
 /**
@@ -62,11 +59,14 @@ Code.LANGUAGE_NAME = {
  */
 Code.LANGUAGE_RTL = [];
 
-/**
- * Blockly's main workspace.
- * @type {Blockly.WorkspaceSvg}
- */
-Code.workspace = null;
+Code.workspace = {};
+Code.workspace.type = "blocks";
+Code.workspace.blocks = null;
+Code.workspace.editor = null;
+Code.workspace.name = "";
+Code.workspace.sourceType = "";
+Code.workspace.source = "";
+Code.workspace.target = "";
 
 /**
  * Extracts a parameter from the URL.
@@ -120,11 +120,11 @@ Code.loadBlocks = function(defaultXml) {
     // Language switching stores the blocks during the reload.
     delete window.sessionStorage.loadOnceBlocks;
     var xml = Blockly.Xml.textToDom(loadOnce);
-    Blockly.Xml.domToWorkspace(xml, Code.workspace);
+    Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
   } else if (defaultXml) {
     // Load the editor with default starting blocks.
     var xml = Blockly.Xml.textToDom(defaultXml);
-    Blockly.Xml.domToWorkspace(xml, Code.workspace);
+    Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
   } else if ('BlocklyStorage' in window) {
     // Restore saved blocks in a separate thread so that subsequent
     // initialization is not affected from a failed load.
@@ -141,7 +141,7 @@ Code.changeLanguage = function() {
   // not load Blockly.
   // MSIE 11 does not support sessionStorage on file:// URLs.
   if (typeof Blockly != 'undefined' && window.sessionStorage) {
-    var xml = Blockly.Xml.workspaceToDom(Code.workspace);
+    var xml = Blockly.Xml.workspaceToDom(Code.workspace.blocks);
     var text = Blockly.Xml.domToText(xml);
     window.sessionStorage.loadOnceBlocks = text;
   }
@@ -243,8 +243,6 @@ Code.selected = 'board';
  * @param {string} clickedName Name of tab clicked.
  */
 Code.tabClick = function(clickedName) {	
- // var luaCode = editor.getValue();
-
   if (document.getElementById('tab_program').className == 'tabon') {
   	jQuery("#content_editor").css('visibility', 'hidden');
 	jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
@@ -252,7 +250,7 @@ Code.tabClick = function(clickedName) {
 	jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
 	jQuery("#content_blocks").css('visibility', 'hidden');
 	    
-	Code.workspace.setVisible(false);		
+	Code.workspace.blocks.setVisible(false);		
   }
 
   // Deselect all tabs and hide all panes.
@@ -270,7 +268,7 @@ Code.tabClick = function(clickedName) {
   // Show the selected pane.
   jQuery("#" + 'content_' + clickedName).css('visibility', 'visible');	
 	  
-  if (Code.mode == 'blocks') {
+  if (Code.workspace.type == 'blocks') {
 	  jQuery("#tab_program").text(MSG['blocks']);
   } else {
 	  jQuery("#tab_program").text(MSG['editor']);
@@ -278,8 +276,6 @@ Code.tabClick = function(clickedName) {
  
   Code.renderContent();
   
-  //jQuery("#tab_blocks").text(MSG['blocks'] + ' ' + Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file);
-  //jQuery("#tab_editor").text(MSG['editor'] + ' ' + Code.editorCurrentFile.path + '/' + Code.editorCurrentFile.file);
   jQuery("#tab_board").text(MSG['board']);
   
   jQuery("#" + 'tab_' + clickedName).trigger('click');
@@ -296,43 +292,26 @@ Code.renderContent = function() {
   Code.tabRefresh();
     
   if (Code.selected == 'board') {
-  	  Code.boardCurrentFile.path = '';
-  	  Code.boardCurrentFile.file = '';
+  	  Code.currentFile.path = '';
+  	  Code.currentFile.file = '';
 	  
-//  	  jQuery("#filesystem").append(jQuery('<i class="icon-upload icon-large">'));
-
 	  jQuery("#content_editor").css('visibility', 'hidden');
 	  jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
 	  jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
 	  jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
 	  jQuery("#content_blocks").css('visibility', 'hidden');
   
-  	  Code.listBoardDirectory();
+  	  Code.listBoardDirectory(jQuery('#filesystem'),undefined,undefined,Code.loadFileFromBoard);
   	  Code.updateStatus();
   } else if (Code.selected == 'program') {
-  	if (Code.mode == 'blocks') {
+  	if (Code.workspace.type == 'blocks') {
 		jQuery("#content_editor").css('visibility', 'hidden');
 		jQuery(".blocklyWidgetDiv").css('visibility', 'visible');
 		jQuery(".blocklyTooltipDiv").css('visibility', 'visible');
 		jQuery(".blocklyToolboxDiv").css('visibility', 'visible');
 		jQuery("#content_blocks").css('visibility', 'visible');
 
-  		Code.workspace.setVisible(true);
-		Code.workspaceRefresh();
-  //	
-    //	  	if (Code.linked) {
-    	//  		var xml = '';
-    	//  		var code = '';
-	
-    	  //		Code.workspace.clear();
-	
-    	  	//	xml = LuaToBlocks.convert(luaCode);
-
-    	  //	    xml = Blockly.Xml.textToDom(xml);
-    	 // 	    Blockly.Xml.domToWorkspace(xml, Code.workspace);
-  	//
-    	  //		Code.workspaceRefresh();
-    	 // 	}
+  		Code.workspace.blocks.setVisible(true);
   	} else {
 		jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
 		jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
@@ -341,20 +320,6 @@ Code.renderContent = function() {
 		jQuery("#content_editor").css('visibility', 'visible');
   	}	
   }
-
-  // Initialize the pane.
-  //if (content.id == 'content_editor') {
-  //  var code = Blockly.Lua.workspaceToCode(Code.workspace);
-	
-  //  editor.setValue(code, -1);
-    //if (typeof prettyPrintOne == 'function') {
-    //  code = content.innerHTML;
-    //  code = prettyPrintOne(code, 'lua');
-    //  content.innerHTML = code;
-    //}
-  //}  
-  
-  Code.workspaceRefresh();
   
   Blockly.fireUiEvent(window, 'resize');
 };
@@ -376,7 +341,7 @@ Code.init = function() {
     for (var i = 0; i < Code.TABS_.length; i++) {
 	  var el;
 	  if (Code.TABS_[i] == 'program') {
-		  if (Code.mode == 'blocks') {
+		  if (Code.workspace.type == 'blocks') {
 		  	el = document.getElementById('content_blocks');
 		  } else {
 	  	  	el = document.getElementById('content_editor');	  	
@@ -407,17 +372,28 @@ Code.init = function() {
 	  el.style.width = '100px';
 	  el.style.top = 5 + 'px';
 	  el.style.left = (bBox.width - bBox.x - 110) + 'px';	  	  	
+	  el.style.visibility = 'visible';
 
-	  el = document.getElementById('languageMenu');
+	  el = document.getElementById('languageDiv');
 	  el.style.position = 'absolute';
 	  el.style.width = '100px';
-	  el.style.top = (bBox.y - 42) + 'px';
+	  el.style.height = '38px';
+	  el.style.top = (bBox.y - 38) + 'px';
 	  el.style.left = (bBox.width - bBox.x - 110) + 'px';	  	  	
+	  el.style.visibility = 'visible';
+
+	  el = document.getElementById('targetFile');
+	  el.style.position = 'absolute';
+	  el.style.width = '400px';
+	  el.style.height = '38px';
+	  el.style.top = (bBox.y - 38) + 'px';
+	  el.style.left = (bBox.width - bBox.x - 110 - 400 - 10) + 'px';	
+	  el.style.visibility = 'visible';
     }
     // Make the 'Blocks' tab line up with the toolbox.
-    //if (Code.workspace && Code.workspace.toolbox_.width) {
+    //if (Code.workspace.blocks && Code.workspace.blocks.toolbox_.width) {
     //  document.getElementById('tab_blocks').style.minWidth =
-    //      (Code.workspace.toolbox_.width - 38) + 'px';
+    //      (Code.workspace.blocks.toolbox_.width - 38) + 'px';
           // Account for the 19 pixel margin and on each side.
     //}	
   };
@@ -425,7 +401,7 @@ Code.init = function() {
   window.addEventListener('resize', onresize, false);
 
   var toolbox = document.getElementById('toolbox');
-  Code.workspace = Blockly.inject('content_blocks',
+  Code.workspace.blocks = Blockly.inject('content_blocks',
       {grid:
           {spacing: 25,
            length: 3,
@@ -445,16 +421,16 @@ Code.init = function() {
   Code.loadBlocks('');
 
   ace.require("ace/ext/language_tools");
-  editor = ace.edit(document.getElementById("content_editor"));
-  editor.setShowPrintMargin(true);
-  editor.setPrintMarginColumn(120);
-  editor.getSession().setMode("ace/mode/lua");
-  editor.setOptions({ enableBasicAutocompletion: true });
-  editor.$blockScrolling = Infinity;		
+  Code.workspace.editor = ace.edit(document.getElementById("content_editor"));
+  Code.workspace.editor.setShowPrintMargin(true);
+  Code.workspace.editor.setPrintMarginColumn(120);
+  Code.workspace.editor.getSession().setMode("ace/mode/lua");
+  Code.workspace.editor.setOptions({ enableBasicAutocompletion: true });
+  Code.workspace.editor.$blockScrolling = Infinity;		
 
   if ('BlocklyStorage' in window) {
     // Hook a save function onto unload.
-    BlocklyStorage.backupOnUnload(Code.workspace);
+    BlocklyStorage.backupOnUnload(Code.workspace.blocks);
   }
 
   Code.tabClick(Code.selected);
@@ -552,87 +528,239 @@ Code.initLanguage = function() {
 };
 
 Code.discard = function() {
-	if (Code.mode == 'blocks') {
-	    var count = Code.workspace.getAllBlocks().length;
+	if (Code.workspace.type == 'blocks') {
+	    var count = Code.workspace.blocks.getAllBlocks().length;
   
 	    if (count > 0) {
 	  	  bootbox.confirm(Blockly.Msg.DELETE_ALL_BLOCKS.replace('%1', count), 
 	  	  function(result) {
 	  		  if (result) {
-	  			  Code.workspace.clear();
+	  			  Code.workspace.blocks.clear();
+				  Code.workspace.sourceType = "";
+				  Code.workspace.source = "";
+			  	  Code.workspace.name = "";
+			  	  Code.workspace.target = "";
+				  Code.tabRefresh();
 	  		  }
 	  	  }); 	  
 	    }		
-	} else if (Code.mode == 'editor') {
+	} else if (Code.workspace.type == 'editor') {
   	  bootbox.confirm(MSG['DELETE_EDIT_CODE'], 
   	  function(result) {
   		  if (result) {
-  			  editor.setValue("", -1);		
+  			  Code.workspace.editor.setValue("", -1);
+			  Code.workspace.sourceType = "";
+			  Code.workspace.source = "";	
+		  	  Code.workspace.name = "";
+		  	  Code.workspace.target = "";	
+			  Code.tabRefresh();
   		  }
   	  }); 	  
-	}
+	}	
 };
 
 Code.run = function() {
-	Code.showProgress(MSG['sendingCode']);
-	
-	var code = "";
-    var content = document.getElementById('content_' + Code.selected);
-  	var path = "";
+	var code = "";	
+
+	// Get the bounding box of the content area
+    var container = document.getElementById('content_area');
+   	var bBox = Code.getBBox_(container);
 		
-    if (Code.mode == 'blocks') {
-    	code = Blockly.Lua.workspaceToCode(Code.workspace);
-		path = Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file
-    } else if (Code.mode == 'editor') {
-		code = editor.getValue();
-		path = Code.editorCurrentFile.path + '/' + Code.editorCurrentFile.file;
+    if (Code.workspace.type == 'blocks') {
+    	code = Blockly.Lua.workspaceToCode(Code.workspace.blocks);
+    } else if (Code.workspace.type == 'editor') {
+		code = Code.workspace.editor.getValue();
 	}
 	
-	Board.run(Board.currentPort(), path, code, 
-		function() {
-			Code.hideProgress();
-		},
-		function() {
-			Code.hideProgress();			
+	function run(file) {
+		Code.showProgress(MSG['sendingCode']);
+		Board.run(Board.currentPort(), file, code, 
+			function() {
+				Code.hideProgress();
+			},
+			function() {
+				Code.hideProgress();			
+			}
+		);			
+	}
+
+   	function fileSelected(file) {
+		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
+   	}
+
+   	function folderSelected(folder) {
+		if (folder != '/') {
+			folder = folder + '/';
 		}
-	);	
+		
+		jQuery("#selectedFolder").text(folder);
+		jQuery("#selectedFolder").data("selected", folder);
+   	}
+	
+	if (Code.workspace.target == '') {
+	   	bootbox.dialog({
+	   		title: MSG['noTarget'],
+	   	    message: '<div id="runFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:'+(bBox.height * 0.50)+'px;"></div><br>' +
+					 MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="unnamed">.lua' ,
+	   		buttons: {
+	   		    main: {
+	   		      label: MSG['run'],
+	   		      className: "btn-primary",
+	   		      callback: function() {
+					  var file = jQuery("#selectedFileName").val();
+					  if (file != "") {
+			  			  Code.workspace.source = file;			
+						  Code.workspace.target = jQuery("#selectedFolder").data("selected") + file + '.lua';
+						  Code.tabRefresh();
+						  run(Code.workspace.target);
+					  } else {
+						  return false;
+					  }
+	   			  }
+	   		    },
+	   		    danger: {
+	   		      label: MSG['cancel'],
+	   		      className: "btn-danger",
+	   		      callback: function() {
+	   		      }
+	   		    },
+	   		},
+	   		closable: false
+	   	});	
+
+		// Show root files from board
+		folderSelected("/");	
+		Code.listBoardDirectory(jQuery('#runFile'), "lua", folderSelected, fileSelected);
+	} else {
+		run(Code.workspace.target);
+	}	
+}
+
+// File is loaded from computer
+Code.loadFileFromComputer = function(fileEntry) {
+	if(chrome.runtime.lastError) {
+		return;
+	}
+	
+    fileEntry.file(function(file) {
+        Code.workspace.blocks.clear();
+		
+		var reader = new FileReader();
+    	reader.onload = function(e) {
+			Code.workspace.sourceType = "computer";
+			Code.workspace.source = fileEntry.fullPath.replace(/\.([^.]*?)$/, "");			
+			Code.workspace.name = file.name.replace(/\.([^.]*?)$/, "");
+			Code.workspace.target = Code.currentFile.path + "/" + Code.workspace.name + ".lua";
+			
+			var extension = file.name.replace(Code.workspace.name,"").replace(".","");
+	
+			if (extension == 'xml') {
+				Code.workspace.type = "blocks";
+			} else if (extension == 'lua'){
+				Code.workspace.type = "editor";
+			} else {
+				return;
+			}
+
+			if (Code.workspace.type == 'blocks') {
+				Code.workspace.blocks.clear();			
+			    var xml = Blockly.Xml.textToDom(e.target.result);
+			    Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
+			} else {
+			    Code.workspace.editor.setValue(e.target.result, -1);	
+			}
+
+			Code.tabClick("program");
+    	};
+    	reader.readAsText(file);
+    });
+	
+	bootbox.hideAll();
+};
+
+// File is loaded from board
+Code.loadFileFromBoard = function(file) {
+	Code.workspace.sourceType = "board";
+	Code.workspace.source =  (Code.currentFile.path + "/" + file).replace(/\.([^.]*?)$/, "");
+	Code.workspace.name = file.replace(/\.([^.]*?)$/, "");
+	Code.workspace.target = Code.currentFile.path + "/" + Code.workspace.name + ".lua";
+	
+	var extension = file.replace(Code.workspace.name,"").replace(".","");
+	
+	if (extension == 'xml') {
+		Code.workspace.type = "blocks";
+	} else if (extension == 'lua'){
+		Code.workspace.type = "editor";
+	} else {
+		return;
+	}
+	
+	// Download file
+    Code.showProgress(MSG['downloadingFile'] + " " + Code.currentFile.path + "/" + file + " ...");	
+	Whitecat.receiveFile(Whitecat.currentPort(), Code.currentFile.path + "/" + file, function(fileContent) {
+		BootstrapDialog.closeAll();
+		bootbox.hideAll();
+
+		if (Code.workspace.type == 'blocks') {
+			Code.workspace.blocks.clear();			
+		    var xml = Blockly.Xml.textToDom(fileContent);
+		    Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
+		} else {
+		    Code.workspace.editor.setValue(fileContent, -1);	
+		}
+
+		Code.tabClick("program");
+    });	  	
 }
 
 Code.load = function() {
-	function loadFile(fileEntry) {
-		if(chrome.runtime.lastError) {
-			return;
-		}
-	   
-	    fileEntry.file(function(file) {
-	        Code.workspace.clear();
-			
-			var reader = new FileReader();
-	    	reader.onload = function(e) {
-			    var xml = Blockly.Xml.textToDom(e.target.result);
-			    Blockly.Xml.domToWorkspace(xml, Code.workspace);
-				
-				Code.workspaceRefresh();
-	    	};
-	    	reader.readAsText(file);
-	    });
-	};
-	
+	// File extension is determined by the workspace type
+	// blocks: xml
+	// ediror: lua
 	var extension = "";
-	
-	if (Code.mode == 'blocks') {
+	if (Code.workspace.type == 'blocks') {
 		extension = "xml";
-	} else if (Code.mode == 'editor') {
+	} else if (Code.workspace.type == 'editor') {
 		extension = "lua";
 	}
-	
-    chrome.fileSystem.chooseEntry({
-         type: 'openFile',
-         suggestedName: 'untitled.'+ extension,
-         accepts: [ { description: extension + ' files (*.' + extension + ')',
-                      extensions: [extension]} ],
-         acceptsAllTypes: false
-    }, loadFile);				
+
+	// Get the bounding box of the content area
+    var container = document.getElementById('content_area');
+   	var bBox = Code.getBBox_(container);
+
+	// Show a dialog for select a file from board, or allow to select a file from
+	// computer
+	bootbox.dialog({
+		title: MSG['loadBlockTitle'],
+	    message: '<div id="loadFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:'+(bBox.height * 0.50)+'px;"></div>',
+		buttons: {
+		    success: {
+		      label: MSG['loadFromDesktop'],
+		      className: "btn-primary",
+		      callback: function() {
+			      chrome.fileSystem.chooseEntry({
+			           type: 'openFile',
+			           suggestedName: 'untitled.'+ extension,
+			           accepts: [ { description: extension + ' files (*.' + extension + ')',
+			                        extensions: [extension]} ],
+			            acceptsAllTypes: false
+			      }, Code.loadFileFromComputer);
+				  
+				  return false;
+			  }
+		    },
+		    danger: {
+		      label: MSG['cancel'],
+		      className: "btn-danger",
+		      callback: function() {
+		      }
+		    },
+		},
+		closable: false
+	});	
+			
+	// Show root files from board
+	Code.listBoardDirectory(jQuery('#loadFile'), extension, undefined, Code.loadFileFromBoard);
 };
 
 Code.stop = function() {
@@ -655,46 +783,133 @@ Code.reboot = function() {
 }
 
 Code.save = function() {
+	var code;      // Code to save (Lua source code or xml)
+	var extension; // Extension to use (.lua or .xml)
+
+    var container = document.getElementById('content_area');
+    var bBox = Code.getBBox_(container);
+
+	if (Code.workspace.type == 'blocks') {
+		extension = "xml";
+		code = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Code.workspace.blocks));
+	} else if (Code.workspace.type == 'editor') {
+		extension = "lua";
+		code = Code.workspace.editor.getValue();
+	}
+		
 	function saveToFile(fileEntry) {
-		if(chrome.runtime.lastError) {
+		if (chrome.runtime.lastError) {
 			return;
 		}
 
 		fileEntry.createWriter(function(fileWriter) {
-		      var truncated = false;
-		      var blob = new Blob([Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Code.workspace))]);
-		      fileWriter.onwriteend = function(e) {
-		        if (!truncated) {
-		          truncated = true;
-		          // You need to explicitly set the file size to truncate
-		          // any content that might have been there before
-		          this.truncate(blob.size);
-		          return;
-		        }
-		      };
+	      var truncated = false;
+		  var blob = new Blob([code]);
+		  			  
+	      fileWriter.onwriteend = function(e) {
+			bootbox.hideAll();
+	        if (!truncated) {
+	          truncated = true;
+	          // You need to explicitly set the file size to truncate
+	          // any content that might have been there before
+	          this.truncate(blob.size);
+			  Code.tabRefresh();
+	          return;
+	        }
+	      };
 
-		      fileWriter.onerror = function(e) {
-		      };
+	      fileWriter.onerror = function(e) {
+	      };
 
-		      fileWriter.write(blob, {type: 'text/plain'});
-
-		    });
+	      fileWriter.write(blob, {type: 'text/plain'});
+		});
 	}
 	
-	var extension = "";
-	if (Code.selected == 'blocks') {
-		extension = "xml";
-	} else if (Code.selected == 'editor') {
-		extension = "lua";
+	function saveToBoard(folder, file) {
+		Code.showProgress(MSG['sendingFile'] + " " + folder + file + " ...");	
+		Whitecat.sendFile(Whitecat.currentPort(), folder + file, code, 
+			function() {
+				Code.workspace.sourceType = "board";
+				Code.workspace.name = file.replace(/\.([^.]*?)$/, "");
+				Code.workspace.target = folder + "/" + Code.workspace.name + ".lua";
+				Code.workspace.source = folder + "/" + Code.workspace.name;
+				
+				Code.hideProgress();
+				Code.tabRefresh();
+		});					  
 	}
+	
+   	function folderSelected(folder) {
+		if (folder != '/') {
+			folder = folder + '/';
+		}
+		
+		jQuery("#selectedFolder").text(folder);
+		jQuery("#selectedFolder").data("selected", folder);
+   	}
+	
+   	function fileSelected(file) {
+		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
+   	}
 
-    chrome.fileSystem.chooseEntry( {
-         type: 'saveFile',
-         suggestedName: 'untitled.'+ extension,
-         accepts: [ { description: extension + ' files (*.' + extension + ')',
-                      extensions: [extension]} ],
-         acceptsAllTypes: false
-       }, saveToFile);
+	var target = Code.workspace.target;
+	if (target != "") {
+		target = target.replace(/\.([^.]*?)$/, "");
+		
+		Code.showProgress(MSG['sendingFile'] + " " + target + "." + extension + " ...");	
+		Whitecat.sendFile(Whitecat.currentPort(), target + "." + extension, code, 
+			function() {
+				Code.hideProgress();
+				Code.tabRefresh();
+		});				
+	} else {
+		target = 'unnamed';
+	
+	   	bootbox.dialog({
+	   		title: MSG['saveBlockTitle'],
+	   	    message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:'+(bBox.height * 0.50)+'px;"></div><br>' +
+					 MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="'+target+'">' + '.' + extension ,
+	   		buttons: {
+	   		    main: {
+	   		      label: MSG['saveToBoard'],
+	   		      className: "btn-primary",
+	   		      callback: function() {
+					  var file = jQuery("#selectedFileName").val();
+					  if (file != "") {
+						  saveToBoard(jQuery("#selectedFolder").data("selected"), file + '.' + extension);
+					  } else {
+						  return false;
+					  }
+	   			  }
+	   		    },
+	   		    success: {
+	   		      label: MSG['saveToDesktop'],
+	   		      className: "btn-primary",
+	   		      callback: function() {
+				      chrome.fileSystem.chooseEntry( {
+				           type: 'saveFile',
+				           suggestedName: 'unnamed.'+ extension,
+				           accepts: [ { description: extension + ' files (*.' + extension + ')',
+				                        extensions: [extension]} ],
+				           acceptsAllTypes: false
+				         }, saveToFile);
+					 
+					  return false;
+	   			  }
+	   		    },
+	   		    danger: {
+	   		      label: MSG['cancel'],
+	   		      className: "btn-danger",
+	   		      callback: function() {
+	   		      }
+	   		    },
+	   		},
+	   		closable: false
+	   	});	
+		
+		folderSelected("/");	
+	   	Code.listBoardDirectory(jQuery('#saveFile'), extension, folderSelected, fileSelected);
+	}
 };
 
 // Progress messages
@@ -780,10 +995,11 @@ Code.updateStatus = function() {
 	}
 }
 
-Code.listBoardDirectory = function(target) {
+Code.listBoardDirectory = function(container, extension, folderSelect, fileSelect, target) {
 	var html;
+	var path = "";
+	var root = false;
 
-	var container = jQuery('#filesystem');	
 	if (!Board.isConnected()) {
 		html = '<span style="margin-left: 25px;" class="waitingForBoard"><i class="spinner icon icon-spinner3"></i> ' + MSG['waitingForBoard'] + '</span>';
 		container.html(html);	
@@ -792,46 +1008,57 @@ Code.listBoardDirectory = function(target) {
 	}
 
 	if (typeof target != 'undefined') {
-		container = target;
+		container = target;	
+		path = Code.currentFile.path;		
 	} else {
-		container.html('<div style="width: 20px;float: left;margin-left: 45px;"><i class="waiting"></i></div>');			
+		container.html('<div style="width: 20px;float: left;margin-left: 45px;"><i class="waiting"></i></div>');	
+		root = true;	
 	}
 	
 	container.find(".waiting").addClass("spinner");
 	container.find(".waiting").addClass("icon");
 	container.find(".waiting").addClass("icon-spinner3");
 	
-	Whitecat.listDirectory(Whitecat.currentPort(), Code.boardCurrentFile.path, 
+	Whitecat.listDirectory(Whitecat.currentPort(), path, 
 		function(entries) {
-			var html = '<ul class="dir-entry list-unstyled">';
+			var html = '';
+			
+			if (path == '/') path = '';
+			
+			html +='<ul class="dir-entry list-unstyled">';
+			
+			if (root) {
+				html += '<li class="dir-entry-d" data-expanded="true" data-path data-name data-type="d"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">Whitecat</span>'	
+				html +='<ul class="dir-entry list-unstyled">';				
+			}
 
-			container.find("[data-path='"+Code.boardCurrentFile.path+"']").remove();
+			container.find("[data-path='"+path+"']").remove();
 			
 			container.find(".waiting").removeClass("spinner");
 			container.find(".waiting").removeClass("icon");
 			container.find(".waiting").removeClass("icon-spinner3");
 			
 			entries.forEach(function(entry) {
-			   html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-path="' + Code.boardCurrentFile.path + '" data-name="' + entry.name + '" data-type="' + entry.type + '"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">' + entry.name + '</span></li>'
+				if (entry.type == 'f') {
+					if (typeof extension != "undefined") {
+						if (entry.name.match(new RegExp('^.*\.'+extension+'$'))) {
+							html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-path="' +path + '" data-name="' + entry.name + '" data-type="' + entry.type + '"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">' + entry.name + '</span></li>'											
+						}						
+					} else {
+						html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-path="' +path + '" data-name="' + entry.name + '" data-type="' + entry.type + '"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">' + entry.name + '</span></li>'																	
+					}
+				} else {
+					html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-path="' + path + '" data-name="' + entry.name + '" data-type="' + entry.type + '"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">' + entry.name + '</span></li>'					
+				}
 			});
 
-			html = html + '</ul>';
-			container.append(html);
-			
-			var expanded = container.attr('data-expanded');
-			if (expanded == "true") {
-				container.find(".status:first").removeClass("icon-folder2");
-				container.find(".status:first").addClass("icon-folder-open");
-			} else {
-				container.find(".status:first").addClass("icon-folder2");
-				container.find(".status:first").removeClass("icon-folder-open");				
+			if (root) {
+				html += '</li>';				
 			}
+			
+			html += '</ul>';
 
-			container.find(".dir-entry-d").find(".status").addClass("icon");
-			container.find(".dir-entry-d").find(".status").addClass("icon-folder2");
-
-			container.find(".dir-entry-f").find(".status").addClass("icon");
-			container.find(".dir-entry-f").find(".status").addClass("icon-file-text2");
+			container.append(html);
 			
 			container.find('.dir-entry-d, .dir-entry-f').unbind().bind('click',function(e) {
 			  var target = jQuery(e.target);
@@ -856,29 +1083,54 @@ Code.listBoardDirectory = function(target) {
 					  target.find(".dir-entry").remove();	
 					  
 	  				  target.find(".status:first").addClass("icon-folder2");
-				      target.find(".status:first").removeClass("icon-folder-open");				
+				      target.find(".status:first").removeClass("icon-folder-open");	
+					  
+					  if (typeof folderSelect != 'undefined') {
+						  folderSelect(path + '/' + entry);
+					  }
+					  			
 				  } else {
 				  	  target.attr('data-expanded','true');
-					  Code.boardCurrentFile.path = path + '/' + entry;
-				  	  Code.listBoardDirectory(target);
-				  }
+					  Code.currentFile.path = path + '/' + entry;
+					  
+					  if (typeof folderSelect != 'undefined') {
+						  folderSelect(path + '/' + entry);
+					  }
+					  
+				  	  Code.listBoardDirectory(jQuery('#filesystem'), extension, folderSelect, fileSelect,target);
+				  }				  
 			  } else {
-				  Code.boardCurrentFile.path = path;
-				  Code.boardCurrentFile.file = entry;				  		
-				  Code.editorCurrentFile.path = path;
-				  Code.editorCurrentFile.file = entry;				  		
-				  Code.showProgress(MSG['downloadingFile'] + " " + path + '/' + entry + " ...");
-				  Whitecat.receiveFile(Whitecat.currentPort(), path + '/' + entry, function(file) {
-					Code.hideProgress();
-				    editor.setValue(file, -1);	
-					Code.mode = "editor";
-					Code.tabClick("program");
-				    Code.workspaceRefresh();  
-				});	  	
+				  Code.currentFile.path = path;
+				  Code.currentFile.file = entry;	
+				  if (typeof fileSelect != 'undefined') {
+					  fileSelect(entry);
+				  }	
 			  }
 
 			  e.stopPropagation();
 			});
+			
+			var expanded = container.attr('data-expanded');
+			if (expanded == "true") {
+				container.find(".status:first").removeClass("icon-folder2");
+				container.find(".status:first").addClass("icon-folder-open");
+			} else {
+				container.find(".status:first").addClass("icon-folder2");
+				container.find(".status:first").removeClass("icon-folder-open");				
+			}
+			
+			if (root) {
+				container.find(".status:first").removeClass("icon-folder2");
+				container.find(".status:first").addClass("icon-chip");
+				
+				container = container.find(".dir-entry-d:first");
+			}
+
+			container.find(".status").closest(".dir-entry-d").find(".status").addClass("icon");
+			container.find(".dir-entry-d").find(".status").addClass("icon-folder2");
+
+			container.find(".dir-entry-f").find(".status").addClass("icon");
+			container.find(".dir-entry-f").find(".status").addClass("icon-file-text2");
   	    },
 		function(err) {
 			Code.showError(err);
@@ -886,34 +1138,11 @@ Code.listBoardDirectory = function(target) {
 	);
 }
 
-Code.workspaceRefresh = function() {
-	//if (Code.mode == 'blocks') {
-	//	if (Code.linked) {
-	//		editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
-	//	}
-	//	Code.editorCurrentFile = Code.blocksCurrentFile;
-	//} else if (Code.selected == 'code') {
-	//	editor.focus();
-	//	
-	  //	var count = Code.workspace.getAllBlocks().length;
-	
-		//if (count > 0) {
-		//	if (Code.linked) {
-		//		editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace), -1);	
-		//	}
-		//	Code.editorCurrentFile = Code.blocksCurrentFile;
-		//}
-		//}
-
-    //jQuery("#tab_blocks").text(MSG['blocks'] + ' ' + Code.blocksCurrentFile.path + '/' + Code.blocksCurrentFile.file);
-    //jQuery("#tab_editor").text(MSG['editor'] + ' ' + Code.editorCurrentFile.path + '/' + Code.editorCurrentFile.file);
-}
-
 Code.tabRefresh = function() {
-	if ((Code.selected == 'program') && (Code.mode == 'blocks')) {
+	if ((Code.selected == 'program') && (Code.workspace.type == 'blocks')) {
 		jQuery("#switchToCode, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToBlocks").addClass("disabled");
-	} else if ((Code.selected == 'program') && (Code.mode == 'editor')) {
+	} else if ((Code.selected == 'program') && (Code.workspace.type == 'editor')) {
 		jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToCode").addClass("disabled");
 	} else if (Code.selected == 'board') {
@@ -925,17 +1154,31 @@ Code.tabRefresh = function() {
 	} else {
 		jQuery("#stopButton, #runButton, #rebootButton, #content_board").removeClass("disabled");
 	}
+
+	if (Code.selected == 'program') {
+		if (Code.workspace.target != '') {
+			var extension = "";
+			if (Code.workspace.type == 'blocks') {
+				extension = "xml";
+			} else if (Code.workspace.type == 'editor') {
+				extension = "lua";
+			}
+			
+			jQuery("#targetFile").html(Code.workspace.source + '.' + extension + '&nbsp;&nbsp;<i class="icon icon-arrow-right6"></i>&nbsp;&nbsp;' + Code.workspace.target);					
+		} else {
+			jQuery("#targetFile").html('');					
+		}
+	} else {
+		jQuery("#targetFile").html('');		
+	}
+	
 }
 
 Code.boardConnected = function() {
-	//Code.showInformation(MSG['boardConnected']);
 	Code.renderContent();
 }
 
 Code.boardDisconnected = function() {
-//	Code.showInformation(MSG['boardDisconnected']);	
-//	Code.tabClick('blocks');
-//	Code.tabRefresh();
 	Code.renderContent();
 }
 
@@ -1088,17 +1331,17 @@ Code.checkFirmware = function() {
 }
 
 Code.switchToCode = function() {
-	var blockCode = Blockly.Lua.workspaceToCode(Code.workspace).trim();
+	var blockCode = Blockly.Lua.workspaceToCode(Code.workspace.blocks).trim();
 
-	Code.mode = "editor";
+	Code.workspace.type = "editor";
 	Code.tabClick("program");
-	editor.setValue(blockCode, -1);
-	editor.focus();
+	Code.workspace.editor.setValue(blockCode, -1);
+	Code.workspace.editor.focus();
 }
 
 Code.switchToBlocks = function() {
-	var blockCode = Blockly.Lua.workspaceToCode(Code.workspace).replace(/\r|\n|\s/g,"");
-	var luaCode = editor.getValue().replace(/\r|\n|\s/g,"");
+	var blockCode = Blockly.Lua.workspaceToCode(Code.workspace.blocks).replace(/\r|\n|\s/g,"");
+	var luaCode = Code.workspace.editor.getValue().replace(/\r|\n|\s/g,"");
 	
 	if (blockCode != luaCode) {
 		bootbox.dialog({
@@ -1109,7 +1352,7 @@ Code.switchToBlocks = function() {
 			      label: MSG['yes'],
 			      className: "btn-primary",
 			      callback: function() {
-				  	Code.mode = "blocks";
+				  	Code.workspace.type = "blocks";
 				  	Code.tabClick("program");					  
 				  }
 			    },
@@ -1123,7 +1366,7 @@ Code.switchToBlocks = function() {
 			closable: false
 		});	
 	} else {
-		Code.mode = "blocks";
+		Code.workspace.type = "blocks";
 		Code.tabClick("program");
 	}
 }
@@ -1140,17 +1383,3 @@ document.head.appendChild(script);
 
 window.addEventListener('load', Code.init);
 window.addEventListener('load', Board.init);
-//var consoleWindow;
-
-//chrome.app.window.create('console.html', {
-  //  id: "consolewin",
-  //  'outerBounds': {
-    //  'width': 400,
-    //  'height': 500
-   // }
- // },
- // function(createdWindow) {
-//	  consoleWindow = createdWindow.contentWindow;	  
- // }
- //);  	
- 
