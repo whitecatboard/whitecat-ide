@@ -65,7 +65,7 @@ Blockly.Blocks.threads.renameVar = function(instance, oldName, newName) {
  * Returns a list suitable for fill a dropdown with thread variables
  */
 Blockly.Blocks.threads.dropdownVariables = function() {
-	var blocks = Code.workspace.getAllBlocks();
+	var blocks = Code.workspace.blocks.getAllBlocks();
 	var variableList = [];
 	var variable;
 
