@@ -895,11 +895,8 @@ Whitecat.run = function(port, file, code, success, fail) {
 						// Code is sended
 
 						//Now run it!
+						Term.enable();
 						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
-							setTimeout(function() {								
-								Term.enable();
-							}, 100);
-							
 							success();
 						});
 				});		
