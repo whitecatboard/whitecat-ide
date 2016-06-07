@@ -390,6 +390,12 @@ Code.init = function() {
 	  el.style.left = (bBox.width - bBox.x - 110 - 400 - 10) + 'px';	
 	  el.style.visibility = 'visible';
     }
+	
+    var bBoxBoardStatus = Code.getBBox_(document.getElementById('boardStatus'));
+	var boardConsole = document.getElementById('boardConsole');
+    boardConsole.style.width = (bBox.width - bBoxBoardStatus.x - bBoxBoardStatus.width - 40) + 'px';
+	boardConsole.style.height = (bBox.height - bBoxBoardStatus.y - 20) + 'px';
+	
     // Make the 'Blocks' tab line up with the toolbox.
     //if (Code.workspace.blocks && Code.workspace.blocks.toolbox_.width) {
     //  document.getElementById('tab_blocks').style.minWidth =
@@ -993,6 +999,8 @@ Code.updateStatus = function() {
 		
 	    Code.bindClick('checkFirmwareButton', Code.checkFirmware);	
 	}
+	
+	Blockly.fireUiEvent(window, 'resize');
 }
 
 Code.listBoardDirectory = function(container, extension, folderSelect, fileSelect, target) {
@@ -1059,6 +1067,7 @@ Code.listBoardDirectory = function(container, extension, folderSelect, fileSelec
 			html += '</ul>';
 
 			container.append(html);
+			Blockly.fireUiEvent(window, 'resize');
 			
 			container.find('.dir-entry-d, .dir-entry-f').unbind().bind('click',function(e) {
 			  var target = jQuery(e.target);
@@ -1176,10 +1185,12 @@ Code.tabRefresh = function() {
 
 Code.boardConnected = function() {
 	Code.renderContent();
+	Term.connect(Board.currentPort());
 }
 
 Code.boardDisconnected = function() {
 	Code.renderContent();
+	Term.disconnect();
 }
 
 Code.boardRecover = function() {
@@ -1383,3 +1394,4 @@ document.head.appendChild(script);
 
 window.addEventListener('load', Code.init);
 window.addEventListener('load', Board.init);
+window.addEventListener('load', Term.init);

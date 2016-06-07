@@ -221,6 +221,7 @@ Whitecat.sendCommand = function(port, command, tOut, success, error) {
 	// Set a timeout
 	function timeout() {
 		chrome.serial.onReceive.removeListener(sendCommandListener);
+		Term.enable();
 		error(Whitecat.ERR_TIMEOUT);
 	}	
 	
@@ -242,6 +243,7 @@ Whitecat.sendCommand = function(port, command, tOut, success, error) {
 									clearTimeout(currentTimeOut);
 									chrome.serial.onReceive.removeListener(sendCommandListener);
 									waitForPrompt = false;
+									Term.enable();
 									success(response);									
 									break;
 								} else {
@@ -263,6 +265,7 @@ Whitecat.sendCommand = function(port, command, tOut, success, error) {
 		}		
 	}
 		
+	Term.disable();
 	chrome.serial.flush(port.connId, function(result) {
 		waitForCommandEcho = true;
 		waitForPrompt = false;
@@ -487,6 +490,8 @@ Whitecat.stop = function(port, success, error) {
 	function stopListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
+			
+			Term.write(str);
 
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
@@ -535,6 +540,7 @@ Whitecat.isBooting = function(port, success, error) {
 	function isBootingListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
+
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
 					if (currentReceived == "LuaOS-booting") {
@@ -550,7 +556,7 @@ Whitecat.isBooting = function(port, success, error) {
 						success(false);		
 						break;			
 					}
-					
+								
 					currentReceived = "";
 				} else {
 					currentReceived = currentReceived + str.charAt(i);	
@@ -589,7 +595,7 @@ Whitecat.isRunning = function(port, success, error) {
 	function isRunningListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
-
+			
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
 					if (currentReceived == "LuaOS-booting") {

@@ -353,3 +353,17 @@ body.modal-open .modal .modal-dialog {
 .btn-toolbar {
 	min-height: 38px;
 }
+
+#boardConsole {
+    font-family: "Courier New",courier,fixed,monospace;
+    font-size: 12px;
+    background: none;
+    letter-spacing: 1px;
+	overflow: hidden;
+	padding: 2px;
+	outline-width: thin;
+}
+
+.blink {
+	background-color: #666;
+}
