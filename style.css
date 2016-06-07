@@ -340,6 +340,8 @@ body.modal-open .modal .modal-dialog {
 
 .waitingForBoard {
 	vertical-align: middle;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
 }
 
 .logo {
@@ -355,14 +357,22 @@ body.modal-open .modal .modal-dialog {
 }
 
 #boardConsole {
-    font-family: "Courier New",courier,fixed,monospace;
-    font-size: 12px;
-    background: none;
-    letter-spacing: 1px;
-	overflow: hidden;
-	padding: 2px;
-	outline-width: thin;
+    font-family: monospace  !important;
+    font-size: 12px  !important;
+    background: none  !important;
+	padding: 2px  !important;
+	outline-width: thin  !important;
 }
+
+.boardConsoleTest {
+    font-family: monospace !important;
+    font-size: 12px !important;
+	position:   'absolute' !important;
+	visibility: 'hidden' !important;
+	display:    'block' !important;
+}
+
+
 
 .blink {
 	background-color: #666;

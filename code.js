@@ -393,8 +393,13 @@ Code.init = function() {
 	
     var bBoxBoardStatus = Code.getBBox_(document.getElementById('boardStatus'));
 	var boardConsole = document.getElementById('boardConsole');
-    boardConsole.style.width = (bBox.width - bBoxBoardStatus.x - bBoxBoardStatus.width - 40) + 'px';
-	boardConsole.style.height = (bBox.height - bBoxBoardStatus.y - 20) + 'px';
+	var width = bBox.width - bBoxBoardStatus.x - bBoxBoardStatus.width - 40;
+	var height = bBox.height - bBoxBoardStatus.y - 20;
+	
+    boardConsole.style.width = width + 'px';
+	boardConsole.style.height = height + 'px';
+	
+	Term.resize(width, height);
 	
     // Make the 'Blocks' tab line up with the toolbox.
     //if (Code.workspace.blocks && Code.workspace.blocks.toolbox_.width) {
@@ -772,7 +777,6 @@ Code.load = function() {
 Code.stop = function() {
 	Board.stop(Board.currentPort(),
 		function() {
-			
 		},
 		function(err) {
 			Code.showError("1" + err);
@@ -1014,7 +1018,7 @@ Code.listBoardDirectory = function(container, extension, folderSelect, fileSelec
 		
 		return;
 	}
-
+	
 	if (typeof target != 'undefined') {
 		container = target;	
 		path = Code.currentFile.path;		
@@ -1026,7 +1030,7 @@ Code.listBoardDirectory = function(container, extension, folderSelect, fileSelec
 	container.find(".waiting").addClass("spinner");
 	container.find(".waiting").addClass("icon");
 	container.find(".waiting").addClass("icon-spinner3");
-	
+
 	Whitecat.listDirectory(Whitecat.currentPort(), path, 
 		function(entries) {
 			var html = '';
@@ -1185,7 +1189,7 @@ Code.tabRefresh = function() {
 
 Code.boardConnected = function() {
 	Code.renderContent();
-	Term.connect(Board.currentPort());
+	Term.connect(Board.currentPort());	
 }
 
 Code.boardDisconnected = function() {
