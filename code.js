@@ -521,7 +521,7 @@ Code.initLanguage = function() {
   document.getElementById('trashButton').title = MSG['trashTooltip'];
 
   var categories = [
-	  'catIO','catIODigital','catIOAnalog','catIOPwm','catControl','catThreads','catLogic',
+	  'catIO','catComm','catI2C','catIODigital','catIOAnalog','catIOPwm','catControl','catThreads','catLogic',
 	  'catLoops', 'catMath', 'catText', 'catLists','catColour', 'catVariables', 'catFunctions'
   ];
   

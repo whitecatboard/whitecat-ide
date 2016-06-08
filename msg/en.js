@@ -69,4 +69,6 @@ var MSG = {
   saveAs: 'Save As: ',
   noTarget: 'Please, select target file for run this ',
   run: 'Run',
+  catComm: "Communications",
+  catI2C: "I2C",
 };

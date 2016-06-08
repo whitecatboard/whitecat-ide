@@ -22,12 +22,14 @@
   <script src="blocks_compressed.js"></script>
   <script src="lua_compressed.js"></script>
   <script src="blocks/io.js"></script>
+  <script src="blocks/i2c.js"></script>
   <script src="blocks/control.js"></script>
   <script src="blocks/threads.js"></script>
   <script src="code.js"></script>
   <script src="lib/luaparser.js"></script>
   <script src="generators/luatoblocks.js"></script>
   <script src="generators/lua/io.js"></script>
+  <script src="generators/lua/i2c.js"></script>
   <script src="generators/lua/control.js"></script>
   <script src="generators/lua/threads.js"></script>
 </head>
@@ -175,6 +177,28 @@
 			</block>
 		</category>
     </category>
+    <category id="catComm" colour="20">
+		<category id="catI2C">
+			<block type="configurei2c">
+		        <value name="SPEED">
+		          <shadow type="math_number">
+		            <field name="NUM">1000</field>
+		          </shadow>
+		        </value>
+			</block>
+			<block type="i2cstartcondition"></block>
+			<block type="i2cstopcondition"></block>
+			<block type="i2caddress">
+		        <value name="ADDRESS">
+		          <shadow type="math_number">
+		            <field name="NUM">0</field>
+		          </shadow>
+		        </value>
+			</block>
+			<block type="i2cread"></block>
+			<block type="i2cwrite"></block>
+		</category>
+	</category>
     <category id="catControl" colour="210">
       <block type="wait_for"></block>
     </category>

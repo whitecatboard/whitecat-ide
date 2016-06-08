@@ -43,6 +43,84 @@ Whitecat.inDetect = false;
 Whitecat.inRecover = false;
 Whitecat.detectInterval = null;
 
+// Digital pins map
+Whitecat.digitalPins = {
+	"8" : "pio.PB_5",
+	"9" : "pio.PB_4",
+	"10": "pio.PB_3",
+	"11": "pio.PB_2",
+	"12": "pio.PB_1",
+	"13": "pio.PB_0",
+	"14": "pio.PB_6",
+	"15": "pio.PB_7",
+	"16": "pio.PB_8",
+	"17": "pio.PB_15",
+	"18": "pio.PB_13",
+	"19": "pio.PB_12",
+	"20": "pio.PC_15",
+	"27": "pio.PD_9",
+	"28": "pio.PD_10",
+	"29": "pio.PD_11",
+	"30": "pio.PD_0",
+	"31": "pio.PC_13",
+	"32": "pio.PC_14",
+	"35": "pio.PD_4",
+	"36": "pio.PD_5",
+	"37": "pio.PE_0",
+	"38": "pio.PE_1",
+	"39": "pio.PE_2",
+	"40": "pio.PE_3",
+	"41": "pio.PE_4",
+	"42": "pio.PE_5",
+	"43": "pio.PE_6",
+	"44": "pio.PE_7"
+};
+
+// Analog pins map
+Whitecat.analogPins = {
+	"9" : "pio.PB_4",
+	"10": "pio.PB_3",
+    "11": "pio.PB_2",
+    "12": "pio.PB_1",
+	"13": "pio.PB_0",
+};
+
+Whitecat.analogPinsChannel = {
+	"9" : "4",
+	"10": "3",
+    "11": "2",
+    "12": "1",
+	"13": "0",
+};
+
+// PWM pins map
+Whitecat.pwmPins = {
+	"12": "pio.PB_2",
+	"14": "pio.PB_6",
+	"12": "pio.PB_1",
+	"13": "pio.PB_0",
+	"10": "pio.PB_3",
+	"16": "pio.PB_8",
+};
+
+Whitecat.pwmPinsChannel = {
+	"12": "1",
+	"14": "2",
+	"12": "4",
+	"13": "5",
+	"10": "7",
+	"16": "8",
+};
+
+// I2C map
+Whitecat.i2cModules = {
+	"BB1": "i2c.I2CBB1",
+	"BB2": "i2c.I2CBB2",
+	"BB3": "i2c.I2CBB3",
+	"BB4": "i2c.I2CBB4",
+	"BB5": "i2c.I2CBB5",
+}
+
 Whitecat.currentPort = function() {
 	for (var i = 0; i < Whitecat.ports.length; i++) {
 		if (Whitecat.ports[i].connId != null) {
@@ -117,74 +195,6 @@ Whitecat.port.markAllForDelete = function() {
 
 	return;
 }
-
-Whitecat.digitalPins = {
-	"8" : "pio.PB_5",
-	"9" : "pio.PB_4",
-	"10": "pio.PB_3",
-	"11": "pio.PB_2",
-	"12": "pio.PB_1",
-	"13": "pio.PB_0",
-	"14": "pio.PB_6",
-	"15": "pio.PB_7",
-	"16": "pio.PB_8",
-	"17": "pio.PB_15",
-	"18": "pio.PB_13",
-	"19": "pio.PB_12",
-	"20": "pio.PC_15",
-	"27": "pio.PD_9",
-	"28": "pio.PD_10",
-	"29": "pio.PD_11",
-	"30": "pio.PD_0",
-	"31": "pio.PC_13",
-	"32": "pio.PC_14",
-	"35": "pio.PD_4",
-	"36": "pio.PD_5",
-	"37": "pio.PE_0",
-	"38": "pio.PE_1",
-	"39": "pio.PE_2",
-	"40": "pio.PE_3",
-	"41": "pio.PE_4",
-	"42": "pio.PE_5",
-	"43": "pio.PE_6",
-	"44": "pio.PE_7"
-};
-
-Whitecat.analogPins = {
-	"9" : "pio.PB_4",
-	"10": "pio.PB_3",
-    "11": "pio.PB_2",
-    "12": "pio.PB_1",
-	"13": "pio.PB_0",
-};
-
-Whitecat.analogPinsChannel = {
-	"9" : "4",
-	"10": "3",
-    "11": "2",
-    "12": "1",
-	"13": "0",
-};
-
-Whitecat.pwmPins = {
-	"12": "pio.PB_2",
-	"14": "pio.PB_6",
-	"12": "pio.PB_1",
-	"13": "pio.PB_0",
-	"10": "pio.PB_3",
-	"16": "pio.PB_8",
-};
-
-Whitecat.pwmPinsChannel = {
-	"12": "1",
-	"14": "2",
-	"12": "4",
-	"13": "5",
-	"10": "7",
-	"16": "8",
-};
-
-var Board = Whitecat;
 
 Whitecat.ab2str = function(buf) {
   var bufView = new Uint8Array(buf);
@@ -1050,3 +1060,5 @@ Whitecat.checkForNewFirmwareAvailability = function(port, success, error) {
 		}
 	);
 }
+
+var Board = Whitecat;
