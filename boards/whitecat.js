@@ -913,6 +913,11 @@ Whitecat.run = function(port, file, code, success, fail) {
 								exceptionFile = tmp[1].trim();
 								exceptionLine = tmp[2].trim();
 								exceptionMessage = tmp[3].trim();									
+							} else {
+								if (currentReceived.match(/^\/.*\>\s$/g)) {
+									chrome.serial.onReceive.removeListener(runListener);
+									return;
+								}
 							}
 						}
 						
@@ -922,6 +927,7 @@ Whitecat.run = function(port, file, code, success, fail) {
 								
 								if (exceptionFile && exceptionLine && exceptionMessage) {
 									fail(exceptionFile,exceptionLine,exceptionMessage);
+									return;
 								}								
 							}
 						}
@@ -958,6 +964,7 @@ Whitecat.run = function(port, file, code, success, fail) {
 						WaitForPrompt = false;
 						chrome.serial.onReceive.addListener(runListener);
 						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
+							success();
 						});
 				});		
 			},
