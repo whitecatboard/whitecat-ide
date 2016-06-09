@@ -71,4 +71,7 @@ var MSG = {
   run: 'Run',
   catComm: "Communications",
   catI2C: "I2C",
+  runtimeError: "Runtime error",
+  ok: "Ok",
+  youHaveAnError: "You have an error in your code:",
 };

@@ -589,8 +589,8 @@ Code.run = function() {
 			function() {
 				Code.hideProgress();
 			},
-			function() {
-				Code.hideProgress();			
+			function(file, line, message) {
+				Code.showError(MSG['youHaveAnError'] + '<br><br>' + message);		
 			}
 		);			
 	}
@@ -972,7 +972,26 @@ Code.showAlert = function(text) {
 }
 
 Code.showError = function(err) {
-	Code.showAlert("Error: " + err);
+	BootstrapDialog.closeAll();
+	bootbox.hideAll();
+
+	setTimeout(function() {
+	   	bootbox.dialog({
+	   		title: MSG['runtimeError'],
+	   	    message: err ,
+	   		buttons: {
+	   		    main: {
+	   		      label: MSG['ok'],
+	   		      className: "btn-primary",
+	   		      callback: function() {
+	   			  }
+	   		    }
+			},
+	   		closable: false
+	   	});			
+	}, 500);
+	
+	//Code.showAlert("Error: " + err);
 }
 
 Code.updateStatus = function() {

@@ -59,4 +59,7 @@ var MSG = {
   saveToDesktop: 'Guardar en el ordenador ...',
   saveAs: 'Guardar como: ',
   run: 'Ejecutar',
+  runtimeError: "Error en tiempo de ejecución",
+  ok: "Deacuerdo",
+  youHaveAnError: "Tienes un error en tu código:",
 };

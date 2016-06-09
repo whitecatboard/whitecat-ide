@@ -886,7 +886,55 @@ Whitecat.init = function(state) {
 // Run current generated code to the whitecat
 Whitecat.run = function(port, file, code, success, fail) {
 	var currentReceived = "";
+	var waitForException = false;
+	var waitForTraceback = false;
+	var WaitForPrompt = false;
+	var exceptionFile = "";
+	var exceptionLine = 0;
+	var exceptionMessage = "";
 	
+	function runListener(info) {
+		var tmp;
+				
+	    if (info.connectionId == port.connId && info.data) {
+			var str = Whitecat.ab2str(info.data);
+			
+			for(var i = 0; i < str.length; i++) {
+				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
+					if (currentReceived !== "") {
+						Term.write(currentReceived + "\r\n");
+						
+						if (waitForException) {
+							tmp = currentReceived.match(/^(.*\.lua)\:([0-9]*)\:(.*)/);
+							if (tmp) {
+								waitForException = false;
+								//waitForTraceback = true;
+								WaitForPrompt = true;
+								exceptionFile = tmp[1].trim();
+								exceptionLine = tmp[2].trim();
+								exceptionMessage = tmp[3].trim();									
+							}
+						}
+						
+						if (WaitForPrompt) {
+							if (currentReceived.match(/^\/.*\>\s$/g)) {
+								chrome.serial.onReceive.removeListener(runListener);
+								
+								if (exceptionFile && exceptionLine && exceptionMessage) {
+									fail(exceptionFile,exceptionLine,exceptionMessage);
+								}								
+							}
+						}
+					}
+					
+					currentReceived = "";
+				} else {
+					currentReceived = currentReceived + str.charAt(i);
+				}
+			}
+		}
+	}
+					
 	if (code.trim() == "") {
 		success();
 		return;
@@ -904,10 +952,12 @@ Whitecat.run = function(port, file, code, success, fail) {
 					function() {
 						// Code is sended
 
-						//Now run it!
-						Term.enable();
+						//Now run it!						
+						waitForException = true;
+						waitForTraceback = false;
+						WaitForPrompt = false;
+						chrome.serial.onReceive.addListener(runListener);
 						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
-							success();
 						});
 				});		
 			},
