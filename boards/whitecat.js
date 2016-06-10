@@ -926,6 +926,7 @@ Whitecat.run = function(port, file, code, success, fail) {
 								chrome.serial.onReceive.removeListener(runListener);
 								
 								if (exceptionFile && exceptionLine && exceptionMessage) {
+									Term.enable();
 									fail(exceptionFile,exceptionLine,exceptionMessage);
 									return;
 								}								
