@@ -570,6 +570,10 @@ Code.discard = function() {
 	}	
 };
 
+Code.runtimeError = function(file, line, message) {
+	Code.showError(MSG['youHaveAnError'] + '<br><br>' + message);	
+}
+
 Code.run = function() {
 	var code = "";	
 

@@ -43,6 +43,8 @@ Whitecat.inDetect = false;
 Whitecat.inRecover = false;
 Whitecat.detectInterval = null;
 
+Whitecat.runQueue = [];
+
 // Digital pins map
 Whitecat.digitalPins = {
 	"8" : "pio.PB_5",
@@ -237,7 +239,8 @@ Whitecat.sendCommand = function(port, command, tOut, success, error) {
 	function sendCommandListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
-
+			Whitecat.runQueue.push(str);
+			
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
 					if (currentReceived !== "") {
@@ -299,6 +302,7 @@ Whitecat.receiveFile = function(port, fileName, received) {
 	function receiveChunkListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
+			
 			for(var i = 0; i < str.length; i++) {
 				if (waitForS) {
 					waitForS = false;	
@@ -337,6 +341,8 @@ Whitecat.receiveFile = function(port, fileName, received) {
 	function waitForCommandEcho(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
+			Whitecat.runQueue.push(str);
+			
 			for(var i = 0; i < str.length; i++) {
 				currentReceived = currentReceived + str.charAt(i);
 				
@@ -416,6 +422,7 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 	function waitForCommandEcho(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
+			Whitecat.runQueue.push(str);
 
 			for(var i = 0; i < str.length; i++) {
 				currentReceived = currentReceived + str.charAt(i);
@@ -506,6 +513,7 @@ Whitecat.stop = function(port, success, error) {
 	function stopListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
+			Whitecat.runQueue.push(str);
 			
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
@@ -556,6 +564,7 @@ Whitecat.isBooting = function(port, success, error) {
 	function isBootingListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
+			Whitecat.runQueue.push(str);
 			
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
@@ -611,6 +620,7 @@ Whitecat.isRunning = function(port, success, error) {
 	function isRunningListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
+			Whitecat.runQueue.push(str);
 			
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
@@ -881,67 +891,52 @@ Whitecat.init = function(state) {
 	Whitecat.detectInterval = setInterval(function(){
 		Whitecat.detect();
 	}, 100);
+
+	if (!Whitecat.runListenerRunning) {
+		setTimeout(function() {
+			Whitecat.runListener();
+		}, 50);
+	}
 };
+
+Whitecat.runListenerRunning = false;
+Whitecat.runListenerCurrentReceived = "";
+
+Whitecat.runListener = function() {
+	Whitecat.runListenerRunning = true;
+	
+	while (Whitecat.runQueue.length > 0) {
+		var str = Whitecat.runQueue[0];
+		
+		for(var i = 0; i < str.length; i++) {
+			if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
+				if (Whitecat.runListenerCurrentReceived !== "") {
+					var tmp = Whitecat.runListenerCurrentReceived.match(/^(.*\.lua)\:([0-9]*)\:(.*)/);
+					if (tmp) {
+						var exceptionFile = tmp[1].trim();
+						var exceptionLine = tmp[2].trim();
+						var exceptionMessage = tmp[3].trim();	
+						
+						Code.runtimeError(exceptionFile, exceptionLine, exceptionMessage);						
+					} 
+				}
+				
+				Whitecat.runListenerCurrentReceived = "";
+			} else {
+				Whitecat.runListenerCurrentReceived = Whitecat.runListenerCurrentReceived + str.charAt(i);
+			}
+		}	
+		
+		Whitecat.runQueue.splice(str, 1);					
+	}
+	
+	setTimeout(function() {
+		Whitecat.runListener();
+	}, 50);
+}
 
 // Run current generated code to the whitecat
 Whitecat.run = function(port, file, code, success, fail) {
-	var currentReceived = "";
-	var waitForException = false;
-	var waitForTraceback = false;
-	var WaitForPrompt = false;
-	var exceptionFile = "";
-	var exceptionLine = 0;
-	var exceptionMessage = "";
-	
-	function runListener(info) {
-		var tmp;
-				
-	    if (info.connectionId == port.connId && info.data) {
-			var str = Whitecat.ab2str(info.data);
-			
-			for(var i = 0; i < str.length; i++) {
-				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
-					if (currentReceived !== "") {
-						Term.write(currentReceived + "\r\n");
-						
-						if (waitForException) {
-							tmp = currentReceived.match(/^(.*\.lua)\:([0-9]*)\:(.*)/);
-							if (tmp) {
-								waitForException = false;
-								//waitForTraceback = true;
-								WaitForPrompt = true;
-								exceptionFile = tmp[1].trim();
-								exceptionLine = tmp[2].trim();
-								exceptionMessage = tmp[3].trim();									
-							} else {
-								if (currentReceived.match(/^\/.*\>\s$/g)) {
-									chrome.serial.onReceive.removeListener(runListener);
-									return;
-								}
-							}
-						}
-						
-						if (WaitForPrompt) {
-							if (currentReceived.match(/^\/.*\>\s$/g)) {
-								chrome.serial.onReceive.removeListener(runListener);
-								
-								if (exceptionFile && exceptionLine && exceptionMessage) {
-									Term.enable();
-									fail(exceptionFile,exceptionLine,exceptionMessage);
-									return;
-								}								
-							}
-						}
-					}
-					
-					currentReceived = "";
-				} else {
-					currentReceived = currentReceived + str.charAt(i);
-				}
-			}
-		}
-	}
-					
 	if (code.trim() == "") {
 		success();
 		return;
@@ -963,8 +958,8 @@ Whitecat.run = function(port, file, code, success, fail) {
 						waitForException = true;
 						waitForTraceback = false;
 						WaitForPrompt = false;
-						chrome.serial.onReceive.addListener(runListener);
-						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
+						chrome.serial.send(port.connId,  Whitecat.str2ab("thread.start(function() dofile(\""+file+"\") end)\r\n"), function() {
+							Term.enable();
 							success();
 						});
 				});		
