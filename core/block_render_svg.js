@@ -75,7 +75,7 @@ Blockly.BlockSvg.CORNER_RADIUS = 8;
  * Do blocks with no previous or output connections have a 'hat' on top?
  * @const
  */
-Blockly.BlockSvg.START_HAT = false;
+Blockly.BlockSvg.START_HAT = true;
 /**
  * Path of the top hat's curve.
  * @const
