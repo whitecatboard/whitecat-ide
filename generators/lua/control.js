@@ -28,7 +28,7 @@
  */
 'use strict';
 
-goog.provide('Blockly.Lua.io');
+goog.provide('Blockly.Lua.control');
 
 goog.require('Blockly.Lua');
 
