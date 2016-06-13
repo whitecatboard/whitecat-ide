@@ -82,7 +82,7 @@ Blockly.Lua['i2caddress'] = function(block) {
 	
 	code = 'i2c.address(' + Board.i2cModules[module]  + ', ' + address + ', ' + direction + ')\n';
 
-	return code;
+	return [code, Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['i2cread'] = function(block) {
@@ -92,15 +92,16 @@ Blockly.Lua['i2cread'] = function(block) {
 	
 	code = 'i2c.read(' + Board.i2cModules[module]  + ')\n';
 
-	return code;
+	return [code, Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['i2cwrite'] = function(block) {
 	var module = block.getFieldValue('MODULE');
+	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);	
 	
 	var code = '';
 	
-	code = 'i2c.write(' + Board.i2cModules[module]  + ')\n';
+	code = 'i2c.write(' + Board.i2cModules[module]  + ', ' + value + ')\n';
 
-	return code;
+	return [code, Blockly.Lua.ORDER_HIGH];
 };

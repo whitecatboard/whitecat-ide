@@ -452,6 +452,7 @@ Code.init = function() {
 	  Code.bindClick('switchToBlocks', Code.switchToBlocks);
 	  Code.bindClick('loadButton', Code.load);
 	  Code.bindClick('saveButton', Code.save);
+	  Code.bindClick('saveAsButton', Code.saveAs);
 	  Code.bindClick('stopButton', Code.stop);
 	  Code.bindClick('runButton', Code.run);
 	  Code.bindClick('rebootButton', Code.reboot);
@@ -926,6 +927,122 @@ Code.save = function() {
 	}
 };
 
+Code.saveAs = function() {
+	var code;      // Code to save (Lua source code or xml)
+	var extension; // Extension to use (.lua or .xml)
+
+    var container = document.getElementById('content_area');
+    var bBox = Code.getBBox_(container);
+
+	if (Code.workspace.type == 'blocks') {
+		extension = "xml";
+		code = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Code.workspace.blocks));
+	} else if (Code.workspace.type == 'editor') {
+		extension = "lua";
+		code = Code.workspace.editor.getValue();
+	}
+		
+	function saveToFile(fileEntry) {
+		if (chrome.runtime.lastError) {
+			return;
+		}
+
+		fileEntry.createWriter(function(fileWriter) {
+	      var truncated = false;
+		  var blob = new Blob([code]);
+		  			  
+	      fileWriter.onwriteend = function(e) {
+			bootbox.hideAll();
+	        if (!truncated) {
+	          truncated = true;
+	          // You need to explicitly set the file size to truncate
+	          // any content that might have been there before
+	          this.truncate(blob.size);
+			  Code.tabRefresh();
+	          return;
+	        }
+	      };
+
+	      fileWriter.onerror = function(e) {
+	      };
+
+	      fileWriter.write(blob, {type: 'text/plain'});
+		});
+	}
+	
+	function saveToBoard(folder, file) {
+		Code.showProgress(MSG['sendingFile'] + " " + folder + file + " ...");	
+		Whitecat.sendFile(Whitecat.currentPort(), folder + file, code, 
+			function() {
+				Code.workspace.sourceType = "board";
+				Code.workspace.name = file.replace(/\.([^.]*?)$/, "");
+				Code.workspace.target = folder + "/" + Code.workspace.name + ".lua";
+				Code.workspace.source = folder + "/" + Code.workspace.name;
+				
+				Code.hideProgress();
+				Code.tabRefresh();
+		});					  
+	}
+	
+   	function folderSelected(folder) {
+		if (folder != '/') {
+			folder = folder + '/';
+		}
+		
+		jQuery("#selectedFolder").text(folder);
+		jQuery("#selectedFolder").data("selected", folder);
+   	}
+	
+   	function fileSelected(file) {
+		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
+   	}
+
+   	bootbox.dialog({
+   		title: MSG['saveBlockTitle'],
+   	    message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:'+(bBox.height * 0.50)+'px;"></div><br>' +
+				 MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="">' + '.' + extension ,
+   		buttons: {
+   		    main: {
+   		      label: MSG['saveToBoard'],
+   		      className: "btn-primary",
+   		      callback: function() {
+				  var file = jQuery("#selectedFileName").val();
+				  if (file != "") {
+					  saveToBoard(jQuery("#selectedFolder").data("selected"), file + '.' + extension);
+				  } else {
+					  return false;
+				  }
+   			  }
+   		    },
+   		    success: {
+   		      label: MSG['saveToDesktop'],
+   		      className: "btn-primary",
+   		      callback: function() {
+			      chrome.fileSystem.chooseEntry( {
+			           type: 'saveFile',
+			           suggestedName: 'unnamed.'+ extension,
+			           accepts: [ { description: extension + ' files (*.' + extension + ')',
+			                        extensions: [extension]} ],
+			           acceptsAllTypes: false
+			         }, saveToFile);
+				 
+				  return false;
+   			  }
+   		    },
+   		    danger: {
+   		      label: MSG['cancel'],
+   		      className: "btn-danger",
+   		      callback: function() {
+   		      }
+   		    },
+   		},
+   		closable: false
+   	});	
+	
+	folderSelected("/");	
+   	Code.listBoardDirectory(jQuery('#saveFile'), extension, folderSelected, fileSelected);
+};
+
 // Progress messages
 Code.showProgress = function(title) {
 	BootstrapDialog.closeAll();
@@ -1176,13 +1293,13 @@ Code.listBoardDirectory = function(container, extension, folderSelect, fileSelec
 
 Code.tabRefresh = function() {
 	if ((Code.selected == 'program') && (Code.workspace.type == 'blocks')) {
-		jQuery("#switchToCode, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("#switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToBlocks").addClass("disabled");
 	} else if ((Code.selected == 'program') && (Code.workspace.type == 'editor')) {
-		jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToCode").addClass("disabled");
 	} else if (Code.selected == 'board') {
-		jQuery("#switchToCode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
+		jQuery("#switchToCode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
 	}
 	
 	if (!Board.isConnected()) {

@@ -69,6 +69,9 @@
   			  <button id="saveButton" type="button" class="btn btn-default" aria-label="Left Align">
   			    <span class="icon icon-floppy-disk" aria-hidden="true"></span>
   			  </button>
+  			  <button id="saveAsButton" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-floppy-disks" aria-hidden="true"></span>
+  			  </button>
   			  <button id="rebootButton"type="button" class="btn btn-default disabled" aria-label="Left Align">
   			    <span class="icon icon-spinner11" aria-hidden="true"></span>
   			  </button>
@@ -196,7 +199,13 @@
 		        </value>
 			</block>
 			<block type="i2cread"></block>
-			<block type="i2cwrite"></block>
+			<block type="i2cwrite">
+		        <value name="VALUE">
+		          <shadow type="math_number">
+		            <field name="NUM">0</field>
+		          </shadow>
+		        </value>
+			</block>
 		</category>
 	</category>
     <category id="catControl" colour="210">

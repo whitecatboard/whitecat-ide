@@ -139,12 +139,13 @@ Blockly.Blocks['i2caddress'] = {
           .appendField(' ' + Blockly.Msg.for + ' ')
           .appendField(new Blockly.FieldDropdown([[Blockly.Msg.read,'read'],[Blockly.Msg.write,'write']]), "DIRECTION");
 
-	  this.setInputsInline(true);
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(Blockly.Blocks.i2c.HUE);
-      this.setTooltip('');
-      this.setHelpUrl('http://www.example.com/');
+	  	this.setOutput(true, null);
+	      this.setInputsInline(true);
+	      this.setPreviousStatement(false, null);
+	      this.setNextStatement(false, null);
+	      this.setColour(Blockly.Blocks.io.HUE);
+	      this.setTooltip('');
+	      this.setHelpUrl('http://www.example.com/');
   }
 };
 
@@ -160,12 +161,13 @@ Blockly.Blocks['i2cread'] = {
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField(Blockly.Msg.i2cReadFrom)
           .appendField(new Blockly.FieldDropdown(modules), "MODULE");
-	  this.setInputsInline(true);
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(Blockly.Blocks.i2c.HUE);
-      this.setTooltip('');
-      this.setHelpUrl('http://www.example.com/');
+	  	this.setOutput(true, null);
+	      this.setInputsInline(true);
+	      this.setPreviousStatement(false, null);
+	      this.setNextStatement(false, null);
+	      this.setColour(Blockly.Blocks.io.HUE);
+	      this.setTooltip('');
+	      this.setHelpUrl('http://www.example.com/');
   }
 };
 
@@ -180,12 +182,17 @@ Blockly.Blocks['i2cwrite'] = {
       this.appendDummyInput()
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField(Blockly.Msg.i2cWriteTo)
-          .appendField(new Blockly.FieldDropdown(modules), "MODULE");
-	  this.setInputsInline(true);
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(Blockly.Blocks.i2c.HUE);
-      this.setTooltip('');
-      this.setHelpUrl('http://www.example.com/');
+          .appendField(new Blockly.FieldDropdown(modules), "MODULE")
+		  .appendField(' ' + MSG['value'] + ' ');
+
+  this.appendValueInput("VALUE")
+ 	  	   .setCheck('Number');
+	  	this.setOutput(true, null);
+	      this.setInputsInline(true);
+	      this.setPreviousStatement(false, null);
+	      this.setNextStatement(false, null);
+	      this.setColour(Blockly.Blocks.io.HUE);
+	      this.setTooltip('');
+	      this.setHelpUrl('http://www.example.com/');
   }
 };

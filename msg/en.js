@@ -74,4 +74,5 @@ var MSG = {
   runtimeError: "Runtime error",
   ok: "Ok",
   youHaveAnError: "You have an error in your code:",
+  value: 'value',
 };

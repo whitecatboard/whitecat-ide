@@ -593,7 +593,7 @@ Whitecat.isBooting = function(port, success, error) {
 	// Set a timeout
 	currentTimeOut = setTimeout(function(){
 		timeout();
-	}, 5500);
+	}, 10000);
 
 	// Send a Ctrl-D for test if LuaOS is booting
 	chrome.serial.onReceive.addListener(isBootingListener);
@@ -664,7 +664,7 @@ Whitecat.isRunning = function(port, success, error) {
 
 Whitecat.getStatus = function(port, success, error) {
 	Term.disable();
-	Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();local cpu = os.cpu();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\",\\"cpu\\":\\""..cpu.."\\"}");end;', 1000,
+	Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();local cpu = os.cpu();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\",\\"cpu\\":\\""..cpu.."\\"}");end;', 5000,
 		function(resp) {
 			Term.enable();
 			try {
@@ -906,7 +906,7 @@ Whitecat.runListener = function() {
 	Whitecat.runListenerRunning = true;
 	
 	while (Whitecat.runQueue.length > 0) {
-		var str = Whitecat.runQueue[0];
+		var str = Whitecat.runQueue.shift();
 		
 		for(var i = 0; i < str.length; i++) {
 			if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
@@ -926,8 +926,6 @@ Whitecat.runListener = function() {
 				Whitecat.runListenerCurrentReceived = Whitecat.runListenerCurrentReceived + str.charAt(i);
 			}
 		}	
-		
-		Whitecat.runQueue.splice(str, 1);					
 	}
 	
 	setTimeout(function() {
@@ -990,8 +988,6 @@ Whitecat.listDirectory = function(port, name, success, error) {
 						var entry = elements[3].trim();						
 
 						entries.push({type: type, size: size, date: date, name: entry});
-					} else {
-						error(Whitecat.ERR_INVALID_RESPONSE);
 					}
 				});
 			}

@@ -62,4 +62,5 @@ var MSG = {
   runtimeError: "Error en tiempo de ejecución",
   ok: "Deacuerdo",
   youHaveAnError: "Tienes un error en tu código:",
+  value: 'valor',
 };
