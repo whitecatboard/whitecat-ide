@@ -187,7 +187,7 @@ Blockly.Lua['getanalogpin'] = function(block) {
 	
 	var code = '';
 	
-	code = 'adc1_chan' + Board.analogPinsChannel[pin] + ':read()[1]\n';
+	code = 'adc1_chan' + Board.analogPinsChannel[pin] + ':read()\n';
 		
 	return [code, Blockly.Lua.ORDER_HIGH];
 };

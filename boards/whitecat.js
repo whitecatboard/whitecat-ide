@@ -446,6 +446,86 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 	});
 };
 
+// run code in fileName on the whitecat
+Whitecat.runCode = function(port, fileName, content, running) {
+	var outputIndex = 0;
+	var currentReceived = "";
+	var runCommand =  "os.run()\r";
+	var waitForC = false;
+	var waitForN = false;
+	
+	function sendChunk() {
+		// Get a new chunk
+		var chunk = content.slice(outputIndex, outputIndex + Whitecat.chunkSize);
+
+		// Send size
+		chrome.serial.send(port.connId, Whitecat.str2ab(String.fromCharCode(chunk.length)), function(info) {
+			if (chunk.length > 0) {
+				// Send chunk
+				chrome.serial.send(port.connId, Whitecat.str2ab(chunk), function(info) {					
+					waitForC = true;
+					waitForN = false;
+					
+					chrome.serial.onReceive.addListener(waitForSend);
+				});
+			} else {
+				Term.enable();
+				running();
+			}						
+		});
+	
+		// Increment next chunk start position
+		outputIndex += chunk.length;	
+	}
+	
+	function waitForSend(info) {
+	    if (info.connectionId == port.connId && info.data) {
+			var str = Whitecat.ab2str(info.data);
+
+			for(var i = 0; i < str.length; i++) {
+				if ((str.charAt(i) === 'C') && (waitForC)) {
+					waitForC = false;
+					waitForN = true;
+				}
+				
+				if ((str.charAt(i) === '\n') && (waitForN)) {
+					waitForC = false;
+					waitForN = false;
+
+					chrome.serial.onReceive.removeListener(waitForSend);
+					sendChunk();
+				}
+			}		
+		}			
+	}
+	
+	function waitForCommandEcho(info) {
+	    if (info.connectionId == port.connId && info.data) {
+			var str = Whitecat.ab2str(info.data);
+			Whitecat.runQueue.push(str);
+
+			for(var i = 0; i < str.length; i++) {
+				currentReceived = currentReceived + str.charAt(i);
+
+				if (currentReceived == runCommand) {
+					waitForC = true;
+					waitForN = false;
+					chrome.serial.onReceive.removeListener(waitForCommandEcho);
+					chrome.serial.onReceive.addListener(waitForSend);
+				}
+			}		
+		}			
+	}
+
+	Term.disable();
+	chrome.serial.flush(port.connId, function(result) {
+		chrome.serial.onReceive.addListener(waitForCommandEcho);
+		
+		chrome.serial.send(port.connId, Whitecat.str2ab(runCommand), function() {
+		});
+	});
+};
+
 // Check if a file exists in the whitecat
 Whitecat.fileExists = function(port, name, callback) {
 	Whitecat.sendCommand(port, "do;local f = io.open('"+name+"',\"r\");if f ~= nil then io.close(f) print(\"true\") else print(\"false\") end end;", 1000,
@@ -477,7 +557,7 @@ Whitecat.stop = function(port, success, error) {
 		Whitecat.sendCommand(port, 'do;thread.stop();local n = thread.list("*n");print(n);end;', 1000, 
 			function(resp) {
 				if (resp == "0") {
-					Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\"}");end;', 1000,
+					Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\"}");end;', 2000,
 						function(resp) {
 							try {
 								resp = JSON.parse(resp);
@@ -934,6 +1014,36 @@ Whitecat.runListener = function() {
 }
 
 // Run current generated code to the whitecat
+Whitecat.runNew = function(port, file, code, success, fail) {
+	if (code.trim() == "") {
+		success();
+		return;
+	}
+		
+	Term.disable();
+	chrome.serial.flush(port.connId, function() {
+		// Stop anything running
+		Whitecat.stop(
+			port,
+			function() {
+				// Whitecat is stopped
+				// Send code
+				Whitecat.runCode(port, file, code, 
+					function() {
+						// Code is running
+						Term.enable();
+						success();
+					}
+				);		
+			},
+			function() {
+				Term.enable();
+				fail();
+			}
+		);							
+	});
+};
+
 Whitecat.run = function(port, file, code, success, fail) {
 	if (code.trim() == "") {
 		success();
