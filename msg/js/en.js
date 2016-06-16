@@ -427,11 +427,19 @@ Blockly.Msg.i2cSDA = 'sda at pin';
 Blockly.Msg.i2cSCL = 'scl at pin';
 Blockly.Msg.i2cSpeed = 'speed';
 Blockly.Msg.Khz = 'Khz';
-Blockly.Msg.i2cStartConditionFor = 'start condition for I2C';
-Blockly.Msg.i2cStopConditionFor = 'stop condition for I2C';
+Blockly.Msg.i2cStartConditionFor = 'START condition for I2C';
+Blockly.Msg.i2cStopConditionFor = 'STOP condition for I2C';
 Blockly.Msg.i2cAddress = 'address for I2C';
 Blockly.Msg.for = 'for';
 Blockly.Msg.read = 'Read';
 Blockly.Msg.write = 'Write';
 Blockly.Msg.i2cReadFrom = 'read from I2C';
 Blockly.Msg.i2cWriteTo = 'write to I2C';
+
+Blockly.Msg.BITLOGIC_MSB_HELPURL = "";
+Blockly.Msg.BITLOGIC_MSB_TITLE = "MSB %1";
+Blockly.Msg.BITLOGIC_MSB_TOOLTIP = "Returns the MSB (most significant byte) of the input.";
+
+Blockly.Msg.BITLOGIC_LSB_HELPURL = "";
+Blockly.Msg.BITLOGIC_LSB_TITLE = "LSB %1";
+Blockly.Msg.BITLOGIC_LSB_TOOLTIP = "Returns the LSB (less significant byte) of the input.";

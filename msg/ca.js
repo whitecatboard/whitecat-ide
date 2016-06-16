@@ -59,6 +59,8 @@ var MSG = {
   saveToDesktop: 'Guardar a l\'ordinador ...',
   saveAs: 'Guardar com: ',
   run: 'Executar',
+  catComm: "Comunicacions",
+  catI2C: "I2C",
   runtimeError: "Error en temps d'execució",
   ok: "D'acord",
   youHaveAnError: "Tens un error en el teu codi:",

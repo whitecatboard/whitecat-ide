@@ -25,6 +25,7 @@
   <script src="blocks/i2c.js"></script>
   <script src="blocks/control.js"></script>
   <script src="blocks/threads.js"></script>
+  <script src="blocks/bitlogic.js"></script>
   <script src="code.js"></script>
   <script src="lib/luaparser.js"></script>
   <script src="generators/luatoblocks.js"></script>
@@ -32,6 +33,7 @@
   <script src="generators/lua/i2c.js"></script>
   <script src="generators/lua/control.js"></script>
   <script src="generators/lua/threads.js"></script>
+  <script src="generators/lua/bitlogic.js"></script>
 </head>
 <body>
   <img id="logo" src="media/whitecat.png" style="visibility: hidden;"/>
@@ -227,6 +229,8 @@
       <block type="logic_boolean"></block>
       <block type="logic_null"></block>
       <block type="logic_ternary"></block>
+      <block type="bitlogic_msb"></block>
+      <block type="bitlogic_lsb"></block>
     </category>
     <category id="catLoops" colour="120">
       <block type="controls_repeat_ext">

@@ -411,3 +411,35 @@ Blockly.Msg.thread_resume = 'reprendre fil';
 Blockly.Msg.thread_stop = 'aturar fil';
 Blockly.Msg.configuredacpwmpin = 'cofigurar pin PWM';
 Blockly.Msg.INITIALVALUE = 'amb valor inicial';
+
+Blockly.Msg.configuredefaultpwmpin = 'configurar pin PWM';
+Blockly.Msg.FREQUENCY = 'amb freqüència de';
+Blockly.Msg.HERTZS = 'hertzs';
+Blockly.Msg.INITIALDUTY = 'amb duty inicial de';
+Blockly.Msg.PERCENT = '%';
+Blockly.Msg.pwmstart = 'arrancar PWM en pin';
+Blockly.Msg.pwmstop = 'aturar PWM en pin';
+Blockly.Msg.pwmsetduty = 'estableix valor DUTY en pin PWM';
+Blockly.Msg.WITHNEWVALUE = 'amb nou valor';
+Blockly.Msg.pwmwrite = 'escriure valor PWM en pin';
+Blockly.Msg.configurei2c = 'configurar I2C';
+Blockly.Msg.i2cSDA = 'sda en el pin';
+Blockly.Msg.i2cSCL = 'scl en el pin';
+Blockly.Msg.i2cSpeed = 'i velocitat de';
+Blockly.Msg.Khz = 'Khz';
+Blockly.Msg.i2cStartConditionFor = 'condició START per I2C';
+Blockly.Msg.i2cStopConditionFor = 'condició STOP per I2C';
+Blockly.Msg.i2cAddress = 'adreça per I2C';
+Blockly.Msg.for = 'per';
+Blockly.Msg.read = 'Llegir';
+Blockly.Msg.write = 'Escriute';
+Blockly.Msg.i2cReadFrom = 'llegir d\'I2C';
+Blockly.Msg.i2cWriteTo = 'escriure a I2C';
+
+Blockly.Msg.BITLOGIC_MSB_HELPURL = "";
+Blockly.Msg.BITLOGIC_MSB_TITLE = "MSB %1";
+Blockly.Msg.BITLOGIC_MSB_TOOLTIP = "Retorna el MSB (byte més signiticatiu) de l'entrada.";
+
+Blockly.Msg.BITLOGIC_LSB_HELPURL = "";
+Blockly.Msg.BITLOGIC_LSB_TITLE = "LSB %1";
+Blockly.Msg.BITLOGIC_LSB_TOOLTIP = "Retorna el LSB (bytes meny signiticatiu) de l'entrada.";
