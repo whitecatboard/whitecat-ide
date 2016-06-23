@@ -443,3 +443,14 @@ Blockly.Msg.BITLOGIC_MSB_TOOLTIP = "Retorna el MSB (byte més signiticatiu) de l
 Blockly.Msg.BITLOGIC_LSB_HELPURL = "";
 Blockly.Msg.BITLOGIC_LSB_TITLE = "LSB %1";
 Blockly.Msg.BITLOGIC_LSB_TOOLTIP = "Retorna el LSB (bytes meny signiticatiu) de l'entrada.";
+
+Blockly.Msg.TEXT_PACK_HELPURL = "";
+Blockly.Msg.TEXT_PACK_TITLE1_CREATEWITH = "empaqueta amb";
+Blockly.Msg.TEXT_PACK_TITLE2_CREATEWITH = "amb";
+Blockly.Msg.TEXT_PACK_TITLE3_CREATEWITH = "cap a";
+Blockly.Msg.TEXT_PACK_TOOLTIP = "Enpaqueta un conjunt de valors en una representació de cadena hexadecimal."
+
+Blockly.Msg.TEXT_UNPACK_HELPURL = "";
+Blockly.Msg.TEXT_UNPACK1_TITLE = "desempaquetar des de";
+Blockly.Msg.TEXT_UNPACK2_TITLE = "cap a";
+Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Desenpaqueta un conjunt de valors codificats en una representació de cadena hexadecimal."

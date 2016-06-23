@@ -443,3 +443,14 @@ Blockly.Msg.BITLOGIC_MSB_TOOLTIP = "Returns the MSB (most significant byte) of t
 Blockly.Msg.BITLOGIC_LSB_HELPURL = "";
 Blockly.Msg.BITLOGIC_LSB_TITLE = "LSB %1";
 Blockly.Msg.BITLOGIC_LSB_TOOLTIP = "Returns the LSB (less significant byte) of the input.";
+
+Blockly.Msg.TEXT_PACK_HELPURL = "";
+Blockly.Msg.TEXT_PACK_TITLE1_CREATEWITH = "pack with";
+Blockly.Msg.TEXT_PACK_TITLE2_CREATEWITH = "with";
+Blockly.Msg.TEXT_PACK_TITLE3_CREATEWITH = "to";
+Blockly.Msg.TEXT_PACK_TOOLTIP = "Pack a set of values into an hex's string representation."
+
+Blockly.Msg.TEXT_UNPACK_HELPURL = "";
+Blockly.Msg.TEXT_UNPACK1_TITLE = "unpack from";
+Blockly.Msg.TEXT_UNPACK2_TITLE = "to";
+Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Unpack a set of values encoded into an hex's string representation."
