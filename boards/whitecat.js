@@ -995,9 +995,16 @@ Whitecat.runListener = function() {
 					if (tmp) {
 						var exceptionFile = tmp[1].trim();
 						var exceptionLine = tmp[2].trim();
-						var exceptionMessage = tmp[3].trim();	
+						var exceptionMessage = tmp[3].trim();
+						var exceptionCode = 0;
 						
-						Code.runtimeError(exceptionFile, exceptionLine, exceptionMessage);						
+						tmp = exceptionMessage.match(/^([0-9]*)\:(.*)/);
+						if (tmp) {
+							exceptionCode = tmp[1].trim();
+							exceptionMessage = tmp[2].trim();
+						}
+						
+						Code.runtimeError(exceptionFile, exceptionLine, exceptionCode, exceptionMessage);						
 					} 
 				}
 				

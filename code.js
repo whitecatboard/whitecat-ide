@@ -571,7 +571,7 @@ Code.discard = function() {
 	}	
 };
 
-Code.runtimeError = function(file, line, message) {
+Code.runtimeError = function(file, line, code, message) {
 	Code.showError(MSG['youHaveAnError'] + '<br><br>' + message);	
 }
 
