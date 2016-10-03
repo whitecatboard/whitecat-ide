@@ -334,7 +334,7 @@ Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://github.com/google/blockly/wiki/Text#
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 está vacío";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Devuelve verdadero si el texto proporcionado está vacío.";
 Blockly.Msg.TEXT_JOIN_HELPURL = "https://github.com/google/blockly/wiki/Text#text-creation";  // untranslated
-Blockly.Msg.TEXT_JOIN_TITLE_CREATEWITH = "crear texto con";
+Blockly.Msg.TEXT_JOIN_TITLE = "crear texto con";
 Blockly.Msg.TEXT_JOIN_TOOLTIP = "Crear un fragmento de texto al unir cualquier número de elementos.";
 Blockly.Msg.TEXT_LENGTH_HELPURL = "https://github.com/google/blockly/wiki/Text#text-modification";  // untranslated
 Blockly.Msg.TEXT_LENGTH_TITLE = "longitud de %1";
@@ -446,12 +446,13 @@ Blockly.Msg.BITLOGIC_LSB_TITLE = "LSB %1";
 Blockly.Msg.BITLOGIC_LSB_TOOLTIP = "Retorna el LSB (byte menos significativo) de la entrada.";
 
 Blockly.Msg.TEXT_PACK_HELPURL = "";
-Blockly.Msg.TEXT_PACK_TITLE1_CREATEWITH = "empaqueta con";
-Blockly.Msg.TEXT_PACK_TITLE2_CREATEWITH = "con";
-Blockly.Msg.TEXT_PACK_TITLE3_CREATEWITH = "hacia";
+Blockly.Msg.TEXT_PACK_TITLE1 = "empaqueta hacia";
+Blockly.Msg.TEXT_PACK_TITLE2 = "con";
+Blockly.Msg.TEXT_PACK_TITLE3 = "con";
 Blockly.Msg.TEXT_PACK_TOOLTIP = "Enpaqueta un conjunto de valores en una representación de cadena hexadecimal."
 
 Blockly.Msg.TEXT_UNPACK_HELPURL = "";
-Blockly.Msg.TEXT_UNPACK1_TITLE = "desempaquetar desde";
-Blockly.Msg.TEXT_UNPACK2_TITLE = "hacia";
+Blockly.Msg.TEXT_UNPACK_TITLE1 = "desempaquetar desde";
+Blockly.Msg.TEXT_UNPACK_TITLE2 = "hacia";
+Blockly.Msg.TEXT_UNPACK_TITLE3 = "hacia";
 Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Desenpaqueta un conjunto de valores codificados en una representación de cadena hexadecimal."

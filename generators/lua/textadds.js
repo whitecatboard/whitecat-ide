@@ -34,10 +34,10 @@ goog.require('Blockly.Lua');
 
 
 Blockly.Lua['text_pack'] = function(block) {
-	var to = Blockly.Lua.valueToCode(block, 'ADD' + (block.itemCount_ - 1), Blockly.Lua.ORDER_NONE);
+	var to = Blockly.Lua.valueToCode(block, 'TO0', Blockly.Lua.ORDER_NONE);
     var code = [];
-    for (var n = 0; n < block.itemCount_ - 1; n++) {
-      code[n] = Blockly.Lua.valueToCode(block, 'ADD' + n,
+    for (var n = 0; n < block.withCount_; n++) {
+      code[n] = Blockly.Lua.valueToCode(block, 'WITH' + n,
           Blockly.Lua.ORDER_NONE) || '\'\'';
     }
     code = to + ' = pack.pack(' + code.join(', ') + ')\n';
@@ -45,11 +45,11 @@ Blockly.Lua['text_pack'] = function(block) {
 };
 
 Blockly.Lua['text_unpack'] = function(block) {
-	var packed = Blockly.Lua.valueToCode(block, 'ADD0', Blockly.Lua.ORDER_NONE);
+	var packed = Blockly.Lua.valueToCode(block, 'FROM0', Blockly.Lua.ORDER_NONE);
     var code = '';
     
-	for (var n = 1; n < block.itemCount_; n++) {
-		code += Blockly.Lua.valueToCode(block, 'ADD' + n, Blockly.Lua.ORDER_NONE) + ', ' + packed + ' = pack.unpack(' + packed + ', true)\n';
+	for (var n = 0; n < block.toCount_; n++) {
+		code += Blockly.Lua.valueToCode(block, 'TO' + n, Blockly.Lua.ORDER_NONE) + ', ' + packed + ' = pack.unpack(' + packed + ', false)\n';
     }
 	
     return code;

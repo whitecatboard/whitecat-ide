@@ -334,7 +334,7 @@ Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://github.com/google/blockly/wiki/Text#
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 is empty";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Returns true if the provided text is empty.";
 Blockly.Msg.TEXT_JOIN_HELPURL = "https://github.com/google/blockly/wiki/Text#text-creation";
-Blockly.Msg.TEXT_JOIN_TITLE_CREATEWITH = "create text with";
+Blockly.Msg.TEXT_JOIN_TITLE = "create text with";
 Blockly.Msg.TEXT_JOIN_TOOLTIP = "Create a piece of text by joining together any number of items.";
 Blockly.Msg.TEXT_LENGTH_HELPURL = "https://github.com/google/blockly/wiki/Text#text-modification";
 Blockly.Msg.TEXT_LENGTH_TITLE = "length of %1";
@@ -445,12 +445,13 @@ Blockly.Msg.BITLOGIC_LSB_TITLE = "LSB %1";
 Blockly.Msg.BITLOGIC_LSB_TOOLTIP = "Returns the LSB (less significant byte) of the input.";
 
 Blockly.Msg.TEXT_PACK_HELPURL = "";
-Blockly.Msg.TEXT_PACK_TITLE1_CREATEWITH = "pack with";
-Blockly.Msg.TEXT_PACK_TITLE2_CREATEWITH = "with";
-Blockly.Msg.TEXT_PACK_TITLE3_CREATEWITH = "to";
+Blockly.Msg.TEXT_PACK_TITLE1 = "pack to";
+Blockly.Msg.TEXT_PACK_TITLE2 = "with";
+Blockly.Msg.TEXT_PACK_TITLE3 = "to";
 Blockly.Msg.TEXT_PACK_TOOLTIP = "Pack a set of values into an hex's string representation."
 
 Blockly.Msg.TEXT_UNPACK_HELPURL = "";
-Blockly.Msg.TEXT_UNPACK1_TITLE = "unpack from";
-Blockly.Msg.TEXT_UNPACK2_TITLE = "to";
+Blockly.Msg.TEXT_UNPACK_TITLE1 = "unpack from";
+Blockly.Msg.TEXT_UNPACK_TITLE2 = "to";
+Blockly.Msg.TEXT_UNPACK_TITLE3 = "from";
 Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Unpack a set of values encoded into an hex's string representation."

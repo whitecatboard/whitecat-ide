@@ -334,7 +334,7 @@ Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://github.com/google/blockly/wiki/Text#
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 està buit";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Retorna cert si el text proporcionat està buit.";
 Blockly.Msg.TEXT_JOIN_HELPURL = "https://github.com/google/blockly/wiki/Text#text-creation";  // untranslated
-Blockly.Msg.TEXT_JOIN_TITLE_CREATEWITH = "crear text amb";
+Blockly.Msg.TEXT_JOIN_TITLE = "crear text amb";
 Blockly.Msg.TEXT_JOIN_TOOLTIP = "Crea un tros de text per unió de qualsevol nombre d'elements.";
 Blockly.Msg.TEXT_LENGTH_HELPURL = "https://github.com/google/blockly/wiki/Text#text-modification";  // untranslated
 Blockly.Msg.TEXT_LENGTH_TITLE = "llargària de %1";
@@ -445,12 +445,13 @@ Blockly.Msg.BITLOGIC_LSB_TITLE = "LSB %1";
 Blockly.Msg.BITLOGIC_LSB_TOOLTIP = "Retorna el LSB (bytes meny signiticatiu) de l'entrada.";
 
 Blockly.Msg.TEXT_PACK_HELPURL = "";
-Blockly.Msg.TEXT_PACK_TITLE1_CREATEWITH = "empaqueta amb";
-Blockly.Msg.TEXT_PACK_TITLE2_CREATEWITH = "amb";
-Blockly.Msg.TEXT_PACK_TITLE3_CREATEWITH = "cap a";
+Blockly.Msg.TEXT_PACK_TITLE1 = "empaqueta cap a";
+Blockly.Msg.TEXT_PACK_TITLE2 = "amb";
+Blockly.Msg.TEXT_PACK_TITLE3 = "amb";
 Blockly.Msg.TEXT_PACK_TOOLTIP = "Enpaqueta un conjunt de valors en una representació de cadena hexadecimal."
 
 Blockly.Msg.TEXT_UNPACK_HELPURL = "";
-Blockly.Msg.TEXT_UNPACK1_TITLE = "desempaquetar des de";
-Blockly.Msg.TEXT_UNPACK2_TITLE = "cap a";
+Blockly.Msg.TEXT_UNPACK_TITLE1 = "desempaquetar des de";
+Blockly.Msg.TEXT_UNPACK_TITLE2 = "cap a";
+Blockly.Msg.TEXT_UNPACK_TITLE3 = "cap a";
 Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Desenpaqueta un conjunt de valors codificats en una representació de cadena hexadecimal."
