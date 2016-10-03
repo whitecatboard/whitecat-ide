@@ -794,8 +794,8 @@ Whitecat.detect = function() {
 	var timeoutTestBootloader;
 
 	if (window.navigator.platform == 'MacIntel') {
-		pathPattern = /tty\.SLAB_USBtoUART/;
-		displayNamePattern = /.*USB to UART.*/;
+		pathPattern = /tty\.SLAB_USBtoUART|tty\.usbserial-/;
+		displayNamePattern = /.*USB to UART.*|.*FR232RL*./;
 	} else if (window.navigator.platform == 'Win32') {
 		pathPattern = /COM\d+/;
 		displayNamePattern = /.*USB to UART.*/;
@@ -1131,10 +1131,18 @@ Whitecat.upgradeFirmware = function(port, code, callback) {
 
 Whitecat.reboot = function(port, callback) {
 	Term.disconnect();
+
+	chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
+		Whitecat.init(Whitecat.BOOTING_STATE);
+		callback();		
+	});
+	
+	/*
 	chrome.serial.send(port.connId,  Whitecat.str2ab("\r\nos.exit()\r\n"), function() {
 		Whitecat.init(Whitecat.BOOTING_STATE);
 		callback();
-	});	
+	});
+	*/	
 }
 
 // Get version of the firmware installed on the board
