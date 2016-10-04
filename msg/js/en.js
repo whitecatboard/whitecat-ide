@@ -461,3 +461,8 @@ Blockly.Msg.TEXT_TRY_TITLE = "try";
 Blockly.Msg.TEXT_CATCH_TITLE = "catch";
 Blockly.Msg.TEXT_FINALLY = "finally";
 Blockly.Msg.TEXT_TRY_TOOLTIP = "Try to execute a set of statements and eventualy catch the errors without stop program."
+
+Blockly.Msg.TEXT_TRY_CATCH_ERROR = "when error";
+Blockly.Msg.TEXT_TRY_CATCH_OTHER_ERROR = "when other errors catched";
+Blockly.Msg.TEXT_TRY_CATCHED= "catched";
+Blockly.Msg.DO= "do";

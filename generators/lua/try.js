@@ -67,3 +67,26 @@ Blockly.Lua['exception_try'] = function(block) {
   
   return code;
 };
+
+Blockly.Lua['exception_catch_error'] = function(block) {
+    var doStatement = Blockly.Lua.statementToCode(block, 'DO');
+
+    if (doStatement != '') {
+  	  doStatement = Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
+    }
+
+	var code = "  if (error ~= nil) then\n";
+	code += doStatement;
+	code += "    return\n";
+	code += "  end\n";
+	
+	return code;
+}
+
+Blockly.Lua['exception_catch_other_error'] = function(block) {
+    var doStatement = Blockly.Lua.statementToCode(block, 'DO');
+
+	var code = doStatement;
+	
+	return code;
+}

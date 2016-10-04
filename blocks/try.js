@@ -214,3 +214,50 @@ Blockly.Blocks['exception_try'] = {
   }
 };
 
+Blockly.Blocks['exception_catch_error'] = {
+  init: function() {
+	var errors = [];
+	
+	for(var key in Board.digitalPins) {
+		errors.push([key + ' - ' + Board.digitalPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
+	}  
+	
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.TEXT_TRY_CATCH_ERROR)
+        .appendField(new Blockly.FieldDropdown(errors), "ERROR");
+    this.appendDummyInput()
+        .appendField(' ' + Blockly.Msg.TEXT_TRY_CATCHED );
+
+    this.appendStatementInput('DO')
+        .appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.control.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
+Blockly.Blocks['exception_catch_other_error'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+ 	    .appendField(Blockly.Msg.TEXT_TRY_CATCH_OTHER_ERROR);
+
+    this.appendStatementInput('DO')
+        .appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(false, null);
+    this.setColour(Blockly.Blocks.control.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
