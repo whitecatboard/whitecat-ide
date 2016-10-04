@@ -11,6 +11,7 @@ var MSG = {
   trashTooltip: "Discard all blocks.",
   catIO: "Input / Output",
   catControl: "Control",
+  catExceptions: "Exceptions",
   catThreads: "Threads",
   catLogic: "Logic",
   catLoops: "Loops",

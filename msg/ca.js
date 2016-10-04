@@ -11,6 +11,7 @@ var MSG = {
   trashTooltip: "Descarta tots els blocs.",
   catIO: "Entrada / Sortida",
   catControl: "Control",
+  catExceptions: "Excepcions",
   catThreads: "Fils",
   catLogic: "Lògica",
   catLoops: "Bucles",

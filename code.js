@@ -333,6 +333,7 @@ Code.init = function() {
   jQuery("#catThreads").attr("colour",Blockly.Blocks.threads.HUE);
   jQuery("#catIO").attr("colour",Blockly.Blocks.io.HUE);
   jQuery("#catControl").attr("colour",Blockly.Blocks.control.HUE);
+  jQuery("#catExceptions").attr("colour",Blockly.Blocks.control.HUE);
   
   var rtl = Code.isRtl();
   var container = document.getElementById('content_area');
@@ -522,7 +523,7 @@ Code.initLanguage = function() {
   document.getElementById('trashButton').title = MSG['trashTooltip'];
 
   var categories = [
-	  'catIO','catComm','catI2C','catIODigital','catIOAnalog','catIOPwm','catControl','catThreads','catLogic',
+	  'catIO','catComm','catI2C','catIODigital','catIOAnalog','catIOPwm','catControl','catExceptions', 'catThreads','catLogic',
 	  'catLoops', 'catMath', 'catText', 'catLists','catColour', 'catVariables', 'catFunctions'
   ];
   
