@@ -37,19 +37,31 @@ Blockly.Lua['exception_try'] = function(block) {
   var catchStatement = Blockly.Lua.statementToCode(block, 'CATCH0');
   var finallyStatement = Blockly.Lua.statementToCode(block, 'FINALLY0');
   
+  if (tryStatement != '') {
+	  tryStatement = Blockly.Lua.prefixLines(tryStatement, Blockly.Lua.INDENT);
+  }
+
+  if (catchStatement != '') {
+	  catchStatement = Blockly.Lua.prefixLines(catchStatement, Blockly.Lua.INDENT);
+  }
+
+  if (finallyStatement != '') {
+	  finallyStatement = Blockly.Lua.prefixLines(finallyStatement, Blockly.Lua.INDENT);
+  }
+  
   var code = 'try(\n';
-  code += 'function()\n';
+  code += '  function()\n';
   code += tryStatement;
-  code += 'end,\n';
-  code += 'function(where, line, error, msg)\n';
+  code += '  end,\n';
+  code += '  function(where, line, error, msg)\n';
   code += catchStatement;
-  code += 'end';
+  code += '  end';
   
   if (finallyStatement != '') {
 	code += ',\n';
-	code += 'function()\n';
+	code += '  function()\n';
     code += finallyStatement;
-  	code += 'end';
+  	code += '  end';
   }
   	code += '\n)\n';
   
