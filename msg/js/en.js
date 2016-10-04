@@ -455,3 +455,9 @@ Blockly.Msg.TEXT_UNPACK_TITLE1 = "unpack from";
 Blockly.Msg.TEXT_UNPACK_TITLE2 = "to";
 Blockly.Msg.TEXT_UNPACK_TITLE3 = "from";
 Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Unpack a set of values encoded into an hex's string representation."
+
+Blockly.Msg.TEXT_TRY_HELPURL = "";
+Blockly.Msg.TEXT_TRY_TITLE = "try";
+Blockly.Msg.TEXT_CATCH_TITLE = "catch";
+Blockly.Msg.TEXT_FINALLY = "finally";
+Blockly.Msg.TEXT_TRY_TOOLTIP = "Try to execute a set of statements and eventualy catch the errors without stop program."
