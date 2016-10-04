@@ -123,6 +123,18 @@ Whitecat.i2cModules = {
 	"BB5": "i2c.I2CBB5",
 }
 
+Whitecat.updateMaps = function() {
+	if (Whitecat.status.cpu == "ESP8266") {
+		Whitecat.digitalPins = Whitecat["ESP8266"].digitalPins;
+		Whitecat.analogPins = Whitecat["ESP8266"].analogPins;
+		Whitecat.analogPinsChannel = Whitecat["ESP8266"].analogPinsChannel;
+		Whitecat.pwmPins = Whitecat["ESP8266"].pwmPins;
+		Whitecat.pwmPinsChannel = Whitecat["ESP8266"].pwmPinsChannel;
+		Whitecat.i2cModules = Whitecat["ESP8266"].i2cModules;
+	}
+	return;
+}
+
 Whitecat.currentPort = function() {
 	for (var i = 0; i < Whitecat.ports.length; i++) {
 		if (Whitecat.ports[i].connId != null) {
@@ -841,6 +853,7 @@ Whitecat.detect = function() {
 						Whitecat.getStatus(
 							port,
 							function() {
+								Whitecat.updateMaps();
 								port.state = Whitecat.CONNECTED_STATE;
 								Code.boardConnected();
 								Whitecat.inDetect = false;
@@ -1132,17 +1145,17 @@ Whitecat.upgradeFirmware = function(port, code, callback) {
 Whitecat.reboot = function(port, callback) {
 	Term.disconnect();
 
+/*
 	chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
 		Whitecat.init(Whitecat.BOOTING_STATE);
 		callback();		
 	});
-	
-	/*
+*/
+		
 	chrome.serial.send(port.connId,  Whitecat.str2ab("\r\nos.exit()\r\n"), function() {
 		Whitecat.init(Whitecat.BOOTING_STATE);
 		callback();
 	});
-	*/	
 }
 
 // Get version of the firmware installed on the board
