@@ -464,10 +464,10 @@ Blockly.Msg.TEXT_TRY_TOOLTIP = "Try to execute a set of statements and eventualy
 
 Blockly.Msg.TEXT_TRY_CATCH_ERROR = "when error";
 Blockly.Msg.TEXT_TRY_CATCH_OTHER_ERROR = "when other errors catched";
-Blockly.Msg.TEXT_TRY_CATCHED= "catched";
+Blockly.Msg.TEXT_TRY_CATCHED= "is catched";
 Blockly.Msg.DO= "do";
 
-Blockly.Msg.configureLora = "configure LoRa using band ";
+Blockly.Msg.configureLora = "configure LoRa using ";
 Blockly.Msg.MHZ = "Mhz";
 Blockly.Msg.LORA_SET_APPEUI = "set AppEUI to";
 Blockly.Msg.LORA_SET_APPKEY = "set AppKey to";
@@ -477,3 +477,4 @@ Blockly.Msg.LORA_SET_DR = "set data rate to";
 Blockly.Msg.LORA_JOIN = "join using";
 Blockly.Msg.TRUE = "true";
 Blockly.Msg.FALSE = "false";
+Blockly.Msg.BAND = "band";

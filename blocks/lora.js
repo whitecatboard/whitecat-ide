@@ -38,15 +38,15 @@ Blockly.Blocks['lora_configure'] = {
   init: function() {
 	var bands = [];
 	
-	bands.push(['BAND868','lora.BAND868']);
-	bands.push(['BAND433','lora.BAND433']);
+	bands.push(['868','lora.BAND868']);
+	bands.push(['433','lora.BAND433']);
 
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(Blockly.Msg.configureLora)
         .appendField(new Blockly.FieldDropdown(bands), "BAND");
     this.appendDummyInput()
-        .appendField(' ' + Blockly.Msg.MHZ);
+        .appendField(' ' + Blockly.Msg.MHZ + ' ' + Blockly.Msg.BAND);
     
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
