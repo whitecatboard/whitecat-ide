@@ -29,6 +29,7 @@
   <script src="blocks/threads.js"></script>
   <script src="blocks/bitlogic.js"></script>
   <script src="blocks/textadds.js"></script>
+  <script src="blocks/lora.js"></script>
   <script src="code.js"></script>
   <script src="lib/luaparser.js"></script>
   <script src="generators/luatoblocks.js"></script>
@@ -39,6 +40,7 @@
   <script src="generators/lua/threads.js"></script>
   <script src="generators/lua/bitlogic.js"></script>
   <script src="generators/lua/textadds.js"></script>
+  <script src="generators/lua/lora.js"></script>
 </head>
 <body>
   <img id="logo" src="media/whitecat.png" style="visibility: hidden;"/>
@@ -213,6 +215,28 @@
 		          </shadow>
 		        </value>
 			</block>
+		</category>
+		<category id="catLora">
+			<block type="lora_configure">
+			</block>
+			<block type="lora_join"></block>
+			<block type="lora_set_appeui">
+		        <value name="APPEUI">
+		          <shadow type="text">
+		            <field name="TEXT"></field>
+		          </shadow>
+		        </value>				
+			</block>
+			<block type="lora_set_appkey">
+		        <value name="APPKEY">
+		          <shadow type="text">
+		            <field name="TEXT"></field>
+		          </shadow>
+		        </value>				
+			</block>
+			<block type="lora_set_adr"></block>
+			<block type="lora_set_ar"></block>
+			<block type="lora_set_dr"></block>
 		</category>
 	</category>
     <category id="catControl" colour="210">

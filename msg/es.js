@@ -66,4 +66,5 @@ var MSG = {
   ok: "Deacuerdo",
   youHaveAnError: "Tienes un error en tu código:",
   value: 'valor',
+  catLora: "LoRa",
 };
