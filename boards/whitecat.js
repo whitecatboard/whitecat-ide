@@ -1086,7 +1086,7 @@ Whitecat.run = function(port, file, code, success, fail) {
 						waitForException = true;
 						waitForTraceback = false;
 						WaitForPrompt = false;
-						chrome.serial.send(port.connId,  Whitecat.str2ab("thread.start(function() dofile(\""+file+"\") end)\r\n"), function() {
+						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
 							Term.enable();
 							success();
 						});
