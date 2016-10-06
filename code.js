@@ -352,10 +352,10 @@ Code.init = function() {
 	      el.style.left = bBox.x + 'px';
 	      // Height and width need to be set, read back, then set again to
 	      // compensate for scrollbars.
-	      el.style.height = bBox.height + 'px';
-	      el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
+	      el.style.height = (bBox.height - 25) + 'px';
+	      //el.style.height = (bBox.height - el.offsetHeight) + 'px';
 	      el.style.width = bBox.width + 'px';
-	      el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+	      //el.style.width = (bBox.width - el.offsetWidth) + 'px';
 	  }
       
 	  el = document.getElementById('content_' + Code.TABS_[i]);
@@ -364,9 +364,9 @@ Code.init = function() {
       // Height and width need to be set, read back, then set again to
       // compensate for scrollbars.
       el.style.height = bBox.height + 'px';
-      el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
+      //el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
       el.style.width = bBox.width + 'px';
-      el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+      //el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
 	  
 	  el = document.getElementById('logo');
 	  el.style.position = 'absolute';

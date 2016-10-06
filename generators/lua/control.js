@@ -58,7 +58,7 @@ Blockly.Lua['execute_on'] = function(block) {
 	var when = block.getFieldValue('WHEN');
 
 	if (when == 1) {
-		code = 'if (os.luarunning()) then\n';
+		code = 'if (os.luainterpreter()) then\n';
 	}
 
 	doStatement = 'thread.start(function()\n' + doStatement + 'end)\n';
