@@ -260,4 +260,19 @@ Blockly.Blocks['exception_catch_other_error'] = {
   }
 };
 
+Blockly.Blocks['exception_raise_again'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+ 	    .appendField(Blockly.Msg.TEXT_TRY_CATCH_RAISE_AGAIN);
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(false, null);
+    this.setColour(Blockly.Blocks.control.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 

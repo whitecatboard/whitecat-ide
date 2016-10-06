@@ -53,7 +53,7 @@ Blockly.Lua['exception_try'] = function(block) {
   code += '  function()\n';
   code += tryStatement;
   code += '  end,\n';
-  code += '  function(where, line, error, msg)\n';
+  code += '  function(where, line, errCode, msg)\n';
   code += catchStatement;
   code += '  end';
   
@@ -75,7 +75,7 @@ Blockly.Lua['exception_catch_error'] = function(block) {
   	  doStatement = Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
     }
 
-	var code = "  if (error ~= nil) then\n";
+	var code = "  if (errCode ~= nil) then\n";
 	code += doStatement;
 	code += "    return\n";
 	code += "  end\n";
@@ -89,4 +89,8 @@ Blockly.Lua['exception_catch_other_error'] = function(block) {
 	var code = doStatement;
 	
 	return code;
+}
+
+Blockly.Lua['exception_raise_again'] = function(block) {
+	return 'error(errCode..":"..msg)';
 }

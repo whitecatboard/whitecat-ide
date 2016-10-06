@@ -465,6 +465,8 @@ Blockly.Msg.TEXT_TRY_TOOLTIP = "Try to execute a set of statements and eventualy
 Blockly.Msg.TEXT_TRY_CATCH_ERROR = "when error";
 Blockly.Msg.TEXT_TRY_CATCH_OTHER_ERROR = "when other errors catched";
 Blockly.Msg.TEXT_TRY_CATCHED= "is catched";
+Blockly.Msg.TEXT_TRY_CATCH_RAISE_AGAIN = "raise catched error again";
+
 Blockly.Msg.DO= "do";
 
 Blockly.Msg.configureLora = "configure LoRa using ";
