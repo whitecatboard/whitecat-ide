@@ -438,19 +438,16 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 					} else {
 						currentReceived = currentReceived + str.charAt(i);
 					}					
-				}
-
-				if ((str.charAt(i) === 'C') && (waitForC)) {
+				} else if ((str.charAt(i) === 'C') && (waitForC)) {
 					waitForC = false;
 					waitForN = true;
-				}
-				
-				if ((str.charAt(i) === '\n') && (waitForN)) {
+				} else if ((str.charAt(i) === '\n') && (waitForN)) {
 					chrome.serial.onReceive.removeListener(sendFileListener);
 					
 					waitForC = true;
 					waitForN = false;
 					sendChunk();
+					break;
 				}				
 			}		
 		}			
@@ -627,6 +624,7 @@ Whitecat.stop = function(port, success, error) {
 						clearTimeout(currentTimeOut);
 						chrome.serial.onReceive.removeListener(stopListener);
 						stopThreads();
+						break;
 					}
 				}
 			}		
@@ -1105,7 +1103,7 @@ Whitecat.run = function(port, file, code, success, fail) {
 		return;
 	}
 		
-	//Term.disable();
+	Term.disable();
 	
 	if (!Whitecat.hardwareReset) {
 		chrome.serial.flush(port.connId, function() {
