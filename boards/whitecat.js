@@ -259,6 +259,9 @@ Whitecat.sendCommand = function(port, command, tOut, success, error) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
 					if (currentReceived !== "") {
 						if (waitForCommandEcho) {
+							// Remove propmt in response
+							currentReceived = currentReceived.replace(/^\/.*\>\s/g,"");
+							
 							if (currentReceived == command) {
 								waitForCommandEcho = false;
 								waitForPrompt = true;
@@ -289,16 +292,17 @@ Whitecat.sendCommand = function(port, command, tOut, success, error) {
 			}		
 		}		
 	}
+
+	// Set a timeout
+	currentTimeOut = setTimeout(function(){
+		timeout();
+	}, tOut);
 		
 	chrome.serial.flush(port.connId, function(result) {
 		waitForCommandEcho = true;
 		waitForPrompt = false;
 		chrome.serial.onReceive.addListener(sendCommandListener);
 		chrome.serial.send(port.connId, Whitecat.str2ab(command + '\r\n'), function(info) {
-			// Set a timeout
-			currentTimeOut = setTimeout(function(){
-				timeout();
-			}, tOut);
 		});		
 	});
 };
@@ -807,6 +811,9 @@ Whitecat.detect = function() {
 	var displayNamePattern;
 	var timeoutTestBootloader;
 
+	if (Whitecat.inDetect) return;
+	Whitecat.inDetect = true;
+
 	if (window.navigator.platform == 'MacIntel') {
 		pathPattern = /tty\.SLAB_USBtoUART|tty\.usbserial-/;
 		displayNamePattern = /.*USB to UART.*|.*FR232RL*./;
@@ -814,10 +821,7 @@ Whitecat.detect = function() {
 		pathPattern = /COM\d+/;
 		displayNamePattern = /.*USB to UART.*/;
 	}
-	
-	if (Whitecat.inDetect) return;
-	Whitecat.inDetect = true;
-	
+		
 	function testPort(port) {
 		if (port.state == Whitecat.PREBOOTING_STATE) {
 			Whitecat.inDetect = false;
@@ -861,6 +865,7 @@ Whitecat.detect = function() {
 								Whitecat.inDetect = false;
 							},
 							function() {
+								Whitecat.updateMaps();
 								port.state = Whitecat.CONNECTED_STATE;
 								Code.boardConnected();
 								Whitecat.inDetect = false;
@@ -987,10 +992,12 @@ Whitecat.init = function(state) {
 		Whitecat.detect();
 	}, 100);
 
-	if (!Whitecat.runListenerRunning) {
-		setTimeout(function() {
-			Whitecat.runListener();
-		}, 50);
+	if (state != Whitecat.BOOTING_STATE) {
+		if (!Whitecat.runListenerRunning) {
+			setTimeout(function() {
+				Whitecat.runListener();
+			}, 50);
+		}
 	}
 };
 
