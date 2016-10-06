@@ -1080,33 +1080,67 @@ Whitecat.run = function(port, file, code, success, fail) {
 	}
 		
 	Term.disable();
-	chrome.serial.flush(port.connId, function() {
-		// Stop anything running
-		Whitecat.stop(
-			port,
-			function() {
-				// Whitecat is stopped
-				// Send code
-				Whitecat.sendFile(port, file, code, 
-					function() {
-						// Code is sended
-
-						//Now run it!						
-						waitForException = true;
-						waitForTraceback = false;
-						WaitForPrompt = false;
-						chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
-							Term.enable();
-							success();
-						});
-				});		
-			},
-			function() {
-				Term.enable();
-				fail();
-			}
-		);							
-	});
+	
+	if (!Whitecat.hardwareReset) {
+		chrome.serial.flush(port.connId, function() {
+			// Stop anything running
+			Whitecat.stop(
+				port,
+				function() {
+					// Whitecat is stopped
+					// Send code
+					Whitecat.sendFile(port, file, code, 
+						function() {
+							// Code is sended
+	
+							//Now run it!						
+							waitForException = true;
+							waitForTraceback = false;
+							WaitForPrompt = false;
+							chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
+								Term.enable();
+								success();
+							});
+					});		
+				},
+				function() {
+					Term.enable();
+					fail();
+				}
+			);							
+		});
+	} else {
+		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: true }, function() {
+			chrome.serial.setControlSignals(port.connId, { dtr: true, rts: false }, function() {
+				chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
+					Whitecat.init(Whitecat.BOOTING_STATE);
+					
+					var currentInterval = setInterval(function() {
+						if (port.state == Whitecat.CONNECTED_STATE) {
+							clearInterval(currentInterval);
+							
+							Whitecat.sendFile(port, file, code, 
+								function() {
+									// Code is sended
+			
+									//Now run it!						
+									waitForException = true;
+									waitForTraceback = false;
+									WaitForPrompt = false;
+									chrome.serial.send(port.connId,  Whitecat.str2ab("\r\ndofile(\""+file+"\")\r\n"), function() {
+										Term.enable();
+										success();
+									});
+							});						
+						} else {
+							console.log("wit");
+						}
+					}, 100);
+					
+				});
+			});
+		});
+	}
 };
 
 // List a directory from the whitecat, and return an array of entries
