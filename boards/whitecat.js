@@ -42,6 +42,7 @@ Whitecat.ERR_CONNECTION_ERROR = -4;
 Whitecat.inDetect = false;
 Whitecat.inRecover = false;
 Whitecat.detectInterval = null;
+Whitecat.hardwareReset = false;
 
 Whitecat.runQueue = [];
 
@@ -125,12 +126,13 @@ Whitecat.i2cModules = {
 
 Whitecat.updateMaps = function() {
 	if (Whitecat.status.cpu == "ESP8266") {
-		Whitecat.digitalPins = Whitecat["ESP8266"].digitalPins;
-		Whitecat.analogPins = Whitecat["ESP8266"].analogPins;
-		Whitecat.analogPinsChannel = Whitecat["ESP8266"].analogPinsChannel;
-		Whitecat.pwmPins = Whitecat["ESP8266"].pwmPins;
-		Whitecat.pwmPinsChannel = Whitecat["ESP8266"].pwmPinsChannel;
-		Whitecat.i2cModules = Whitecat["ESP8266"].i2cModules;
+		Whitecat.digitalPins = Whitecat["N1"].digitalPins;
+		Whitecat.analogPins = Whitecat["N1"].analogPins;
+		Whitecat.analogPinsChannel = Whitecat["N1"].analogPinsChannel;
+		Whitecat.pwmPins = Whitecat["N1"].pwmPins;
+		Whitecat.pwmPinsChannel = Whitecat["N1"].pwmPinsChannel;
+		Whitecat.i2cModules = Whitecat["N1"].i2cModules;
+		Whitecat.hardwareReset = Whitecat["N1"].hardwareReset;
 	}
 	return;
 }
@@ -1145,17 +1147,21 @@ Whitecat.upgradeFirmware = function(port, code, callback) {
 Whitecat.reboot = function(port, callback) {
 	Term.disconnect();
 
-/*
-	chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
-		Whitecat.init(Whitecat.BOOTING_STATE);
-		callback();		
-	});
-*/
-		
-	chrome.serial.send(port.connId,  Whitecat.str2ab("\r\nos.exit()\r\n"), function() {
-		Whitecat.init(Whitecat.BOOTING_STATE);
-		callback();
-	});
+	if (Whitecat.hardwareReset) {
+		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: true }, function() {
+			chrome.serial.setControlSignals(port.connId, { dtr: true, rts: false }, function() {
+				chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
+					Whitecat.init(Whitecat.BOOTING_STATE);
+					callback();		
+				});
+			});
+		});
+	} else {
+		chrome.serial.send(port.connId,  Whitecat.str2ab("\r\nos.exit()\r\n"), function() {
+			Whitecat.init(Whitecat.BOOTING_STATE);
+			callback();
+		});
+	}		
 }
 
 // Get version of the firmware installed on the board

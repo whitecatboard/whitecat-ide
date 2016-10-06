@@ -27,10 +27,12 @@
  * this software.
  */
 
-Whitecat.ESP8266 = {};
+Whitecat.N1 = {};
+
+Whitecat.N1.hardwareReset = true;
 
 // Digital pins map
-Whitecat.ESP8266.digitalPins = {
+Whitecat.N1.digitalPins = {
 	"15": "pio.GPIO0",
 	"26": "pio.GPIO1",
 	"14": "pio.GPIO2",
@@ -45,7 +47,7 @@ Whitecat.ESP8266.digitalPins = {
 };
 
 // Analog pins map
-Whitecat.ESP8266.analogPins = {
+Whitecat.N1.analogPins = {
 /*
 	"9" : "pio.PB_4",
 	"10": "pio.PB_3",
@@ -55,7 +57,7 @@ Whitecat.ESP8266.analogPins = {
 */
 };
 
-Whitecat.ESP8266.analogPinsChannel = {
+Whitecat.N1.analogPinsChannel = {
 /*
 	"9" : "4",
 	"10": "3",
@@ -66,7 +68,7 @@ Whitecat.ESP8266.analogPinsChannel = {
 };
 
 // PWM pins map
-Whitecat.ESP8266.pwmPins = {
+Whitecat.N1.pwmPins = {
 /*
 	"12": "pio.PB_2",
 	"14": "pio.PB_6",
@@ -77,7 +79,7 @@ Whitecat.ESP8266.pwmPins = {
 */
 };
 
-Whitecat.ESP8266.pwmPinsChannel = {
+Whitecat.N1.pwmPinsChannel = {
 /*
 	"12": "1",
 	"14": "2",
@@ -89,7 +91,7 @@ Whitecat.ESP8266.pwmPinsChannel = {
 };
 
 // I2C map
-Whitecat.ESP8266.i2cModules = {
+Whitecat.N1.i2cModules = {
 /*
 	"BB1": "i2c.I2CBB1",
 	"BB2": "i2c.I2CBB2",
