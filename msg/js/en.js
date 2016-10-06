@@ -480,3 +480,6 @@ Blockly.Msg.LORA_JOIN = "join using";
 Blockly.Msg.TRUE = "true";
 Blockly.Msg.FALSE = "false";
 Blockly.Msg.BAND = "band";
+Blockly.Msg.EXECUTE_ON_EVERY = "when";
+Blockly.Msg.ON_EVERY_BOARD_REBOOT = "board reboots or user press run";
+Blockly.Msg.WHEN_USER_PRESS_RUN = "user press run";

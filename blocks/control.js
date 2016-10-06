@@ -50,3 +50,21 @@ Blockly.Blocks['wait_for'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
+
+Blockly.Blocks['execute_on'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField(Blockly.Msg.EXECUTE_ON_EVERY)
+	  .appendField(new Blockly.FieldDropdown([[Blockly.Msg.WHEN_USER_PRESS_RUN, "1"], [Blockly.Msg.ON_EVERY_BOARD_REBOOT, "2"]]), "WHEN");
+
+
+    this.appendStatementInput('DO')
+      .appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+	  
+	 this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setColour(Blockly.Blocks.control.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};

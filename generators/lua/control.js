@@ -51,3 +51,25 @@ Blockly.Lua['wait_for'] = function(block) {
 	return code;
 };
 
+
+Blockly.Lua['execute_on'] = function(block) {
+    var code = '';
+	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
+	var when = block.getFieldValue('WHEN');
+
+	if (when == 1) {
+	    if (doStatement != '') {
+	  	  doStatement = Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
+	    }
+
+		code = 'if (os.luarunning()) then\n';
+	}
+
+	code += doStatement;
+
+	if (when == 1) {
+		code += 'end\n';
+	}
+	
+	return code;
+}

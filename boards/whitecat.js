@@ -260,7 +260,7 @@ Whitecat.sendCommand = function(port, command, tOut, success, error) {
 					if (currentReceived !== "") {
 						if (waitForCommandEcho) {
 							// Remove propmt in response
-							currentReceived = currentReceived.replace(/^\/.*\>\s/g,"");
+							currentReceived = currentReceived.replace(/^\/.*\>\s*/g,"");
 							
 							if (currentReceived == command) {
 								waitForCommandEcho = false;
@@ -268,7 +268,7 @@ Whitecat.sendCommand = function(port, command, tOut, success, error) {
 							}
 						} else {
 							if (waitForPrompt) {
-								if (currentReceived.match(/^\/.*\>\s$/g)) {
+								if (currentReceived.match(/^\/.*\>\s*$/g)) {
 									clearTimeout(currentTimeOut);
 									chrome.serial.onReceive.removeListener(sendCommandListener);
 									waitForPrompt = false;
@@ -622,7 +622,7 @@ Whitecat.stop = function(port, success, error) {
 					if (currentReceived.match(/^lua\:.*interrupted\!$/g)) {
 					}
 									
-					if (currentReceived.match(/^\/.*\>\s$/g)) {
+					if (currentReceived.match(/^\/.*\>\s*$/g)) {
 						clearTimeout(currentTimeOut);
 						chrome.serial.onReceive.removeListener(stopListener);
 						stopThreads();
@@ -1088,19 +1088,25 @@ Whitecat.run = function(port, file, code, success, fail) {
 				port,
 				function() {
 					// Whitecat is stopped
-					// Send code
-					Whitecat.sendFile(port, file, code, 
+					// Update autorun.lua
+					Whitecat.sendFile(port, "/autorun.lua", "dofile(\""+file+"\")\r\n", 
 						function() {
-							// Code is sended
+							// autorun.lua is updated
+							// Send code
+							Whitecat.sendFile(port, file, code, 
+								function() {
+									// Code is sended
 	
-							//Now run it!						
-							waitForException = true;
-							waitForTraceback = false;
-							WaitForPrompt = false;
-							chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
-								Term.enable();
-								success();
-							});
+									//Now run it!						
+									waitForException = true;
+									waitForTraceback = false;
+									WaitForPrompt = false;
+									chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
+										Term.enable();
+										success();
+									});
+							});		
+
 					});		
 				},
 				function() {
@@ -1118,20 +1124,30 @@ Whitecat.run = function(port, file, code, success, fail) {
 					var currentInterval = setInterval(function() {
 						if (port.state == Whitecat.CONNECTED_STATE) {
 							clearInterval(currentInterval);
-							
-							Whitecat.sendFile(port, file, code, 
+
+							// Whitecat is stopped
+							// Update autorun.lua
+							Whitecat.sendFile(port, "/autorun.lua", "dofile(\""+file+"\")\r\n", 
 								function() {
-									// Code is sended
-			
-									//Now run it!						
-									waitForException = true;
-									waitForTraceback = false;
-									WaitForPrompt = false;
-									chrome.serial.send(port.connId,  Whitecat.str2ab("\r\ndofile(\""+file+"\")\r\n"), function() {
-										Term.enable();
-										success();
-									});
-							});						
+									chrome.serial.send(port.connId,  Whitecat.str2ab("\r\n"), function() {
+										// autorun.lua is updated
+										// Send code
+										Whitecat.sendFile(port, file, code, 
+											function() {
+												// Code is sended
+	
+												//Now run it!						
+												waitForException = true;
+												waitForTraceback = false;
+												WaitForPrompt = false;
+												chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
+													Term.enable();
+													success();
+												});
+										});		
+									});									
+							});		
+							
 						} else {
 							console.log("wit");
 						}
