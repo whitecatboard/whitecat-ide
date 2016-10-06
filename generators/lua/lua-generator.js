@@ -37,15 +37,15 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
   code = code.replace(/[ \t]+\n/g, '\n');
   
   // Add code into a thread if needed
-  if (needThread) {
+  //if (needThread) {
   	// Indent code
-  	code = Blockly.Lua.prefixLines(code, Blockly.Lua.INDENT);
+  	//code = Blockly.Lua.prefixLines(code, Blockly.Lua.INDENT);
   	
   	// Remove last \n
-  	code = code.substring(0, code.length - 1);
+  	//code = code.substring(0, code.length - 1);
   	
-  	code = 'thread.start(function()\n' + code + '\nend)\n';
-  }
+  	//code = 'thread.start(function()\n' + code + '\nend)\n';
+  //}
   
   return code;
 };
