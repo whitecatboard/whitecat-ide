@@ -68,3 +68,22 @@ Blockly.Blocks['execute_on'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
+
+Blockly.Blocks['cpu_sleep'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.CPU_SLEEP);
+
+	this.appendValueInput("SECONDS")
+	    .setCheck('Number');
+
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.seconds);
+        
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.control.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};

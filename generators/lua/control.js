@@ -77,3 +77,12 @@ Blockly.Lua['execute_on'] = function(block) {
 	
 	return code;
 }
+
+Blockly.Lua['cpu_sleep'] = function(block) {
+	var time = Blockly.Lua.valueToCode(block, 'SECONDS', Blockly.Lua.ORDER_NONE);
+	
+	var code = '';
+
+	code = 'os.sleep(' + time + ')';	
+	return code;
+};

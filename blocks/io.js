@@ -65,7 +65,7 @@ Blockly.Blocks['configuredigitalpin'] = {
 Blockly.Blocks['configureanalogpin'] = {
   init: function() {
 	var pins = [];
-	
+		
 	for(var key in Board.analogPins) {
 		pins.push([key + ' - ' + Board.analogPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
 	}  
