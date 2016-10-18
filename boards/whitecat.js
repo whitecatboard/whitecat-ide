@@ -910,10 +910,14 @@ Whitecat.detect = function() {
 							// Store connection id and name of port
 							Whitecat.ports[0].connId = connectionInfo.connectionId;
 						
-							testPort(Whitecat.ports[0]);
+							chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+								testPort(Whitecat.ports[0]);
+							});
 						});
 					} else {
-						testPort(Whitecat.ports[0]);
+						chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+							testPort(Whitecat.ports[0]);
+						});
 					}
 				} else {
 					Whitecat.inDetect = false;
