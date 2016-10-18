@@ -44,96 +44,30 @@ Whitecat.inRecover = false;
 Whitecat.detectInterval = null;
 Whitecat.hardwareReset = false;
 
+Whitecat.stopTimeout = 2000;
+Whitecat.bootingTimeout = 3500;
+Whitecat.runningTimeout = 1500;
+
 Whitecat.runQueue = [];
 
-// Digital pins map
-Whitecat.digitalPins = {
-	"8" : "pio.PB_5",
-	"9" : "pio.PB_4",
-	"10": "pio.PB_3",
-	"11": "pio.PB_2",
-	"12": "pio.PB_1",
-	"13": "pio.PB_0",
-	"14": "pio.PB_6",
-	"15": "pio.PB_7",
-	"16": "pio.PB_8",
-	"17": "pio.PB_15",
-	"18": "pio.PB_13",
-	"19": "pio.PB_12",
-	"20": "pio.PC_15",
-	"27": "pio.PD_9",
-	"28": "pio.PD_10",
-	"29": "pio.PD_11",
-	"30": "pio.PD_0",
-	"31": "pio.PC_13",
-	"32": "pio.PC_14",
-	"35": "pio.PD_4",
-	"36": "pio.PD_5",
-	"37": "pio.PE_0",
-	"38": "pio.PE_1",
-	"39": "pio.PE_2",
-	"40": "pio.PE_3",
-	"41": "pio.PE_4",
-	"42": "pio.PE_5",
-	"43": "pio.PE_6",
-	"44": "pio.PE_7"
-};
-
-// Analog pins map
-Whitecat.analogPins = {
-	"9" : "pio.PB_4",
-	"10": "pio.PB_3",
-    "11": "pio.PB_2",
-    "12": "pio.PB_1",
-	"13": "pio.PB_0",
-};
-
-Whitecat.analogPinsChannel = {
-	"9" : "4",
-	"10": "3",
-    "11": "2",
-    "12": "1",
-	"13": "0",
-};
-
-// PWM pins map
-Whitecat.pwmPins = {
-	"12": "pio.PB_2",
-	"14": "pio.PB_6",
-	"12": "pio.PB_1",
-	"13": "pio.PB_0",
-	"10": "pio.PB_3",
-	"16": "pio.PB_8",
-};
-
-Whitecat.pwmPinsChannel = {
-	"12": "1",
-	"14": "2",
-	"12": "4",
-	"13": "5",
-	"10": "7",
-	"16": "8",
-};
-
-// I2C map
-Whitecat.i2cModules = {
-	"BB1": "i2c.I2CBB1",
-	"BB2": "i2c.I2CBB2",
-	"BB3": "i2c.I2CBB3",
-	"BB4": "i2c.I2CBB4",
-	"BB5": "i2c.I2CBB5",
-}
-
 Whitecat.updateMaps = function() {
+	var board = "X1";
+	
 	if (Whitecat.status.cpu == "ESP8266") {
-		Whitecat.digitalPins = Whitecat["N1"].digitalPins;
-		Whitecat.analogPins = Whitecat["N1"].analogPins;
-		Whitecat.analogPinsChannel = Whitecat["N1"].analogPinsChannel;
-		Whitecat.pwmPins = Whitecat["N1"].pwmPins;
-		Whitecat.pwmPinsChannel = Whitecat["N1"].pwmPinsChannel;
-		Whitecat.i2cModules = Whitecat["N1"].i2cModules;
-		Whitecat.hardwareReset = Whitecat["N1"].hardwareReset;
+		board = "N1";
 	}
+
+	Whitecat.digitalPins = Whitecat[board].digitalPins;
+	Whitecat.analogPins = Whitecat[board].analogPins;
+	Whitecat.analogPinsChannel = Whitecat[board].analogPinsChannel;
+	Whitecat.pwmPins = Whitecat[board].pwmPins;
+	Whitecat.pwmPinsChannel = Whitecat[board].pwmPinsChannel;
+	Whitecat.i2cModules = Whitecat[board].i2cModules;
+	Whitecat.hardwareReset = Whitecat[board].hardwareReset;
+	Whitecat.stopTimeout = Whitecat[board].stopTimeout;
+	Whitecat.bootingTimeout = Whitecat[board].bootingTimeout;
+	Whitecat.runningTimeout = Whitecat[board].runningTimeout;
+
 	return;
 }
 
@@ -391,31 +325,32 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 	var fileSendCommand =  "io.receive(\"" + fileName + "\")";
 	var waitForC = false;
 	var waitForN = false;
+	var waitForChunk = false;
+	var waitForTrue = false;
 	var waitForCommandEcho = true;
 	
 	function sendChunk() {
 		// Get a new chunk
 		var chunk = content.slice(outputIndex, outputIndex + Whitecat.chunkSize);
+
+		// Increment next chunk start position
+		outputIndex += chunk.length;	
+		
 		// Send size
 		chrome.serial.send(port.connId, Whitecat.str2ab(String.fromCharCode(chunk.length)), function(info) {
 			if (chunk.length > 0) {
+				waitForC = true;
+				waitForN = false;
+
 				// Send chunk
 				chrome.serial.send(port.connId, Whitecat.str2ab(chunk), function(info) {					
-					waitForC = true;
-					waitForN = false;
-					
-					chrome.serial.onReceive.addListener(sendFileListener);
 				});
-			} else {
-				chrome.serial.onReceive.removeListener(sendFileListener);
-		
-				Term.enable();
-				sended();
+			} else {		
+				waitForC = false;
+				waitForN = false;
+				waitForTrue = true;
 			}						
-		});
-	
-		// Increment next chunk start position
-		outputIndex += chunk.length;	
+		});	
 	}
 	
 	function sendFileListener(info) {
@@ -424,7 +359,7 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 			Whitecat.runQueue.push(str);
 
 			for(var i = 0; i < str.length; i++) {
-				if (waitForCommandEcho) {
+				if (waitForCommandEcho || waitForTrue) {
 					if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
 						// Remove promtp and others in response
 						currentReceived = currentReceived.replace(/^.*\/.*\>\s*/g,"");
@@ -433,7 +368,15 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 							waitForC = true;
 							waitForN = false;
 							waitForCommandEcho = false;
+							currentReceived = "";
 							continue;
+						} else if (currentReceived == "true") {
+							chrome.serial.onReceive.removeListener(sendFileListener);
+							
+							Term.enable();
+							sended();
+							
+							break;
 						}
 					} else {
 						currentReceived = currentReceived + str.charAt(i);
@@ -441,15 +384,13 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 				} else if ((str.charAt(i) === 'C') && (waitForC)) {
 					waitForC = false;
 					waitForN = true;
-				} else if ((str.charAt(i) === '\n') && (waitForN)) {
-					chrome.serial.onReceive.removeListener(sendFileListener);
-					
+				} else if ((str.charAt(i) === '\n') && (waitForN)) {					
 					waitForC = true;
 					waitForN = false;
 					sendChunk();
 					break;
 				}				
-			}		
+			}			
 		}			
 	}
 
@@ -562,6 +503,7 @@ Whitecat.fileExists = function(port, name, callback) {
 Whitecat.stop = function(port, success, error) {
 	var currentReceived = "";
 	var currentTimeOut;
+	var currentInterval;
 	
 	function timeout() {
 		chrome.serial.onReceive.removeListener(stopListener);
@@ -609,19 +551,17 @@ Whitecat.stop = function(port, success, error) {
 	function stopListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
-			Whitecat.runQueue.push(str);
 			
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
 					currentReceived = "";
 				} else {
 					currentReceived = currentReceived + str.charAt(i);	
-
 					if (currentReceived.match(/^lua\:.*interrupted\!$/g)) {
 					}
-									
 					if (currentReceived.match(/^\/.*\>\s*$/g)) {
 						clearTimeout(currentTimeOut);
+						clearInterval(currentInterval);
 						chrome.serial.onReceive.removeListener(stopListener);
 						stopThreads();
 						break;
@@ -636,17 +576,20 @@ Whitecat.stop = function(port, success, error) {
 	// Send a Ctrl-C for interrupt current running script
 	chrome.serial.flush(port.connId, function(info) {
 		chrome.serial.onReceive.addListener(stopListener);
-		
-		chrome.serial.send(port.connId, Whitecat.str2ab('\03'), function(info) {
-			// Set a timeout
-			currentTimeOut = setTimeout(function(){
-				timeout();
-			}, 2000);
-		});			
+
+		// Set a timeout
+		currentTimeOut = setTimeout(function(){
+			timeout();
+		}, Whitecat.stopTimeout);
+
+		currentInterval = setInterval(function() {
+			chrome.serial.send(port.connId, Whitecat.str2ab('\03'), function(info) {
+			});					
+		}, 1);
 	});
 };
 
-// Detects if white is booting
+// Detects if whitecat is booting
 Whitecat.isBooting = function(port, success, error) {
 	var currentReceived = "";
 	var currentTimeOut;
@@ -690,19 +633,18 @@ Whitecat.isBooting = function(port, success, error) {
 	// Set a timeout
 	currentTimeOut = setTimeout(function(){
 		timeout();
-	}, 10000);
+	}, Whitecat.bootingTimeout);
 
 	// Send a Ctrl-D for test if LuaOS is booting
 	chrome.serial.onReceive.addListener(isBootingListener);
-	//chrome.serial.flush(port.connId, function(result) {
-		currentInterval = setInterval(function() {
-			chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
-			});					
-		}, 1);
-	//});
+
+	currentInterval = setInterval(function() {
+		chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
+		});					
+	}, 1);
 };
 
-// Detects if white is running
+// Detects if whitecat is running
 Whitecat.isRunning = function(port, success, error) {
 	var currentReceived = "";
 	var currentTimeOut;
@@ -746,17 +688,15 @@ Whitecat.isRunning = function(port, success, error) {
 	// Set a timeout
 	currentTimeOut = setTimeout(function(){
 		timeout();
-	}, 1500);
+	}, Whitecat.runningTimeout);
 
-	// Send a Ctrl-D for test if LuaOS is running
 	chrome.serial.onReceive.addListener(isRunningListener);
 
-	//chrome.serial.flush(port.connId, function(result) {
-		currentInterval = setInterval(function() {
-			chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
-			});					
-		}, 1);
-	//});
+	// Send a Ctrl-D for test if LuaOS is running
+	currentInterval = setInterval(function() {
+		chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
+		});					
+	}, 1);
 };
 
 Whitecat.getStatus = function(port, success, error) {
@@ -855,21 +795,33 @@ Whitecat.detect = function() {
 			Whitecat.isRunning(port,
 				function(running) {
 					if (running) {
-						Whitecat.getStatus(
+						// We want a whitecat with nothing running when the environment
+						// detects a new connected board, because we need to have the
+						// Lua interpreter available for get the board status				
+						Whitecat.stop(
 							port,
 							function() {
-								Whitecat.updateMaps();
-								port.state = Whitecat.CONNECTED_STATE;
-								Code.boardConnected();
-								Whitecat.inDetect = false;
+								Whitecat.getStatus(
+									port,
+									function() {
+										Whitecat.updateMaps();
+										port.state = Whitecat.CONNECTED_STATE;
+										Code.boardConnected();
+										Whitecat.inDetect = false;
+									},
+									function() {
+										Whitecat.updateMaps();
+										port.state = Whitecat.CONNECTED_STATE;
+										Code.boardConnected();
+										Whitecat.inDetect = false;
+									}
+								);	
 							},
 							function() {
-								Whitecat.updateMaps();
-								port.state = Whitecat.CONNECTED_STATE;
-								Code.boardConnected();
 								Whitecat.inDetect = false;
 							}
-						);	
+						);							
+						
 					} else {
 						Whitecat.inDetect = false;
 					}
@@ -1041,60 +993,23 @@ Whitecat.runListener = function() {
 	}, 50);
 }
 
-// Run current generated code to the whitecat
-Whitecat.runNew = function(port, file, code, success, fail) {
-	if (code.trim() == "") {
-		success();
-		return;
-	}
-		
-	Term.disable();
-	chrome.serial.flush(port.connId, function() {
-		// Stop anything running
-		Whitecat.stop(
-			port,
-			function() {
-				// Whitecat is stopped
-				// Send code
-				Whitecat.runCode(port, file, code, 
-					function() {
-						// Code is running
-						Term.enable();
-						success();
-					}
-				);		
-			},
-			function() {
-				Term.enable();
-				fail();
-			}
-		);							
-	});
-};
 
 Whitecat.sendAndRun = function(port, file, code, success, fail) {
-	// First update autorun.lua, and put a dofile for the target file.
-	// When board reboots autorun.lua it's executed.
+	// First update autorun.lua, which run the target file
 	Whitecat.sendFile(port, "/autorun.lua", "dofile(\""+file+"\")\r\n", 
 		function() {
-			// autorun.lua is updated
-			
-			// now end code
+			// Now write code to target file
 			Whitecat.sendFile(port, file, code, 
 				function() {
-					// Code is sended
-	
-					//Now run target file					
-					waitForException = true;
-					waitForTraceback = false;
-					WaitForPrompt = false;
-					chrome.serial.send(port.connId,  Whitecat.str2ab("dofile(\""+file+"\")\r\n"), function() {
-						Term.enable();
+					Term.enable();
+
+					// Run the target file
+					chrome.serial.send(port.connId, Whitecat.str2ab("dofile(\""+file+"\")\r"), function() {
 						success();
 					});
 			});		
-	
-	});		
+
+	});			
 };
 
 Whitecat.run = function(port, file, code, success, fail) {

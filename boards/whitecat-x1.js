@@ -27,79 +27,88 @@
  * this software.
  */
 
-Whitecat.N1 = {};
+Whitecat.X1 = {};
 
-Whitecat.N1.hardwareReset = true;
-Whitecat.N1.stopTimeout = 2000;
-Whitecat.N1.bootingTimeout = 3500;
-Whitecat.N1.runningTimeout = 1500;
+Whitecat.X1.hardwareReset = false;
+
+Whitecat.X1.stopTimeout = 2000;
+Whitecat.X1.bootingTimeout = 3500;
+Whitecat.X1.runningTimeout = 1500;
 
 // Digital pins map
-Whitecat.N1.digitalPins = {
-	"15": "pio.GPIO0",
-	"26": "pio.GPIO1",
-	"14": "pio.GPIO2",
-	"25": "pio.GPIO3",
-	"16": "pio.GPIO4",	
-	"24": "pio.GPIO5",
-	"10": "pio.GPIO12",
-	"12": "pio.GPIO13",
-	"9" : "pio.GPIO14",
-	"13": "pio.GPIO15",
-	"8" : "pio.GPIO16",
+Whitecat.X1.digitalPins = {
+	"8" : "pio.RB5",
+	"9" : "pio.RB4",
+	"10": "pio.RB3",
+	"11": "pio.RB2",
+	"12": "pio.RB1",
+	"13": "pio.RB0",
+	"14": "pio.RB6",
+	"15": "pio.RB7",
+	"16": "pio.RB8",
+	"17": "pio.RB15",
+	"18": "pio.RB13",
+	"19": "pio.RB12",
+	"20": "pio.RC15",
+	"27": "pio.RD9",
+	"28": "pio.RD10",
+	"29": "pio.RD11",
+	"30": "pio.RD0",
+	"31": "pio.RC13",
+	"32": "pio.RC14",
+	"35": "pio.RD4",
+	"36": "pio.RD5",
+	"37": "pio.RE0",
+	"38": "pio.RE1",
+	"39": "pio.RE2",
+	"40": "pio.RE3",
+	"41": "pio.RE4",
+	"42": "pio.RE5",
+	"43": "pio.RE6",
+	"44": "pio.RE7"
 };
 
 // Analog pins map
-Whitecat.N1.analogPins = {
-/*
-	"9" : "pio.PB_4",
-	"10": "pio.PB_3",
-    "11": "pio.PB_2",
-    "12": "pio.PB_1",
-	"13": "pio.PB_0",
-*/
+Whitecat.X1.analogPins = {
+	"9" : "pio.RB4",
+	"10": "pio.RB3",
+    "11": "pio.RB2",
+    "12": "pio.RB1",
+	"13": "pio.RB0",
 };
 
-Whitecat.N1.analogPinsChannel = {
-/*
+Whitecat.X1.analogPinsChannel = {
 	"9" : "4",
 	"10": "3",
     "11": "2",
     "12": "1",
 	"13": "0",
-*/
 };
 
 // PWM pins map
-Whitecat.N1.pwmPins = {
-/*
-	"12": "pio.PB_2",
-	"14": "pio.PB_6",
-	"12": "pio.PB_1",
-	"13": "pio.PB_0",
-	"10": "pio.PB_3",
-	"16": "pio.PB_8",
-*/
+Whitecat.X1.pwmPins = {
+	"12": "pio.RB2",
+	"14": "pio.RB6",
+	"12": "pio.RB1",
+	"13": "pio.RB0",
+	"10": "pio.RB3",
+	"16": "pio.RB8",
 };
 
-Whitecat.N1.pwmPinsChannel = {
-/*
+Whitecat.X1.pwmPinsChannel = {
 	"12": "1",
 	"14": "2",
 	"12": "4",
 	"13": "5",
 	"10": "7",
 	"16": "8",
-*/
 };
 
 // I2C map
-Whitecat.N1.i2cModules = {
-/*
+Whitecat.X1.i2cModules = {
 	"BB1": "i2c.I2CBB1",
 	"BB2": "i2c.I2CBB2",
 	"BB3": "i2c.I2CBB3",
 	"BB4": "i2c.I2CBB4",
 	"BB5": "i2c.I2CBB5",
-*/
 }
