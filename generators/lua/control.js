@@ -57,23 +57,9 @@ Blockly.Lua['execute_on'] = function(block) {
 	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
 	var when = block.getFieldValue('WHEN');
 
-	if (when == 1) {
-		code = 'if (os.luainterpreter()) then\n';
-	}
-
 	doStatement = 'thread.start(function()\n' + doStatement + 'end)\n';
 
-	if (when == 1) {
-		if (doStatement != '') {
-			doStatement = Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
-		}
-	}
-	
 	code += doStatement;
-	
-	if (when == 1) {
-		code += 'end\n';
-	}
 	
 	return code;
 }

@@ -36,17 +36,13 @@ Whitecat.N1.runningTimeout = 1500;
 
 // Digital pins map
 Whitecat.N1.digitalPins = {
-	"15": "pio.GPIO0",
-	"26": "pio.GPIO1",
 	"14": "pio.GPIO2",
-	"25": "pio.GPIO3",
 	"16": "pio.GPIO4",	
 	"24": "pio.GPIO5",
 	"10": "pio.GPIO12",
 	"12": "pio.GPIO13",
 	"9" : "pio.GPIO14",
 	"13": "pio.GPIO15",
-	"8" : "pio.GPIO16",
 };
 
 // Analog pins map
