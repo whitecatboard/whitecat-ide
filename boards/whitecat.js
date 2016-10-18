@@ -1038,20 +1038,17 @@ Whitecat.run = function(port, file, code, success, fail) {
 		});
 	} else {
 		// Do a hardware reset
-		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: true }, function() {
-			chrome.serial.setControlSignals(port.connId, { dtr: true, rts: false }, function() {
-				chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
-					Whitecat.init(Whitecat.BOOTING_STATE);
-					
-					// Wait for the connected state
-					var currentInterval = setInterval(function() {
-						if (port.state == Whitecat.CONNECTED_STATE) {
-							clearInterval(currentInterval);
-							Whitecat.sendAndRun(port, file, code, success, fail);
-						}
-					}, 100);
-					
-				});
+		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
+			chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
+				Whitecat.init(Whitecat.BOOTING_STATE);
+				
+				// Wait for the connected state
+				var currentInterval = setInterval(function() {
+					if (port.state == Whitecat.CONNECTED_STATE) {
+						clearInterval(currentInterval);
+						Whitecat.sendAndRun(port, file, code, success, fail);
+					}
+				}, 100);
 			});
 		});
 	}
@@ -1103,12 +1100,10 @@ Whitecat.reboot = function(port, callback) {
 	Term.disconnect();
 
 	if (Whitecat.hardwareReset) {
-		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: true }, function() {
-			chrome.serial.setControlSignals(port.connId, { dtr: true, rts: false }, function() {
-				chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
-					Whitecat.init(Whitecat.BOOTING_STATE);
-					callback();		
-				});
+		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
+			chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
+				Whitecat.init(Whitecat.BOOTING_STATE);
+				callback();		
 			});
 		});
 	} else {
