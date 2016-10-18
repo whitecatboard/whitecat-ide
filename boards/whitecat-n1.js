@@ -92,4 +92,4 @@ Whitecat.N1.pwmPinsChannel = {
 // I2C map
 Whitecat.N1.i2cModules = {
 	"BB1": "i2c.I2CBB1",
-}
+};

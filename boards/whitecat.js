@@ -939,6 +939,8 @@ Whitecat.init = function(state) {
 	
 	Whitecat.inRecover = (state == 6);
 	
+	Whitecat.updateMaps();
+	
 	Whitecat.detectInterval = setInterval(function(){
 		Whitecat.detect();
 	}, 100);
