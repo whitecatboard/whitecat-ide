@@ -35,7 +35,7 @@ goog.require('Blockly.Lua');
 Blockly.Lua['lora_configure'] = function(block) {
   var band = block.getFieldValue('BAND');
 
-  return 'lora.setup(' + band + ', false)\n';
+  return 'lora.setup(' + band + ')\n';
 };
 
 Blockly.Lua['lora_set_appeui'] = function(block) {
