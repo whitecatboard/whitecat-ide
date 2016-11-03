@@ -27,15 +27,15 @@
  * this software.
  */
 
-Whitecat.N1 = {};
+Whitecat.N1ESP32 = {};
 
-Whitecat.N1.hardwareReset = true;
-Whitecat.N1.stopTimeout = 2000;
-Whitecat.N1.bootingTimeout = 3500;
-Whitecat.N1.runningTimeout = 1500;
+Whitecat.N1ESP32.hardwareReset = true;
+Whitecat.N1ESP32.stopTimeout = 2000;
+Whitecat.N1ESP32.bootingTimeout = 3500;
+Whitecat.N1ESP32.runningTimeout = 1500;
 
 // Digital pins map
-Whitecat.N1.digitalPins = {
+Whitecat.N1ESP32.digitalPins = {
 	"14": "pio.GPIO2",
 	"16": "pio.GPIO4",	
 	"24": "pio.GPIO5",
@@ -46,7 +46,7 @@ Whitecat.N1.digitalPins = {
 };
 
 // Analog pins map
-Whitecat.N1.analogPins = {
+Whitecat.N1ESP32.analogPins = {
 /*
 	"9" : "pio.PB_4",
 	"10": "pio.PB_3",
@@ -56,7 +56,7 @@ Whitecat.N1.analogPins = {
 */
 };
 
-Whitecat.N1.analogPinsChannel = {
+Whitecat.N1ESP32.analogPinsChannel = {
 /*
 	"9" : "4",
 	"10": "3",
@@ -67,7 +67,7 @@ Whitecat.N1.analogPinsChannel = {
 };
 
 // PWM pins map
-Whitecat.N1.pwmPins = {
+Whitecat.N1ESP32.pwmPins = {
 /*
 	"12": "pio.PB_2",
 	"14": "pio.PB_6",
@@ -78,7 +78,7 @@ Whitecat.N1.pwmPins = {
 */
 };
 
-Whitecat.N1.pwmPinsChannel = {
+Whitecat.N1ESP32.pwmPinsChannel = {
 /*
 	"12": "1",
 	"14": "2",
@@ -90,6 +90,6 @@ Whitecat.N1.pwmPinsChannel = {
 };
 
 // I2C map
-Whitecat.N1.i2cModules = {
+Whitecat.N1ESP32.i2cModules = {
 	"BB1": "i2c.I2CBB1",
 };

@@ -54,7 +54,11 @@ Whitecat.updateMaps = function() {
 	var board = "X1";
 	
 	if (Whitecat.status.cpu == "ESP8266") {
-		board = "N1";
+		board = "N1ESP8266";
+	}
+
+	if (Whitecat.status.cpu == "ESP32") {
+		board = "N1ESP32";
 	}
 
 	Whitecat.digitalPins = Whitecat[board].digitalPins;
