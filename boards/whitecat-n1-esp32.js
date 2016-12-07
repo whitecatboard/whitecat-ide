@@ -29,7 +29,6 @@
 
 Whitecat.N1ESP32 = {};
 
-Whitecat.N1ESP32.hardwareReset = true;
 Whitecat.N1ESP32.stopTimeout = 2000;
 Whitecat.N1ESP32.bootingTimeout = 3500;
 Whitecat.N1ESP32.runningTimeout = 1500;

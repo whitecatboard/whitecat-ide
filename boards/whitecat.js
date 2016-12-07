@@ -39,6 +39,7 @@ Whitecat.ERR_TIMEOUT = -1;
 Whitecat.ERR_INVALID_RESPONSE = -2;
 Whitecat.ERR_CONNECTION_ERROR = -4;
 
+Whitecat.debug = false;
 Whitecat.inDetect = false;
 Whitecat.inRecover = false;
 Whitecat.detectInterval = null;
@@ -290,8 +291,13 @@ Whitecat.receiveFile = function(port, fileName, received) {
 		size = 0;
 		
 		chrome.serial.onReceive.addListener(receiveChunkListener);		
-		chrome.serial.send(port.connId, Whitecat.str2ab('C\n'), function() {
-		});
+		
+		setTimeout(function(){		
+			chrome.serial.send(port.connId, Whitecat.str2ab('C\n'), function() {
+			});
+		}, 100);
+		
+		
 	}
 	
 	function waitForCommandEcho(info) {
@@ -402,7 +408,7 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 	chrome.serial.flush(port.connId, function(result) {
 		chrome.serial.onReceive.addListener(sendFileListener);
 		
-		chrome.serial.send(port.connId, Whitecat.str2ab(fileSendCommand + "\r"), function() {
+		chrome.serial.send(port.connId, Whitecat.str2ab(fileSendCommand + "\r\n"), function() {
 		});
 	});
 };
@@ -411,7 +417,7 @@ Whitecat.sendFile = function(port, fileName, content, sended) {
 Whitecat.runCode = function(port, fileName, content, running) {
 	var outputIndex = 0;
 	var currentReceived = "";
-	var runCommand =  "os.run()\r";
+	var runCommand =  "os.run()\r\n";
 	var waitForC = false;
 	var waitForN = false;
 	
@@ -524,7 +530,7 @@ Whitecat.stop = function(port, success, error) {
 							try {
 								resp = JSON.parse(resp);
 
-								if (resp.os == "LuaOS") {
+								if (resp.os == "Lua RTOS") {
 									clearTimeout(currentTimeOut);
 									Term.enable();
 									success();
@@ -602,7 +608,7 @@ Whitecat.isBooting = function(port, success, error) {
 	function timeout() {
 		clearInterval(currentInterval);
 		chrome.serial.onReceive.removeListener(isBootingListener);
-		error(false);
+		error(Whitecat.ERR_TIMEOUT);
 	}
 
 	function isBootingListener(info) {
@@ -612,18 +618,12 @@ Whitecat.isBooting = function(port, success, error) {
 			
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
-					if (currentReceived == "LuaOS-booting") {
+					if (currentReceived.match(/^Lua RTOS-booting-.*/g)) {
 						clearInterval(currentInterval);
 						clearTimeout(currentTimeOut);
 						chrome.serial.onReceive.removeListener(isBootingListener);
 						success(true);	
 						break;				
-					} else if (currentReceived == "LuaOS-running") {
-						clearInterval(currentInterval);
-						clearTimeout(currentTimeOut);
-						chrome.serial.onReceive.removeListener(isBootingListener);
-						success(false);		
-						break;			
 					}
 								
 					currentReceived = "";
@@ -645,7 +645,7 @@ Whitecat.isBooting = function(port, success, error) {
 	currentInterval = setInterval(function() {
 		chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
 		});					
-	}, 1);
+	}, 10);
 };
 
 // Detects if whitecat is running
@@ -657,23 +657,17 @@ Whitecat.isRunning = function(port, success, error) {
 	function timeout() {
 		clearInterval(currentInterval);
 		chrome.serial.onReceive.removeListener(isRunningListener);
-		timeout(error);
+		error(Whitecat.ERR_TIMEOUT);
 	}
 
 	function isRunningListener(info) {
 	    if (info.connectionId == port.connId && info.data) {
 			var str = Whitecat.ab2str(info.data);
 			Whitecat.runQueue.push(str);
-			
+
 			for(var i = 0; i < str.length; i++) {
 				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
-					if (currentReceived == "LuaOS-booting") {
-						clearInterval(currentInterval);
-						clearTimeout(currentTimeOut);
-						chrome.serial.onReceive.removeListener(isRunningListener);
-						success(false);		
-						break;			
-					} else if (currentReceived == "LuaOS-running") {
+					if (currentReceived.match(/^Lua RTOS-running-.*/g)) {
 						clearInterval(currentInterval);
 						clearTimeout(currentTimeOut);
 						chrome.serial.onReceive.removeListener(isRunningListener);
@@ -700,7 +694,7 @@ Whitecat.isRunning = function(port, success, error) {
 	currentInterval = setInterval(function() {
 		chrome.serial.send(port.connId, Whitecat.str2ab('\04'), function(info) {
 		});					
-	}, 1);
+	}, 10);
 };
 
 Whitecat.getStatus = function(port, success, error) {
@@ -740,7 +734,7 @@ Whitecat.getStatus = function(port, success, error) {
 //   through the console, and with a LuaOS-running when LuaOS is ready for
 //   response to commands.
 
-Whitecat.BOOTING_INTERVAL = 1;
+Whitecat.HAS_BOOTLOADER_STATE = false;
 
 Whitecat.BOOTLOADER_STATE = 1;
 Whitecat.BOOTING_STATE    = 2;
@@ -766,9 +760,12 @@ Whitecat.detect = function() {
 	}
 		
 	function testPort(port) {
-		if (port.state == Whitecat.PREBOOTING_STATE) {
-			Whitecat.inDetect = false;
-		} else if (port.state == Whitecat.BOOTLOADER_STATE) {
+		if ((port.state == Whitecat.BOOTLOADER_STATE) && (!Whitecat.HAS_BOOTLOADER_STATE)) {
+			port.state = Whitecat.BOOTING_STATE;
+		}
+		
+		if (port.state == Whitecat.BOOTLOADER_STATE) {
+			debug("BOOTLOADER_STATE");
 			stk500.detect(port, function(detected) {
 				if (detected) {
 					port.state = Whitecat.BAD_STATE;
@@ -780,22 +777,28 @@ Whitecat.detect = function() {
 				Whitecat.inDetect = false;
 			});	
 		} else if (port.state == Whitecat.BOOTING_STATE) {
-			Whitecat.isBooting(port,
-				function(booting) {
-					if (booting) {
-						port.state = Whitecat.RUNNING_STATE;
-					} else {
-						port.state = Whitecat.RUNNING_STATE;
-					}
-					Whitecat.inDetect = false;
-				},
-				function() {
-					// Time out
-					port.state = Whitecat.BOOTLOADER_STATE
-					Whitecat.inDetect = false;
-				}
-			);
+			debug("BOOTING_STATE");
+			chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+				chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
+					Whitecat.isBooting(port,
+						function(booting) {
+							port.state = Whitecat.RUNNING_STATE;
+							Whitecat.inDetect = false;
+						},
+						function(err) {
+							// Time out
+							chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+								chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
+									port.state = Whitecat.BOOTLOADER_STATE
+									Whitecat.inDetect = false;
+								});
+							});					
+						}
+					);
+				});
+			});					
 		} else if (port.state == Whitecat.RUNNING_STATE) {
+			debug("RUNNING_STATE");
 			Whitecat.isRunning(port,
 				function(running) {
 					if (running) {
@@ -830,9 +833,14 @@ Whitecat.detect = function() {
 						Whitecat.inDetect = false;
 					}
 				},
-				function() {
-					port.state = Whitecat.BOOTLOADER_STATE
-					Whitecat.inDetect = false;
+				function(err) {
+					// Timeout
+					chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+						chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
+							port.state = Whitecat.BOOTLOADER_STATE
+							Whitecat.inDetect = false;
+						});
+					});					
 				}
 			);
 		} else if (port.state == Whitecat.RECOVER_STATE) {
@@ -876,7 +884,7 @@ Whitecat.detect = function() {
 				if (!Whitecat.port.isConnected(ports[port].path)) {
 					Whitecat.port.addTestMark(ports[port].path);
 				}
-				
+
 				// Remove delete mark
 				Whitecat.port.removeDeleteMark(ports[port].path);
 			}
@@ -907,21 +915,27 @@ Whitecat.detect = function() {
 				if (Whitecat.ports[0].forTest) {
 					if (Whitecat.ports[0].connId == null) {
 						chrome.serial.connect(Whitecat.ports[0].path, {bitrate: 115200, bufferSize: 4096}, function(connectionInfo) {
+							debug("Connected to " + Whitecat.ports[0].path);
+
 							if (Whitecat.inRecover) {
 								Whitecat.ports[0].state = 6;
 							}
 							
 							// Store connection id and name of port
 							Whitecat.ports[0].connId = connectionInfo.connectionId;
-						
-							chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
-								testPort(Whitecat.ports[0]);
-							});
+
+							//chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+							//	chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
+									testPort(Whitecat.ports[0]);
+							//	});
+							//});
 						});
 					} else {
-						chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
-							testPort(Whitecat.ports[0]);
-						});
+						//chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+						//	chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
+								testPort(Whitecat.ports[0]);
+						//	});
+						//});
 					}
 				} else {
 					Whitecat.inDetect = false;
@@ -1107,19 +1121,12 @@ Whitecat.upgradeFirmware = function(port, code, callback) {
 Whitecat.reboot = function(port, callback) {
 	Term.disconnect();
 
-	if (Whitecat.hardwareReset) {
-		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
-			chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
-				Whitecat.init(Whitecat.BOOTING_STATE);
-				callback();		
-			});
-		});
-	} else {
-		chrome.serial.send(port.connId,  Whitecat.str2ab("\r\nos.exit()\r\n"), function() {
+	chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+		chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
 			Whitecat.init(Whitecat.BOOTING_STATE);
-			callback();
+			callback();		
 		});
-	}		
+	});					
 }
 
 // Get version of the firmware installed on the board
@@ -1213,3 +1220,9 @@ Whitecat.checkForNewFirmwareAvailability = function(port, success, error) {
 }
 
 var Board = Whitecat;
+
+if (Whitecat.debug) {
+	chrome.app.window.create('debug.html', {
+		id: "debugwin",
+	});  
+}
