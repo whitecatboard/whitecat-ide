@@ -4,7 +4,7 @@
  * Copyright (C) 2015 - 2016
  * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
  * 
- * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
+ * Author: Jaume Olivé (joliveiberoxarxa.com / jolivewhitecatboard.org)
  * 
  * All rights reserved.  
  *
@@ -35,23 +35,48 @@ Whitecat.N1ESP32.runningTimeout = 1500;
 
 // Digital pins map
 Whitecat.N1ESP32.digitalPins = {
-	"14": "pio.GPIO2",
-	"16": "pio.GPIO4",	
-	"24": "pio.GPIO5",
-	"10": "pio.GPIO12",
-	"12": "pio.GPIO13",
-	"9" : "pio.GPIO14",
-	"13": "pio.GPIO15",
+"4":  "GPIO36",
+"5":  "GPIO39",
+"6":  "GPIO34",
+"7":  "GPIO35",
+"8":  "GPIO32",
+"9":  "GPIO33",
+"10": "GPIO25",
+"11": "GPIO26",
+"12": "GPIO27",
+"13": "GPIO14",
+"14": "GPIO12",
+"16": "GPIO13",
+"17": "GPIO9",
+"18": "GPIO10",
+"19": "GPIO11",
+"20": "GPIO6",
+"21": "GPIO7",
+"22": "GPIO8",
+"23": "GPIO15",
+"24": "GPIO2",
+"25": "GPIO0",
+"26": "GPIO4",
+"27": "GPIO16",
+"28": "GPIO17",
+"29": "GPIO5",
+"30": "GPIO18",
+"31": "GPIO19",
+"33": "GPIO21",
+"34": "GPIO3",
+"35": "GPIO1",
+"36": "GPIO22",
+"37": "GPIO23",
 };
 
 // Analog pins map
 Whitecat.N1ESP32.analogPins = {
 /*
-	"9" : "pio.PB_4",
-	"10": "pio.PB_3",
-    "11": "pio.PB_2",
-    "12": "pio.PB_1",
-	"13": "pio.PB_0",
+	"9" : "PB_4",
+	"10": "PB_3",
+    "11": "PB_2",
+    "12": "PB_1",
+	"13": "PB_0",
 */
 };
 
@@ -68,12 +93,12 @@ Whitecat.N1ESP32.analogPinsChannel = {
 // PWM pins map
 Whitecat.N1ESP32.pwmPins = {
 /*
-	"12": "pio.PB_2",
-	"14": "pio.PB_6",
-	"12": "pio.PB_1",
-	"13": "pio.PB_0",
-	"10": "pio.PB_3",
-	"16": "pio.PB_8",
+	"12": "PB_2",
+	"14": "PB_6",
+	"12": "PB_1",
+	"13": "PB_0",
+	"10": "PB_3",
+	"16": "PB_8",
 */
 };
 
@@ -91,4 +116,7 @@ Whitecat.N1ESP32.pwmPinsChannel = {
 // I2C map
 Whitecat.N1ESP32.i2cModules = {
 	"BB1": "i2c.I2CBB1",
+	"BB2": "i2c.I2CBB2",
+	"BB3": "i2c.I2CBB3",
+	"BB4": "i2c.I2CBB4",
 };
