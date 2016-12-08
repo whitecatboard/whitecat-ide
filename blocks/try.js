@@ -32,13 +32,19 @@ goog.provide('Blockly.Blocks.try');
 
 goog.require('Blockly.Blocks');
 
+/**
+ * Common HSV hue for all blocks in this category.
+ */
+Blockly.Blocks.try.HUE = 290;
+
+
 Blockly.Blocks['exception_try_container'] = {
   /**
    * Mutator block for container.
    * @this Blockly.Block
    */
   init: function() {
-    this.setColour(Blockly.Blocks.control.HUE);
+    this.setColour(Blockly.Blocks.try.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.TEXT_TRY_TITLE);
     this.setNextStatement(true);
@@ -54,7 +60,7 @@ Blockly.Blocks['exception_try_finally'] = {
    * @this Blockly.Block
    */
   init: function() {
-    this.setColour(Blockly.Blocks.control.HUE);
+    this.setColour(Blockly.Blocks.try.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.TEXT_FINALLY);
     this.setPreviousStatement(true);
@@ -77,7 +83,7 @@ Blockly.Blocks['exception_try'] = {
 	this.setTooltip(Blockly.Msg.TEXT_TRY_TOOLTIP);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour(Blockly.Blocks.control.HUE);
+    this.setColour(Blockly.Blocks.try.HUE);
 
 	this.finallyCount_ = 0;
     this.setMutator(new Blockly.Mutator(['exception_try_finally']));
@@ -235,7 +241,7 @@ Blockly.Blocks['exception_catch_error'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(Blockly.Blocks.control.HUE);
+    this.setColour(Blockly.Blocks.try.HUE);
     this.setTooltip('');
     this.setHelpUrl('http://www.example.com/');
   }
@@ -254,7 +260,7 @@ Blockly.Blocks['exception_catch_other_error'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(false, null);
-    this.setColour(Blockly.Blocks.control.HUE);
+    this.setColour(Blockly.Blocks.try.HUE);
     this.setTooltip('');
     this.setHelpUrl('http://www.example.com/');
   }
@@ -269,7 +275,7 @@ Blockly.Blocks['exception_raise_again'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(false, null);
-    this.setColour(Blockly.Blocks.control.HUE);
+    this.setColour(Blockly.Blocks.try.HUE);
     this.setTooltip('');
     this.setHelpUrl('http://www.example.com/');
   }

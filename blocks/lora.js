@@ -32,7 +32,7 @@ goog.provide('Blockly.Blocks.lora');
 
 goog.require('Blockly.Blocks');
 
-Blockly.Blocks.lora.HUE = 260;
+Blockly.Blocks.lora.HUE = 20;
 
 Blockly.Blocks['lora_configure'] = {
   init: function() {
@@ -57,6 +57,23 @@ Blockly.Blocks['lora_configure'] = {
   },
 };
 
+Blockly.Blocks['lora_set_deveui'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.LORA_SET_DEVEUI);
+        
+	this.appendValueInput("DEVEUI");
+	    
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.lora.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  },
+};
+
 Blockly.Blocks['lora_set_appeui'] = {
   init: function() {
     this.appendDummyInput()
@@ -64,6 +81,57 @@ Blockly.Blocks['lora_set_appeui'] = {
         .appendField(Blockly.Msg.LORA_SET_APPEUI);
         
 	this.appendValueInput("APPEUI");
+	    
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.lora.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  },
+};
+
+Blockly.Blocks['lora_set_devaddr'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.LORA_SET_DEVADDR);
+        
+	this.appendValueInput("DEVADDR");
+	    
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.lora.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  },
+};
+
+Blockly.Blocks['lora_set_nwkskey'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.LORA_SET_NWKSKEY);
+        
+	this.appendValueInput("NWKSKEY");
+	    
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.lora.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  },
+};
+
+Blockly.Blocks['lora_set_appskey'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.LORA_SET_APPSKEY);
+        
+	this.appendValueInput("APPSKEY");
 	    
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
@@ -109,14 +177,14 @@ Blockly.Blocks['lora_set_adr'] = {
   },
 };
 
-Blockly.Blocks['lora_set_ar'] = {
+Blockly.Blocks['lora_set_dr'] = {
   init: function() {
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(Blockly.Msg.LORA_SET_AR);
+        .appendField(Blockly.Msg.LORA_SET_DR);
         
     this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown([[Blockly.Msg.TRUE, "1"], [Blockly.Msg.FALSE, "0"]]), "ON_OFF");
+        .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "DR");
 	    
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
@@ -127,15 +195,42 @@ Blockly.Blocks['lora_set_ar'] = {
   },
 };
 
-Blockly.Blocks['lora_set_dr'] = {
+Blockly.Blocks['lora_set_retx'] = {
   init: function() {
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(Blockly.Msg.LORA_SET_DR);
+        .appendField(Blockly.Msg.LORA_SET_RETX);
         
     this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"]]), "DR");
+        .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "RETX");
 	    
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.lora.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  },
+};
+
+Blockly.Blocks['lora_tx'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Blockly.Msg.LORA_TX);
+        
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([[Blockly.Msg.LORA_CONFIRMED, "1"], [Blockly.Msg.LORA_UNCONFIRMED, "0"]]), "CONF")
+        .appendField(Blockly.Msg.LORA_FRAME);
+	    
+    this.appendValueInput("PORT")
+  	   .setCheck('Number');
+
+    this.appendDummyInput()
+       .appendField(Blockly.Msg.LORA_PAYLOAD);
+	   
+	 this.appendValueInput("PAYLOAD");
+
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -147,16 +242,10 @@ Blockly.Blocks['lora_set_dr'] = {
 
 Blockly.Blocks['lora_join'] = {
   init: function() {
-	var joinTypes = [];
-	
-	joinTypes.push(['OTAA','lora.OTAA']);
-	joinTypes.push(['ABP','lora.ABP']);
-
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(Blockly.Msg.LORA_JOIN)
-        .appendField(new Blockly.FieldDropdown(joinTypes), "TYPE");
-    
+	    .appendField(Blockly.Msg.LORA_JOIN);
+	      
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);

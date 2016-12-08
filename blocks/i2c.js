@@ -36,7 +36,7 @@ goog.require('Blockly.Blocks');
 /**
  * Common HSV hue for all blocks in this category.
  */
-Blockly.Blocks.i2c.HUE = 260;
+Blockly.Blocks.i2c.HUE = 20;
   
 Blockly.Blocks['configurei2c'] = {
   init: function() {
@@ -143,7 +143,7 @@ Blockly.Blocks['i2caddress'] = {
 	      this.setInputsInline(true);
 	      this.setPreviousStatement(false, null);
 	      this.setNextStatement(false, null);
-	      this.setColour(Blockly.Blocks.io.HUE);
+	      this.setColour(Blockly.Blocks.i2c.HUE);
 	      this.setTooltip('');
 	      this.setHelpUrl('http://www.example.com/');
   }
@@ -165,7 +165,7 @@ Blockly.Blocks['i2cread'] = {
 	      this.setInputsInline(true);
 	      this.setPreviousStatement(false, null);
 	      this.setNextStatement(false, null);
-	      this.setColour(Blockly.Blocks.io.HUE);
+	      this.setColour(Blockly.Blocks.i2c.HUE);
 	      this.setTooltip('');
 	      this.setHelpUrl('http://www.example.com/');
   }
@@ -191,7 +191,7 @@ Blockly.Blocks['i2cwrite'] = {
 	      this.setInputsInline(true);
 	      this.setPreviousStatement(false, null);
 	      this.setNextStatement(false, null);
-	      this.setColour(Blockly.Blocks.io.HUE);
+	      this.setColour(Blockly.Blocks.i2c.HUE);
 	      this.setTooltip('');
 	      this.setHelpUrl('http://www.example.com/');
   }

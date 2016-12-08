@@ -330,10 +330,9 @@ Code.renderContent = function() {
 Code.init = function() {
   Code.initLanguage();
 
-  jQuery("#catThreads").attr("colour",Blockly.Blocks.threads.HUE);
   jQuery("#catIO").attr("colour",Blockly.Blocks.io.HUE);
   jQuery("#catControl").attr("colour",Blockly.Blocks.control.HUE);
-  jQuery("#catExceptions").attr("colour",Blockly.Blocks.control.HUE);
+  jQuery("#catComm").attr("colour",Blockly.Blocks.i2c.HUE);
   
   var rtl = Code.isRtl();
   var container = document.getElementById('content_area');
@@ -523,8 +522,8 @@ Code.initLanguage = function() {
   document.getElementById('trashButton').title = MSG['trashTooltip'];
 
   var categories = [
-	  'catIO','catComm','catI2C','catLora','catIODigital','catIOAnalog','catIOPwm','catControl','catExceptions', 'catThreads','catLogic',
-	  'catLoops', 'catMath', 'catText', 'catLists','catColour', 'catVariables', 'catFunctions'
+	  'catIO','catComm','catI2C','catLora','catLoraOTAA','catLoraABP','catIODigital','catIOAnalog','catIOPwm','catControl','catExceptions','catLogic',
+	  'catLoops', 'catMath', 'catText', 'catLists','catColour', 'catVariables', 'catFunctions', 'catDelays', 'catEvents'
   ];
   
   for (var i = 0, cat; cat = categories[i]; i++) {

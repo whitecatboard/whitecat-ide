@@ -38,22 +38,40 @@ Blockly.Lua['lora_configure'] = function(block) {
   return 'lora.setup(' + band + ')\n';
 };
 
-Blockly.Lua['lora_set_appeui'] = function(block) {
-  var appEui = Blockly.Lua.valueToCode(block, 'APPEUI', Blockly.Lua.ORDER_NONE);	
+Blockly.Lua['lora_set_devaddr'] = function(block) {
+  var devAddr = Blockly.Lua.valueToCode(block, 'DEVADDR', Blockly.Lua.ORDER_NONE) || '\'\'';	
 
-  appEui = appEui.replace(/\'/g, '');
-  appEui = appEui.replace(/\s/g, '');
-  
-  return 'lora.setAppEui("' + appEui + '")\n';
+  return 'lora.setDevAddr(' + devAddr + ')\n';
+};
+
+Blockly.Lua['lora_set_nwkskey'] = function(block) {
+  var nwkSKey = Blockly.Lua.valueToCode(block, 'NWKSKEY', Blockly.Lua.ORDER_NONE) || '\'\'';	
+
+  return 'lora.setNwksKey(' + nwkSKey + ')\n';
+};
+
+Blockly.Lua['lora_set_appskey'] = function(block) {
+  var appSKey = Blockly.Lua.valueToCode(block, 'APPSKEY', Blockly.Lua.ORDER_NONE) || '\'\'';	
+
+  return 'lora.setAppsKey(' + appSKey + ')\n';
+};
+
+Blockly.Lua['lora_set_deveui'] = function(block) {
+  var devEui = Blockly.Lua.valueToCode(block, 'DEVEUI', Blockly.Lua.ORDER_NONE) || '\'\'';	
+
+  return 'lora.setDevEui(' + devEui + ')\n';
+};
+
+Blockly.Lua['lora_set_appeui'] = function(block) {
+  var appEui = Blockly.Lua.valueToCode(block, 'APPEUI', Blockly.Lua.ORDER_NONE) || '\'\'';	
+
+  return 'lora.setAppEui(' + appEui + ')\n';
 };
 
 Blockly.Lua['lora_set_appkey'] = function(block) {
-  var appKey = Blockly.Lua.valueToCode(block, 'APPKEY', Blockly.Lua.ORDER_NONE);	
+  var appKey = Blockly.Lua.valueToCode(block, 'APPKEY', Blockly.Lua.ORDER_NONE) || '\'\'';	
 
-  appKey = appKey.replace(/\'/g, '');
-  appKey = appKey.replace(/\s/g, '');
-  
-  return 'lora.setAppKey("' + appKey + '")\n';
+  return 'lora.setAppKey(' + appKey + ')\n';
 };
 
 Blockly.Lua['lora_set_adr'] = function(block) {
@@ -67,25 +85,32 @@ Blockly.Lua['lora_set_adr'] = function(block) {
   return 'lora.setAdr(' + value + ')\n';
 };
 
-Blockly.Lua['lora_set_ar'] = function(block) {
-  var on_off = block.getFieldValue('ON_OFF');
-  var value = "true";
-  
-  if (on_off == "0") {
-  	value = "false";
-  }
-  
-  return 'lora.setAr(' + value + ')\n';
-};
-
 Blockly.Lua['lora_set_dr'] = function(block) {
   var value = block.getFieldValue('DR');
 
   return 'lora.setDr(' + value + ')\n';
 };
 
-Blockly.Lua['lora_join'] = function(block) {
-  var joinType = block.getFieldValue('TYPE');
+Blockly.Lua['lora_set_retx'] = function(block) {
+  var value = block.getFieldValue('RETX');
 
-  return 'lora.join(' + joinType + ')\n';
+  return 'lora.setReTx(' + value + ')\n';
+};
+
+Blockly.Lua['lora_join'] = function(block) {
+  return 'lora.join()\n';
+};
+
+Blockly.Lua['lora_tx'] = function(block) {
+    var payload = Blockly.Lua.valueToCode(block, 'PAYLOAD', Blockly.Lua.ORDER_NONE) || '\'\'';
+    var port = Blockly.Lua.valueToCode(block, 'PORT', Blockly.Lua.ORDER_NONE);
+    var confirmed = block.getFieldValue('CONF');
+
+	if (confirmed == "0") {
+		confirmed = "false";
+	} else {
+		confirmed = "true";
+	}
+	
+    return 'lora.tx(' + confirmed + ', ' + port + ', ' + payload + ')\n';
 };

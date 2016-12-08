@@ -35,7 +35,7 @@ goog.require('Blockly.Blocks');
 /**
  * Common HSV hue for all blocks in this category.
  */
-Blockly.Blocks.control.HUE = 210;
+Blockly.Blocks.control.HUE = 290;
   
 Blockly.Blocks['wait_for'] = {
   init: function() {

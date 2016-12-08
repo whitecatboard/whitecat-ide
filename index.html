@@ -221,53 +221,114 @@
 			</block>
 		</category>
 		<category id="catLora">
-			<block type="lora_configure">
-			</block>
-			<block type="lora_join"></block>
-			<block type="lora_set_appeui">
-		        <value name="APPEUI">
-		          <shadow type="text">
-		            <field name="TEXT"></field>
-		          </shadow>
-		        </value>				
-			</block>
-			<block type="lora_set_appkey">
-		        <value name="APPKEY">
-		          <shadow type="text">
-		            <field name="TEXT"></field>
-		          </shadow>
-		        </value>				
-			</block>
-			<block type="lora_set_adr"></block>
-			<block type="lora_set_ar"></block>
-			<block type="lora_set_dr"></block>
+			<category id="catLoraOTAA">
+				<block type="lora_configure">
+				</block>
+				<block type="lora_set_deveui">
+			        <value name="DEVEUI">
+			          <shadow type="text">
+			            <field name="TEXT"></field>
+			          </shadow>
+			        </value>				
+				</block>
+				<block type="lora_set_appeui">
+			        <value name="APPEUI">
+			          <shadow type="text">
+			            <field name="TEXT"></field>
+			          </shadow>
+			        </value>				
+				</block>
+				<block type="lora_set_appkey">
+			        <value name="APPKEY">
+			          <shadow type="text">
+			            <field name="TEXT"></field>
+			          </shadow>
+			        </value>				
+				</block>
+				<block type="lora_set_adr"></block>
+				<block type="lora_set_dr"></block>
+				<block type="lora_set_retx"></block>
+				<block type="lora_join"></block>
+				<block type="lora_tx">
+			        <value name="PORT">
+			          <shadow type="math_number">
+			            <field name="PORT"></field>
+			          </shadow>
+			        </value>				
+			        <value name="PAYLOAD">
+			          <shadow type="text">
+			            <field name="PAYLOAD"></field>
+			          </shadow>
+			        </value>				
+				</block>
+		        <block type="text_pack"></block>
+		        <block type="text_unpack"></block>
+			</category>
+			<category id="catLoraABP">
+				<block type="lora_configure">
+				</block>
+				<block type="lora_set_devaddr">
+			        <value name="DEVADDR">
+			          <shadow type="text">
+			            <field name="TEXT"></field>
+			          </shadow>
+			        </value>				
+				</block>
+				<block type="lora_set_nwkskey">
+			        <value name="NWKSKEY">
+			          <shadow type="text">
+			            <field name="TEXT"></field>
+			          </shadow>
+			        </value>				
+				</block>
+				<block type="lora_set_appskey">
+			        <value name="APPSKEY">
+			          <shadow type="text">
+			            <field name="TEXT"></field>
+			          </shadow>
+			        </value>				
+				</block>
+				<block type="lora_set_adr"></block>
+				<block type="lora_set_dr"></block>
+				<block type="lora_set_retx"></block>
+				<block type="lora_tx">
+			        <value name="PORT">
+			          <shadow type="math_number">
+			            <field name="PORT"></field>
+			          </shadow>
+			        </value>				
+			        <value name="PAYLOAD">
+			          <shadow type="text">
+			            <field name="PAYLOAD"></field>
+			          </shadow>
+			        </value>				
+				</block>
+		        <block type="text_pack"></block>
+		        <block type="text_unpack"></block>
+			</category>
 		</category>
 	</category>
     <category id="catControl" colour="210">
-      <block type="execute_on"></block>
-      <block type="wait_for"></block>
-      <block type="cpu_sleep">
-        <value name="SECONDS">
-          <shadow type="math_number">
-            <field name="TEXT"></field>
-          </shadow>
-      </block>
+	    <category id="catEvents">
+			<block type="execute_on"></block>
+		</category>
+	    <category id="catDelays">
+	        <block type="wait_for"></block>
+	        <block type="cpu_sleep">
+	          <value name="SECONDS">
+	            <shadow type="math_number">
+	              <field name="SECONDS"></field>
+	            </shadow>
+	        </block>
+		</category>
+	    <category id="catExceptions">
+	      <block type="exception_try"></block>
+	      <block type="exception_catch_error"></block>
+	      <block type="exception_catch_other_error"></block>
+	      <block type="exception_raise_again"></block>
+	    </category>
     </category>
-    <category id="catExceptions" colour="210">
-      <block type="exception_try"></block>
-      <block type="exception_catch_error"></block>
-      <block type="exception_catch_other_error"></block>
-      <block type="exception_raise_again"></block>
-    </category>
-    <category id="catThreads" colour="330">
-      <block type="thread_start"></block>
-      <block type="thread_create"></block>
-      <block type="thread_suspend"></block>
-      <block type="thread_stop"></block>
-      <block type="thread_resume"></block>
-      <block type="thread_sleep"></block>
-    </category>
-    <category id="catLogic" colour="210">
+		<category id="catLogic" colour="210">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
