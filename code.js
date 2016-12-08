@@ -1092,6 +1092,12 @@ Code.initLanguage = function() {
   for (var i = 0, listVar; listVar = listVars[i]; i++) {
     listVar.textContent = MSG['listVariable'];
   }
+  
+  jQuery("#content_board").find(".caption-subject").each(function(index, value) {
+	  var value = jQuery(value);
+	  
+	  value.text(MSG[value.text()]);
+  });
 };
 
 Code.discard = function() {
@@ -1681,19 +1687,19 @@ Code.updateStatus = function() {
 	} else {
 		html  = '<table class="table table-striped">';
 		html += '<thead>';
-		html += '<th>Item</th>';
-		html += '<th>Value</th>';
+		html += '<th>' + MSG['item'] + '</th>';
+		html += '<th>' + MSG['value'] + '</th>';
 		html += '</thead>';
 		html += '<tbody>';
-		html += '<tr><td>Installed firmware</td><td>'+Whitecat.status.firmware+'</td></tr>';
-		html += '<tr><td>CPU model</td><td>'+Whitecat.status.cpu+'</td></tr>';
+		html += '<tr><td>' + MSG['installedFirmware'] + '</td><td>' + Whitecat.status.firmware + '</td></tr>';
+		html += '<tr><td>' + MSG['cpuModel'] + '</td><td>' + Whitecat.status.cpu + '</td></tr>';
 		html += '</tbody>';
 		html += '</table>';
 		html += '</table>';
 		
 		if (Board.hasFirmwareUpgradeSupport) {
 			html +='<button id="checkFirmwareButton" type="button" class="btn btn-default" aria-label="Left Align">';
-			html += 'Check for firmware updates ...';
+			html += MSG['checkForFirmwareUpdates'];
 			html += '</button>';
 		}
 	

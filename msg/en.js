@@ -4,8 +4,10 @@ var MSG = {
   editor: "Lua",
   board: "Board",
   console: "Console",
+  status: "Status",
+  fileSystem: "File System",
   linkTooltip: "Save and link to blocks.",
-  runTooltip: "Run the program defined by the blocks in the workspace.",
+  runTooltip: "Run the program",
   badCode: "Program error:\n%1",
   timeout: "Maximum execution iterations exceeded.",
   trashTooltip: "Discard all blocks.",
@@ -81,4 +83,9 @@ var MSG = {
   catLoraABP: "ABP",
   catDelays: "Delays",
   catEvents: "Events",
+  item: "Item",
+  value: "Value",
+  installedFirmware: "Installed firmware",
+  cpuModel: "CPU model",
+  checkForFirmwareUpdates: "Check for firmware updates ..."
 };
