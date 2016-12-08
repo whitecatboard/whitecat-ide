@@ -47,12 +47,12 @@ Blockly.Lua['configuredigitalpin'] = function(block) {
 		directionCode = 'pio.OUTPUT';
 	}
 	
-	code = 'pio.pin.setdir(' + directionCode + ', ' + Board.digitalPins[pin] +')\n';
+	code = 'pio.pin.setdir(' + directionCode + ', pio.' + Board.digitalPins[pin] +')\n';
 	
 	if (needsPull) {
-		code += 'pio.pin.setpull(pio.PULLUP, ' + Board.digitalPins[pin] +')\n';
+		code += 'pio.pin.setpull(pio.PULLUP, pio.' + Board.digitalPins[pin] +')\n';
 	} else {
-		code += 'pio.pin.setpull(pio.NOPULL, ' + Board.digitalPins[pin] +')\n';
+		code += 'pio.pin.setpull(pio.NOPULL, pio.' + Board.digitalPins[pin] +')\n';
 	}
 	
 	return code;
@@ -166,7 +166,7 @@ Blockly.Lua['setdigitalpin'] = function(block) {
 	
 	var code = '';
 	
-	code = 'pio.pin.setval(' + value + ', ' + Board.digitalPins[pin] +')\n';
+	code = 'pio.pin.setval(' + value + ', pio.' + Board.digitalPins[pin] +')\n';
 	
 	return code;
 };
@@ -177,7 +177,7 @@ Blockly.Lua['getdigitalpin'] = function(block) {
 	
 	var code = '';
 	
-	code = 'pio.pin.getval(' + Board.digitalPins[pin] +')';
+	code = 'pio.pin.getval(pio.' + Board.digitalPins[pin] +')';
 	
 	return [code, Blockly.Lua.ORDER_HIGH];
 };
