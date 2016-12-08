@@ -324,15 +324,543 @@ Code.renderContent = function() {
   Blockly.fireUiEvent(window, 'resize');
 };
 
-/**
- * Initialize Blockly.  Called on page load.
- */
-Code.init = function() {
-  Code.initLanguage();
+Code.buildToolBox = function() {
+    var xml;
+	
+	xml = '<category id="catIO" colour="20">';
+	
+	if (Board.hasDigitalSupport) {
+		xml += ' \
+		<category id="catIODigital"> \
+			<block type="configuredigitalpin"></block> \
+			<block type="setdigitalpin"></block>  \
+			<block type="getdigitalpin"></block> \
+	  	</category>';
+	}
+		
+	if (Board.hasAnalogSupport) {
+  		xml += ' \
+		<category id="catIOAnalog"> \
+			<block type="configureanalogpin"></block> \
+			<block type="getanalogpin"></block> \
+		</category>';
+	}
+	
+	if (Board.hasPWMSupport) {
+		xml += ' \
+  		<category id="catIOPwm"> \
+  			<block type="configuredacpwmpin"> \
+  		        <value name="VALUE"> \
+  		          <shadow type="math_number"> \
+  		            <field name="NUM">0</field> \
+  		          </shadow> \
+  		        </value>  \
+  			</block> \
+  			<block type="configuredefaultpwmpin"> \
+  		        <value name="FREQUENCY"> \
+  		          <shadow type="math_number"> \
+  		            <field name="NUM">1000</field> \
+  		          </shadow> \
+  		        </value> \
+  		        <value name="DUTY"> \
+  		          <shadow type="math_number"> \
+  		            <field name="NUM">0</field> \
+  		          </shadow> \
+  		        </value> \
+  			</block> \
+  			<block type="pwmstart"></block> \
+  			<block type="pwmstop"></block> \
+  			<block type="pwmsetduty"> \
+  		        <value name="DUTY"> \
+  		          <shadow type="math_number"> \
+  		            <field name="NUM">0</field> \
+  		          </shadow> \
+  		        </value> \
+  			</block> \
+  			<block type="pwmwrite"> \
+  		        <value name="VALUE"> \
+  		          <shadow type="math_number"> \
+  		            <field name="NUM">0</field> \
+  		          </shadow> \
+  		        </value> \
+  			</block> \
+  		</category>';
+	}
+	
+	xml += '</category>';
+	
+	xml += '<category id="catComm" colour="20">';
+	
+	if (Board.hasI2CSupport) {
+		xml += ' \
+  		<category id="catI2C"> \
+  			<block type="configurei2c"> \
+  		        <value name="SPEED"> \
+  		          <shadow type="math_number"> \
+  		            <field name="NUM">1000</field> \
+  		          </shadow> \
+  		        </value> \
+  			</block> \
+  			<block type="i2cstartcondition"></block> \
+  			<block type="i2cstopcondition"></block> \
+  			<block type="i2caddress"> \
+  		        <value name="ADDRESS"> \
+  		          <shadow type="math_number"> \
+  		            <field name="NUM">0</field> \
+  		          </shadow> \
+  		        </value> \
+  			</block> \
+  			<block type="i2cread"></block> \
+  			<block type="i2cwrite"> \
+  		        <value name="VALUE"> \
+  		          <shadow type="math_number"> \
+  		            <field name="NUM">0</field> \
+  		          </shadow> \
+  		        </value> \
+  			</block> \
+  		</category>';
+	}
+	
+	if (Board.hasLORASupport) {
+		xml += ' \
+  		<category id="catLora"> \
+  			<category id="catLoraOTAA"> \
+  				<block type="lora_configure"> \
+  				</block> \
+  				<block type="lora_set_deveui"> \
+  			        <value name="DEVEUI"> \
+  			          <shadow type="text"> \
+  			            <field name="TEXT"></field> \
+  			          </shadow> \
+  			        </value> \
+  				</block> \
+  				<block type="lora_set_appeui"> \
+  			        <value name="APPEUI"> \
+  			          <shadow type="text"> \
+  			            <field name="TEXT"></field> \
+  			          </shadow> \
+  			        </value> \
+  				</block> \
+  				<block type="lora_set_appkey"> \
+  			        <value name="APPKEY"> \
+  			          <shadow type="text"> \
+  			            <field name="TEXT"></field> \
+  			          </shadow> \
+  			        </value> \
+  				</block> \
+  				<block type="lora_set_adr"></block> \
+  				<block type="lora_set_dr"></block> \
+  				<block type="lora_set_retx"></block> \
+  				<block type="lora_join"></block> \
+  				<block type="lora_tx"> \
+  			        <value name="PORT"> \
+  			          <shadow type="math_number"> \
+  			            <field name="NUM">1</field> \
+  			          </shadow> \
+  			        </value> \
+  			        <value name="PAYLOAD"> \
+  			          <shadow type="text"> \
+  			            <field name="TEXT"></field> \
+  			          </shadow> \
+  			        </value> \
+  				</block> \
+  		        <block type="text_pack"></block> \
+  		        <block type="text_unpack"></block> \
+  			</category> \
+  			<category id="catLoraABP"> \
+  				<block type="lora_configure"> \
+  				</block> \
+  				<block type="lora_set_devaddr"> \
+  			        <value name="DEVADDR"> \
+  			          <shadow type="text"> \
+  			            <field name="TEXT"></field> \
+  			          </shadow> \
+  			        </value> \
+  				</block> \
+  				<block type="lora_set_nwkskey"> \
+  			        <value name="NWKSKEY"> \
+  			          <shadow type="text"> \
+  			            <field name="TEXT"></field> \
+  			          </shadow> \
+  			        </value> \
+  				</block> \
+  				<block type="lora_set_appskey"> \
+  			        <value name="APPSKEY"> \
+  			          <shadow type="text"> \
+  			            <field name="TEXT"></field> \
+  			          </shadow> \
+  			        </value> \
+  				</block> \
+  				<block type="lora_set_adr"></block> \
+  				<block type="lora_set_dr"></block> \
+  				<block type="lora_set_retx"></block> \
+  				<block type="lora_tx"> \
+  			        <value name="PORT"> \
+  			          <shadow type="math_number"> \
+  			            <field name="NUM">1</field> \
+  			          </shadow> \
+  			        </value> \
+  			        <value name="PAYLOAD"> \
+  			          <shadow type="text"> \
+  			            <field name="TEXT"></field> \
+  			          </shadow> \
+  			        </value> \
+  				</block> \
+  		        <block type="text_pack"></block> \
+  		        <block type="text_unpack"></block> \
+  			</category> \
+  		</category>';
+	}
+	
+  	xml += '</category>';
+	
+	xml += '\
+      <category id="catControl" colour="210"> \
+  	    <category id="catEvents"> \
+  			<block type="execute_on"></block> \
+  		</category> \
+  	    <category id="catDelays"> \
+  	        <block type="wait_for"></block> \
+  	        <block type="cpu_sleep"> \
+  	          <value name="SECONDS"> \
+  	            <shadow type="math_number"> \
+  	              <field name="NUM"></field> \
+  	            </shadow> \
+  	        </block> \
+  		</category> \
+  	    <category id="catExceptions"> \
+  	      <block type="exception_try"></block> \
+  	      <block type="exception_catch_error"></block> \
+  	      <block type="exception_catch_other_error"></block> \
+  	      <block type="exception_raise_again"></block> \
+  	    </category> \
+      </category> \
+  		<category id="catLogic" colour="210"> \
+        <block type="controls_if"></block> \
+        <block type="logic_compare"></block> \
+        <block type="logic_operation"></block> \
+        <block type="logic_negate"></block> \
+        <block type="logic_boolean"></block> \
+        <block type="logic_null"></block> \
+        <block type="logic_ternary"></block> \
+        <block type="bitlogic_msb"></block> \
+        <block type="bitlogic_lsb"></block> \
+      </category> \
+      <category id="catLoops" colour="120"> \
+        <block type="controls_repeat_ext"> \
+          <value name="TIMES"> \
+            <shadow type="math_number"> \
+              <field name="NUM">10</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="controls_whileUntil"></block> \
+        <block type="controls_for"> \
+          <value name="FROM"> \
+            <shadow type="math_number"> \
+              <field name="NUM">1</field> \
+            </shadow> \
+          </value> \
+          <value name="TO"> \
+            <shadow type="math_number"> \
+              <field name="NUM">10</field> \
+            </shadow> \
+          </value> \
+          <value name="BY"> \
+            <shadow type="math_number"> \
+              <field name="NUM">1</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="controls_forEach"></block> \
+        <block type="controls_flow_statements"></block> \
+      </category> \
+      <category id="catMath" colour="230"> \
+        <block type="math_number"></block> \
+        <block type="math_arithmetic"> \
+          <value name="A"> \
+            <shadow type="math_number"> \
+              <field name="NUM">1</field> \
+            </shadow> \
+          </value> \
+          <value name="B"> \
+            <shadow type="math_number"> \
+              <field name="NUM">1</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_single"> \
+          <value name="NUM"> \
+            <shadow type="math_number"> \
+              <field name="NUM">9</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_trig"> \
+          <value name="NUM"> \
+            <shadow type="math_number"> \
+              <field name="NUM">45</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_constant"></block> \
+        <block type="math_number_property"> \
+          <value name="NUMBER_TO_CHECK"> \
+            <shadow type="math_number"> \
+              <field name="NUM">0</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_change"> \
+          <value name="DELTA"> \
+            <shadow type="math_number"> \
+              <field name="NUM">1</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_round"> \
+          <value name="NUM"> \
+            <shadow type="math_number"> \
+              <field name="NUM">3.1</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_on_list"></block> \
+        <block type="math_modulo"> \
+          <value name="DIVIDEND"> \
+            <shadow type="math_number"> \
+              <field name="NUM">64</field> \
+            </shadow> \
+          </value> \
+          <value name="DIVISOR"> \
+            <shadow type="math_number"> \
+              <field name="NUM">10</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_constrain"> \
+          <value name="VALUE"> \
+            <shadow type="math_number"> \
+              <field name="NUM">50</field> \
+            </shadow> \
+          </value> \
+          <value name="LOW"> \
+            <shadow type="math_number"> \
+              <field name="NUM">1</field> \
+            </shadow> \
+          </value> \
+          <value name="HIGH"> \
+            <shadow type="math_number"> \
+              <field name="NUM">100</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_random_int"> \
+          <value name="FROM"> \
+            <shadow type="math_number"> \
+              <field name="NUM">1</field> \
+            </shadow> \
+          </value> \
+          <value name="TO"> \
+            <shadow type="math_number"> \
+              <field name="NUM">100</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="math_random_float"></block> \
+      </category> \
+      <category id="catText" colour="160"> \
+        <block type="text"></block> \
+        <block type="text_join"></block> \
+        <block type="text_append"> \
+          <value name="TEXT"> \
+            <shadow type="text"></shadow> \
+          </value> \
+        </block> \
+        <block type="text_length"> \
+          <value name="VALUE"> \
+            <shadow type="text"> \
+              <field name="TEXT">abc</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="text_isEmpty"> \
+          <value name="VALUE"> \
+            <shadow type="text"> \
+              <field name="TEXT"></field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="text_indexOf"> \
+          <value name="VALUE"> \
+            <block type="variables_get"> \
+              <field name="VAR">text</field> \
+            </block> \
+          </value> \
+          <value name="FIND"> \
+            <shadow type="text"> \
+              <field name="TEXT">abc</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="text_charAt"> \
+          <value name="VALUE"> \
+            <block type="variables_get"> \
+              <field name="VAR">text</field> \
+            </block> \
+          </value> \
+        </block> \
+        <block type="text_getSubstring"> \
+          <value name="STRING"> \
+            <block type="variables_get"> \
+              <field name="VAR">text</field> \
+            </block> \
+          </value> \
+        </block> \
+        <block type="text_changeCase"> \
+          <value name="TEXT"> \
+            <shadow type="text"> \
+              <field name="TEXT">abc</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="text_trim"> \
+          <value name="TEXT"> \
+            <shadow type="text"> \
+              <field name="TEXT">abc</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="text_print"> \
+          <value name="TEXT"> \
+            <shadow type="text"> \
+              <field name="TEXT">abc</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="text_prompt_ext"> \
+          <value name="TEXT"> \
+            <shadow type="text"> \
+              <field name="TEXT">abc</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="text_pack"></block> \
+        <block type="text_unpack"></block> \
+      </category> \
+      <category id="catLists" colour="260"> \
+        <block type="lists_create_with"> \
+          <mutation items="0"></mutation> \
+        </block> \
+        <block type="lists_create_with"></block> \
+        <block type="lists_repeat"> \
+          <value name="NUM"> \
+            <shadow type="math_number"> \
+              <field name="NUM">5</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="lists_length"></block> \
+        <block type="lists_isEmpty"></block> \
+        <block type="lists_indexOf"> \
+          <value name="VALUE"> \
+            <block type="variables_get"> \
+              <field name="VAR">list</field> \
+            </block> \
+          </value> \
+        </block> \
+        <block type="lists_getIndex"> \
+          <value name="VALUE"> \
+            <block type="variables_get"> \
+              <field name="VAR">list</field> \
+            </block> \
+          </value> \
+        </block> \
+        <block type="lists_setIndex"> \
+          <value name="LIST"> \
+            <block type="variables_get"> \
+              <field name="VAR">list</field> \
+            </block> \
+          </value> \
+        </block> \
+        <block type="lists_getSublist"> \
+          <value name="LIST"> \
+            <block type="variables_get"> \
+              <field name="VAR">list</field> \
+            </block> \
+          </value> \
+        </block> \
+        <block type="lists_split"> \
+          <value name="DELIM"> \
+            <shadow type="text"> \
+              <field name="TEXT">,</field> \
+            </shadow> \
+          </value> \
+        </block> \
+      </category> \
+      <category id="catColour" colour="20"> \
+        <block type="colour_picker"></block> \
+        <block type="colour_random"></block> \
+        <block type="colour_rgb"> \
+          <value name="RED"> \
+            <shadow type="math_number"> \
+              <field name="NUM">100</field> \
+            </shadow> \
+          </value> \
+          <value name="GREEN"> \
+            <shadow type="math_number"> \
+              <field name="NUM">50</field> \
+            </shadow> \
+          </value> \
+          <value name="BLUE"> \
+            <shadow type="math_number"> \
+              <field name="NUM">0</field> \
+            </shadow> \
+          </value> \
+        </block> \
+        <block type="colour_blend"> \
+          <value name="COLOUR1"> \
+            <shadow type="colour_picker"> \
+              <field name="COLOUR">#ff0000</field> \
+            </shadow> \
+          </value> \
+          <value name="COLOUR2"> \
+            <shadow type="colour_picker"> \
+              <field name="COLOUR">#3333ff</field> \
+            </shadow> \
+          </value> \
+          <value name="RATIO"> \
+            <shadow type="math_number"> \
+              <field name="NUM">0.5</field> \
+            </shadow> \
+          </value> \
+        </block> \
+      </category> \
+      <category id="catVariables" colour="330" custom="VARIABLE"></category> \
+      <category id="catFunctions" colour="290" custom="PROCEDURE"></category>';
+
+  var toolbox = document.getElementById('toolbox');
+  toolbox.innerHTML = xml;	
 
   jQuery("#catIO").attr("colour",Blockly.Blocks.io.HUE);
   jQuery("#catControl").attr("colour",Blockly.Blocks.control.HUE);
   jQuery("#catComm").attr("colour",Blockly.Blocks.i2c.HUE);
+}
+
+Code.updateToolBox = function() {
+	Code.buildToolBox();
+	Code.initLanguage();
+	
+    var toolbox = document.getElementById('toolbox');
+	Blockly.getMainWorkspace().updateToolbox(toolbox);	
+}
+
+/**
+ * Initialize Blockly.  Called on page load.
+ */
+Code.init = function() {
+  Code.buildToolBox();	
+  Code.initLanguage();
   
   var rtl = Code.isRtl();
   var container = document.getElementById('content_area');
@@ -410,8 +938,9 @@ Code.init = function() {
   };
   onresize();
   window.addEventListener('resize', onresize, false);
-
+  
   var toolbox = document.getElementById('toolbox');
+
   Code.workspace.blocks = Blockly.inject('content_blocks',
       {grid:
           {spacing: 25,
@@ -426,6 +955,8 @@ Code.init = function() {
             wheel: true}
       });
 
+//  Code.workspace.updateToolbox(toolbox);
+	  
   // Add to reserved word list: Local variables in execution environment (runJS)
   // and the infinite loop detection function.
 
@@ -521,10 +1052,34 @@ Code.initLanguage = function() {
   document.getElementById('runButton').title = MSG['runTooltip'];
   document.getElementById('trashButton').title = MSG['trashTooltip'];
 
-  var categories = [
-	  'catIO','catComm','catI2C','catLora','catLoraOTAA','catLoraABP','catIODigital','catIOAnalog','catIOPwm','catControl','catExceptions','catLogic',
-	  'catLoops', 'catMath', 'catText', 'catLists','catColour', 'catVariables', 'catFunctions', 'catDelays', 'catEvents'
-  ];
+  var categories = [];
+  
+  categories.push('catIO');
+  
+  if (Board.hasDigitalSupport) categories.push('catIODigital');
+  if (Board.hasAnalogSupport)  categories.push('catIOAnalog');
+  if (Board.hasPWMSupport)     categories.push('catIOPwm');
+
+  categories.push('catComm');
+  
+  if (Board.hasI2CSupport)  categories.push('catI2C');
+  if (Board.hasLORASupport) categories.push('catLora');
+  if (Board.hasLORASupport) categories.push('catLoraOTAA');
+  if (Board.hasLORASupport) categories.push('catLoraABP');
+
+  categories.push('catControl');
+  categories.push('catExceptions');
+  categories.push('catEvents');
+  categories.push('catDelays');
+
+  categories.push('catLogic');
+  categories.push('catLoops');
+  categories.push('catMath');
+  categories.push('catText');
+  categories.push('catLists');
+  categories.push('catColour');
+  categories.push('catVariables');
+  categories.push('catFunctions');
   
   for (var i = 0, cat; cat = categories[i]; i++) {
     document.getElementById(cat).setAttribute('name', MSG[cat]);

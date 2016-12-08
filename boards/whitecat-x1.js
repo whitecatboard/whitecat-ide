@@ -31,6 +31,12 @@ Whitecat.X1 = {};
 
 Whitecat.X1.hardwareReset = false;
 
+Whitecat.X1.hasDigitalSupport = true;
+Whitecat.X1.hasAnalogSupport = true;
+Whitecat.X1.hasPWMSupport = true;
+Whitecat.X1.hasI2CSupport = true;
+Whitecat.X1.hasLORASupport = true;
+
 Whitecat.X1.hasFirmwareUpgradeSupport = true;
 Whitecat.X1.stopTimeout = 2000;
 Whitecat.X1.bootingTimeout = 3500;

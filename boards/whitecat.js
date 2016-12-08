@@ -74,6 +74,13 @@ Whitecat.updateMaps = function() {
 	Whitecat.runningTimeout = Whitecat[board].runningTimeout;
 	Whitecat.hasFirmwareUpgradeSupport = Whitecat[board].hasFirmwareUpgradeSupport;
 
+	Whitecat.hasDigitalSupport = Whitecat[board].hasDigitalSupport;
+	Whitecat.hasAnalogSupport = Whitecat[board].hasAnalogSupport;
+	Whitecat.hasPWMSupport = Whitecat[board].hasPWMSupport;
+	Whitecat.hasI2CSupport = Whitecat[board].hasI2CSupport;
+	Whitecat.hasLORASupport = Whitecat[board].hasLORASupport;
+
+	Code.updateToolBox();
 	return;
 }
 

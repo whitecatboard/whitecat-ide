@@ -29,6 +29,12 @@
 
 Whitecat.N1ESP8266 = {};
 
+Whitecat.N1ESP8266.hasDigitalSupport = true;
+Whitecat.N1ESP8266.hasAnalogSupport = false;
+Whitecat.N1ESP8266.hasPWMSupport = false;
+Whitecat.N1ESP8266.hasI2CSupport = false;
+Whitecat.N1ESP8266.hasLORASupport = true;
+
 Whitecat.N1ESP8266.hasFirmwareUpgradeSupport = false;
 Whitecat.N1ESP8266.hardwareReset = true;
 Whitecat.N1ESP8266.stopTimeout = 2000;
