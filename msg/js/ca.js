@@ -455,3 +455,41 @@ Blockly.Msg.TEXT_UNPACK_TITLE1 = "desempaquetar des de";
 Blockly.Msg.TEXT_UNPACK_TITLE2 = "cap a";
 Blockly.Msg.TEXT_UNPACK_TITLE3 = "cap a";
 Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Desenpaqueta un conjunt de valors codificats en una representació de cadena hexadecimal."
+
+Blockly.Msg.TEXT_TRY_HELPURL = "";
+Blockly.Msg.TEXT_TRY_TITLE = "prova";
+Blockly.Msg.TEXT_CATCH_TITLE = "captura";
+Blockly.Msg.TEXT_FINALLY = "finalment";
+Blockly.Msg.TEXT_TRY_TOOLTIP = "Intenta executar un conjunt d'instruccions i capturar els errors, en el cas que es produeixin, sense aturar el programa."
+
+Blockly.Msg.TEXT_TRY_CATCH_ERROR = "quan l'error";
+Blockly.Msg.TEXT_TRY_CATCH_OTHER_ERROR = "quan altres errors són capturats";
+Blockly.Msg.TEXT_TRY_CATCHED= "és capturat";
+Blockly.Msg.TEXT_TRY_CATCH_RAISE_AGAIN = "torna a llançar l'error capturat";
+
+Blockly.Msg.DO= "fes";
+
+Blockly.Msg.configureLora = "configura LoRa utilitzant la banda dels ";
+Blockly.Msg.MHZ = "Mhz";
+Blockly.Msg.LORA_TX = "transmetre un paquet ";
+Blockly.Msg.LORA_CONFIRMED = "confirmat";
+Blockly.Msg.LORA_UNCONFIRMED = "sense confirmar";
+Blockly.Msg.LORA_FRAME = " al port ";
+Blockly.Msg.LORA_PAYLOAD = " amb payload ";
+Blockly.Msg.LORA_SET_DEVADDR = "estableix DevAddr a";
+Blockly.Msg.LORA_SET_NWKSKEY = "estableix NwksKey a";
+Blockly.Msg.LORA_SET_APPSKEY = "estableix setAppsKey a";
+Blockly.Msg.LORA_SET_APPEUI = "estableix AppEu a";
+Blockly.Msg.LORA_SET_DEVEUI = "estableix DevEui a";
+Blockly.Msg.LORA_SET_APPKEY = "estableix AppKey a";
+Blockly.Msg.LORA_SET_RETX = "estableix el nombre de retransmissions a";
+Blockly.Msg.LORA_SET_ADR = "estableix la funció adaptative data rate a";
+Blockly.Msg.LORA_SET_AR = "set automatic reply to";
+Blockly.Msg.LORA_SET_DR = "estableix el data rate a";
+Blockly.Msg.LORA_JOIN = "join";
+Blockly.Msg.TRUE = "cert";
+Blockly.Msg.FALSE = "fals";
+Blockly.Msg.BAND = "";
+Blockly.Msg.EXECUTE_ON_EVERY = "quan";
+Blockly.Msg.ON_EVERY_BOARD_REBOOT = "la placa arranqui";
+Blockly.Msg.CPU_SLEEP = "dorm el processador";

@@ -67,4 +67,8 @@ var MSG = {
   youHaveAnError: "Tens un error en el teu codi:",
   value: 'valor',
   catLora: "LoRa",
+  catLoraOTAA: "OTAA",
+  catLoraABP: "ABP",
+  catDelays: "Retards",
+  catEvents: "Events",
 };

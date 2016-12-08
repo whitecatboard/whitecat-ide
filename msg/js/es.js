@@ -456,3 +456,41 @@ Blockly.Msg.TEXT_UNPACK_TITLE1 = "desempaquetar desde";
 Blockly.Msg.TEXT_UNPACK_TITLE2 = "hacia";
 Blockly.Msg.TEXT_UNPACK_TITLE3 = "hacia";
 Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Desenpaqueta un conjunto de valores codificados en una representación de cadena hexadecimal."
+
+Blockly.Msg.TEXT_TRY_HELPURL = "";
+Blockly.Msg.TEXT_TRY_TITLE = "prueba";
+Blockly.Msg.TEXT_CATCH_TITLE = "captur";
+Blockly.Msg.TEXT_FINALLY = "finalmente";
+Blockly.Msg.TEXT_TRY_TOOLTIP = "Intenta ejecutar un conjunto de instrucciones y capturar los errores, en caso de que se produzcan, sin detener el programa."
+
+Blockly.Msg.TEXT_TRY_CATCH_ERROR = "cuando el error";
+Blockly.Msg.TEXT_TRY_CATCH_OTHER_ERROR = "cuando se han capturado otros errores";
+Blockly.Msg.TEXT_TRY_CATCHED= "es capturado";
+Blockly.Msg.TEXT_TRY_CATCH_RAISE_AGAIN = "vuelve a lanzar el error capturado";
+
+Blockly.Msg.DO= "hacer";
+
+Blockly.Msg.configureLora = "configura LoRa utilizando la banda de los ";
+Blockly.Msg.MHZ = "Mhz";
+Blockly.Msg.LORA_TX = "transmitir un paquete ";
+Blockly.Msg.LORA_CONFIRMED = "confirmado";
+Blockly.Msg.LORA_UNCONFIRMED = "sin confirmar";
+Blockly.Msg.LORA_FRAME = " al puerto ";
+Blockly.Msg.LORA_PAYLOAD = " con payload ";
+Blockly.Msg.LORA_SET_DEVADDR = "establece DevAddr a";
+Blockly.Msg.LORA_SET_NWKSKEY = "establece NwksKey a";
+Blockly.Msg.LORA_SET_APPSKEY = "establece setAppsKey a";
+Blockly.Msg.LORA_SET_APPEUI = "establece AppEu a";
+Blockly.Msg.LORA_SET_DEVEUI = "establece DevEui a";
+Blockly.Msg.LORA_SET_APPKEY = "establece AppKey a";
+Blockly.Msg.LORA_SET_RETX = "establece el número de retransmissions a";
+Blockly.Msg.LORA_SET_ADR = "establece la funcióm adaptative data rate a";
+Blockly.Msg.LORA_SET_AR = "set automatic reply to";
+Blockly.Msg.LORA_SET_DR = "establece el data rate a";
+Blockly.Msg.LORA_JOIN = "join";
+Blockly.Msg.TRUE = "cierto";
+Blockly.Msg.FALSE = "falso";
+Blockly.Msg.BAND = "";
+Blockly.Msg.EXECUTE_ON_EVERY = "cuando";
+Blockly.Msg.ON_EVERY_BOARD_REBOOT = "la placa arranque";
+Blockly.Msg.CPU_SLEEP = "duerme el processador";
