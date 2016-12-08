@@ -1048,6 +1048,13 @@ Code.initLanguage = function() {
 	  element.text(MSG[element.attr('id').replace('tab_','')]);
   });
   
+  document.getElementById('switchToBlocks').title = MSG['switchToBlocksTooltip'];
+  document.getElementById('switchToCode').title = MSG['switchToCodev'];
+  document.getElementById('loadButton').title = MSG['loadButtonTooltip'];
+  document.getElementById('saveButton').title = MSG['saveButtonTooltip'];
+  document.getElementById('saveAsButton').title = MSG['saveAsButtonTooltip'];
+  document.getElementById('rebootButton').title = MSG['rebootButtonTooltip'];
+  document.getElementById('stopButton').title = MSG['stopButtonTooltip'];
 
   document.getElementById('runButton').title = MSG['runTooltip'];
   document.getElementById('trashButton').title = MSG['trashTooltip'];

@@ -10,7 +10,7 @@ var MSG = {
   runTooltip: "Executa el programa",
   badCode: "Error de programa:\n %1",
   timeout: "S'ha superat el nombre màxim d'iteracions d'execució.",
-  trashTooltip: "Descarta tots els blocs.",
+  trashTooltip: "Descarta tots els blocs",
   catIO: "Entrada / Sortida",
   catControl: "Control",
   catExceptions: "Excepcions",
@@ -77,5 +77,12 @@ var MSG = {
   value: "Valor",
   installedFirmware: "Firmware instal·lat",
   cpuModel: "Model de CPU",
-  checkForFirmwareUpdates: "Comprovar si hi han actualitzacions de firmware ..."
+  checkForFirmwareUpdates: "Comprovar si hi han actualitzacions de firmware ...",
+  switchToBlocksTooltip: 'Canvia a blocs',
+  switchToCodev: 'Canvia a codi',
+  loadButtonTooltip: 'Carrega un programa',
+  saveButtonTooltip: 'Guarda el programa', 
+  saveAsButtonTooltip: 'Guarda el programa com ...',
+  rebootButtonTooltip: 'Reinicia la placa',
+  stopButtonTooltip: 'Atura el programa',
 };

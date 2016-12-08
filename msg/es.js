@@ -10,7 +10,7 @@ var MSG = {
   runTooltip: "Ejecuta el programa",
   badCode: "Error de programa:\n%1",
   timeout: "Se excedio el máximo de iteraciones ejecutadas permitidas.",
-  trashTooltip: "Descartar todos los bloques.",
+  trashTooltip: "Descartar todos los bloques",
   catIO: "Entrada / Salida",
   catControl: "Control",
   catExceptions: "Excepciones",
@@ -77,5 +77,12 @@ var MSG = {
   value: "Valor",
   installedFirmware: "Firmware instalado",
   cpuModel: "Modelo de CPU",
-  checkForFirmwareUpdates: "Comprobar si hay actualitzaciones de firmware ..."
+  checkForFirmwareUpdates: "Comprobar si hay actualitzaciones de firmware ...",
+  switchToBlocksTooltip: 'Cambia a bloques',
+  switchToCodev: 'Cambia a código',
+  loadButtonTooltip: 'Carga un programa',
+  saveButtonTooltip: 'Guarda el programa', 
+  saveAsButtonTooltip: 'Guarda el programa como ...',
+  rebootButtonTooltip: 'Reinicia la placa',
+  stopButtonTooltip: 'Para el programa',
 };
