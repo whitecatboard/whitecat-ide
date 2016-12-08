@@ -39,7 +39,7 @@ Whitecat.ERR_TIMEOUT = -1;
 Whitecat.ERR_INVALID_RESPONSE = -2;
 Whitecat.ERR_CONNECTION_ERROR = -4;
 
-Whitecat.debug = true;
+Whitecat.debug = false;
 Whitecat.inDetect = false;
 Whitecat.inRecover = false;
 Whitecat.detectInterval = null;
@@ -72,6 +72,7 @@ Whitecat.updateMaps = function() {
 	Whitecat.stopTimeout = Whitecat[board].stopTimeout;
 	Whitecat.bootingTimeout = Whitecat[board].bootingTimeout;
 	Whitecat.runningTimeout = Whitecat[board].runningTimeout;
+	Whitecat.hasFirmwareUpgradeSupport = Whitecat[board].hasFirmwareUpgradeSupport;
 
 	return;
 }
@@ -735,7 +736,7 @@ Whitecat.getStatus = function(port, success, error) {
 //   through the console, and with a LuaOS-running when LuaOS is ready for
 //   response to commands.
 
-Whitecat.HAS_BOOTLOADER_STATE = false;
+Whitecat.HAS_BOOTLOADER_STATE = Whitecat.hasFirmwareUpgradeSupport;
 
 Whitecat.BOOTLOADER_STATE = 1;
 Whitecat.BOOTING_STATE    = 2;

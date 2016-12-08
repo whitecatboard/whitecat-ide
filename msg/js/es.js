@@ -459,7 +459,7 @@ Blockly.Msg.TEXT_UNPACK_TOOLTIP = "Desenpaqueta un conjunto de valores codificad
 
 Blockly.Msg.TEXT_TRY_HELPURL = "";
 Blockly.Msg.TEXT_TRY_TITLE = "prueba";
-Blockly.Msg.TEXT_CATCH_TITLE = "captur";
+Blockly.Msg.TEXT_CATCH_TITLE = "captura";
 Blockly.Msg.TEXT_FINALLY = "finalmente";
 Blockly.Msg.TEXT_TRY_TOOLTIP = "Intenta ejecutar un conjunto de instrucciones y capturar los errores, en caso de que se produzcan, sin detener el programa."
 

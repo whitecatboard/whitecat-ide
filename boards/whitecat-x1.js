@@ -31,6 +31,7 @@ Whitecat.X1 = {};
 
 Whitecat.X1.hardwareReset = false;
 
+Whitecat.X1.hasFirmwareUpgradeSupport = true;
 Whitecat.X1.stopTimeout = 2000;
 Whitecat.X1.bootingTimeout = 3500;
 Whitecat.X1.runningTimeout = 1500;

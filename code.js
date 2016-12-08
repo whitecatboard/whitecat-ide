@@ -1135,13 +1135,18 @@ Code.updateStatus = function() {
 		html += '</tbody>';
 		html += '</table>';
 		html += '</table>';
-		html +='<button id="checkFirmwareButton" type="button" class="btn btn-default" aria-label="Left Align">';
-		html += 'Check for firmware updates ...';
-		html += '</button>';
 		
+		if (Board.hasFirmwareUpgradeSupport) {
+			html +='<button id="checkFirmwareButton" type="button" class="btn btn-default" aria-label="Left Align">';
+			html += 'Check for firmware updates ...';
+			html += '</button>';
+		}
+	
 		container.html(html);	
 		
-	    Code.bindClick('checkFirmwareButton', Code.checkFirmware);	
+		if (Board.hasFirmwareUpgradeSupport) {
+			Code.bindClick('checkFirmwareButton', Code.checkFirmware);	
+		}
 	}
 	
 	Blockly.fireUiEvent(window, 'resize');

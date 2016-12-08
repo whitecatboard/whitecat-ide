@@ -29,6 +29,7 @@
 
 Whitecat.N1ESP8266 = {};
 
+Whitecat.N1ESP8266.hasFirmwareUpgradeSupport = false;
 Whitecat.N1ESP8266.hardwareReset = true;
 Whitecat.N1ESP8266.stopTimeout = 2000;
 Whitecat.N1ESP8266.bootingTimeout = 3500;
