@@ -39,7 +39,7 @@ Whitecat.ERR_TIMEOUT = -1;
 Whitecat.ERR_INVALID_RESPONSE = -2;
 Whitecat.ERR_CONNECTION_ERROR = -4;
 
-Whitecat.debug = false;
+Whitecat.debug = true;
 Whitecat.inDetect = false;
 Whitecat.inRecover = false;
 Whitecat.detectInterval = null;

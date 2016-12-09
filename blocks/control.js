@@ -55,7 +55,7 @@ Blockly.Blocks['execute_on'] = {
   init: function() {
     this.appendDummyInput()
       .appendField(Blockly.Msg.EXECUTE_ON_EVERY)
-	  .appendField(new Blockly.FieldDropdown([[Blockly.Msg.ON_EVERY_BOARD_REBOOT, "1"]]), "WHEN");
+	  .appendField(new Blockly.FieldDropdown([[Blockly.Msg.ON_EVERY_BOARD_REBOOT, "1"], [Blockly.Msg.ON_EVERY_RECEIVED_LORA_FRAME, "2"]]), "WHEN");
 
 
     this.appendStatementInput('DO')

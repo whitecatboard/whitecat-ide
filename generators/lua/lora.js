@@ -114,3 +114,11 @@ Blockly.Lua['lora_tx'] = function(block) {
 	
     return 'lora.tx(' + confirmed + ', ' + port + ', ' + payload + ')\n';
 };
+
+Blockly.Lua['lora_get_port'] = function(block) {
+  return ['_port', Blockly.Lua.ORDER_HIGH];
+};
+
+Blockly.Lua['lora_get_payload'] = function(block) {
+    return ['_payload', Blockly.Lua.ORDER_HIGH];
+};

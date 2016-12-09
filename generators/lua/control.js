@@ -57,10 +57,23 @@ Blockly.Lua['execute_on'] = function(block) {
 	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
 	var when = block.getFieldValue('WHEN');
 
-	doStatement = 'thread.start(function()\n' + doStatement + 'end)\n';
-
-	code += doStatement;
+	// When board starts
+	if (when == 1) {
+		doStatement = 'thread.start(function()\n' + doStatement + 'end)\n';
+	}
 	
+	// When a lora frame is received
+	if (when == 2) {
+		code = "lora.whenReceived(function(_port, _payload)\n";
+	}
+		
+	code += doStatement;
+
+	// When a lora frame is received
+	if (when == 2) {
+		code += "end)\n";
+	}
+		
 	return code;
 }
 

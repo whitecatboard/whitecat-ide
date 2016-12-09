@@ -254,3 +254,35 @@ Blockly.Blocks['lora_join'] = {
     this.setHelpUrl('http://www.example.com/');
   },
 };
+
+Blockly.Blocks['lora_get_port'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+		.appendField(Blockly.Msg.LORA_GET_PORT);
+
+	this.setOutput(true, null);
+    this.setInputsInline(true);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setColour(Blockly.Blocks.lora.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['lora_get_payload'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+		.appendField(Blockly.Msg.LORA_GET_PAYLOAD);
+
+	this.setOutput(true, null);
+    this.setInputsInline(true);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setColour(Blockly.Blocks.lora.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};

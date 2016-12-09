@@ -85,4 +85,5 @@ var MSG = {
   saveAsButtonTooltip: 'Guarda el programa como ...',
   rebootButtonTooltip: 'Reinicia la placa',
   stopButtonTooltip: 'Para el programa',
+  cancel: 'Cancelar',
 };

@@ -471,6 +471,8 @@ Blockly.Msg.DO= "fes";
 
 Blockly.Msg.configureLora = "configura LoRa utilitzant la banda dels ";
 Blockly.Msg.MHZ = "Mhz";
+Blockly.Msg.LORA_GET_PORT = "obtenir port a partir del paquet rebut";
+Blockly.Msg.LORA_GET_PAYLOAD = "obtenir payload a partir del paquet rebut";
 Blockly.Msg.LORA_TX = "transmetre un paquet ";
 Blockly.Msg.LORA_CONFIRMED = "confirmat";
 Blockly.Msg.LORA_UNCONFIRMED = "sense confirmar";
@@ -492,4 +494,5 @@ Blockly.Msg.FALSE = "fals";
 Blockly.Msg.BAND = "";
 Blockly.Msg.EXECUTE_ON_EVERY = "quan";
 Blockly.Msg.ON_EVERY_BOARD_REBOOT = "la placa arranqui";
+Blockly.Msg.ON_EVERY_RECEIVED_LORA_FRAME = "es rebi un paquet de LoRa WAN";
 Blockly.Msg.CPU_SLEEP = "dorm el processador";

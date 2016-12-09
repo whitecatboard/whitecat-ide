@@ -464,6 +464,8 @@ Code.buildToolBox = function() {
   			          </shadow> \
   			        </value> \
   				</block> \
+  		        <block type="lora_get_port"></block> \
+  		        <block type="lora_get_payload"></block> \
   		        <block type="text_pack"></block> \
   		        <block type="text_unpack"></block> \
   			</category> \
@@ -506,6 +508,8 @@ Code.buildToolBox = function() {
   			          </shadow> \
   			        </value> \
   				</block> \
+  		        <block type="lora_get_port"></block> \
+  		        <block type="lora_get_payload"></block> \
   		        <block type="text_pack"></block> \
   		        <block type="text_unpack"></block> \
   			</category> \
