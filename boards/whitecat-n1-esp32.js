@@ -32,7 +32,7 @@ Whitecat.N1ESP32 = {};
 Whitecat.N1ESP32.hasFirmwareUpgradeSupport = false;
 
 Whitecat.N1ESP32.hasDigitalSupport = true;
-Whitecat.N1ESP32.hasAnalogSupport = false;
+Whitecat.N1ESP32.hasAnalogSupport = true;
 Whitecat.N1ESP32.hasPWMSupport = false;
 Whitecat.N1ESP32.hasI2CSupport = false;
 Whitecat.N1ESP32.hasLORASupport = true;
@@ -79,23 +79,21 @@ Whitecat.N1ESP32.digitalPins = {
 
 // Analog pins map
 Whitecat.N1ESP32.analogPins = {
-/*
-	"9" : "PB_4",
-	"10": "PB_3",
-    "11": "PB_2",
-    "12": "PB_1",
-	"13": "PB_0",
-*/
+	"4": "GPIO36",
+	"5": "GPIO39",
+    "8": "GPIO32",
+    "9": "GPIO33",
+	"6": "GPIO34",
+	"7": "GPIO35",
 };
 
 Whitecat.N1ESP32.analogPinsChannel = {
-/*
-	"9" : "4",
-	"10": "3",
-    "11": "2",
-    "12": "1",
-	"13": "0",
-*/
+	"4": "0",
+	"5": "3",
+    "8": "4",
+    "9": "5",
+	"6": "6",
+	"7": "7",
 };
 
 // PWM pins map

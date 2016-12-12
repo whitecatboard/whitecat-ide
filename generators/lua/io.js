@@ -64,10 +64,10 @@ Blockly.Lua['configureanalogpin'] = function(block) {
 	
 	var code = '';
 	
-	code  = 'if (adc1 == nil) then\n';
-	code += '  adc1 = adc.setup(adc.ADC1, adc.AVDD, 3220)\n';
+	code  = 'if (adc0 == nil) then\n';
+	code += '  adc0 = adc.setup(adc.ADC0)\n';
 	code += 'end\n';
-	code += 'adc1_chan' + Board.analogPinsChannel[pin] + ' = adc1:setupchan(' + resolution + ', ' + Board.analogPinsChannel[pin] + ')\n';
+	code += 'adc0_chan' + Board.analogPinsChannel[pin] + ' = adc0:setupchan(' + resolution + ', ' + Board.analogPinsChannel[pin] + ')\n';
 
 	return code;
 };
@@ -187,7 +187,7 @@ Blockly.Lua['getanalogpin'] = function(block) {
 	
 	var code = '';
 	
-	code = 'adc1_chan' + Board.analogPinsChannel[pin] + ':read()\n';
+	code = 'adc0_chan' + Board.analogPinsChannel[pin] + ':read()\n';
 		
 	return [code, Blockly.Lua.ORDER_HIGH];
 };

@@ -76,7 +76,7 @@ Blockly.Blocks['configureanalogpin'] = {
         .appendField(new Blockly.FieldDropdown(pins), "PIN");
     this.appendDummyInput()
         .appendField(Blockly.Msg.WITH)
-        .appendField(new Blockly.FieldDropdown([["12", "12"], ["10", "10"], ["8", "8"], ["6", "6"]]), "RESOLUTION")
+        .appendField(new Blockly.FieldDropdown([["12", "12"], ["11", "11"], ["10", "10"], ["9", "9"], ["8", "8"], ["6", "6"]]), "RESOLUTION")
         .appendField(' ' + Blockly.Msg.BITSOFRESOLUTION + ' ');
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
