@@ -1340,9 +1340,7 @@ Code.load = function() {
 Code.stop = function() {
 	Board.stop(Board.currentPort(),
 		function() {
-		},
-		function(err) {
-			Code.showError("1" + err);
+			Code.renderContent();
 		}
 	);
 }

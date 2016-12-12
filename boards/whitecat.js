@@ -520,91 +520,21 @@ Whitecat.fileExists = function(port, name, callback) {
 
 // Stop anything running on the whitecat, including scripts and threads
 Whitecat.stop = function(port, success, error) {
-	var currentReceived = "";
-	var currentTimeOut;
-	var currentInterval;
+	Term.disconnect();
 	
-	function timeout() {
-		chrome.serial.onReceive.removeListener(stopListener);
-		Term.enable();
-		error(Whitecat.ERR_TIMEOUT);
-	}
+	chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
+		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
+			Whitecat.init(Whitecat.BOOTING_STATE);
 
-	function stopThreads() {
-		Whitecat.sendCommand(port, 'do;thread.stop();local n = thread.list("*n");print(n);end;', 1000, 
-			function(resp) {
-				if (resp == "0") {
-					Whitecat.sendCommand(port, 'do;local curr_os, curr_ver, curr_build = os.version();print("{\\"os\\":\\""..curr_os.."\\",\\"version\\":\\""..curr_ver.."\\",\\"build\\":\\""..curr_build.."\\"}");end;', 2000,
-						function(resp) {
-							try {
-								resp = JSON.parse(resp);
+			success();
 
-								if (resp.os == "Lua RTOS") {
-									clearTimeout(currentTimeOut);
-									Term.enable();
-									success();
-								}
-							} catch (err) {
-								clearTimeout(currentTimeOut);
-								Term.enable();
-								error(Whitecat.ERR_INVALID_RESPONSE);
-							}
-							
-						},
-						function(err) {
-							clearTimeout(currentTimeOut);
-							Term.enable();
-							error(err);
-						}
-					);
+			// Wait for the connected state
+			var currentInterval = setInterval(function() {
+				if (port.state == Whitecat.CONNECTED_STATE) {
+					clearInterval(currentInterval);
 				}
-			},
-			function(err) {
-				clearTimeout(currentTimeOut);
-				Term.enable();
-				error(err);
-			}
-		);		
-	}
-	
-	function stopListener(info) {
-	    if (info.connectionId == port.connId && info.data) {
-			var str = Whitecat.ab2str(info.data);
-			
-			for(var i = 0; i < str.length; i++) {
-				if ((str.charAt(i) === '\n') || (str.charAt(i) === '\r')) {
-					currentReceived = "";
-				} else {
-					currentReceived = currentReceived + str.charAt(i);	
-					if (currentReceived.match(/^lua\:.*interrupted\!$/g)) {
-					}
-					if (currentReceived.match(/^\/.*\>\s*$/g)) {
-						clearTimeout(currentTimeOut);
-						clearInterval(currentInterval);
-						chrome.serial.onReceive.removeListener(stopListener);
-						stopThreads();
-						break;
-					}
-				}
-			}		
-		}		
-	}
-	
-	Term.disable();
-	
-	// Send a Ctrl-C for interrupt current running script
-	chrome.serial.flush(port.connId, function(info) {
-		chrome.serial.onReceive.addListener(stopListener);
-
-		// Set a timeout
-		currentTimeOut = setTimeout(function(){
-			timeout();
-		}, Whitecat.stopTimeout);
-
-		currentInterval = setInterval(function() {
-			chrome.serial.send(port.connId, Whitecat.str2ab('\03'), function(info) {
-			});					
-		}, 1);
+			}, 100);
+		});
 	});
 };
 
@@ -811,33 +741,21 @@ Whitecat.detect = function() {
 			Whitecat.isRunning(port,
 				function(running) {
 					if (running) {
-						// We want a whitecat with nothing running when the environment
-						// detects a new connected board, because we need to have the
-						// Lua interpreter available for get the board status				
-						Whitecat.stop(
+						Whitecat.getStatus(
 							port,
 							function() {
-								Whitecat.getStatus(
-									port,
-									function() {
-										Whitecat.updateMaps();
-										port.state = Whitecat.CONNECTED_STATE;
-										Code.boardConnected();
-										Whitecat.inDetect = false;
-									},
-									function() {
-										Whitecat.updateMaps();
-										port.state = Whitecat.CONNECTED_STATE;
-										Code.boardConnected();
-										Whitecat.inDetect = false;
-									}
-								);	
+								Whitecat.updateMaps();
+								port.state = Whitecat.CONNECTED_STATE;
+								Code.boardConnected();
+								Whitecat.inDetect = false;
 							},
 							function() {
+								Whitecat.updateMaps();
+								port.state = Whitecat.CONNECTED_STATE;
+								Code.boardConnected();
 								Whitecat.inDetect = false;
 							}
-						);							
-						
+						);
 					} else {
 						Whitecat.inDetect = false;
 					}
@@ -932,19 +850,10 @@ Whitecat.detect = function() {
 							
 							// Store connection id and name of port
 							Whitecat.ports[0].connId = connectionInfo.connectionId;
-
-							//chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
-							//	chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
-									testPort(Whitecat.ports[0]);
-							//	});
-							//});
+							testPort(Whitecat.ports[0]);
 						});
 					} else {
-						//chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
-						//	chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
-								testPort(Whitecat.ports[0]);
-						//	});
-						//});
+						testPort(Whitecat.ports[0]);
 					}
 				} else {
 					Whitecat.inDetect = false;
@@ -1053,36 +962,20 @@ Whitecat.run = function(port, file, code, success, fail) {
 		
 	Term.disable();
 	
-	if (!Whitecat.hardwareReset) {
-		chrome.serial.flush(port.connId, function() {
-			// Stop anything running
-			Whitecat.stop(
-				port,
-				function() {
+	// Do a hardware reset
+	chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: true, rts: true }, function() {
+		chrome.serial.setControlSignals(Whitecat.ports[0].connId, { dtr: false, rts: false }, function() {
+			Whitecat.init(Whitecat.BOOTING_STATE);
+			
+			// Wait for the connected state
+			var currentInterval = setInterval(function() {
+				if (port.state == Whitecat.CONNECTED_STATE) {
+					clearInterval(currentInterval);
 					Whitecat.sendAndRun(port, file, code, success, fail);
-				},
-				function() {
-					Term.enable();
-					fail();
 				}
-			);							
+			}, 100);
 		});
-	} else {
-		// Do a hardware reset
-		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
-			chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
-				Whitecat.init(Whitecat.BOOTING_STATE);
-				
-				// Wait for the connected state
-				var currentInterval = setInterval(function() {
-					if (port.state == Whitecat.CONNECTED_STATE) {
-						clearInterval(currentInterval);
-						Whitecat.sendAndRun(port, file, code, success, fail);
-					}
-				}, 100);
-			});
-		});
-	}
+	});
 };
 
 // List a directory from the whitecat, and return an array of entries
