@@ -104,9 +104,12 @@ Blockly.Lua['configuredefaultpwmpin'] = function(block) {
 	}
 	
 	var code = '';
-	
-	code += 'pwm.setup(' + Board.pwmPinsChannel[pin] + ', pwm.DEFAULT, ' + frequency + ', ' + duty + ')\n';
 
+	code  = 'if (pwm0 == nil) then\n';
+	code += '  pwm0 = pwm.setup(pwm.PWM0)\n';
+	code += 'end\n';
+	code += 'pwm0_chan_pin' + pin + ' = pwm0:setupchan(' + Board.pwmPinsChannel[pin] + ', pio.' + Board.pwmPins[pin] + ', ' + frequency + ', ' + duty + ')\n';
+	
 	return code;
 }
 
@@ -115,7 +118,7 @@ Blockly.Lua['pwmstart'] = function(block) {
 	
 	var code = '';
 	
-	code += 'pwm.start(' + Board.pwmPinsChannel[pin] + ')\n';
+	code += 'pwm0_chan_pin' + pin + ':start()\n';
 
 	return code;
 }
@@ -125,7 +128,7 @@ Blockly.Lua['pwmstop'] = function(block) {
 	
 	var code = '';
 	
-	code += 'pwm.stop(' + Board.pwmPinsChannel[pin] + ')\n';
+	code += 'pwm0_chan_pin' + pin + ':stop()\n';
 
 	return code;
 }
@@ -140,7 +143,7 @@ Blockly.Lua['pwmsetduty'] = function(block) {
 		duty = '0';
 	}
 	
-	code += 'pwm.setduty(' + Board.pwmPinsChannel[pin] + ', ' + duty + ')\n';
+	code += 'pwm0_chan_pin' + pin + ':setduty(' + duty +')\n';
 
 	return code;
 }

@@ -349,13 +349,6 @@ Code.buildToolBox = function() {
 	if (Board.hasPWMSupport) {
 		xml += ' \
   		<category id="catIOPwm"> \
-  			<block type="configuredacpwmpin"> \
-  		        <value name="VALUE"> \
-  		          <shadow type="math_number"> \
-  		            <field name="NUM">0</field> \
-  		          </shadow> \
-  		        </value>  \
-  			</block> \
   			<block type="configuredefaultpwmpin"> \
   		        <value name="FREQUENCY"> \
   		          <shadow type="math_number"> \
@@ -372,13 +365,6 @@ Code.buildToolBox = function() {
   			<block type="pwmstop"></block> \
   			<block type="pwmsetduty"> \
   		        <value name="DUTY"> \
-  		          <shadow type="math_number"> \
-  		            <field name="NUM">0</field> \
-  		          </shadow> \
-  		        </value> \
-  			</block> \
-  			<block type="pwmwrite"> \
-  		        <value name="VALUE"> \
   		          <shadow type="math_number"> \
   		            <field name="NUM">0</field> \
   		          </shadow> \

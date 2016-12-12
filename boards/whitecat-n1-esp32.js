@@ -33,7 +33,7 @@ Whitecat.N1ESP32.hasFirmwareUpgradeSupport = false;
 
 Whitecat.N1ESP32.hasDigitalSupport = true;
 Whitecat.N1ESP32.hasAnalogSupport = true;
-Whitecat.N1ESP32.hasPWMSupport = false;
+Whitecat.N1ESP32.hasPWMSupport = true;
 Whitecat.N1ESP32.hasI2CSupport = false;
 Whitecat.N1ESP32.hasLORASupport = true;
 
@@ -98,25 +98,73 @@ Whitecat.N1ESP32.analogPinsChannel = {
 
 // PWM pins map
 Whitecat.N1ESP32.pwmPins = {
-/*
-	"12": "PB_2",
-	"14": "PB_6",
-	"12": "PB_1",
-	"13": "PB_0",
-	"10": "PB_3",
-	"16": "PB_8",
-*/
+"4":  "GPIO36",
+"5":  "GPIO39",
+"6":  "GPIO34",
+"7":  "GPIO35",
+"8":  "GPIO32",
+"9":  "GPIO33",
+"10": "GPIO25",
+"11": "GPIO26",
+"12": "GPIO27",
+"13": "GPIO14",
+"14": "GPIO12",
+"16": "GPIO13",
+"17": "GPIO9",
+"18": "GPIO10",
+"19": "GPIO11",
+"20": "GPIO6",
+"21": "GPIO7",
+"22": "GPIO8",
+"23": "GPIO15",
+"24": "GPIO2",
+"25": "GPIO0",
+"26": "GPIO4",
+"27": "GPIO16",
+"28": "GPIO17",
+"29": "GPIO5",
+"30": "GPIO18",
+"31": "GPIO19",
+"33": "GPIO21",
+"34": "GPIO3",
+"35": "GPIO1",
+"36": "GPIO22",
+"37": "GPIO23",
 };
 
 Whitecat.N1ESP32.pwmPinsChannel = {
-/*
-	"12": "1",
-	"14": "2",
-	"12": "4",
-	"13": "5",
-	"10": "7",
-	"16": "8",
-*/
+"4":  "-1",
+"5":  "-1",
+"6":  "-1",
+"7":  "-1",
+"8":  "-1",
+"9":  "-1",
+"10": "-1",
+"11": "-1",
+"12": "-1",
+"13": "-1",
+"14": "-1",
+"16": "-1",
+"17": "-1",
+"18": "-1",
+"19": "-1",
+"20": "-1",
+"21": "-1",
+"22": "-1",
+"23": "-1",
+"24": "-1",
+"25": "-1",
+"26": "-1",
+"27": "-1",
+"28": "-1",
+"29": "-1",
+"30": "-1",
+"31": "-1",
+"33": "-1",
+"34": "-1",
+"35": "-1",
+"36": "-1",
+"37": "-1",
 };
 
 // I2C map
