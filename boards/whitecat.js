@@ -572,7 +572,7 @@ Whitecat.isBooting = function(port, success, error) {
 			}		
 		}		
 	}
-	
+
 	// Set a timeout
 	currentTimeOut = setTimeout(function(){
 		timeout();

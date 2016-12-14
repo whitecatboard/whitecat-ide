@@ -38,7 +38,7 @@ Whitecat.N1ESP32.hasI2CSupport = false;
 Whitecat.N1ESP32.hasLORASupport = true;
 
 Whitecat.N1ESP32.stopTimeout = 2000;
-Whitecat.N1ESP32.bootingTimeout = 1000;
+Whitecat.N1ESP32.bootingTimeout = 2000;
 Whitecat.N1ESP32.runningTimeout = 1500;
 
 // Digital pins map
