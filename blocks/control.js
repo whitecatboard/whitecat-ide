@@ -71,8 +71,8 @@ Blockly.Blocks['execute_on'] = {
 	var when = this.getFieldValue('WHEN');
 
 	switch (when) {
-		case "1": return 'init';
-		case "2": return 'default';
+		case "1": return 'default';
+		case "2": return 'init';
 	}
   }
 };
