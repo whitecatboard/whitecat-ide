@@ -1,3 +1,21 @@
+/**
+ * Prepend the generated code with the variable definitions.
+ * @param {string} code Generated code.
+ * @return {string} Completed code.
+ */
+Blockly.Lua.finish = function(code) {
+  // Convert the definitions dictionary into a list.
+  var definitions = [];
+  for (var name in Blockly.Lua.definitions_) {
+    definitions.push(Blockly.Lua.definitions_[name]);
+  }
+  // Clean up temporary data.
+  delete Blockly.Lua.definitions_;
+  delete Blockly.Lua.functionNames_;
+  Blockly.Lua.variableDB_.reset();
+  return definitions.join('\n') + '\n' + code;
+};
+
 Blockly.Generator.prototype.workspaceToCode = function(workspace) {  
   if (!workspace) {
     // Backwards compatability from before there could be multiple workspaces.
