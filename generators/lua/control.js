@@ -51,7 +51,6 @@ Blockly.Lua['wait_for'] = function(block) {
 	return code;
 };
 
-
 Blockly.Lua['execute_on'] = function(block) {
     var code = '';
 	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
