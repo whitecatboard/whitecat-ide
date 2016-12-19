@@ -20,4 +20,4 @@ Lua RTOS has a 3-layers design:
 
 You can find all related to Lua RTOS in:
 
-![](https://github.com/whitecatboard/Lua-RTOS-ESP32)
+[](https://github.com/whitecatboard/Lua-RTOS-ESP32)
