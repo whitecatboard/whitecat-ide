@@ -66,6 +66,14 @@ Blockly.Blocks['execute_on'] = {
     this.setColour(Blockly.Blocks.control.HUE);
     this.setTooltip('');
     this.setHelpUrl('http://www.example.com/');
+  },
+  section: function() {
+	var when = this.getFieldValue('WHEN');
+
+	switch (when) {
+		case "1": return 'default';
+		case "2": return 'init';
+	}
   }
 };
 
