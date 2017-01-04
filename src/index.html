@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="google" value="notranslate">
+  <title>Whitecat</title>
+  <link rel="stylesheet" href="icon.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css">
+  
+  <script src="lib/jquery-1.12.3.min.js"></script>
+  
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap-dialog.js"></script>
+  <script src="lib/bootstrap/js/bootbox.min.js"></script>
+  
+  <script src="lib/term.js"></script>
+  <script src="lib/intel-hex.js"></script>
+  <script src="lib/stk500.js"></script>
+  <script src="lib/luaparser.js"></script>
+
+  <script src="aceeditor/ace.js"></script>
+  <script src="aceeditor/ext-language_tools.js"></script>
+
+  <script src="boards/board.js"></script>
+  
+  <script src="blockly_compressed.js"></script>
+
+  <script src="blocks/bitlogic.js"></script>
+  <script src="blocks/i2c.js"></script>
+  <script src="blocks/logic.js"></script>
+  <script src="blocks/math.js"></script>
+  <script src="blocks/textadds.js"></script>
+  <script src="blocks/variables.js"></script>
+  <script src="blocks/colour.js"></script>
+  <script src="blocks/io.js"></script>
+  <script src="blocks/loops.js"></script>
+  <script src="blocks/procedures.js"></script>
+  <script src="blocks/threads.js"></script>
+  <script src="blocks/control.js"></script>
+  <script src="blocks/lists.js"></script>
+  <script src="blocks/lora.js"></script>
+  <script src="blocks/text.js"></script>
+  <script src="blocks/try.js"></script>
+  
+  <script src="generators/lua.js"></script>
+  <script src="generators/luatoblocks.js"></script>
+  <script src="generators/lua/bitlogic.js"></script>
+  <script src="generators/lua/lists.js"></script>
+  <script src="generators/lua/math.js"></script>
+  <script src="generators/lua/try.js"></script>
+  <script src="generators/lua/colour.js"></script>
+  <script src="generators/lua/logic.js"></script>
+  <script src="generators/lua/procedures.js"></script>
+  <script src="generators/lua/variables copy.js"></script>
+  <script src="generators/lua/control.js"></script>
+  <script src="generators/lua/loops.js"></script>
+  <script src="generators/lua/text.js"></script>
+  <script src="generators/lua/i2c.js"></script>
+  <script src="generators/lua/lora.js"></script>
+  <script src="generators/lua/textadds.js"></script>
+  <script src="generators/lua/io.js"></script>
+  <script src="generators/lua/lua-generator.js"></script>
+  <script src="generators/lua/threads.js"></script>
+
+  <script src="debug.js"></script>
+  <script src="code.js"></script>
+</head>
+<body>
+  <img id="logo" src="media/whitecat.png" style="visibility: hidden;"/>
+
+  <div id="languageDiv" style="visibility: hidden;text-align: right;display: flex;align-items: center;justify-content:flex-end;">
+  	<select id="languageMenu"></select>
+  </div>
+
+  <div id="targetFile" style="visibility: hidden;text-align: right;display: flex;align-items: center;justify-content:flex-end;">
+  </div>
+  
+  <table width="100%" height="100%" style="margin-top: 25px;">
+    <tr>
+      <td colspan=2>
+		  <div>
+			  <ul class="nav nav-tabs" role="tablist">
+			    <li role="presentation"><a id="tab_board" role="tab" data-toggle="tab">...</a></li>
+			    <li role="presentation"><a id="tab_program" role="tab" data-toggle="tab">...</a></li>
+			  </ul>		 
+		  <div>
+		  <div class="btn-toolbar" role="toolbar" style="background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);"> 
+		  	<div class="btn-group">
+  			  <button id="trashButton" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-bin" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="switchToBlocks" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-puzzle" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="switchToCode" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-code" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="loadButton" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-folder-open" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="saveButton" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-floppy-disk" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="saveAsButton" type="button" class="btn btn-default" aria-label="Left Align">
+  			    <span class="icon icon-floppy-disks" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="rebootButton"type="button" class="btn btn-default disabled" aria-label="Left Align">
+  			    <span class="icon icon-spinner11" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="stopButton"type="button" class="btn btn-default disabled" aria-label="Left Align">
+  			    <span class="icon icon-stop2" aria-hidden="true"></span>
+  			  </button>
+  			  <button id="runButton" type="button" class="btn btn-default disabled" aria-label="Left Align">
+  			    <span class="icon icon-play4" aria-hidden="true"></span>
+  			  </button>
+		    </div>
+		  </div>
+      </td>
+    </tr>
+    <tr>
+      <td height="99%" colspan=2 id="content_area">
+      </td>
+    </tr>
+  </table>
+  <div id="content_board" class="content">
+	<div class="portlet">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="icon icon-file-stats"></i>
+				<span class="caption-subject">fileSystem</span>
+			</div>
+		</div>
+		<div class="portlet-body">
+		  	<div id="filesystem" style="position: relative; left: -25px;"></div>
+		</div>
+	</div>
+	<div class="portlet">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="icon icon-chip"></i>
+				<span class="caption-subject">status</span>	
+			</div>
+		</div>
+		<div class="portlet-body">
+		  	<div id="boardStatus">
+		  	</div>
+		</div>
+	</div>
+	<div class="portlet">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="icon icon-display4"></i>
+				<span class="caption-subject">console</span>	
+			</div>
+		</div>
+		<div class="portlet-body">
+		  	<div id="boardConsole" tabindex="1">
+		  	</div>
+		</div>
+	</div>
+  </div>
+  <div id="content_program">
+	  <div id="content_blocks" class="content"></div>
+  	  <div id="content_editor" class="content"></div>
+  </div>
+  <xml id="toolbox" style="display: none">
+  </xml>
+</body>
+</html>

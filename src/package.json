@@ -1,0 +1,16 @@
+{
+  "name": "Whitecat",
+  "version": "0.0.1",
+  "main": "index.html",
+  "window": {
+    "frame": true,
+    "width": 1200,
+    "height": 600,
+    "toolbar": true,
+    "position": "center",
+    "fullscreen": false
+  },
+  "webkit": {
+    "plugin": true
+  }
+}
