@@ -97,4 +97,9 @@ var MSG = {
   stopButtonTooltip: 'Stop the program',
   error: 'Error',
   youHaveAnErrorInSettings: 'You have an eror in your settings.json file:',
+  youHaveAnErrorInFile: 'You have an error in file  ',
+  missingAdapterId: 'Missing id property',
+  missingAdapterPlatform: "Missing info for platform ",
+  missingAdapterPath: "Missing path property for platform ",
+  missingAdapterDisplayName: "Missing displayName property for platform ",
 };

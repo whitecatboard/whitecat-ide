@@ -737,22 +737,6 @@ Board.CONNECTED_STATE  = 4;
 Board.BAD_STATE        = 5;
 Board.RECOVER_STATE    = 6;
 
-Board.isAdapter = function(port) {
-	var i;
-	
-	debug("port path: " + port.path);
-	debug("port displayName: " + port.displayName);
-	
-	for(i=0;i<Board.adapters.length;i++) {
-		if (Board.adapters[i][window.navigator.platform].path.test(port.path)) {
-			if (Board.adapters[i][window.navigator.platform].displayName.test(port.displayName)) {
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
 
 Board.detect = function() {
 	var timeoutTestBootloader;
@@ -853,7 +837,7 @@ Board.detect = function() {
 		
 		// Process all ports and update previous ports with changes
 		for(port = 0;port < ports.length;port++) {	
-			if (!Board.isAdapter(ports[port])) {
+			if (!Adapters.isValidForPort(ports[port])) {
 				continue;
 			}
 					

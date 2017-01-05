@@ -88,4 +88,9 @@ var MSG = {
   cancel: 'Cancel·lar',
   error: 'Error',
   youHaveAnErrorInSettings: 'Tens un error a l\'arxiu settings.json:',
+  youHaveAnErrorInFile: 'Tens un error a l\'arxiu ',
+  missingAdapterId: 'No es troba el id de l\'adaptador',
+  missingAdapterPlatform: "No es troba la informacío per a la plataforma ",
+  missingAdapterPath: "No es troba la propietat path per a la plataforma ",
+  missingAdapterDisplayName: "No es troba la propietat displayName per a la plataforma ",
 };

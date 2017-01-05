@@ -38,6 +38,8 @@
  */
 var Code = {};
 
+Code.platforms = ["MacIntel","Win32","Linux x86_64"];
+
 Code.progressDialog = false;
 
 Code.currentFile = {
@@ -2089,36 +2091,6 @@ Code.loadBoards = function(callback) {
 	Code.loadBoard(dirs, callback);
 }
 
-Code.loadAdapter = function(files, callback) {
-	var file;
-	
-	if (files.length > 0) {
-		file = files.pop();
-	} else {
-		callback();
-		return;
-	}
-
-	if (file.match(/^.*\.js$/)) {
-		jQuery.getScript("boards/adapters/" + file, function() {
-			Code.loadAdapter(files, callback);
-		});		
-	} else {
-		Code.loadAdapter(files, callback);		
-	}
-}
-
-Code.loadAdapters = function(callback) {
-    var fs = require('fs');
-    var path = require('path');
-  
-    var dirPath = path.join(process.cwd(), "/boards/adapters");  
-	var dirs = fs.readdirSync(dirPath);
-	Code.loadAdapter(dirs, callback);
-}
-
-
-
 window.addEventListener('load', function() {
 	// Clear cache
 	var gui = window.require('nw.gui');
@@ -2128,10 +2100,9 @@ window.addEventListener('load', function() {
 	jQuery.getScript('msg/' + Code.settings.language + '.js', function() {
   		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
 			Settings.load(Code.settings);
+			Adapters.load();
 			Code.loadBoards(function() {
-				Code.loadAdapters(function() {
 					Code.init();
-				});
 			});
   		});
   	});
