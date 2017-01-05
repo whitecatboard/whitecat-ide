@@ -136,24 +136,15 @@ Code.changeLanguage = function() {
   } else {
     search = search.replace(/\?/, '?lang=' + newLang + '&');
   }
-  
-  var fs = require('fs');
-  var path = require('path');
-  
-  var file = 'settings.json';
-  var filePath = path.join(process.cwd(), file);  
 
   Code.settings.language = newLang;
-  
-  fs.writeFile(filePath, JSON.stringify(Code.settings),
-	  function (err) {
-      	if (err) {
- 			return;
-      	} else {
-			chrome.runtime.reload();
-        }
-	  }
-  );
+
+  try {
+  	Settings.save(Code.settings);
+  	chrome.runtime.reload();
+  } catch (error) {
+  	
+  }
 };
 
 /**
@@ -1113,7 +1104,7 @@ Code.discard = function() {
 };
 
 Code.runtimeError = function(file, line, code, message) {
-	Code.showError(MSG['youHaveAnError'] + '<br><br>' + message);	
+	Code.showError(MSG['runtimeError'], MSG['youHaveAnError'] + '<br><br>' + message);	
 }
 
 Code.run = function() {
@@ -1136,7 +1127,7 @@ Code.run = function() {
 				Code.hideProgress();
 			},
 			function(file, line, message) {
-				Code.showError(MSG['youHaveAnError'] + '<br><br>' + message);		
+				Code.showError(MSG['runtimeError'], MSG['youHaveAnError'] + '<br><br>' + message);		
 			}
 		);			
 	}
@@ -1631,13 +1622,13 @@ Code.showAlert = function(text) {
 	});
 }
 
-Code.showError = function(err) {
+Code.showError = function(title, err) {
 	BootstrapDialog.closeAll();
 	bootbox.hideAll();
 
 	setTimeout(function() {
 	   	bootbox.dialog({
-	   		title: MSG['runtimeError'],
+	   		title: title,
 	   	    message: err ,
 	   		buttons: {
 	   		    main: {
@@ -1830,7 +1821,7 @@ Code.listBoardDirectory = function(container, extension, folderSelect, fileSelec
 			container.find(".dir-entry-f").find(".status").addClass("icon-file-text2");
   	    },
 		function(err) {
-			Code.showError(err);
+			Code.showError(MSG['runtimeError'], err);
 		}	
 	);
 }
@@ -1894,7 +1885,7 @@ Code.boardRecover = function() {
 	  	);
 	  },
 	  function(err) {
-		Code.showError("2" + err);
+		Code.showError(MSG['runtimeError'], "2" + err);
 	  }
   );
 }
@@ -1946,7 +1937,7 @@ Code.boardInBootloaderMode = function(callback) {
 					  	);
 					  },
 					  function(err) {
-			  			Code.showError("3" + err);
+			  			Code.showError(MSG['runtimeError'], "3" + err);
 					  }
 				  );
 			  }
@@ -2005,7 +1996,7 @@ Code.checkFirmware = function() {
   	  							  	);
 	  							  },
 	  							  function(err) {
-						  			Code.showError("4" + err);
+						  			Code.showError(MSG['runtimeError'], "4" + err);
 	  							  }
 	  						  );
 						  }
@@ -2024,7 +2015,7 @@ Code.checkFirmware = function() {
 			}
 		},
 		function(err) {
-			Code.showError("5" + err);
+			Code.showError(MSG['runtimeError'], "5" + err);
 		}
 	);
 }
@@ -2126,33 +2117,22 @@ Code.loadAdapters = function(callback) {
 	Code.loadAdapter(dirs, callback);
 }
 
+
+
 window.addEventListener('load', function() {
 	// Clear cache
 	var gui = window.require('nw.gui');
 	
 	gui.App.clearCache();
-	
-    // Load settings
-    var fs = require("fs");
-    var path = require('path');
-  
-    var file = 'settings.json';
-    var filePath = path.join(process.cwd(), file);  
 
-    fs.readFile(filePath, "utf8", function(error, data) {
-		try {
-			Code.settings = JSON.parse(data);
-		} finally {
+	jQuery.getScript('msg/' + Code.settings.language + '.js', function() {
+  		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
+			Settings.load(Code.settings);
 			Code.loadBoards(function() {
 				Code.loadAdapters(function() {
-					jQuery.getScript('msg/' + Code.settings.language + '.js', function() {
-				  		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
-							debug("platform is " + window.navigator.platform);
-				  			Code.init();
-				  		});
-				  	});
+					Code.init();
 				});
 			});
-		}
-    });
+  		});
+  	});
 });

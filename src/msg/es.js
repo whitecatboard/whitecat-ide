@@ -86,4 +86,6 @@ var MSG = {
   rebootButtonTooltip: 'Reinicia la placa',
   stopButtonTooltip: 'Para el programa',
   cancel: 'Cancelar',
+  error: 'Error',
+  youHaveAnErrorInSettings: 'Tienes un error en el archivo settings.json:',
 };

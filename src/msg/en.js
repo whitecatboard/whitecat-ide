@@ -95,4 +95,6 @@ var MSG = {
   saveAsButtonTooltip: 'Save program as ...',
   rebootButtonTooltip: 'Reboot board',
   stopButtonTooltip: 'Stop the program',
+  error: 'Error',
+  youHaveAnErrorInSettings: 'You have an eror in your settings.json file:',
 };

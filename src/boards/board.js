@@ -1181,8 +1181,8 @@ Board.checkForNewFirmwareAvailability = function(port, success, error) {
 
 //var Board = Whitecat;
 
-if (Board.debug) {
-	chrome.app.window.create('debug.html', {
-		id: "debugwin",
-	});  
-}
+//if (Board.debug) {
+//	chrome.app.window.create('debug.html', {
+//		id: "debugwin",
+//	});  
+//}
