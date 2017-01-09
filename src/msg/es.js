@@ -93,4 +93,5 @@ var MSG = {
   missingAdapterPlatform: "No se encuentra la informacíon para la plataforma ",
   missingAdapterPath: "No se encuentra la propiedad path para la plataforma ",
   missingAdapterDisplayName: "No se encuentra la propiedad displayName para la plataforma ",
+  missingBoardId: 'No se encuentra el id de la placa',
 };

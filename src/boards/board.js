@@ -29,7 +29,6 @@
 
 var Board = {};
 
-Board.adapters = [];
 Board.status = {};
 Board.ports = [];
 Board.port = {};
@@ -76,27 +75,57 @@ Board.ERR_INVALID_RESPONSE = -2;
 Board.ERR_CONNECTION_ERROR = -4;
 
 Board.updateMaps = function() {
-	var board = "X1";
+	var board = "";
 	
-	if (Board.status.cpu == "ESP8266") {
-		board = "N1ESP8266";
-	}
-
 	if (Board.status.cpu == "ESP32") {
 		board = "N1ESP32";
 	}
-
-	board = "N1ESP32";
-
-	Board.digitalPins = Board.types[board].digitalPins;
-	Board.analogPins = Board.types[board].analogPins;
-	Board.analogPinsChannel = Board.types[board].analogPinsChannel;
-	Board.pwmPins = Board.types[board].pwmPins;
-	Board.pwmPinsChannel = Board.types[board].pwmPinsChannel;
-	Board.i2cModules = Board.types[board].i2cModules;
-	Board.bootingTimeout = Board.types[board].bootingTimeout;
-	Board.runningTimeout = Board.types[board].runningTimeout;
-	Board.hasFirmwareUpgradeSupport = Board.types[board].hasFirmwareUpgradeSupport;
+	
+	if (board != "") {
+	    var fs = require('fs');
+	    var path = require('path');
+  
+	    var dirPath = path.join(process.cwd(), "/boards/defs");  
+		var dirs = fs.readdirSync(dirPath);
+		
+		var i;
+		for(i=0;i<dirs.length;i++) {
+			if (dirs[i].match(/^.*\.json$/)) {
+				// Read board definition
+				try {
+					var data = fs.readFileSync(path.join(dirPath, dirs[i]), "utf8");
+				} catch (error) {
+					return;
+				}
+				
+				// Parse board definition
+				try {
+					var boardDef = JSON.parse(data);
+					
+					if (!boardDef.hasOwnProperty("id")) {
+						Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + dirs[i] + ':<br><br>' + MSG["missingBoardId"]);
+						return;	
+					}
+					
+					if (boardDef.id != board) continue;
+					
+					Board.digitalPins = boardDef.digitalPins;
+					Board.analogPins = boardDef.analogPins;
+					Board.analogPinsChannel = boardDef.analogPinsChannel;
+					Board.pwmPins = boardDef.pwmPins;
+					Board.pwmPinsChannel = boardDef.pwmPinsChannel;
+					Board.i2cModules = boardDef.i2cModules;
+					Board.bootingTimeout = boardDef.bootingTimeout;
+					Board.runningTimeout = boardDef.runningTimeout;
+					Board.hasFirmwareUpgradeSupport = boardDef.hasFirmwareUpgradeSupport;
+				} catch (error) {
+					Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + dirs[i] + ':<br><br>' + 
+					error.message);	
+					return;
+				}
+			}
+		}		
+	}
 
 	Code.updateToolBox();
 	return;

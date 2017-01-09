@@ -93,4 +93,5 @@ var MSG = {
   missingAdapterPlatform: "No es troba la informacío per a la plataforma ",
   missingAdapterPath: "No es troba la propietat path per a la plataforma ",
   missingAdapterDisplayName: "No es troba la propietat displayName per a la plataforma ",
+  missingBoardId: 'No es troba el id de la placa',
 };

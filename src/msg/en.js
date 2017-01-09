@@ -102,4 +102,5 @@ var MSG = {
   missingAdapterPlatform: "Missing info for platform ",
   missingAdapterPath: "Missing path property for platform ",
   missingAdapterDisplayName: "Missing displayName property for platform ",
+  missingBoardId: 'Missing id property',
 };

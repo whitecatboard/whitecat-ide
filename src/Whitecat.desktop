@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Version=0.1
+Terminal=false
+Icon=whitecat.ico
+Exec=sh -c 'cd $(dirname %k) && ./Whitecat'
+Name=Whitecat
+Categories=Application;Development;

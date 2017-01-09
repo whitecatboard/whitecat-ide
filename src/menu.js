@@ -1,7 +1,7 @@
 /*
  * Whitecat Ecosystem Blockly Based Web IDE
  *
- * IDE settings manamgement functions
+ * IDE menu structure
  *
  * Copyright (C) 2015 - 2016
  * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
@@ -29,38 +29,43 @@
  * this software.
  */
 
-var Settings = {};
+var mainMenu = new nw.Menu({type:"menubar"});
 
-Settings.load = function(appSettings) {
-    var fs = require("fs");
-    var path = require('path');
-  
-    var file = 'settings.json';
-    var filePath = path.join(process.cwd(), file);  
-
-	try {
-		var data = fs.readFileSync(filePath, "utf8");
-	} catch (error) {
-		return;
-	}
-
-	try {
-		var settings = JSON.parse(data);
-		
-		if (settings.hasOwnProperty("language")) {
-			appSettings.language = settings.language;
-		}
-	} catch (error) {
-		Code.showError(MSG['error'], MSG['youHaveAnErrorInSettings'] + '<br><br>' + error);	
-	}
+if (window.navigator.platform == "MacIntel") {
+	mainMenu.createMacBuiltin("Whitecat");
 }
 
-Settings.save = function(appSettings) {
-    var fs = require('fs');
-    var path = require('path');
-  
-    var file = 'settings.json';
-    var filePath = path.join(process.cwd(), file);  
-    
-    fs.writeFileSync(filePath, JSON.stringify(appSettings));
-}
+var settingsMenu = new nw.Menu();
+var adaptersMenu = new nw.Menu();
+//var boardsMenu = new nw.Menu();
+
+var menuItem = new nw.MenuItem({ 
+	label: "List serial port adapters ...",
+	click: function() {
+		var gui = require('nw.gui');
+	    var win = gui.Window.open ('serialPortList.html', {position: 'center', width: 800, height: 600});
+	}
+});
+
+adaptersMenu.append(menuItem);	
+
+menuItem = new nw.MenuItem({ type: 'separator' });
+
+adaptersMenu.append(menuItem);	
+
+mainMenu.append(new nw.MenuItem({
+  label: 'Settings',
+  submenu: settingsMenu
+}));
+
+settingsMenu.append(new nw.MenuItem({
+  label: 'Adapters',
+  submenu: adaptersMenu
+}));
+
+//settingsMenu.append(new nw.MenuItem({
+//  label: 'Boards',
+//  submenu: boardsMenu
+//}));
+
+nw.Window.get().menu = mainMenu;

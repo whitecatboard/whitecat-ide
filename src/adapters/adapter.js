@@ -32,13 +32,53 @@
 var Adapters = {};
 
 Adapters.list = [];
+Adapters.editArgs = {};
+
+Adapters.check = function(file, adapter) {
+	if (!adapter.hasOwnProperty("id")) {
+		Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + file + ':<br><br>' + MSG["missingAdapterId"]);
+		return false;	
+	}
+	
+	var platform;
+	for(platform=0;platform < Code.platforms.length;platform++) {
+		// Check for adapter info
+		if (!adapter.hasOwnProperty(Code.platforms[platform])) {
+			Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + file + ':<br><br>' + MSG["missingAdapterPlatform"] +
+			Code.platforms[platform]);
+			return false;
+		}
+		
+		if (!adapter[Code.platforms[platform]].hasOwnProperty("path")) {
+			Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + file + ':<br><br>' + MSG["missingAdapterPath"]+
+			Code.platforms[platform]);
+			return false;
+		}
+
+		if (!adapter[Code.platforms[platform]].hasOwnProperty("displayName")) {
+			Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + file + ':<br><br>' + MSG["missingAdapterDisplayName"]+
+			Code.platforms[platform]);
+			return false;
+		}		
+					
+		// Add adapter, for our platform
+		if (window.navigator.platform == Code.platforms[platform]) {	
+			Adapters.list.push({
+				"path": new RegExp(adapter[Code.platforms[platform]].path),
+				"displayName": new RegExp(adapter[Code.platforms[platform]].displayName),
+			});
+		}
+	}	
+	
+	return true;
+}
 
 Adapters.load = function() {
     var fs = require('fs');
     var path = require('path');
 	var i;
-  
-    var dirPath = path.join(process.cwd(), "/adapters/defs");  
+
+	var dirPath = path.join(process.cwd(), "/adapters/defs");  
 	var dirs = fs.readdirSync(dirPath);
 	for(i=0;i<dirs.length;i++) {
 		if (dirs[i].match(/^.*\.json$/)) {
@@ -50,39 +90,23 @@ Adapters.load = function() {
 			
 			try {
 				var adapter = JSON.parse(data);
-				if (!adapter.hasOwnProperty("id")) {
-					Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + dirs[i] + ':<br><br>' + MSG["missingAdapterId"]);
-					return;	
-				}
 				
-				var platform;
-				for(platform=0;platform < Code.platforms.length;platform++) {
-					// Check for adapter info
-					if (!adapter.hasOwnProperty(Code.platforms[platform])) {
-						Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + dirs[i] + ':<br><br>' + MSG["missingAdapterPlatform"] +
-						Code.platforms[platform]);
-						return;
-					}
+				if (Adapters.check(dirs[i], adapter)) {
+					var menuItem = new nw.MenuItem({ 
+						label: adapter.id + " (" + dirs[i] + ")",
+						click: function() {
+							Adapters.editArgs = {"file": this.data.file, "path": this.data.path, "type": this.data.type};
+							var gui = require('nw.gui');
+						    var win = gui.Window.open ('editSettings.html', {position: 'center', width: 800, height: 600});
+						}
+					});
+				
+					menuItem.data = {};
+					menuItem.data.file = dirs[i];
+					menuItem.data.path = dirPath;
+					menuItem.data.type = "adapter";
 					
-					if (!adapter[Code.platforms[platform]].hasOwnProperty("path")) {
-						Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + dirs[i] + ':<br><br>' + MSG["missingAdapterPath"]+
-						Code.platforms[platform]);
-						return;
-					}
-
-					if (!adapter[Code.platforms[platform]].hasOwnProperty("displayName")) {
-						Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + dirs[i] + ':<br><br>' + MSG["missingAdapterDisplayName"]+
-						Code.platforms[platform]);
-						return;
-					}		
-								
-					// Add adapter, for our platform
-					if (window.navigator.platform == Code.platforms[platform]) {	
-						Adapters.list.push({
-							"path": new RegExp(adapter[Code.platforms[platform]].path),
-							"displayName": new RegExp(adapter[Code.platforms[platform]].displayName),
-						});
-					}
+					adaptersMenu.append(menuItem);					
 				}
 			} catch (error) {
 				Code.showError(MSG['error'], MSG['youHaveAnErrorInFile'] + dirs[i] + ':<br><br>' + error);	

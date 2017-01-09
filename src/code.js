@@ -2063,34 +2063,6 @@ Code.switchToBlocks = function() {
 	}
 }
 
-Code.loadBoard = function(files, callback) {
-	var file;
-	
-	if (files.length > 0) {
-		file = files.pop();
-	} else {
-		callback();
-		return;
-	}
-
-	if (file.match(/^.*\.js$/)) {
-		jQuery.getScript("boards/defs/" + file, function() {
-			Code.loadBoard(files, callback);
-		});		
-	} else {
-		Code.loadBoard(files, callback);		
-	}
-}
-
-Code.loadBoards = function(callback) {
-    var fs = require('fs');
-    var path = require('path');
-  
-    var dirPath = path.join(process.cwd(), "/boards/defs");  
-	var dirs = fs.readdirSync(dirPath);
-	Code.loadBoard(dirs, callback);
-}
-
 window.addEventListener('load', function() {
 	// Clear cache
 	var gui = window.require('nw.gui');
@@ -2101,9 +2073,7 @@ window.addEventListener('load', function() {
   		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
 			Settings.load(Code.settings);
 			Adapters.load();
-			Code.loadBoards(function() {
-					Code.init();
-			});
+			Code.init();
   		});
   	});
 });
