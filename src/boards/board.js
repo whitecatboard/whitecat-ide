@@ -41,8 +41,8 @@ Board.detectInterval = null;
  * Global flags
  *
  */
-Board.inDetect = false;       // We are in a board detect loop?
-Board.inRecover = false;	  // We are in a board recover?
+Board.inDetect = false;           // We are in a board detect loop?
+Board.inRecover = false;	      // We are in a board recover?
 
 /*
  *
@@ -69,10 +69,41 @@ Board.status.modules = {
 	"mqtt": true
 };
 
+Board.sequenceIndex = -1;
+Board.resetSequence = [];
+Board.resetSequence.push([{"dtr": false, "rts": true}, {"dtr": false, "rts": false}]);
+
 // Error constants
 Board.ERR_TIMEOUT = -1;
 Board.ERR_INVALID_RESPONSE = -2;
 Board.ERR_CONNECTION_ERROR = -4;
+
+Board.doReset = function(port, idx, sequence, callback) {
+	var currentPhase;
+	
+	if (idx < sequence.length) {
+		currentPhase = sequence[idx];
+	} else {
+		callback(sequence);
+		return;
+	}
+
+	chrome.serial.setControlSignals(port.connId, { dtr: currentPhase.dtr, rts: currentPhase.rts }, function() {
+   	 	var start = Date.now(),
+        now = start;
+    	while (now - start < 30) {
+      		now = Date.now();
+    	}
+		
+		idx++;
+		Board.doReset(port, idx, sequence, callback);
+	});
+}
+
+Board.reset = function(port, callback) {
+	Board.sequenceIndex = ((Board.sequenceIndex + 1) % Board.resetSequence.length);
+	Board.doReset(port, 0, Board.resetSequence[Board.sequenceIndex], callback);		
+}
 
 Board.updateMaps = function() {
 	var board = "";
@@ -566,19 +597,17 @@ Board.fileExists = function(port, name, callback) {
 Board.stop = function(port, success, error) {
 	Term.disconnect();
 	
-	chrome.serial.setControlSignals(port.connId, { dtr: true, rts: true }, function() {
-		chrome.serial.setControlSignals(port.connId, { dtr: false, rts: false }, function() {
-			Board.init(Board.BOOTING_STATE);
+	Board.reset(port, function(sequence) {
+		Board.init(Board.BOOTING_STATE);
 
-			success();
+		success();
 
-			// Wait for the connected state
-			var currentInterval = setInterval(function() {
-				if (port.state == Board.CONNECTED_STATE) {
-					clearInterval(currentInterval);
-				}
-			}, 100);
-		});
+		// Wait for the connected state
+		var currentInterval = setInterval(function() {
+			if (port.state == Board.CONNECTED_STATE) {
+				clearInterval(currentInterval);
+			}
+		}, 100);		
 	});
 };
 
@@ -779,7 +808,6 @@ Board.detect = function() {
 		}
 		
 		if (port.state == Board.BOOTLOADER_STATE) {
-			debug("BOOTLOADER_STATE");
 			stk500.detect(port, function(detected) {
 				if (detected) {
 					port.state = Board.BAD_STATE;
@@ -791,28 +819,22 @@ Board.detect = function() {
 				Board.inDetect = false;
 			});	
 		} else if (port.state == Board.BOOTING_STATE) {
-			debug("BOOTING_STATE");
-			chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: true, rts: true }, function() {
-				chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: false, rts: false }, function() {
-					Board.isBooting(port,
-						function(booting) {
-							port.state = Board.RUNNING_STATE;
+			Board.reset(port, function(sequence) {
+				Board.isBooting(port,
+					function(booting) {
+						port.state = Board.RUNNING_STATE;
+						Board.inDetect = false;
+					},
+					function(err) {
+						// Time out
+						Board.reset(port, function(sequence) {
+							port.state = Board.BOOTLOADER_STATE
 							Board.inDetect = false;
-						},
-						function(err) {
-							// Time out
-							chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: true, rts: true }, function() {
-								chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: false, rts: false }, function() {
-									port.state = Board.BOOTLOADER_STATE
-									Board.inDetect = false;
-								});
-							});					
-						}
-					);
-				});
-			});					
+						});
+					}
+				);
+			});			
 		} else if (port.state == Board.RUNNING_STATE) {
-			debug("RUNNING_STATE");
 			Board.isRunning(port,
 				function(running) {
 					if (running) {
@@ -837,11 +859,9 @@ Board.detect = function() {
 				},
 				function(err) {
 					// Timeout
-					chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: true, rts: true }, function() {
-						chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: false, rts: false }, function() {
-							port.state = Board.BOOTLOADER_STATE
-							Board.inDetect = false;
-						});
+					Board.reset(port, function(sequence) {
+						port.state = Board.BOOTLOADER_STATE
+						Board.inDetect = false;
 					});					
 				}
 			);
@@ -913,15 +933,18 @@ Board.detect = function() {
 				if (Board.ports[0].forTest) {
 					if (Board.ports[0].connId == null) {
 						chrome.serial.connect(Board.ports[0].path, {bitrate: 115200, bufferSize: 4096}, function(connectionInfo) {
-							debug("Connected to " + Board.ports[0].path);
-
 							if (Board.inRecover) {
 								Board.ports[0].state = 6;
 							}
 							
 							// Store connection id and name of port
 							Board.ports[0].connId = connectionInfo.connectionId;
-							testPort(Board.ports[0]);
+							
+							// Init control signals
+							chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: false, rts: true }, function() {
+								// Test port
+								testPort(Board.ports[0]);
+							});							
 						});
 					} else {
 						testPort(Board.ports[0]);
