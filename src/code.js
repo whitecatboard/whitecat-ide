@@ -876,6 +876,7 @@ Code.init = function() {
             wheel: true}
       });
 
+  Code.workspace.blocks.wcInit();
 //  Code.workspace.updateToolbox(toolbox);
 	  
   // Add to reserved word list: Local variables in execution environment (runJS)
