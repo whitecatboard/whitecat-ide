@@ -106,4 +106,8 @@ var MSG = {
   missingAdapterPath: "Missing path property for platform ",
   missingAdapterDisplayName: "Missing displayName property for platform ",
   missingBoardId: 'Missing id property',
+  catOperators: "Operators",
+  catOperatorsNumeric: "Numbers",
+  catOperatorsLogic: "Logic",
+  catOperatorsText: "Text",
 };

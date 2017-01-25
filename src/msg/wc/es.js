@@ -97,4 +97,8 @@ var MSG = {
   missingAdapterDisplayName: "No se encuentra la propiedad displayName para la plataforma ",
   missingBoardId: 'No se encuentra el id de la placa',
   catSensor: "Sensores",
+  catOperators: "Operadores",
+  catOperatorsNumeric: "Númericos",
+  catOperatorsLogic: "Lógicos",
+  catOperatorsText: "Texto",
 };

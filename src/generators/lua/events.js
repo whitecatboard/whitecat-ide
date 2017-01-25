@@ -1,5 +1,5 @@
 /*
- * Whitecat Blocky Environment, control block code generation
+ * Whitecat Blocky Environment, events block code generation
  *
  * Copyright (C) 2015 - 2016
  * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
@@ -28,33 +28,31 @@
  */
 'use strict';
 
-goog.provide('Blockly.Lua.control');
+goog.provide('Blockly.Lua.events');
 
 goog.require('Blockly.Lua');
 
-Blockly.Lua['wait_for'] = function(block) {
-	var time = block.getFieldValue('time');
-	var units = block.getFieldValue('units');
-	
-	var code = '';
-	
-	switch (units) {
-		case 'microseconds':
-			code += "tmr.delayus(" + time + ")\r\n";break;
-		case 'milliseconds':
-			code += "tmr.delayms(" + time + ")\r\n";break;
-		case 'seconds':	
-			code += "tmr.delay(" + time  + ")\r\n";break;
+Blockly.Lua['execute_on'] = function(block) {
+    var code = '';
+	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
+	var when = block.getFieldValue('WHEN');
+
+	// When board starts
+	if (when == 1) {
+		doStatement = 'thread.start(function()\n' + doStatement + 'end)\n';
 	}
 	
-	return code;
-};
+	// When a lora frame is received
+	if (when == 2) {
+		code = "lora.whenReceived(function(_port, _payload)\n";
+	}
+		
+	code += doStatement;
 
-Blockly.Lua['cpu_sleep'] = function(block) {
-	var time = Blockly.Lua.valueToCode(block, 'SECONDS', Blockly.Lua.ORDER_NONE);
-	
-	var code = '';
-
-	code = 'os.sleep(' + time + ')';	
+	// When a lora frame is received
+	if (when == 2) {
+		code += "end)\n";
+	}
+		
 	return code;
-};
+}

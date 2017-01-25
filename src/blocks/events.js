@@ -1,5 +1,5 @@
 /*
- * Whitecat Blocky Environment, control block code generation
+ * Whitecat Blocky Environment, events block definition
  *
  * Copyright (C) 2015 - 2016
  * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
@@ -28,33 +28,29 @@
  */
 'use strict';
 
-goog.provide('Blockly.Lua.control');
+goog.provide('Blockly.Blocks.events');
 
-goog.require('Blockly.Lua');
+goog.require('Blockly.Blocks');
 
-Blockly.Lua['wait_for'] = function(block) {
-	var time = block.getFieldValue('time');
-	var units = block.getFieldValue('units');
-	
-	var code = '';
-	
-	switch (units) {
-		case 'microseconds':
-			code += "tmr.delayus(" + time + ")\r\n";break;
-		case 'milliseconds':
-			code += "tmr.delayms(" + time + ")\r\n";break;
-		case 'seconds':	
-			code += "tmr.delay(" + time  + ")\r\n";break;
-	}
-	
-	return code;
-};
+/**
+ * Common HSV hue for all blocks in this category.
+ */
+Blockly.Blocks.events.HUE = 290;
+  
+Blockly.Blocks['execute_on'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField(Blockly.Msg.EXECUTE_ON_EVERY)
+	  .appendField(new Blockly.FieldDropdown([[Blockly.Msg.ON_EVERY_BOARD_REBOOT, "1"], [Blockly.Msg.ON_EVERY_RECEIVED_LORA_FRAME, "2"]]), "WHEN");
 
-Blockly.Lua['cpu_sleep'] = function(block) {
-	var time = Blockly.Lua.valueToCode(block, 'SECONDS', Blockly.Lua.ORDER_NONE);
-	
-	var code = '';
 
-	code = 'os.sleep(' + time + ')';	
-	return code;
+    this.appendStatementInput('DO')
+      .appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+	  
+	 this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setColour(Blockly.Blocks.events.HUE);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
 };
