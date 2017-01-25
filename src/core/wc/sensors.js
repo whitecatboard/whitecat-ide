@@ -1,26 +1,30 @@
-/**
- * @license
- * Visual Blocks Editor
+/*
+ * Whitecat Blocky Environment, sensors flyout category management
  *
- * Copyright 2012 Google Inc.
- * https://developers.google.com/blockly/
+ * Copyright (C) 2015 - 2016
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * 
+ * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
+ * 
+ * All rights reserved.  
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission to use, copy, modify, and distribute this software
+ * and its documentation for any purpose and without fee is hereby
+ * granted, provided that the above copyright notice appear in all
+ * copies and that both that the copyright notice and this
+ * permission notice and warranty disclaimer appear in supporting
+ * documentation, and that the name of the author not be used in
+ * advertising or publicity pertaining to distribution of the
+ * software without specific, written prior permission.
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
- * @fileoverview Utility functions for handling sensors.
- * @author fraser@google.com (Neil Fraser)
+ * The author disclaim all warranties with regard to this
+ * software, including all implied warranties of merchantability
+ * and fitness.  In no event shall the author be liable for any
+ * special, indirect or consequential damages or any damages
+ * whatsoever resulting from loss of use, data or profits, whether
+ * in an action of contract, negligence or other tortious action,
+ * arising out of or in connection with the use or performance of
+ * this software.
  */
 'use strict';
 
@@ -31,20 +35,12 @@ goog.require('Blockly.Workspace');
 goog.require('goog.string');
 
 
-/**
- * Category to separate sensor names from procedures and generated functions.
- */
 Blockly.Sensors.NAME_TYPE = 'SENSOR';
 
-/**
- * Construct the blocks required by the flyout for the sensor category.
- * @param {!Blockly.Workspace} workspace The workspace contianing sensors.
- * @return {!Array.<!Element>} Array of XML block elements.
- */
 Blockly.Sensors.flyoutCategory = function(workspace) {	
+  var xmlList = [];
   var sensors = workspace.sensors;
 
-  var xmlList = [];
   var button = goog.dom.createDom('button');
   button.setAttribute('text', Blockly.Msg.NEW_SENSOR);
   button.setAttribute('callbackKey', 'CREATE_SENSOR');
@@ -57,51 +53,62 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
   
   sensors.names.forEach(function(name, index) {
       if (Blockly.Blocks['sensor_acquire']) {
+	      var mutation = goog.dom.createDom('mutation', '');
+	      mutation.setAttribute('interface', sensors.setup[index].interface);
+	      mutation.setAttribute('pin', sensors.setup[index].pin);
+	      mutation.setAttribute('sid', sensors.setup[index].id);
+	      mutation.setAttribute('name', name);
+
 	      var block = goog.dom.createDom('block');
 	      block.setAttribute('type', 'sensor_acquire');
 		  
-	      var field = goog.dom.createDom('field', null, name);
+	      var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_ACQUIRE.replace("%1",name).replace("%2",sensors.setup[index].id));
 	      field.setAttribute('name', 'NAME');
 	      block.appendChild(field);	
-		  		  	  
-	      var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_ACQUIRE.replace("%1",workspace.sensors.setup[index].id));
-	      field.setAttribute('name', 'ID');
-	      block.appendChild(field);	
-
+		  
+	      block.appendChild(mutation);	
+		  		  	
 	      xmlList.push(block);
 	  }
 	  
       if (Blockly.Blocks['sensor_read']) {
+	      var mutation = goog.dom.createDom('mutation', '');
+	      mutation.setAttribute('interface', sensors.setup[index].interface);
+	      mutation.setAttribute('pin', sensors.setup[index].pin);
+	      mutation.setAttribute('sid', sensors.setup[index].id);
+	      mutation.setAttribute('name', name);
+
 	      var block = goog.dom.createDom('block');
 	      block.setAttribute('type', 'sensor_read');
 
-	      var field = goog.dom.createDom('field', null, name);
+	      var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_READ2.replace("%1",name).replace("%2",sensors.setup[index].id));
 	      field.setAttribute('name', 'NAME');
 	      block.appendChild(field);
-
-	      var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_READ2.replace("%1",workspace.sensors.setup[index].id));
-	      field.setAttribute('name', 'ID');
-	      block.appendChild(field);	
 
 	      var field = goog.dom.createDom('field', null, workspace.sensors.provides[index][0].id);
 	      field.setAttribute('name', 'PROVIDES');
 	      block.appendChild(field);	
 
 	      block.appendChild(field);
+
+	      block.appendChild(mutation);	
+
 	      xmlList.push(block);
 	  }
 
       if (Blockly.Blocks['sensor_set'] && (workspace.sensors.settings[index].length > 0)) {
+	      var mutation = goog.dom.createDom('mutation', '');
+	      mutation.setAttribute('interface', sensors.setup[index].interface);
+	      mutation.setAttribute('pin', sensors.setup[index].pin);
+	      mutation.setAttribute('sid', sensors.setup[index].id);
+	      mutation.setAttribute('name', name);
+
 	      var block = goog.dom.createDom('block');
 	      block.setAttribute('type', 'sensor_set');
 
-	      var field = goog.dom.createDom('field', null, name);
+	      var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_SET3.replace("%1",name).replace("%2",sensors.setup[index].id));
 	      field.setAttribute('name', 'NAME');
 	      block.appendChild(field);
-
-	      var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_SET3.replace("%1",workspace.sensors.setup[index].id));
-	      field.setAttribute('name', 'ID');
-	      block.appendChild(field);	
 
 	      var field = goog.dom.createDom('field', null, workspace.sensors.settings[index][0].id);
 	      field.setAttribute('name', 'SETTINGS');
@@ -118,6 +125,9 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 	      block.appendChild(value);	
 
 	      block.appendChild(field);
+
+	      block.appendChild(mutation);	
+
 	      xmlList.push(block);
 	  }
   })
@@ -146,15 +156,6 @@ Blockly.Sensors.sensorChanged = function() {
 		form.find("#"+interf+"_sensor").show();		
 	}
 };
-
-/**
- * Create a new sensor on the given workspace.
- * @param {!Blockly.Workspace} workspace The workspace on which to create the
- *     sensor.
- * @param {function(null|undefined|string)=} opt_callback A callback. It will
- *     return an acceptable new sensor name, or null if change is to be
- *     aborted (cancel button), or undefined if an existing sensor was chosen.
- */
 
 Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin) {
   var setup = {};

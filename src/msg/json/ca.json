@@ -421,12 +421,12 @@
 	"SENSOR_READ_HELPURL": "",
 	"SENSOR_READ_TOOLTIP": "Llegir dades del sensor.",
 	"SENSOR_READ1": "llegir ",
-	"SENSOR_READ2": " de %1",
+	"SENSOR_READ2": " de %1 - %2",
 	"SENSOR_DEFAULT_NAME": "sensor",
-	"SENSOR_ACQUIRE": "obtenir dades de %1",
+	"SENSOR_ACQUIRE": "obtenir dades de %1 - %2",
 	"SENSOR_SET_HELPURL": "",
 	"SENSOR_SET_TOOLTIP": "Estableix opcions de configuració per al sensor.",
 	"SENSOR_SET1": "estableix ",
 	"SENSOR_SET2": " amb valor ",
-	"SENSOR_SET3": " per a %1 "
+	"SENSOR_SET3": " per a %1 - %2"
 }

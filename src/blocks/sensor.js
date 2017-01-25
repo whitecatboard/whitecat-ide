@@ -39,23 +39,23 @@ Blockly.Blocks.sensor.HUE = 290;
 
 
 Blockly.Blocks['sensor_acquire'] = {
-  createSensorIfNeeded: function(instance) {
-  	// Get index for sensor
-  	var index = instance.workspace.sensorIndexOf(instance.name);
-	
-  	// Sensor must be created
-  	if (index == -1) {
-  	  instance.workspace.createSensor(
-  		  Blockly.Sensors.createSetupStructure(instance.sid, instance.name, instance.interface, instance.pin)
-  	  );
-	  
-  	  //Get index for sensor
-  	  index = instance.workspace.sensorIndexOf(instance.name);
-  	}
-	
-	return index;		
-  },
+  createSensorIfNeeded: function() {
+	// Get index for sensor
+	var index = this.workspace.sensorIndexOf(this.name);
 
+	// Sensor must be created
+	if (index == -1) {
+	  this.workspace.createSensor(
+		  Blockly.Sensors.createSetupStructure(this.sid, this.name, this.interface, this.pin)
+	  );
+  
+	  //Get index for sensor
+	  index = this.workspace.sensorIndexOf(this.name);
+	}
+	
+  	return index;		
+  },
+		
   /**
    * Mutator block for container.
    * @this Blockly.Block
@@ -64,48 +64,19 @@ Blockly.Blocks['sensor_acquire'] = {
       this.setHelpUrl(Blockly.Msg.SENSOR_ACQUIRE_HELPURL);
       this.setColour(Blockly.Blocks.sensor.HUE);
       this.appendDummyInput()
-          .appendField("","ID")
-	      .appendField(new Blockly.FieldSensor(Blockly.Msg.SENSOR_DEFAULT_NAME), "NAME");
+		  .appendField("", "NAME");
 	  this.setPreviousStatement(true, null);
 	  this.setNextStatement(true, null);
 	  this.setTooltip(Blockly.Msg.SENSOR_ACQUIRE_TOOLTIP);
    },
    mutationToDom: function() {
      var container = document.createElement('mutation');
-	 var sensor = this.getFieldValue("NAME");
-	 var index = Blockly.getMainWorkspace().sensorIndexOf(sensor);
-	 var interf;
-	 var pin;
-	 var sid;
-	 
-	 if (typeof this.interface == "undefined") {	 	
-		 interf = Blockly.getMainWorkspace().sensors.setup[index].interface;
-	 } else {
-		 interf = this.interface;
-	 }
-	 
-	 if (typeof this.pin == "undefined") {	 	
-		 pin = Blockly.getMainWorkspace().sensors.setup[index].pin;
-	 } else {
-		 pin = this.pin;
-	 }
 
-	 if (typeof this.sid == "undefined") {	 	
-		 sid = Blockly.getMainWorkspace().sensors.setup[index].id;
-	 } else {
-		 sid = this.sid;
-	 }
-
-     container.setAttribute('interface', interf);
-     container.setAttribute('pin', pin);
-     container.setAttribute("sid", sid);
-     container.setAttribute("name", sensor);
+     container.setAttribute('interface', this.interface);
+     container.setAttribute('pin', this.pin);
+     container.setAttribute("sid", this.sid);
+     container.setAttribute("name", this.name);
 	 
-	 this.interface = interf;
-	 this.pin = pin;
-	 this.sid = sid;
-	 this.name = sensor;
-	 	 
      return container;
    },
    domToMutation: function(xmlElement) {
@@ -113,15 +84,21 @@ Blockly.Blocks['sensor_acquire'] = {
      this.pin = xmlElement.getAttribute('pin');
      this.sid = xmlElement.getAttribute("sid");
      this.name = xmlElement.getAttribute("name");
-   	 Blockly.Blocks['sensor_acquire'].createSensorIfNeeded(this);	
+	 
 	 this.updateShape_();
    },
    updateShape_: function() {	 
-	 this.getField("ID").setText(Blockly.Msg.SENSOR_ACQUIRE.replace("%1",this.sid));
+     if (typeof this.workspace.sensors == "undefined") return;
+
+     this.createSensorIfNeeded();
+
+	 this.getField("NAME").setText(Blockly.Msg.SENSOR_ACQUIRE.replace("%1",this.name).replace("%2",this.sid));
    }
 };
 
 Blockly.Blocks['sensor_read'] = {
+  createSensorIfNeeded: Blockly.Blocks['sensor_acquire'].createSensorIfNeeded,
+	
   /**
    * Mutator block for container.
    * @this Blockly.Block
@@ -133,14 +110,15 @@ Blockly.Blocks['sensor_read'] = {
       this.appendDummyInput()
 	      .appendField(Blockly.Msg.SENSOR_READ1)
 	      .appendField(new Blockly.FieldDropdown([['magnitude','']]),"PROVIDES")
-	      .appendField("","ID")
- 	      .appendField(new Blockly.FieldSensor(Blockly.Msg.SENSOR_DEFAULT_NAME), "NAME");
+	  	  .appendField(Blockly.Msg.SENSOR_READ2, "NAME");
       this.setOutput(true);
       this.setTooltip(Blockly.Msg.SENSOR_READ_TOOLTIP);
   },
   mutationToDom: Blockly.Blocks['sensor_acquire'].mutationToDom,
   domToMutation: Blockly.Blocks['sensor_acquire'].domToMutation,
   updateShape_: function() {
+	if (typeof this.workspace.sensors == "undefined") return;
+	  
 	var index = Blockly.getMainWorkspace().sensorIndexOf(this.name);	
 
 	// Build provides option list
@@ -149,12 +127,14 @@ Blockly.Blocks['sensor_read'] = {
 		provides.push([item.id, item.id]);
 	});
 
-    this.getField("ID").setText(Blockly.Msg.SENSOR_READ2.replace("%1",this.sid));
+    this.getField("NAME").setText(Blockly.Msg.SENSOR_READ2.replace("%1",this.name).replace("%2",this.sid));
 	this.getField("PROVIDES").menuGenerator_ = provides;
   }  
 };
 
 Blockly.Blocks['sensor_set'] = {
+  createSensorIfNeeded: Blockly.Blocks['sensor_acquire'].createSensorIfNeeded,
+
   /**
    * Mutator block for container.
    * @this Blockly.Block
@@ -171,8 +151,7 @@ Blockly.Blocks['sensor_set'] = {
 	  this.appendValueInput("VALUE");
 	  
       this.appendDummyInput()
-	      .appendField("","ID")
- 	      .appendField(new Blockly.FieldSensor(Blockly.Msg.SENSOR_DEFAULT_NAME), "NAME");
+		  .appendField("", "NAME");
 
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
@@ -182,6 +161,8 @@ Blockly.Blocks['sensor_set'] = {
   mutationToDom: Blockly.Blocks['sensor_acquire'].mutationToDom,
   domToMutation: Blockly.Blocks['sensor_acquire'].domToMutation,
   updateShape_: function() {
+  	if (typeof this.workspace.sensors == "undefined") return;
+
 	var index = Blockly.getMainWorkspace().sensorIndexOf(this.name);	
 
 	// Build settings option list
@@ -190,7 +171,7 @@ Blockly.Blocks['sensor_set'] = {
 		settings.push([item.id, item.id]);
 	});
 
-    this.getField("ID").setText(Blockly.Msg.SENSOR_SET3.replace("%1",this.sid));
+    this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1",this.name).replace("%2",this.sid));
 	this.getField("SETTINGS").menuGenerator_ = settings;
   }  
 };

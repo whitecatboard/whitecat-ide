@@ -491,12 +491,12 @@
 	"SENSOR_READ_HELPURL": "",
 	"SENSOR_READ_TOOLTIP": "Read data from sensor.",
 	"SENSOR_READ1": "read ",
-	"SENSOR_READ2": " from %1 ",
+	"SENSOR_READ2": " from %1 - %2",
 	"SENSOR_DEFAULT_NAME": "sensor",
-	"SENSOR_ACQUIRE": "acquire data from %1 ",
+	"SENSOR_ACQUIRE": "acquire data from %1 - %2",
 	"SENSOR_SET_HELPURL": "",
 	"SENSOR_SET_TOOLTIP": "Set configuration options for sensor.",
 	"SENSOR_SET1": "set ",
 	"SENSOR_SET2": " with value ",
-	"SENSOR_SET3": " for %1 "
+	"SENSOR_SET3": " for %1 - %2"
 }
