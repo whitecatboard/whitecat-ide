@@ -52,7 +52,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
   xmlList.push(button);
   
   sensors.names.forEach(function(name, index) {
-      if (Blockly.Blocks['sensor_acquire']) {
+      if (Blockly.Blocks['sensor_attach']) {
 	      var mutation = goog.dom.createDom('mutation', '');
 	      mutation.setAttribute('interface', sensors.setup[index].interface);
 	      mutation.setAttribute('pin', sensors.setup[index].pin);
@@ -60,7 +60,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 	      mutation.setAttribute('name', name);
 
 	      var block = goog.dom.createDom('block');
-	      block.setAttribute('type', 'sensor_acquire');
+	      block.setAttribute('type', 'sensor_attach');
 		  
 	      var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_ACQUIRE.replace("%1",name).replace("%2",sensors.setup[index].id));
 	      field.setAttribute('name', 'NAME');

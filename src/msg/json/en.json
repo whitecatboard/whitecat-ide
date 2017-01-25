@@ -498,5 +498,8 @@
 	"SENSOR_SET_TOOLTIP": "Set configuration options for sensor.",
 	"SENSOR_SET1": "set ",
 	"SENSOR_SET2": " with value ",
-	"SENSOR_SET3": " for %1 - %2"
+	"SENSOR_SET3": " for %1 - %2",
+	"SENSOR_ATTACH_HELPURL": "",
+	"SENSOR_ATTACH_TOOLTIP": "Attach sensor to its hardware interface.",
+	"SENSOR_ATTACH": "attach %1 - %2"
 }

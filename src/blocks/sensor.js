@@ -32,146 +32,142 @@ goog.provide('Blockly.Blocks.sensor');
 
 goog.require('Blockly.Blocks');
 
-/**
- * Common HSV hue for all blocks in this category.
- */
 Blockly.Blocks.sensor.HUE = 290;
 
+Blockly.Blocks['sensor_attach'] = {
+	createSensorIfNeeded: function() {
+		// Get index for sensor
+		var index = this.workspace.sensorIndexOf(this.name);
 
-Blockly.Blocks['sensor_acquire'] = {
-  createSensorIfNeeded: function() {
-	// Get index for sensor
-	var index = this.workspace.sensorIndexOf(this.name);
+		// Sensor must be created
+		if (index == -1) {
+			this.workspace.createSensor(
+				Blockly.Sensors.createSetupStructure(this.sid, this.name, this.interface, this.pin)
+			);
 
-	// Sensor must be created
-	if (index == -1) {
-	  this.workspace.createSensor(
-		  Blockly.Sensors.createSetupStructure(this.sid, this.name, this.interface, this.pin)
-	  );
-  
-	  //Get index for sensor
-	  index = this.workspace.sensorIndexOf(this.name);
+			//Get index for sensor
+			index = this.workspace.sensorIndexOf(this.name);
+		}
+
+		return index;
+	},
+
+	init: function() {
+		this.setHelpUrl(Blockly.Msg.SENSOR_SET_HELPURL);
+		this.setColour(Blockly.Blocks.sensor.HUE);
+
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.SENSOR_ATTACH, "NAME");
+
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+
+		this.setTooltip(Blockly.Msg.SENSOR_SET_TOOLTIP);
+	},
+	mutationToDom: function() {
+		var container = document.createElement('mutation');
+
+		container.setAttribute('interface', this.interface);
+		container.setAttribute('pin', this.pin);
+		container.setAttribute("sid", this.sid);
+		container.setAttribute("name", this.name);
+
+		return container;
+	},
+
+	domToMutation: function(xmlElement) {
+		this.interface = xmlElement.getAttribute('interface');
+		this.pin = xmlElement.getAttribute('pin');
+		this.sid = xmlElement.getAttribute("sid");
+		this.name = xmlElement.getAttribute("name");
+
+		this.updateShape_();
+	},
+
+	updateShape_: function() {
+		this.getField("NAME").setText(Blockly.Msg.SENSOR_ATTACH.replace("%1", this.name).replace("%2", this.sid));
 	}
-	
-  	return index;		
-  },
-		
-  /**
-   * Mutator block for container.
-   * @this Blockly.Block
-   */
-  init: function() {
-      this.setHelpUrl(Blockly.Msg.SENSOR_ACQUIRE_HELPURL);
-      this.setColour(Blockly.Blocks.sensor.HUE);
-      this.appendDummyInput()
-		  .appendField("", "NAME");
-	  this.setPreviousStatement(true, null);
-	  this.setNextStatement(true, null);
-	  this.setTooltip(Blockly.Msg.SENSOR_ACQUIRE_TOOLTIP);
-   },
-   mutationToDom: function() {
-     var container = document.createElement('mutation');
-
-     container.setAttribute('interface', this.interface);
-     container.setAttribute('pin', this.pin);
-     container.setAttribute("sid", this.sid);
-     container.setAttribute("name", this.name);
-	 
-     return container;
-   },
-   domToMutation: function(xmlElement) {
-     this.interface = xmlElement.getAttribute('interface');
-     this.pin = xmlElement.getAttribute('pin');
-     this.sid = xmlElement.getAttribute("sid");
-     this.name = xmlElement.getAttribute("name");
-	 
-	 this.updateShape_();
-   },
-   updateShape_: function() {	 
-     if (typeof this.workspace.sensors == "undefined") return;
-
-     this.createSensorIfNeeded();
-
-	 this.getField("NAME").setText(Blockly.Msg.SENSOR_ACQUIRE.replace("%1",this.name).replace("%2",this.sid));
-   }
 };
 
 Blockly.Blocks['sensor_read'] = {
-  createSensorIfNeeded: Blockly.Blocks['sensor_acquire'].createSensorIfNeeded,
-	
-  /**
-   * Mutator block for container.
-   * @this Blockly.Block
-   */
-  init: function() {
-      this.setHelpUrl(Blockly.Msg.SENSOR_READ_HELPURL);
-      this.setColour(Blockly.Blocks.sensor.HUE);
-	  
-      this.appendDummyInput()
-	      .appendField(Blockly.Msg.SENSOR_READ1)
-	      .appendField(new Blockly.FieldDropdown([['magnitude','']]),"PROVIDES")
-	  	  .appendField(Blockly.Msg.SENSOR_READ2, "NAME");
-      this.setOutput(true);
-      this.setTooltip(Blockly.Msg.SENSOR_READ_TOOLTIP);
-  },
-  mutationToDom: Blockly.Blocks['sensor_acquire'].mutationToDom,
-  domToMutation: Blockly.Blocks['sensor_acquire'].domToMutation,
-  updateShape_: function() {
-	if (typeof this.workspace.sensors == "undefined") return;
-	  
-	var index = Blockly.getMainWorkspace().sensorIndexOf(this.name);	
+	createSensorIfNeeded: Blockly.Blocks['sensor_attach'].createSensorIfNeeded,
 
-	// Build provides option list
-  	var provides = [];
-	this.workspace.sensors.provides[index].forEach(function(item, index) {
-		provides.push([item.id, item.id]);
-	});
+	init: function() {
+		this.setHelpUrl(Blockly.Msg.SENSOR_READ_HELPURL);
+		this.setColour(Blockly.Blocks.sensor.HUE);
 
-    this.getField("NAME").setText(Blockly.Msg.SENSOR_READ2.replace("%1",this.name).replace("%2",this.sid));
-	this.getField("PROVIDES").menuGenerator_ = provides;
-  }  
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.SENSOR_READ1)
+			.appendField(new Blockly.FieldDropdown([
+				['magnitude', '']
+			]), "PROVIDES")
+			.appendField(Blockly.Msg.SENSOR_READ2, "NAME");
+		this.setOutput(true);
+		this.setTooltip(Blockly.Msg.SENSOR_READ_TOOLTIP);
+	},
+
+	mutationToDom: Blockly.Blocks['sensor_attach'].mutationToDom,
+	domToMutation: Blockly.Blocks['sensor_attach'].domToMutation,
+
+	updateShape_: function() {
+		if (typeof this.workspace.sensors == "undefined") return;
+
+		var index = Blockly.getMainWorkspace().sensorIndexOf(this.name);
+
+		// Build provides option list
+		var provides = [];
+		this.workspace.sensors.provides[index].forEach(function(item, index) {
+			provides.push([item.id, item.id]);
+		});
+
+		this.getField("NAME").setText(Blockly.Msg.SENSOR_READ2.replace("%1", this.name).replace("%2", this.sid));
+		this.getField("PROVIDES").menuGenerator_ = provides;
+	}
 };
 
 Blockly.Blocks['sensor_set'] = {
-  createSensorIfNeeded: Blockly.Blocks['sensor_acquire'].createSensorIfNeeded,
+	createSensorIfNeeded: Blockly.Blocks['sensor_attach'].createSensorIfNeeded,
 
-  /**
-   * Mutator block for container.
-   * @this Blockly.Block
-   */
-  init: function() {
-      this.setHelpUrl(Blockly.Msg.SENSOR_SET_HELPURL);
-      this.setColour(Blockly.Blocks.sensor.HUE);
-	  
-      this.appendDummyInput()
-	      .appendField(Blockly.Msg.SENSOR_SET1)	  
-	      .appendField(new Blockly.FieldDropdown([['','']]),"SETTINGS")
-	      .appendField(Blockly.Msg.SENSOR_SET2);	  
-	  
-	  this.appendValueInput("VALUE");
-	  
-      this.appendDummyInput()
-		  .appendField("", "NAME");
+	/**
+	 * Mutator block for container.
+	 * @this Blockly.Block
+	 */
+	init: function() {
+		this.setHelpUrl(Blockly.Msg.SENSOR_SET_HELPURL);
+		this.setColour(Blockly.Blocks.sensor.HUE);
 
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.SENSOR_SET1)
+			.appendField(new Blockly.FieldDropdown([
+				['', '']
+			]), "SETTINGS")
+			.appendField(Blockly.Msg.SENSOR_SET2);
 
-      this.setTooltip(Blockly.Msg.SENSOR_SET_TOOLTIP);
-  },
-  mutationToDom: Blockly.Blocks['sensor_acquire'].mutationToDom,
-  domToMutation: Blockly.Blocks['sensor_acquire'].domToMutation,
-  updateShape_: function() {
-  	if (typeof this.workspace.sensors == "undefined") return;
+		this.appendValueInput("VALUE");
 
-	var index = Blockly.getMainWorkspace().sensorIndexOf(this.name);	
+		this.appendDummyInput()
+			.appendField("", "NAME");
 
-	// Build settings option list
-  	var settings = [];
-	this.workspace.sensors.settings[index].forEach(function(item, index) {
-		settings.push([item.id, item.id]);
-	});
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
 
-    this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1",this.name).replace("%2",this.sid));
-	this.getField("SETTINGS").menuGenerator_ = settings;
-  }  
+		this.setTooltip(Blockly.Msg.SENSOR_SET_TOOLTIP);
+	},
+	mutationToDom: Blockly.Blocks['sensor_attach'].mutationToDom,
+	domToMutation: Blockly.Blocks['sensor_attach'].domToMutation,
+
+	updateShape_: function() {
+		if (typeof this.workspace.sensors == "undefined") return;
+
+		var index = Blockly.getMainWorkspace().sensorIndexOf(this.name);
+
+		// Build settings option list
+		var settings = [];
+		this.workspace.sensors.settings[index].forEach(function(item, index) {
+			settings.push([item.id, item.id]);
+		});
+
+		this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1", this.name).replace("%2", this.sid));
+		this.getField("SETTINGS").menuGenerator_ = settings;
+	}
 };
