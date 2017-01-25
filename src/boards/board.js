@@ -34,6 +34,7 @@ Board.ports = [];
 Board.port = {};
 Board.runQueue = [];
 Board.types = [];
+Board.sensors = [];
 Board.detectInterval = null;
 
 /*
@@ -66,7 +67,8 @@ Board.status.modules = {
 	"tmr": true,
 	"uart": true,
 	"lora": true,
-	"mqtt": true
+	"mqtt": true,
+	"sensor": true,
 };
 
 Board.sequenceIndex = -1;
@@ -724,7 +726,7 @@ Board.getInfo = function(port, success, error) {
 				function(resp) {
 					Term.enable();
 					try {
-						resp = JSON.parse(resp);
+						resp = JSON.parse(resp.replace(/,\}/g,"}").replace(/,\]/g,"]"));
 				
 						Board.status.os = resp.os;
 						Board.status.version = resp.version;
@@ -732,6 +734,8 @@ Board.getInfo = function(port, success, error) {
 						Board.status.firmware = resp.os + "-" + resp.version.replace(" ","-") + "-" + resp.build;
 						Board.status.cpu = resp.cpu;
 						Board.status.modules = resp.modules;
+						Board.sensors = resp.sensors;
+
 						success();
 					} catch (err) {
 						error(Board.ERR_INVALID_RESPONSE);

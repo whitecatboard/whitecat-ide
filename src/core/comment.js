@@ -68,18 +68,18 @@ Blockly.Comment.prototype.height_ = 80;
  */
 Blockly.Comment.prototype.drawIcon_ = function(group) {
   // Circle.
-  Blockly.createSvgElement('circle',
+  Blockly.utils.createSvgElement('circle',
       {'class': 'blocklyIconShape', 'r': '8', 'cx': '8', 'cy': '8'},
        group);
   // Can't use a real '?' text character since different browsers and operating
   // systems render it differently.
   // Body of question mark.
-  Blockly.createSvgElement('path',
+  Blockly.utils.createSvgElement('path',
       {'class': 'blocklyIconSymbol',
        'd': 'm6.8,10h2c0.003,-0.617 0.271,-0.962 0.633,-1.266 2.875,-2.405 0.607,-5.534 -3.765,-3.874v1.7c3.12,-1.657 3.698,0.118 2.336,1.25 -1.201,0.998 -1.201,1.528 -1.204,2.19z'},
        group);
-  // Dot of question point.
-  Blockly.createSvgElement('rect',
+  // Dot of question mark.
+  Blockly.utils.createSvgElement('rect',
       {'class': 'blocklyIconSymbol',
        'x': '6.8', 'y': '10.78', 'height': '2', 'width': '2'},
        group);
@@ -100,30 +100,33 @@ Blockly.Comment.prototype.createEditor_ = function() {
       </body>
     </foreignObject>
   */
-  this.foreignObject_ = Blockly.createSvgElement('foreignObject',
+  this.foreignObject_ = Blockly.utils.createSvgElement('foreignObject',
       {'x': Blockly.Bubble.BORDER_WIDTH, 'y': Blockly.Bubble.BORDER_WIDTH},
       null);
   var body = document.createElementNS(Blockly.HTML_NS, 'body');
   body.setAttribute('xmlns', Blockly.HTML_NS);
   body.className = 'blocklyMinimalBody';
-  this.textarea_ = document.createElementNS(Blockly.HTML_NS, 'textarea');
-  this.textarea_.className = 'blocklyCommentTextarea';
-  this.textarea_.setAttribute('dir', this.block_.RTL ? 'RTL' : 'LTR');
-  body.appendChild(this.textarea_);
+  var textarea = document.createElementNS(Blockly.HTML_NS, 'textarea');
+  textarea.className = 'blocklyCommentTextarea';
+  textarea.setAttribute('dir', this.block_.RTL ? 'RTL' : 'LTR');
+  body.appendChild(textarea);
+  this.textarea_ = textarea;
   this.foreignObject_.appendChild(body);
-  Blockly.bindEvent_(this.textarea_, 'mouseup', this, this.textareaFocus_);
+  Blockly.bindEventWithChecks_(textarea, 'mouseup', this, this.textareaFocus_);
   // Don't zoom with mousewheel.
-  Blockly.bindEvent_(this.textarea_, 'wheel', this, function(e) {
+  Blockly.bindEventWithChecks_(textarea, 'wheel', this, function(e) {
     e.stopPropagation();
   });
-  Blockly.bindEvent_(this.textarea_, 'change', this, function(e) {
-    if (this.text_ != this.textarea_.value) {
+  Blockly.bindEventWithChecks_(textarea, 'change', this, function(e) {
+    if (this.text_ != textarea.value) {
       Blockly.Events.fire(new Blockly.Events.Change(
-        this.block_, 'comment', null, this.text_, this.textarea_.value));
-      this.text_ = this.textarea_.value;
+        this.block_, 'comment', null, this.text_, textarea.value));
+      this.text_ = textarea.value;
     }
   });
-
+  setTimeout(function() {
+    textarea.focus();
+  }, 0);
   return this.foreignObject_;
 };
 
@@ -147,12 +150,14 @@ Blockly.Comment.prototype.updateEditable = function() {
  * @private
  */
 Blockly.Comment.prototype.resizeBubble_ = function() {
-  var size = this.bubble_.getBubbleSize();
-  var doubleBorderWidth = 2 * Blockly.Bubble.BORDER_WIDTH;
-  this.foreignObject_.setAttribute('width', size.width - doubleBorderWidth);
-  this.foreignObject_.setAttribute('height', size.height - doubleBorderWidth);
-  this.textarea_.style.width = (size.width - doubleBorderWidth - 4) + 'px';
-  this.textarea_.style.height = (size.height - doubleBorderWidth - 4) + 'px';
+  if (this.isVisible()) {
+    var size = this.bubble_.getBubbleSize();
+    var doubleBorderWidth = 2 * Blockly.Bubble.BORDER_WIDTH;
+    this.foreignObject_.setAttribute('width', size.width - doubleBorderWidth);
+    this.foreignObject_.setAttribute('height', size.height - doubleBorderWidth);
+    this.textarea_.style.width = (size.width - doubleBorderWidth - 4) + 'px';
+    this.textarea_.style.height = (size.height - doubleBorderWidth - 4) + 'px';
+  }
 };
 
 /**
@@ -180,11 +185,10 @@ Blockly.Comment.prototype.setVisible = function(visible) {
   if (visible) {
     // Create the bubble.
     this.bubble_ = new Blockly.Bubble(
-        /** @type {!Blockly.Workspace} */ (this.block_.workspace),
+        /** @type {!Blockly.WorkspaceSvg} */ (this.block_.workspace),
         this.createEditor_(), this.block_.svgPath_,
-        this.iconX_, this.iconY_,
-        this.width_, this.height_);
-    this.bubble_.registerResizeEvent(this, this.resizeBubble_);
+        this.iconXY_, this.width_, this.height_);
+    this.bubble_.registerResizeEvent(this.resizeBubble_.bind(this));
     this.updateColour();
   } else {
     // Dispose of the bubble.

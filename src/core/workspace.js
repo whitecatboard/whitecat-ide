@@ -26,6 +26,7 @@
 
 goog.provide('Blockly.Workspace');
 
+goog.require('goog.array');
 goog.require('goog.math');
 
 
@@ -37,33 +38,67 @@ goog.require('goog.math');
  */
 Blockly.Workspace = function(opt_options) {
   /** @type {string} */
-  this.id = Blockly.genUid();
+  this.id = Blockly.utils.genUid();
   Blockly.Workspace.WorkspaceDB_[this.id] = this;
   /** @type {!Blockly.Options} */
   this.options = opt_options || {};
   /** @type {boolean} */
   this.RTL = !!this.options.RTL;
-  /** @type {!Array.<!Blockly.Block>} */
+  /** @type {boolean} */
+  this.horizontalLayout = !!this.options.horizontalLayout;
+  /** @type {number} */
+  this.toolboxPosition = this.options.toolboxPosition;
+
+  /**
+   * @type {!Array.<!Blockly.Block>}
+   * @private
+   */
   this.topBlocks_ = [];
-  /** @type {!Array.<!Function>} */
+  /**
+   * @type {!Array.<!Function>}
+   * @private
+   */
   this.listeners_ = [];
-  /** @type {!Array.<!Blockly.Events.Abstract>} */
+  /**
+   * @type {!Array.<!Blockly.Events.Abstract>}
+   * @private
+   */
   this.undoStack_ = [];
-  /** @type {!Array.<!Blockly.Events.Abstract>} */
+  /**
+   * @type {!Array.<!Blockly.Events.Abstract>}
+   * @private
+   */
   this.redoStack_ = [];
-  /** @type {!Object} */
+  /**
+   * @type {!Object}
+   * @private
+   */
   this.blockDB_ = Object.create(null);
+  /*
+   * @type {!Array.<string>}
+   * A list of all of the named variables in the workspace, including variables
+   * that are not currently in use.
+   */
+  this.variableList = [];
+  
+  // Whitecat
+  this.sensors = {
+	  "names":    [], // Array of sensor names in workspace
+	  "provides": [], // Array of provides structure for each sensor {id: xxxx, type: xxx}
+	  "settings": [], // Array of settings structure for each sensor {id: xxxx, type: xxx}
+	  "setup":    [], // Array of setup structure for each sensor {id: TMP36|DHT11|.., name: ..., interface: xxx, pin: xxx}
+  };
 };
 
 /**
- * Workspaces may be headless.
- * @type {boolean} True if visible.  False if headless.
+ * Returns `true` if the workspace is visible and `false` if it's headless.
+ * @type {boolean}
  */
 Blockly.Workspace.prototype.rendered = false;
 
 /**
- * Maximum number of undo events in stack.
- * @type {number} 0 to turn off undo, Infinity for unlimited.
+ * Maximum number of undo events in stack. `0` turns off undo, `Infinity` sets it to unlimited.
+ * @type {number}
  */
 Blockly.Workspace.prototype.MAX_UNDO = 1024;
 
@@ -92,6 +127,17 @@ Blockly.Workspace.SCAN_ANGLE = 3;
  */
 Blockly.Workspace.prototype.addTopBlock = function(block) {
   this.topBlocks_.push(block);
+  if (this.isFlyout) {
+    // This is for the (unlikely) case where you have a variable in a block in
+    // an always-open flyout.  It needs to be possible to edit the block in the
+    // flyout, so the contents of the dropdown need to be correct.
+    var variables = Blockly.Variables.allUsedVariables(block);
+    for (var i = 0; i < variables.length; i++) {
+      if (this.variableList.indexOf(variables[i]) == -1) {
+        this.variableList.push(variables[i]);
+      }
+    }
+  }
 };
 
 /**
@@ -99,15 +145,7 @@ Blockly.Workspace.prototype.addTopBlock = function(block) {
  * @param {!Blockly.Block} block Block to remove.
  */
 Blockly.Workspace.prototype.removeTopBlock = function(block) {
-  var found = false;
-  for (var child, i = 0; child = this.topBlocks_[i]; i++) {
-    if (child == block) {
-      this.topBlocks_.splice(i, 1);
-      found = true;
-      break;
-    }
-  }
-  if (!found) {
+  if (!goog.array.remove(this.topBlocks_, block)) {
     throw 'Block not present in workspace\'s list of top-most blocks.';
   }
 };
@@ -161,6 +199,173 @@ Blockly.Workspace.prototype.clear = function() {
   if (!existingGroup) {
     Blockly.Events.setGroup(false);
   }
+
+  this.variableList.length = 0;
+};
+
+/**
+ * Walk the workspace and update the list of variables to only contain ones in
+ * use on the workspace.  Use when loading new workspaces from disk.
+ * @param {boolean} clearList True if the old variable list should be cleared.
+ */
+Blockly.Workspace.prototype.updateVariableList = function(clearList) {
+  // TODO: Sort
+  if (!this.isFlyout) {
+    // Update the list in place so that the flyout's references stay correct.
+    if (clearList) {
+      this.variableList.length = 0;
+    }
+    var allVariables = Blockly.Variables.allUsedVariables(this);
+    for (var i = 0; i < allVariables.length; i++) {
+      this.createVariable(allVariables[i]);
+    }
+  }
+};
+
+/**
+ * Rename a variable by updating its name in the variable list.
+ * TODO: #468
+ * @param {string} oldName Variable to rename.
+ * @param {string} newName New variable name.
+ */
+Blockly.Workspace.prototype.renameVariable = function(oldName, newName) {
+  // Find the old name in the list.
+  var variableIndex = this.variableIndexOf(oldName);
+  var newVariableIndex = this.variableIndexOf(newName);
+
+  // We might be renaming to an existing name but with different case.  If so,
+  // we will also update all of the blocks using the new name to have the
+  // correct case.
+  if (newVariableIndex != -1 &&
+      this.variableList[newVariableIndex] != newName) {
+    var oldCase = this.variableList[newVariableIndex];
+  }
+
+  Blockly.Events.setGroup(true);
+  var blocks = this.getAllBlocks();
+  // Iterate through every block.
+  for (var i = 0; i < blocks.length; i++) {
+    blocks[i].renameVar(oldName, newName);
+    if (oldCase) {
+      blocks[i].renameVar(oldCase, newName);
+    }
+  }
+  Blockly.Events.setGroup(false);
+
+
+  if (variableIndex == newVariableIndex ||
+      variableIndex != -1 && newVariableIndex == -1) {
+    // Only changing case, or renaming to a completely novel name.
+    this.variableList[variableIndex] = newName;
+  } else if (variableIndex != -1 && newVariableIndex != -1) {
+    // Renaming one existing variable to another existing variable.
+    // The case might have changed, so we update the destination ID.
+    this.variableList[newVariableIndex] = newName;
+    this.variableList.splice(variableIndex, 1);
+  } else {
+    this.variableList.push(newName);
+    console.log('Tried to rename an non-existent variable.');
+  }
+};
+
+/**
+ * Create a variable with the given name.
+ * TODO: #468
+ * @param {string} name The new variable's name.
+ */
+Blockly.Workspace.prototype.createVariable = function(name) {
+  var index = this.variableIndexOf(name);
+  if (index == -1) {
+    this.variableList.push(name);
+  }
+};
+
+/**
+ * Find all the uses of a named variable.
+ * @param {string} name Name of variable.
+ * @return {!Array.<!Blockly.Block>} Array of block usages.
+ */
+Blockly.Workspace.prototype.getVariableUses = function(name) {
+  var uses = [];
+  var blocks = this.getAllBlocks();
+  // Iterate through every block and check the name.
+  for (var i = 0; i < blocks.length; i++) {
+    var blockVariables = blocks[i].getVars();
+    if (blockVariables) {
+      for (var j = 0; j < blockVariables.length; j++) {
+        var varName = blockVariables[j];
+        // Variable name may be null if the block is only half-built.
+        if (varName && Blockly.Names.equals(varName, name)) {
+          uses.push(blocks[i]);
+        }
+      }
+    }
+  }
+  return uses;
+};
+
+/**
+ * Delete a variables and all of its uses from this workspace.
+ * @param {string} name Name of variable to delete.
+ */
+Blockly.Workspace.prototype.deleteVariable = function(name) {
+  var variableIndex = this.variableIndexOf(name);
+  if (variableIndex == -1) {
+    return;
+  }
+  // Check whether this variable is a function parameter before deleting.
+  var uses = this.getVariableUses(name);
+  for (var i = 0, block; block = uses[i]; i++) {
+    if (block.type == 'procedures_defnoreturn' ||
+      block.type == 'procedures_defreturn') {
+      var procedureName = block.getFieldValue('NAME');
+      Blockly.alert(
+          Blockly.Msg.CANNOT_DELETE_VARIABLE_PROCEDURE.
+          replace('%1', name).
+          replace('%2', procedureName));
+      return;
+    }
+  }
+
+  var workspace = this;
+  function doDeletion() {
+    Blockly.Events.setGroup(true);
+    for (var i = 0; i < uses.length; i++) {
+      uses[i].dispose(true, false);
+    }
+    Blockly.Events.setGroup(false);
+    workspace.variableList.splice(variableIndex, 1);
+  }
+  if (uses.length > 1) {
+    // Confirm before deleting multiple blocks.
+    Blockly.confirm(
+        Blockly.Msg.DELETE_VARIABLE_CONFIRMATION.replace('%1', uses.length).
+        replace('%2', name),
+        function(ok) {
+          if (ok) {
+            doDeletion();
+          }
+        });
+  } else {
+    // No confirmation necessary for a single block.
+    doDeletion();
+  }
+};
+
+/**
+ * Check whether a variable exists with the given name.  The check is
+ * case-insensitive.
+ * @param {string} name The name to check for.
+ * @return {number} The index of the name in the variable list, or -1 if it is
+ *     not present.
+ */
+Blockly.Workspace.prototype.variableIndexOf = function(name) {
+  for (var i = 0, varname; varname = this.variableList[i]; i++) {
+    if (Blockly.Names.equals(varname, name)) {
+      return i;
+    }
+  }
+  return -1;
 };
 
 /**
@@ -177,28 +382,12 @@ Blockly.Workspace.prototype.getWidth = function() {
  * Obtain a newly created block.
  * @param {?string} prototypeName Name of the language object containing
  *     type-specific functions for this block.
- * @param {=string} opt_id Optional ID.  Use this ID if provided, otherwise
+ * @param {string=} opt_id Optional ID.  Use this ID if provided, otherwise
  *     create a new id.
  * @return {!Blockly.Block} The created block.
  */
 Blockly.Workspace.prototype.newBlock = function(prototypeName, opt_id) {
   return new Blockly.Block(this, prototypeName, opt_id);
-};
-
-/**
- * Finds the block with the specified ID in this workspace.
- * @param {string} id ID of block to find.
- * @return {Blockly.Block} The matching block, or null if not found.
- */
-Blockly.Workspace.prototype.getBlockById = function(id) {
-  // If this O(n) function fails to scale well, maintain a hash table of IDs.
-  var blocks = this.getAllBlocks();
-  for (var i = 0, block; block = blocks[i]; i++) {
-    if (block.id == id) {
-      return block;
-    }
-  }
-  return null;
 };
 
 /**
@@ -220,14 +409,14 @@ Blockly.Workspace.prototype.remainingCapacity = function() {
 Blockly.Workspace.prototype.undo = function(redo) {
   var inputStack = redo ? this.redoStack_ : this.undoStack_;
   var outputStack = redo ? this.undoStack_ : this.redoStack_;
-  var event = inputStack.pop();
-  if (!event) {
+  var inputEvent = inputStack.pop();
+  if (!inputEvent) {
     return;
   }
-  var events = [event];
+  var events = [inputEvent];
   // Do another undo/redo if the next one is of the same group.
-  while (inputStack.length && event.group &&
-      event.group == inputStack[inputStack.length - 1].group) {
+  while (inputStack.length && inputEvent.group &&
+      inputEvent.group == inputStack[inputStack.length - 1].group) {
     events.push(inputStack.pop());
   }
   // Push these popped events on the opposite stack.
@@ -268,10 +457,7 @@ Blockly.Workspace.prototype.addChangeListener = function(func) {
  * @param {Function} func Function to stop calling.
  */
 Blockly.Workspace.prototype.removeChangeListener = function(func) {
-  var i = this.listeners_.indexOf(func);
-  if (i != -1) {
-    this.listeners_.splice(i, 1);
-  }
+  goog.array.remove(this.listeners_, func);
 };
 
 /**
@@ -313,6 +499,45 @@ Blockly.Workspace.WorkspaceDB_ = Object.create(null);
  */
 Blockly.Workspace.getById = function(id) {
   return Blockly.Workspace.WorkspaceDB_[id] || null;
+};
+
+// Whitecat
+Blockly.Workspace.prototype.sensorIndexOf = function(name) {
+  for (var i = 0, sensorName; sensorName = this.sensors.names[i]; i++) {
+    if (Blockly.Names.equals(sensorName, name)) {
+      return i;
+    }
+  }
+  
+  return -1;
+};
+
+Blockly.Workspace.prototype.createSensor = function(setup) {
+  var thisInstance = this;
+	
+  // Get sensor name in workspace
+  var sname = setup.name;
+
+  // Get sensor index
+  var index = this.sensorIndexOf(sname);
+
+  // If sensor is not created, create it
+  if (index == -1) {
+	  // Push sensor name
+	  this.sensors.names.push(sname);
+	  
+	  // Get sensor index
+	  index = this.sensorIndexOf(sname);
+
+	  // Find sensor in board structures and copy setup, provides and settings
+	  Board.sensors.forEach(function(item, idx) {
+		  if (item.id == setup.id) {
+			  thisInstance.sensors.setup[index]    = setup;
+			  thisInstance.sensors.provides[index] = item.provides;
+			  thisInstance.sensors.settings[index] = item.settings;				  
+		  }
+	  });
+  }
 };
 
 // Export symbols that would otherwise be renamed by Closure compiler.

@@ -236,7 +236,7 @@ Blockly.Blocks['controls_if_if'] = {
 
 Blockly.Blocks['controls_if_elseif'] = {
   /**
-   * Mutator bolck for else-if condition.
+   * Mutator block for else-if condition.
    * @this Blockly.Block
    */
   init: function() {
@@ -265,27 +265,67 @@ Blockly.Blocks['controls_if_else'] = {
   }
 };
 
+Blockly.Blocks['controls_ifelse'] = {
+  /**
+   * If/else block that does not use a mutator.
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.jsonInit({
+      "message0": "%{BKY_CONTROLS_IF_MSG_IF} %1",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "IF0",
+          "check": "Boolean"
+        }
+      ],
+      "message1": "%{BKY_CONTROLS_IF_MSG_THEN} %1",
+      "args1": [
+        {
+          "type": "input_statement",
+          "name": "DO0"
+        }
+      ],
+      "message2": "%{BKY_CONTROLS_IF_MSG_ELSE} %1",
+      "args2": [
+        {
+          "type": "input_statement",
+          "name": "ELSE"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": Blockly.Blocks.logic.HUE,
+      "tooltip": Blockly.Msg.CONTROLS_IF_TOOLTIP_2,
+      "helpUrl": Blockly.Msg.CONTROLS_IF_HELPURL
+    });
+  }
+};
+
 Blockly.Blocks['logic_compare'] = {
   /**
    * Block for comparison operator.
    * @this Blockly.Block
    */
   init: function() {
-    var OPERATORS = this.RTL ? [
-          ['=', 'EQ'],
-          ['\u2260', 'NEQ'],
-          ['>', 'LT'],
-          ['\u2265', 'LTE'],
-          ['<', 'GT'],
-          ['\u2264', 'GTE']
-        ] : [
-          ['=', 'EQ'],
-          ['\u2260', 'NEQ'],
-          ['<', 'LT'],
-          ['\u2264', 'LTE'],
-          ['>', 'GT'],
-          ['\u2265', 'GTE']
-        ];
+    var rtlOperators = [
+      ['=', 'EQ'],
+      ['\u2260', 'NEQ'],
+      ['\u200F<\u200F', 'LT'],
+      ['\u200F\u2264\u200F', 'LTE'],
+      ['\u200F>\u200F', 'GT'],
+      ['\u200F\u2265\u200F', 'GTE']
+    ];
+    var ltrOperators = [
+      ['=', 'EQ'],
+      ['\u2260', 'NEQ'],
+      ['<', 'LT'],
+      ['\u2264', 'LTE'],
+      ['>', 'GT'],
+      ['\u2265', 'GTE']
+    ];
+    var OPERATORS = this.RTL ? rtlOperators : ltrOperators;
     this.setHelpUrl(Blockly.Msg.LOGIC_COMPARE_HELPURL);
     this.setColour(Blockly.Blocks.logic.HUE);
     this.setOutput(true, 'Boolean');

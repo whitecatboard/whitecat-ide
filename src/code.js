@@ -252,7 +252,7 @@ Code.tabClick = function(clickedName) {
   
   jQuery("#" + 'tab_' + clickedName).trigger('click');
   
-  Blockly.fireUiEvent(window, 'resize');
+  window.dispatchEvent(new Event('resize'));
 };
 
 /**
@@ -293,7 +293,7 @@ Code.renderContent = function() {
   	}	
   }
   
-  Blockly.fireUiEvent(window, 'resize');
+  window.dispatchEvent(new Event('resize')); 
 };
 
 Code.buildToolBox = function() {
@@ -345,6 +345,10 @@ Code.buildToolBox = function() {
   		</category>';
 	}
 	
+	xml += '</category>';
+
+	xml += '<category id="catSensor" custom="SENSOR" colour="20">';
+	xml +='<button function="expand(1)">Expand section</button>';
 	xml += '</category>';
 	
 	xml += '<category id="catComm" colour="20">';
@@ -806,6 +810,7 @@ Code.buildToolBox = function() {
 
   jQuery("#catIO").attr("colour",Blockly.Blocks.io.HUE);
   jQuery("#catControl").attr("colour",Blockly.Blocks.control.HUE);
+  jQuery("#catSensor").attr("colour",Blockly.Blocks.sensor.HUE);
   jQuery("#catComm").attr("colour",Blockly.Blocks.i2c.HUE);
 }
 
@@ -899,6 +904,7 @@ Code.init = function() {
           // Account for the 19 pixel margin and on each side.
     //}	
   };
+
   onresize();
   window.addEventListener('resize', onresize, false);
   
@@ -1033,6 +1039,8 @@ Code.initLanguage = function() {
   if (Board.status.modules.adc) categories.push('catIOAnalog');
   if (Board.status.modules.pwm) categories.push('catIOPwm');
 
+  categories.push('catSensor');
+  
   categories.push('catComm');
   
   if (Board.status.modules.i2c)  categories.push('catI2C');
@@ -1624,7 +1632,7 @@ Code.showAlert = function(text) {
 	});
 }
 
-Code.showError = function(title, err) {
+Code.showError = function(title, err, callback) {
 	BootstrapDialog.closeAll();
 	bootbox.hideAll();
 
@@ -1637,6 +1645,9 @@ Code.showError = function(title, err) {
 	   		      label: MSG['ok'],
 	   		      className: "btn-primary",
 	   		      callback: function() {
+					  if (typeof callback != undefined) {
+						  callback();
+					  }
 	   			  }
 	   		    }
 			},
@@ -1681,7 +1692,7 @@ Code.updateStatus = function() {
 		}
 	}
 	
-	Blockly.fireUiEvent(window, 'resize');
+	window.dispatchEvent(new Event('resize'));
 }
 
 Code.listBoardDirectory = function(container, extension, folderSelect, fileSelect, target) {
@@ -1748,7 +1759,7 @@ Code.listBoardDirectory = function(container, extension, folderSelect, fileSelec
 			html += '</ul>';
 
 			container.append(html);
-			Blockly.fireUiEvent(window, 'resize');
+		    window.dispatchEvent(new Event('resize'));  
 			
 			container.find('.dir-entry-d, .dir-entry-f').unbind().bind('click',function(e) {
 			  var target = jQuery(e.target);
@@ -2069,9 +2080,10 @@ window.addEventListener('load', function() {
 	
 	gui.App.clearCache();
 
-	jQuery.getScript('msg/' + Code.settings.language + '.js', function() {
+	Settings.load(Code.settings);
+	
+	jQuery.getScript('msg/wc/' + Code.settings.language + '.js', function() {
   		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
-			Settings.load(Code.settings);
 			Adapters.load();
 			Code.init();
   		});

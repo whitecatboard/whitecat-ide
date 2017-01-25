@@ -71,9 +71,11 @@ Blockly.Blocks['controls_repeat'] = {
       "message0": Blockly.Msg.CONTROLS_REPEAT_TITLE,
       "args0": [
         {
-          "type": "field_input",
+          "type": "field_number",
           "name": "TIMES",
-          "text": "10"
+          "value": 10,
+          "min": 0,
+          "precision": 1
         }
       ],
       "previousStatement": null,
@@ -84,8 +86,6 @@ Blockly.Blocks['controls_repeat'] = {
     });
     this.appendStatementInput('DO')
         .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
-    this.getField('TIMES').setValidator(
-        Blockly.FieldTextInput.nonnegativeIntegerValidator);
   }
 };
 
@@ -257,6 +257,9 @@ Blockly.Blocks['controls_flow_statements'] = {
    * @this Blockly.Block
    */
   onchange: function(e) {
+    if (!this.workspace.isDragging || this.workspace.isDragging()) {
+      return;  // Don't change state at the start of a drag.
+    }
     var legal = false;
     // Is the block nested in a loop?
     var block = this;
@@ -269,8 +272,14 @@ Blockly.Blocks['controls_flow_statements'] = {
     } while (block);
     if (legal) {
       this.setWarningText(null);
+      if (!this.isInFlyout) {
+        this.setDisabled(false);
+      }
     } else {
       this.setWarningText(Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING);
+      if (!this.isInFlyout && !this.getInheritedDisabled()) {
+        this.setDisabled(true);
+      }
     }
   },
   /**
