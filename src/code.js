@@ -1805,7 +1805,7 @@ Code.tabRefresh = function() {
 	}
 	
 	if (!Board.isConnected()) {
-		jQuery("#stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
+		jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
 	} else {
 		jQuery("#stopButton, #runButton, #rebootButton, #content_board").removeClass("disabled");
 	}
