@@ -1060,20 +1060,17 @@ Board.run = function(port, file, code, success, fail) {
 		
 	Term.disable();
 	
-	// Do a hardware reset
-	chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: true, rts: true }, function() {
-		chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: false, rts: false }, function() {
-			Board.init(Board.BOOTING_STATE);
-			
-			// Wait for the connected state
-			var currentInterval = setInterval(function() {
-				if (port.state == Board.CONNECTED_STATE) {
-					clearInterval(currentInterval);
-					Board.sendAndRun(port, file, code, success, fail);
-				}
-			}, 100);
-		});
-	});
+	Board.reset(port, function() {
+		Board.init(Board.BOOTING_STATE);
+		
+		// Wait for the connected state
+		var currentInterval = setInterval(function() {
+			if (port.state == Board.CONNECTED_STATE) {
+				clearInterval(currentInterval);
+				Board.sendAndRun(port, file, code, success, fail);
+			}
+		}, 100);		
+	});	
 };
 
 // List a directory from the whitecat, and return an array of entries
@@ -1121,12 +1118,10 @@ Board.upgradeFirmware = function(port, code, callback) {
 Board.reboot = function(port, callback) {
 	Term.disconnect();
 
-	chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: true, rts: true }, function() {
-		chrome.serial.setControlSignals(Board.ports[0].connId, { dtr: false, rts: false }, function() {
-			Board.init(Board.BOOTING_STATE);
-			callback();		
-		});
-	});					
+	Board.reset(port, function() {
+		Board.init(Board.BOOTING_STATE);
+		callback();				
+	});
 }
 
 // Get version of the firmware installed on the board
