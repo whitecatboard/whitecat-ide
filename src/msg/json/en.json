@@ -459,7 +459,7 @@
 	"LORA_SET_DEVADDR" : "set DevAddr to",
 	"LORA_SET_NWKSKEY" : "set NwksKey to",
 	"LORA_SET_APPSKEY" : "set setAppsKey to",
-	"LORA_SET_APPEUI" : "set AppEu to",
+	"LORA_SET_APPEUI" : "set AppEui to",
 	"LORA_SET_DEVEUI" : "set DevEui to",
 	"LORA_SET_APPKEY" : "set AppKey to",
 	"LORA_SET_RETX" : "set retransmissions to",
@@ -501,5 +501,13 @@
 	"SENSOR_SET3": " for %1 - %2",
 	"SENSOR_ATTACH_HELPURL": "",
 	"SENSOR_ATTACH_TOOLTIP": "Attach sensor to its hardware interface.",
-	"SENSOR_ATTACH": "attach %1 - %2"
+	"SENSOR_ATTACH": "attach %1 - %2",
+	"SENSOR_REMOVE_CONFIRM": "Do you want to remove %1 sensor from your project?",
+	"ERROR": "Error",
+	"EDIT_SENSOR_TITLE": "Edit sensor ...",
+	"EDIT_SENSOR": "Edit sensor ...",
+	"REMOVE_SENSOR": "Remove sensor ...",
+	"UPDATE": "Update",
+	"YES": "Yes",
+	"NO": "No"
 }

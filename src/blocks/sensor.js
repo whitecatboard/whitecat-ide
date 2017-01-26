@@ -56,7 +56,7 @@ Blockly.Blocks['sensor_attach'] = {
 	},
 
 	init: function() {
-		this.setHelpUrl(Blockly.Msg.SENSOR_SET_HELPURL);
+		this.setHelpUrl(Blockly.Msg.SENSOR_ATTACH_HELPURL);
 		this.setColour(Blockly.Blocks.sensor.HUE);
 
 		this.appendDummyInput()
@@ -65,7 +65,7 @@ Blockly.Blocks['sensor_attach'] = {
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 
-		this.setTooltip(Blockly.Msg.SENSOR_SET_TOOLTIP);
+		this.setTooltip(Blockly.Msg.SENSOR_ATTACH_TOOLTIP);
 	},
 	mutationToDom: function() {
 		var container = document.createElement('mutation');
@@ -97,7 +97,7 @@ Blockly.Blocks['sensor_attach'] = {
 
 		options.push({
 			enabled: true,
-			text: 'Edit sensor ...',
+			text: Blockly.Msg.EDIT_SENSOR,
 			callback: function() {
 				Blockly.Sensors.edit(thisInstance);
 				return false;
@@ -106,7 +106,7 @@ Blockly.Blocks['sensor_attach'] = {
 
 		options.push({
 			enabled: true,
-			text: 'Remove sensor ...',
+			text: Blockly.Msg.REMOVE_SENSOR,
 			callback: function() {
 				Blockly.Sensors.remove(thisInstance);
 				return false;

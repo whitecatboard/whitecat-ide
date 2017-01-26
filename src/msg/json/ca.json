@@ -388,7 +388,7 @@
 	"LORA_SET_DEVADDR": "estableix DevAddr a",
 	"LORA_SET_NWKSKEY": "estableix NwksKey a",
 	"LORA_SET_APPSKEY": "estableix setAppsKey a",
-	"LORA_SET_APPEUI": "estableix AppEu a",
+	"LORA_SET_APPEUI": "estableix AppEui a",
 	"LORA_SET_DEVEUI": "estableix DevEui a",
 	"LORA_SET_APPKEY": "estableix AppKey a",
 	"LORA_SET_RETX": "estableix el nombre de retransmissions a",
@@ -428,5 +428,16 @@
 	"SENSOR_SET_TOOLTIP": "Estableix opcions de configuració per al sensor.",
 	"SENSOR_SET1": "estableix ",
 	"SENSOR_SET2": " amb valor ",
-	"SENSOR_SET3": " per a %1 - %2"
+	"SENSOR_SET3": " per a %1 - %2",
+	"SENSOR_ATTACH_HELPURL": "",
+	"SENSOR_ATTACH_TOOLTIP": "Enganxa el sensor a la seva interfície de maquinari.",
+	"SENSOR_ATTACH": "enganxar %1 - %2",
+	"SENSOR_REMOVE_CONFIRM": "Vols esborrar el sensor %1 del teu projecte?",
+	"ERROR": "Error",
+	"EDIT_SENSOR_TITLE": "Editar sensor ...",
+	"EDIT_SENSOR": "Editar sensor ...",
+	"REMOVE_SENSOR": "Eliminar sensor ...",
+	"UPDATE": "Actualitzar",
+	"YES": "Si",
+	"NO": "No"
 }

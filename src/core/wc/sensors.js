@@ -257,11 +257,11 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	dialogForm += '</form>';
 
 	bootbox.dialog({
-		title: edit ? 'Edit sensor ...' : Blockly.Msg.NEW_SENSOR_TITLE,
+		title: edit ? Blockly.Msg.EDIT_SENSOR_TITLE : Blockly.Msg.NEW_SENSOR_TITLE,
 		message: dialogForm,
 		buttons: {
 			main: {
-				label: edit ? 'Update' : Blockly.Msg.SENSOR_CREATE,
+				label: edit ? Blockly.Msg.UPDATE : Blockly.Msg.SENSOR_CREATE,
 				classensor: "btn-primary",
 				callback: function() {
 					var form = jQuery("#sensor_form");
@@ -301,7 +301,7 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 							return false;
 						}
 					} else {
-						Code.showError('Error', Blockly.Msg.SENSOR_ALREADY_EXISTS.replace('%1', sensor), function() {});
+						Code.showError(Blockly.Msg.ERROR, Blockly.Msg.SENSOR_ALREADY_EXISTS.replace('%1', sensor), function() {});
 					}
 				}
 			},
@@ -320,7 +320,22 @@ Blockly.Sensors.edit = function(block) {
 };
 
 Blockly.Sensors.remove = function(block) {
-	bootbox.confirm('Do you want to remove ' + block.name + ' - ' + block.sid, function(result) { 
-		block.workspace.removeSensor(block);
-	});
+	bootbox.confirm({
+	    message: Blockly.Msg.SENSOR_REMOVE_CONFIRM.replace('%1', block.name + ' - ' + block.sid),
+	    buttons: {
+	        confirm: {
+	            label: Blockly.Msg.YES,
+	            className: 'btn-success'
+	        },
+	        cancel: {
+	            label: Blockly.Msg.NO,
+	            className: 'btn-danger'
+	        }
+	    },
+	    callback: function (result) {
+			if (result) {
+				block.workspace.removeSensor(block);
+			}
+	    }
+	});	
 };
