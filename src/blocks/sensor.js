@@ -35,18 +35,21 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.sensor.HUE = 290;
 
 Blockly.Blocks['sensor_attach'] = {
-	createSensorIfNeeded: function() {
+	createSensorIfNeeded: function(instance) {
+		if (typeof instance.workspace.sensors == "undefined") return -1;
+		
 		// Get index for sensor
-		var index = this.workspace.sensorIndexOf(this.name);
+		var index = instance.workspace.sensorIndexOf(instance.name);
 
 		// Sensor must be created
 		if (index == -1) {
-			this.workspace.createSensor(
-				Blockly.Sensors.createSetupStructure(this.sid, this.name, this.interface, this.pin)
+			instance.workspace.createSensor(
+				undefined,
+				Blockly.Sensors.createSetupStructure(instance.sid, instance.name, instance.interface, instance.pin)
 			);
 
 			//Get index for sensor
-			index = this.workspace.sensorIndexOf(this.name);
+			index = instance.workspace.sensorIndexOf(instance.name);
 		}
 
 		return index;
@@ -80,11 +83,12 @@ Blockly.Blocks['sensor_attach'] = {
 		this.pin = xmlElement.getAttribute('pin');
 		this.sid = xmlElement.getAttribute("sid");
 		this.name = xmlElement.getAttribute("name");
-
+		
 		this.updateShape_();
 	},
 
 	updateShape_: function() {
+		this.createSensorIfNeeded(this);
 		this.getField("NAME").setText(Blockly.Msg.SENSOR_ATTACH.replace("%1", this.name).replace("%2", this.sid));
 	},
 
@@ -133,9 +137,8 @@ Blockly.Blocks['sensor_read'] = {
 	domToMutation: Blockly.Blocks['sensor_attach'].domToMutation,
 
 	updateShape_: function() {
-		if (typeof this.workspace.sensors == "undefined") return;
-
-		var index = Blockly.getMainWorkspace().sensorIndexOf(this.name);
+		var index = this.createSensorIfNeeded(this);
+		if (index == -1) return;
 
 		// Build provides option list
 		var provides = [];
@@ -182,9 +185,8 @@ Blockly.Blocks['sensor_set'] = {
 	domToMutation: Blockly.Blocks['sensor_attach'].domToMutation,
 
 	updateShape_: function() {
-		if (typeof this.workspace.sensors == "undefined") return;
-
-		var index = Blockly.getMainWorkspace().sensorIndexOf(this.name);
+		var index = this.createSensorIfNeeded(this);
+		if (index == -1) return;
 
 		// Build settings option list
 		var settings = [];
