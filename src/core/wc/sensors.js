@@ -319,4 +319,8 @@ Blockly.Sensors.edit = function(block) {
 	Blockly.Sensors.createSensor(block.workspace, null, block);
 };
 
-Blockly.Sensors.remove = function(block) {};
+Blockly.Sensors.remove = function(block) {
+	bootbox.confirm('Do you want to remove ' + block.name + ' - ' + block.sid, function(result) { 
+		block.workspace.removeSensor(block);
+	});
+};

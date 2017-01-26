@@ -115,3 +115,28 @@ Blockly.Workspace.prototype.createSensor = function(oldName, setup) {
 		}
 	}
 };
+
+Blockly.Workspace.prototype.removeSensor = function(sensor) {
+	// Get sensor index
+	var index = this.sensorIndexOf(sensor.name);
+	
+	// Remove from names
+	this.sensors.names.splice(index, 1);
+	this.sensors.provides.splice(index, 1);
+	this.sensors.settings.splice(index, 1);
+	this.sensors.setup.splice(index, 1);
+	
+	// Refresh toolbox
+	this.toolbox_.refreshSelection();	
+
+	// Remove from workspace
+    var blocks = this.getAllBlocks();
+
+    for (var i = 0; i < blocks.length; i++) {
+		if ((blocks[i].type == 'sensor_attach') || (blocks[i].type == 'sensor_read') || (blocks[i].type == 'sensor_set')) {
+			if (blocks[i].name == sensor.name) {
+				blocks[i].dispose(true);
+			}
+		}
+    }	
+}
