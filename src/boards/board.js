@@ -56,19 +56,19 @@ Board.bootingTimeout = 3500;   // When board is in boot state, how much time to 
 Board.runningTimeout = 1500;   // When board is in run state, how much time to wait for a response
 
 Board.status.modules = {
-	"thread": true,
-	"nvs": true,
-	"pack": true,
-	"i2c": true,
-	"pio": true,
-	"pwm": true,
-	"screen": true,
-	"spi": true,
-	"tmr": true,
-	"uart": true,
-	"lora": true,
-	"mqtt": true,
-	"sensor": true,
+	"thread": false,
+	"nvs": false,
+	"pack": false,
+	"i2c": false,
+	"pio": false,
+	"pwm": false,
+	"screen": false,
+	"spi": false,
+	"tmr": false,
+	"uart": false,
+	"lora": false,
+	"mqtt": false,
+	"sensor": false,
 };
 
 Board.sequenceIndex = -1;
@@ -924,6 +924,12 @@ Board.detect = function() {
 							bootbox.hideAll();
 						}
 						Board.ports.splice(port, 1);
+						
+						// Update status
+						for(var key in Board.status.modules) {
+							Board.status.modules[key] = false;
+						}
+
 						Code.boardDisconnected();
 					} else {
 						Board.ports.splice(port, 1);
