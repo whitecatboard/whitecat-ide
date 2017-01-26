@@ -86,7 +86,30 @@ Blockly.Blocks['sensor_attach'] = {
 
 	updateShape_: function() {
 		this.getField("NAME").setText(Blockly.Msg.SENSOR_ATTACH.replace("%1", this.name).replace("%2", this.sid));
-	}
+	},
+
+	customContextMenu: function(options) {
+		var thisInstance = this;
+
+		options.push({
+			enabled: true,
+			text: 'Edit sensor ...',
+			callback: function() {
+				Blockly.Sensors.edit(thisInstance);
+				return false;
+			}
+		});
+
+		options.push({
+			enabled: true,
+			text: 'Remove sensor ...',
+			callback: function() {
+				Blockly.Sensors.remove(thisInstance);
+				return false;
+			}
+		});
+
+	},
 };
 
 Blockly.Blocks['sensor_read'] = {
@@ -122,7 +145,9 @@ Blockly.Blocks['sensor_read'] = {
 
 		this.getField("NAME").setText(Blockly.Msg.SENSOR_READ2.replace("%1", this.name).replace("%2", this.sid));
 		this.getField("PROVIDES").menuGenerator_ = provides;
-	}
+	},
+
+	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,
 };
 
 Blockly.Blocks['sensor_set'] = {
@@ -169,5 +194,7 @@ Blockly.Blocks['sensor_set'] = {
 
 		this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1", this.name).replace("%2", this.sid));
 		this.getField("SETTINGS").menuGenerator_ = settings;
-	}
+	},
+
+	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,
 };
