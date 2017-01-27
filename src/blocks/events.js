@@ -36,21 +36,81 @@ goog.require('Blockly.Blocks');
  * Common HSV hue for all blocks in this category.
  */
 Blockly.Blocks.events.HUE = 290;
-  
-Blockly.Blocks['execute_on'] = {
-  init: function() {
-    this.appendDummyInput()
-      .appendField(Blockly.Msg.EXECUTE_ON_EVERY)
-	  .appendField(new Blockly.FieldDropdown([[Blockly.Msg.ON_EVERY_BOARD_REBOOT, "1"], [Blockly.Msg.ON_EVERY_RECEIVED_LORA_FRAME, "2"]]), "WHEN");
 
+Blockly.Blocks['when_board_starts'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.EVENT_WHEN_BOARD_STARTS);
 
-    this.appendStatementInput('DO')
-      .appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
-	  
-	 this.setPreviousStatement(false, null);
-    this.setNextStatement(false, null);
-    this.setColour(Blockly.Blocks.events.HUE);
-    this.setTooltip('');
-    this.setHelpUrl('http://www.example.com/');
-  }
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_WHEN_BOARD_STARTS_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_BOARD_STARTS_HELPURL);
+	},
+};
+
+Blockly.Blocks['when_i_receive'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE)
+		    .appendField(new Blockly.wc.FieldEvent("lora_frame"),"WHEN");
+
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_I_RECEIVE_HELPURL);
+	},
+};
+
+Blockly.Blocks['when_i_receive_a_lora_frame'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME);
+		
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_HELPURL);
+	},
+};
+
+Blockly.Blocks['broadcast'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.EVENT_BROADCAST)
+		    .appendField(new Blockly.wc.FieldEvent("lora_frame"),"WHEN");
+
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_HELPURL);
+	},
+};
+
+Blockly.Blocks['broadcast_and_wait'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.EVENT_BROADCAST)
+		    .appendField(new Blockly.wc.FieldEvent("lora_frame"),"WHEN")
+			.appendField(Blockly.Msg.EVENT_BROADCAST_AND_WAIT);
+
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_HELPURL);
+	},
 };

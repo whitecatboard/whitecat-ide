@@ -89,6 +89,7 @@ goog.addDependency("../../../" + dir + "/core/workspace_drag_surface_svg.js", ['
 goog.addDependency("../../../" + dir + "/core/workspace_svg.js", ['Blockly.WorkspaceSvg'], ['Blockly.ConnectionDB', 'Blockly.constants', 'Blockly.Options', 'Blockly.ScrollbarPair', 'Blockly.Touch', 'Blockly.Trashcan', 'Blockly.Workspace', 'Blockly.WorkspaceDragSurfaceSvg', 'Blockly.Xml', 'Blockly.ZoomControls', 'goog.array', 'goog.dom', 'goog.math.Coordinate', 'goog.userAgent']);
 goog.addDependency("../../../" + dir + "/core/xml.js", ['Blockly.Xml'], ['goog.asserts', 'goog.dom']);
 goog.addDependency("../../../" + dir + "/core/zoom_controls.js", ['Blockly.ZoomControls'], ['Blockly.Touch', 'goog.dom']);
+goog.addDependency("../../../" + dir + "/core/wc/field_event.js", ['Blockly.wc.FieldEvent'], ['Blockly.FieldDropdown', 'Blockly.Msg', 'Blockly.Events', 'goog.asserts', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/sensors.js", ['Blockly.Sensors'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/workspace.js", [], ['Blockly.Workspace', 'goog.array', 'goog.math']);
 goog.addDependency("../../alltests.js", [], []);
@@ -1653,6 +1654,7 @@ goog.require('Blockly.ZoomControls');
 goog.require('Blockly.constants');
 goog.require('Blockly.inject');
 goog.require('Blockly.utils');
+goog.require('Blockly.wc.FieldEvent');
 
 delete this.BLOCKLY_DIR;
 delete this.BLOCKLY_BOOT;

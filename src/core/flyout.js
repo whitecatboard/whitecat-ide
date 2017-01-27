@@ -734,11 +734,11 @@ Blockly.Flyout.prototype.show = function(xmlList) {
     // Special category for procedures.
     xmlList =
         Blockly.Procedures.flyoutCategory(this.workspace_.targetWorkspace);
-    } else if (xmlList == Blockly.Sensors.NAME_TYPE) {
-      // Special category for sensots.
-      xmlList =
-          Blockly.Sensors.flyoutCategory(this.workspace_.targetWorkspace);
-    }
+  } else if (xmlList == Blockly.Sensors.NAME_TYPE) {
+    // Special category for sensors.
+    xmlList =
+        Blockly.Sensors.flyoutCategory(this.workspace_.targetWorkspace);
+  }
 
   this.setVisible(true);
   // Create the blocks to be shown in this flyout.

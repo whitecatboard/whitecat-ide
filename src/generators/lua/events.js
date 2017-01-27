@@ -32,27 +32,63 @@ goog.provide('Blockly.Lua.events');
 
 goog.require('Blockly.Lua');
 
-Blockly.Lua['execute_on'] = function(block) {
+Blockly.Lua['when_board_starts'] = function(block) {
+    var code = '';
+	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
+
+	code = 'thread.start(function()\n';
+	code += doStatement;
+	code += "end)\n";
+
+	return code;
+}
+
+Blockly.Lua['when_i_receive'] = function(block) {
     var code = '';
 	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
 	var when = block.getFieldValue('WHEN');
 
-	// When board starts
-	if (when == 1) {
-		doStatement = 'thread.start(function()\n' + doStatement + 'end)\n';
-	}
+	var eventId = this.workspace.eventIndexOf(when);
 	
-	// When a lora frame is received
-	if (when == 2) {
-		code = "lora.whenReceived(function(_port, _payload)\n";
-	}
-		
-	code += doStatement;
+	code  = 'if (_event' + eventId + ' == nil) then\n';
+	code += Blockly.Lua.prefixLines('_event' + eventId + ' = event.create()\n', Blockly.Lua.INDENT);
+	code += 'end\n';
+	code += '_event' + eventId + ':addlistener(function()\n';
+	code += Blockly.Lua.prefixLines('thread.start(function()', Blockly.Lua.INDENT);
+	code += Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
+	code += Blockly.Lua.prefixLines("end)\n", Blockly.Lua.INDENT);
+	code += "end)\n";		
 
-	// When a lora frame is received
-	if (when == 2) {
-		code += "end)\n";
-	}
-		
+	return code;
+}
+
+Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
+    var code = '';
+	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
+
+	code = 'lora.whenReceived(function(_port, _payload)\n';
+	code += doStatement;
+	code += "end)\n";
+
+	return code;
+}
+
+Blockly.Lua['broadcast'] = function(block) {
+    var code = '';
+	var when = block.getFieldValue('WHEN');
+	var eventId = this.workspace.eventIndexOf(when);
+
+	code += '_event' + eventId + ':broadcast(false)\n';
+
+	return code;
+}
+
+Blockly.Lua['broadcast_and_wait'] = function(block) {
+    var code = '';
+	var when = block.getFieldValue('WHEN');
+	var eventId = this.workspace.eventIndexOf(when);
+
+	code += '_event' + eventId + ':broadcast(true)\n';
+
 	return code;
 }
