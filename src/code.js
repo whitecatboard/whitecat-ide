@@ -102,10 +102,12 @@ Code.loadBlocks = function(defaultXml) {
 		delete window.sessionStorage.loadOnceBlocks;
 		var xml = Blockly.Xml.textToDom(loadOnce);
 		Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
+		Code.workspace.blocks.scrollCenter();
 	} else if (defaultXml) {
 		// Load the editor with default starting blocks.
 		var xml = Blockly.Xml.textToDom(defaultXml);
 		Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
+		Code.workspace.blocks.scrollCenter();
 	} else if ('BlocklyStorage' in window) {
 		// Restore saved blocks in a separate thread so that subsequent
 		// initialization is not affected from a failed load.
@@ -1205,6 +1207,7 @@ Code.loadFileFromComputer = function(fileEntry) {
 				Code.workspace.blocks.clear();
 				var xml = Blockly.Xml.textToDom(e.target.result);
 				Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
+				Code.workspace.blocks.scrollCenter();
 			} else {
 				Code.workspace.editor.setValue(e.target.result, -1);
 			}
@@ -1244,6 +1247,7 @@ Code.loadFileFromBoard = function(file) {
 			Code.workspace.blocks.clear();
 			var xml = Blockly.Xml.textToDom(fileContent);
 			Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
+			Code.workspace.blocks.scrollCenter();
 		} else {
 			Code.workspace.editor.setValue(fileContent, -1);
 		}
