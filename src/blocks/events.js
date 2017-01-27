@@ -57,7 +57,7 @@ Blockly.Blocks['when_i_receive'] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE)
-		    .appendField(new Blockly.wc.FieldEvent("lora_frame"),"WHEN");
+		    .appendField(new Blockly.wc.FieldEvent(Blockly.Msg.DEFAULT_EVENT),"WHEN");
 
 		this.appendStatementInput('DO')
 			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
@@ -90,7 +90,7 @@ Blockly.Blocks['broadcast'] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_BROADCAST)
-		    .appendField(new Blockly.wc.FieldEvent("lora_frame"),"WHEN");
+		    .appendField(new Blockly.wc.FieldEvent(Blockly.Msg.DEFAULT_EVENT),"WHEN");
 
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
@@ -104,7 +104,7 @@ Blockly.Blocks['broadcast_and_wait'] = {
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_BROADCAST)
-		    .appendField(new Blockly.wc.FieldEvent("lora_frame"),"WHEN")
+		    .appendField(new Blockly.wc.FieldEvent(Blockly.Msg.DEFAULT_EVENT),"WHEN")
 			.appendField(Blockly.Msg.EVENT_BROADCAST_AND_WAIT);
 
 		this.setPreviousStatement(true, null);

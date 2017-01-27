@@ -46,6 +46,7 @@ Blockly.Workspace.prototype.wcInit = function() {
 	if (typeof this.events == "undefined") {
 		this.events = {
 			"builtIn": [
+				'event'
 			],
 			
 			"names": [], // Array of event names in workspace
