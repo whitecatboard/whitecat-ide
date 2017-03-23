@@ -33,7 +33,7 @@ goog.provide('Blockly.Sensors');
 goog.require('Blockly.Blocks');
 goog.require('Blockly.Workspace');
 goog.require('goog.string');
-
+goog.require('Blockly.Blocks.io.helper');
 
 Blockly.Sensors.NAME_TYPE = 'SENSOR';
 
@@ -52,9 +52,9 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 	xmlList.push(button);
 
 	sensors.names.forEach(function(name, index) {
-		if (Blockly.Blocks['sensor_attach']) {
+		if (Blockly.Blocks['sensor_attach'] && (Code.blockAbstraction == blockAbstraction.Low)) {
 			var mutation = goog.dom.createDom('mutation', '');
-			mutation.setAttribute('interface', sensors.setup[index].interface);
+			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
 			mutation.setAttribute('sid', sensors.setup[index].id);
 			mutation.setAttribute('name', name);
@@ -73,7 +73,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 
 		if (Blockly.Blocks['sensor_read']) {
 			var mutation = goog.dom.createDom('mutation', '');
-			mutation.setAttribute('interface', sensors.setup[index].interface);
+			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
 			mutation.setAttribute('sid', sensors.setup[index].id);
 			mutation.setAttribute('name', name);
@@ -96,9 +96,9 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			xmlList.push(block);
 		}
 
-		if (Blockly.Blocks['sensor_set'] && (workspace.sensors.settings[index].length > 0)) {
+		if (Blockly.Blocks['sensor_set'] && (workspace.sensors.properties[index].length > 0)) {
 			var mutation = goog.dom.createDom('mutation', '');
-			mutation.setAttribute('interface', sensors.setup[index].interface);
+			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
 			mutation.setAttribute('sid', sensors.setup[index].id);
 			mutation.setAttribute('name', name);
@@ -110,8 +110,8 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			field.setAttribute('name', 'NAME');
 			block.appendChild(field);
 
-			var field = goog.dom.createDom('field', null, workspace.sensors.settings[index][0].id);
-			field.setAttribute('name', 'SETTINGS');
+			var field = goog.dom.createDom('field', null, workspace.sensors.properties[index][0].id);
+			field.setAttribute('name', 'PROPERTIES');
 			block.appendChild(field);
 
 			var field = goog.dom.createDom('field', null, "0");
@@ -160,12 +160,12 @@ Blockly.Sensors.sensorChanged = function() {
 Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin) {
 	var setup = {};
 	setup.id = id;
-	setup.name = sensor;
+	setup['name'] = sensor;
 	if (interf == "GPIO") {
-		setup.interface = "GPIO";
+		setup['interface'] = "GPIO";
 		setup.pin = pin;
 	} else if (interf == "ADC") {
-		setup.interface = "ADC";
+		setup['interface'] = "ADC";
 		setup.pin = pin;
 	}
 
@@ -181,12 +181,12 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	// Build sensor selection
 	if (edit) {
 		sensorSelect = '<span>' + block.sid + '</span>';
-		sensorSelect += '<input type="hidden" id="id" name="id" value="'+block.sid+'" data-interface="' + block.interface + '"></input>';
+		sensorSelect += '<input type="hidden" id="id" name="id" value="'+block.sid+'" data-interface="' + block['interface'] + '"></input>';
 	} else {
 		var sensorSelect = '<select onchange="Blockly.Sensors.sensorChanged()" id="id" name="id">';
 		sensorSelect += '<option data-interface="" value="">' + Blockly.Msg.NEW_SENSOR_SELECT_ONE + '</option>';
-		Board.sensors.forEach(function(item, index) {
-			sensorSelect += '<option data-interface="' + item.interface + '" value="' + item.id + '">' + item.id + '</option>';
+		Code.status.sensors.forEach(function(item, index) {
+			sensorSelect += '<option data-interface="' + item['interface'] + '" value="' + item.id + '">' + item.id + '</option>';
 		})
 		sensorSelect += "</select>";
 	}
@@ -195,8 +195,8 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	var gpio = [];
 	var gpioSelect = "";
 
-	for (var key in Board.digitalPins) {
-		gpio.push([key + ' - ' + Board.digitalPins[key].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+	for (var key in  Code.status.maps.digitalPins) {
+		gpio.push([key + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 	}
 
 	var gpioSelect = '<select id="gpio" name="gpio">';
@@ -209,8 +209,8 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	var adc = [];
 	var adcSelect = "";
 
-	for (var key in Board.analogPins) {
-		adc.push([key + ' - ' + Board.analogPins[key].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+	for (var key in Code.status.maps.analogPins) {
+		adc.push([key + ' - ' + Code.status.maps.analogPins[key].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 	}
 
 	var adcSelect = '<select id="adc" name="adc">';
@@ -226,7 +226,7 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	if (edit) {
 		dialogForm += '<div>';
 		dialogForm += '<label for="sensor_name">' + Blockly.Msg.SENSOR_NAME + ':&nbsp;&nbsp;</label>';
-		dialogForm += '<input id="sensor_name" name="sensor_name" value="' + block.name + '">';
+		dialogForm += '<input id="sensor_name" name="sensor_name" value="' + block['name'] + '">';
 		dialogForm += '</div>';
 	} else {
 		dialogForm += '<div class="sensor_name" style="display: none;">';
@@ -235,7 +235,7 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 		dialogForm += '</div>';
 	}
 
-	if (edit && (block.interface == "GPIO")) {
+	if (edit && (block['interface'] == "GPIO")) {
 		dialogForm += '<div>';
 		dialogForm += '<label for="gpio">' + Blockly.Msg.SENSOR_DIGITAL_PIN + ':&nbsp;&nbsp;</label>' + gpioSelect;
 		dialogForm += '</div>';
@@ -245,7 +245,7 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 		dialogForm += '</div>';
 	}
 
-	if (edit && (block.interface == "ADC")) {
+	if (edit && (block['interface'] == "ADC")) {
 		dialogForm += '<div>';
 		dialogForm += '<label for="adc">' + Blockly.Msg.SENSOR_ANALOG_PIN + ':&nbsp;&nbsp;</label>' + adcSelect;
 		dialogForm += '</div>';
@@ -280,7 +280,7 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 					// If sensor is valid ...
 					var sensor = form.find("#sensor_name").val();
 
-					if ((workspace.sensorIndexOf(sensor) == -1) || (edit && block.name == sensor)) {
+					if ((workspace.sensorIndexOf(sensor) == -1) || (edit && block['name'] == sensor)) {
 						var interf;
 
 						if (edit) {
@@ -293,7 +293,7 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 
 						if ((sensor != "") && (interf != "")) {
 							workspace.createSensor(
-								edit ? block.name : undefined,
+								edit ? block['name'] : undefined,
 								Blockly.Sensors.createSetupStructure(id, sensor, interf, pin)
 							);
 							workspace.toolbox_.refreshSelection();
@@ -321,7 +321,7 @@ Blockly.Sensors.edit = function(block) {
 
 Blockly.Sensors.remove = function(block) {
 	bootbox.confirm({
-	    message: Blockly.Msg.SENSOR_REMOVE_CONFIRM.replace('%1', block.name + ' - ' + block.sid),
+	    message: Blockly.Msg.SENSOR_REMOVE_CONFIRM.replace('%1', block['name'] + ' - ' + block.sid),
 	    buttons: {
 	        confirm: {
 	            label: Blockly.Msg.YES,

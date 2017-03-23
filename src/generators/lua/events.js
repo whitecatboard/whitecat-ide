@@ -36,10 +36,20 @@ Blockly.Lua['when_board_starts'] = function(block) {
     var code = '';
 	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
 
-	code = 'thread.start(function()\n';
-	code += doStatement;
-	code += "end)\n";
+	if (Code.blockAbstraction == blockAbstraction.Low) {
+		code = 'thread.start(function()\n';
+		code += doStatement;
+		code += "end)\n";
+	} else {
+		if (codeSection["require"].indexOf('require("block-event")') == -1) {
+			codeSection["require"].push('require("block-event")');
+		}
 
+		code = 'wcBlock.event.whenBoardStarts("' + block.id + '", function()\n';
+		code += Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
+		code += 'end)\n';
+	}
+	
 	return code;
 }
 
@@ -49,15 +59,25 @@ Blockly.Lua['when_i_receive'] = function(block) {
 	var when = block.getFieldValue('WHEN');
 
 	var eventId = this.workspace.eventIndexOf(when);
-	
-	code  = 'if (_event' + eventId + ' == nil) then\n';
-	code += Blockly.Lua.prefixLines('_event' + eventId + ' = event.create()\n', Blockly.Lua.INDENT);
-	code += 'end\n';
-	code += '_event' + eventId + ':addlistener(function()\n';
-	code += Blockly.Lua.prefixLines('thread.start(function()', Blockly.Lua.INDENT);
-	code += Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
-	code += Blockly.Lua.prefixLines("end)\n", Blockly.Lua.INDENT);
-	code += "end)\n";		
+
+	if (Code.blockAbstraction == blockAbstraction.Low) {	
+		code  = 'if (_event' + eventId + ' == nil) then\n';
+		code += Blockly.Lua.prefixLines('_event' + eventId + ' = event.create()\n', Blockly.Lua.INDENT);
+		code += 'end\n\n';
+		code += '_event' + eventId + ':addlistener(function()\n';
+		code += Blockly.Lua.prefixLines('thread.start(function()', Blockly.Lua.INDENT);
+		code += Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
+		code += Blockly.Lua.prefixLines("end)\n", Blockly.Lua.INDENT);
+		code += "end)\n";		
+	} else {
+		if (codeSection["require"].indexOf('require("block-event")') == -1) {
+			codeSection["require"].push('require("block-event")');
+		}
+
+		code = 'wcBlock.event.whenIReceive("' + block.id + '", "event' + eventId + '", function()\n';
+		code += Blockly.Lua.prefixLines(doStatement, Blockly.Lua.INDENT);
+		code += 'end)\n';
+	}
 
 	return code;
 }
@@ -66,9 +86,19 @@ Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
     var code = '';
 	var doStatement = Blockly.Lua.statementToCode(block, 'DO');
 
-	code = 'lora.whenReceived(function(_port, _payload)\n';
-	code += doStatement;
-	code += "end)\n";
+	if (Code.blockAbstraction == blockAbstraction.Low) {	
+		code = 'lora.whenReceived(function(_port, _payload)\n';
+		code += doStatement;
+		code += "end)\n";
+	} else {
+		if (codeSection["require"].indexOf('require("block-event")') == -1) {
+			codeSection["require"].push('require("block-event")');
+		}
+
+		code = 'wcBlock.event.whenIReceiveLoraFrame("' + block.id + '", function(_port, _payload)\n';
+		code += doStatement;
+		code += "end)\n";
+	}	
 
 	return code;
 }
@@ -78,8 +108,16 @@ Blockly.Lua['broadcast'] = function(block) {
 	var when = block.getFieldValue('WHEN');
 	var eventId = this.workspace.eventIndexOf(when);
 
-	code += '_event' + eventId + ':broadcast(false)\n';
+	if (Code.blockAbstraction == blockAbstraction.Low) {	
+		code += '_event' + eventId + ':broadcast(false)\n';
+	} else {
+		if (codeSection["require"].indexOf('require("block-event")') == -1) {
+			codeSection["require"].push('require("block-event")');
+		}
 
+		code = 'wcBlock.event.broadcast("' + block.id + '", "event' + eventId + '", false)\n';
+	}
+	
 	return code;
 }
 
@@ -88,7 +126,15 @@ Blockly.Lua['broadcast_and_wait'] = function(block) {
 	var when = block.getFieldValue('WHEN');
 	var eventId = this.workspace.eventIndexOf(when);
 
-	code += '_event' + eventId + ':broadcast(true)\n';
+	if (Code.blockAbstraction == blockAbstraction.Low) {	
+		code += '_event' + eventId + ':broadcast(false)\n';
+	} else {
+		if (codeSection["require"].indexOf('require("block-event")') == -1) {
+			codeSection["require"].push('require("block-event")');
+		}
+
+		code = 'wcBlock.event.broadcast("' + block.id + '", "event' + eventId + '", true)\n';
+	}
 
 	return code;
 }

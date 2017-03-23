@@ -1,0 +1,72 @@
+{
+	"id": "N1ESP32",
+	"desc": "Whitecat N1 ESP32",
+	"digitalPins": {
+		"P1":  ["GPIO32", true, true ],
+		"P2":  ["GPIO33", true, true ],
+		"P3":  ["GPIO34", true, false],
+		"P4":  ["GPIO35", true, false],
+		"P5":  ["GPIO25", true, true ],
+		"P6":  ["GPIO26", true, true ],
+		"P7":  ["GPIO14", true, true ],
+		"P8":  ["GPIO12", true, true ],
+		"P9":  ["GPIO13", true, true ],
+		"P10": ["GPIO15", true, true ],
+		"P11": ["GPIO2" , true, true ],
+		"DIO": ["GPIO4" , false, true ],
+		"DI1": ["GPIO16", false, true ],
+		"DI2": ["GPIO17", false, true ],
+		"NSS": ["GPIO5" , true, true ],
+		"SCK": ["GPIO18", true, true ],
+		"P12": ["GPIO22", true, true ],
+		"P13": ["GPIO21", true, true ]
+	},
+	"analogPins": {
+		"P1": "GPIO32",
+		"P2": "GPIO33",
+		"P3": "GPIO34",
+		"P4": "GPIO35"	 	
+	},
+	"analogPinsChannel": {
+		"P1": "ADC_CH4",
+		"P2": "ADC_CH5",
+		"P3": "ADC_CH6",
+		"P4": "ADC_CH7" 	
+	},
+	"pwmPins": {
+		"P1": "GPIO32",
+		"P2": "GPIO33",
+		"P3": "GPIO34",
+		"P4": "GPIO35",
+		"P5": "GPIO25",
+		"P6": "GPIO26",
+		"P7": "GPIO14",
+		"P8": "GPIO12",
+		"P9": "GPIO13",
+		"P10": "GPIO15",
+		"P11": "GPIO2",
+		"P12": "GPIO22",
+		"P13": "GPIO21"
+	},
+	"pwmPinsChannel": {
+		"P1": "-1",
+		"P2": "-1",
+		"P3": "-1",
+		"P4": "-1",
+		"P5": "-1",
+		"P6": "-1",
+		"P7": "-1",
+		"P8": "-1",
+		"P9": "-1",
+		"P10": "-1",
+		"P11": "-1",
+		"P12": "-1",
+		"P13": "-1"
+	},
+	"i2cModules": {
+		"BB1": "i2c.I2CBB1",
+		"BB2": "i2c.I2CBB2",
+		"BB3": "i2c.I2CBB3",
+		"BB4": "i2c.I2CBB4"
+	}
+}

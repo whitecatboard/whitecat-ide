@@ -25,6 +25,7 @@
 'use strict';
 
 goog.provide('Blockly.Blocks.logic');
+goog.provide('Blockly.Blocks.constant');
 
 goog.require('Blockly.Blocks');
 
@@ -327,7 +328,7 @@ Blockly.Blocks['logic_compare'] = {
     ];
     var OPERATORS = this.RTL ? rtlOperators : ltrOperators;
     this.setHelpUrl(Blockly.Msg.LOGIC_COMPARE_HELPURL);
-    this.setColour(Blockly.Blocks.logic.HUE);
+    this.setColour(Blockly.Blocks.operators.HUE);
     this.setOutput(true, 'Boolean');
     this.appendValueInput('A');
     this.appendValueInput('B')
@@ -388,7 +389,7 @@ Blockly.Blocks['logic_operation'] = {
         [[Blockly.Msg.LOGIC_OPERATION_AND, 'AND'],
          [Blockly.Msg.LOGIC_OPERATION_OR, 'OR']];
     this.setHelpUrl(Blockly.Msg.LOGIC_OPERATION_HELPURL);
-    this.setColour(Blockly.Blocks.logic.HUE);
+    this.setColour(Blockly.Blocks.operators.HUE);
     this.setOutput(true, 'Boolean');
     this.appendValueInput('A')
         .setCheck('Boolean');
@@ -425,7 +426,7 @@ Blockly.Blocks['logic_negate'] = {
         }
       ],
       "output": "Boolean",
-      "colour": Blockly.Blocks.logic.HUE,
+      "colour": Blockly.Blocks.operators.HUE,
       "tooltip": Blockly.Msg.LOGIC_NEGATE_TOOLTIP,
       "helpUrl": Blockly.Msg.LOGIC_NEGATE_HELPURL
     });
@@ -451,7 +452,7 @@ Blockly.Blocks['logic_boolean'] = {
         }
       ],
       "output": "Boolean",
-      "colour": Blockly.Blocks.logic.HUE,
+      "colour": Blockly.Blocks.constant.HUE,
       "tooltip": Blockly.Msg.LOGIC_BOOLEAN_TOOLTIP,
       "helpUrl": Blockly.Msg.LOGIC_BOOLEAN_HELPURL
     });
@@ -467,7 +468,7 @@ Blockly.Blocks['logic_null'] = {
     this.jsonInit({
       "message0": Blockly.Msg.LOGIC_NULL,
       "output": null,
-      "colour": Blockly.Blocks.logic.HUE,
+      "colour": Blockly.Blocks.constant.HUE,
       "tooltip": Blockly.Msg.LOGIC_NULL_TOOLTIP,
       "helpUrl": Blockly.Msg.LOGIC_NULL_HELPURL
     });

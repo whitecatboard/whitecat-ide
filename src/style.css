@@ -344,6 +344,19 @@ body.modal-open .modal .modal-dialog {
     font-size: 14px;
 }
 
+
+.statusBar {
+	vertical-align: middle;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+	display: none;
+}
+
+.statusBarText {
+	vertical-align: text-bottom;
+	margin-left: 10px;
+}
+
 .logo {
 }
 
@@ -372,8 +385,16 @@ body.modal-open .modal .modal-dialog {
 	display:    'block' !important;
 }
 
-
-
 .blink {
 	background-color: #666;
+}
+
+
+.nav > li > a {
+  cursor: default !important;
+}
+
+.error-msg {
+	color: red;
+	font-style: italic;
 }

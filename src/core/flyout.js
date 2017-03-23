@@ -738,7 +738,11 @@ Blockly.Flyout.prototype.show = function(xmlList) {
     // Special category for sensors.
     xmlList =
         Blockly.Sensors.flyoutCategory(this.workspace_.targetWorkspace);
-  }
+    } else if (xmlList == Blockly.Lora.NAME_TYPE) {
+      // Special category for sensors.
+      xmlList =
+          Blockly.Lora.flyoutCategory(this.workspace_.targetWorkspace);
+    }
 
   this.setVisible(true);
   // Create the blocks to be shown in this flyout.

@@ -1,0 +1,4 @@
+s=spi.setup(spi.SPI2,1,26,10000,8,0)
+s:select()
+t=s:readwrite("ABCDE"); for i=1,#t,1 do print(i, t[i]) end
+t=s:readwrite(1,2,3,4,5,66,77,88,99); for i=1,#t,1 do print(i, t[i]) end

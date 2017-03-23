@@ -223,11 +223,7 @@ Blockly.Blocks['exception_try'] = {
 Blockly.Blocks['exception_catch_error'] = {
   init: function() {
 	var errors = [];
-	
-	for(var key in Board.digitalPins) {
-		errors.push([key + ' - ' + Board.digitalPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
-	}  
-	
+		
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(Blockly.Msg.TEXT_TRY_CATCH_ERROR)

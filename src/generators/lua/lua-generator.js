@@ -1,19 +1,43 @@
-Blockly.Generator.prototype.workspaceToCode = function(workspace) {
+var codeSection = [];
+
+codeSection["require"] = [];
+codeSection["declaration"] = [];
+codeSection["start"] = [];
+codeSection["default"] = [];
+
+Blockly.Generator.prototype.workspaceToCode = function(workspace) {  
   if (!workspace) {
     // Backwards compatability from before there could be multiple workspaces.
     console.warn('No workspace specified in workspaceToCode call.  Guessing.');
     workspace = Blockly.getMainWorkspace();
   }
-  var code = [];
-  var needThread = true;
+
+  /*
+   * Some blocks must be allocate it's generated code in specific code regions. For example,
+   * "when a lora frame is received" block must be allocated prior to execute anything.
+   *
+   * This part define sections of code
+   */
+  var section = "default";
   
+  codeSection["require"] = [];
+  codeSection["declaration"] = [];
+  codeSection["start"] = [];
+  codeSection["default"] = [];
+  
+  // Bwegin
   this.init(workspace);
   var blocks = workspace.getTopBlocks(true);
   for (var x = 0, block; block = blocks[x]; x++) {
-  	if ((block.type == 'thread_start') || (block.type == 'thread_create')) {
-  		needThread = false;
-  	}
-  	
+	// Put code in default section
+	section = "default";
+	
+	// If this block has the section function get section that block's code will be
+	// allocated
+	if (typeof block.section !== "undefined") { 
+		section = block.section();
+	}
+
     var line = this.blockToCode(block);
     if (goog.isArray(line)) {
       // Value blocks return tuples of code and operator order.
@@ -26,26 +50,127 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
         // it wants to append a semicolon, or something.
         line = this.scrubNakedValue(line);
       }
-      code.push(line);
+	  
+	  // Put code in it's section
+      codeSection[section].push(line);
     }
   }
-  code = code.join('\n');  // Blank line between each section.
-  code = this.finish(code);
+  
+  // Generate code from code sections
+  var code = "";
+  var tmpCode = "";
+  
+  for (section in codeSection) {
+	  tmpCode = codeSection[section].join('\n');  // Blank line between each section.	
+	  code += tmpCode + '\n';
+	  
+	  if (section == "require") {
+		  code += "\n";
+	  }
+  }
+
+  code = this.finish(code) + '\n';
+
   // Final scrubbing of whitespace.
   code = code.replace(/^\s+\n/, '');
   code = code.replace(/\n\s+$/, '\n');
   code = code.replace(/[ \t]+\n/g, '\n');
   
-  // Add code into a thread if needed
-  //if (needThread) {
-  	// Indent code
-  	//code = Blockly.Lua.prefixLines(code, Blockly.Lua.INDENT);
-  	
-  	// Remove last \n
-  	//code = code.substring(0, code.length - 1);
-  	
-  	//code = 'thread.start(function()\n' + code + '\nend)\n';
-  //}
-  
   return code;
+};
+
+Blockly.Generator.prototype.oneBlockToCode = function(block) {
+  if (!block) {
+    return '';
+  }
+  if (block.disabled) {
+    // Skip past this block if it is disabled.
+    return this.blockToCode(block.getNextBlock());
+  }
+
+  var func = this[block.type];
+  goog.asserts.assertFunction(func,
+      'Language "%s" does not know how to generate code for block type "%s".',
+      this.name_, block.type);
+  // First argument to func.call is the value of 'this' in the generator.
+  // Prior to 24 September 2013 'this' was the only way to access the block.
+  // The current prefered method of accessing the block is through the second
+  // argument to func.call, which becomes the first parameter to the generator.
+  var code = func.call(block, block);
+  if (goog.isArray(code)) {
+    // Value blocks return tuples of code and operator order.
+    goog.asserts.assert(block.outputConnection,
+        'Expecting string from statement block "%s".', block.type);
+    return [this.scrub_(block, code[0]), code[1]];
+  } else if (goog.isString(code)) {
+    var id = block.id.replace(/\$/g, '$$$$');  // Issue 251.
+    if (this.STATEMENT_PREFIX) {
+      code = this.STATEMENT_PREFIX.replace(/%1/g, '\'' + id + '\'') +
+          code;
+    }
+    return code;
+  } else if (code === null) {
+    // Block has handled code generation itself.
+    return '';
+  } else {
+    goog.asserts.fail('Invalid code generated: %s', code);
+  }
+};
+
+// Generate code for a watcher over a block
+Blockly.Generator.prototype.blockWatcherCode = function(block) {
+	var workspace = block.workspace;
+	var code = [];
+
+	this.init(workspace);
+	
+    codeSection["require"] = [];
+	
+	var line = this.oneBlockToCode(block);
+	if (goog.isArray(line)) {
+		line = line[0];
+	}
+	
+	line = line.replace(/\n$/, "").replace(/\r$/, "");
+	
+	if (line) {
+		code.push('print(' + line + ')');
+	}
+	
+	if (codeSection["require"].length == 1) {
+		codeSection["require"].push("");
+	}
+	
+	code = codeSection["require"].join(';') + code.join(';');
+
+	return 'do ' + code + ';end';
+};
+
+// Generate code for one block
+Blockly.Generator.prototype.blockCode = function(block) {
+	var workspace = block.workspace;
+	var code = [];
+
+	this.init(workspace);
+
+    codeSection["require"] = [];
+
+	var line = this.oneBlockToCode(block);
+	if (goog.isArray(line)) {
+		line = line[0];
+	}
+
+	line = line.replace(/\n$/, "").replace(/\r$/, "");
+
+	if (line) {
+		code.push(line);
+	}
+	
+	if (codeSection["require"].length == 1) {
+		codeSection["require"].push("");
+	}
+
+	code = codeSection["require"].join(';') + code.join(';');
+
+	return 'do ' + code + ';end';
 };

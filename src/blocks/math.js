@@ -41,7 +41,7 @@ Blockly.Blocks['math_number'] = {
    */
   init: function() {
     this.setHelpUrl(Blockly.Msg.MATH_NUMBER_HELPURL);
-    this.setColour(Blockly.Blocks.math.HUE);
+    this.setColour(Blockly.Blocks.constant.HUE);
     this.appendDummyInput()
         .appendField(new Blockly.FieldNumber('0'), 'NUM');
     this.setOutput(true, 'Number');
@@ -228,7 +228,7 @@ Blockly.Blocks['math_constant'] = {
         }
       ],
       "output": "Number",
-      "colour": Blockly.Blocks.math.HUE,
+      "colour": Blockly.Blocks.constant.HUE,
       "tooltip": Blockly.Msg.MATH_CONSTANT_TOOLTIP,
       "helpUrl": Blockly.Msg.MATH_CONSTANT_HELPURL
     });

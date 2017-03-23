@@ -51,6 +51,9 @@ Blockly.Blocks['when_board_starts'] = {
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_BOARD_STARTS_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_BOARD_STARTS_HELPURL);
 	},
+    section: function() {
+		return 'start';
+    }
 };
 
 Blockly.Blocks['when_i_receive'] = {
@@ -68,6 +71,9 @@ Blockly.Blocks['when_i_receive'] = {
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_I_RECEIVE_HELPURL);
 	},
+    section: function() {
+		return 'declaration';
+    }
 };
 
 Blockly.Blocks['when_i_receive_a_lora_frame'] = {
@@ -84,6 +90,9 @@ Blockly.Blocks['when_i_receive_a_lora_frame'] = {
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_HELPURL);
 	},
+    section: function() {
+		return 'declaration';
+    }
 };
 
 Blockly.Blocks['broadcast'] = {
@@ -98,6 +107,9 @@ Blockly.Blocks['broadcast'] = {
 		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_HELPURL);
 	},
+    section: function() {
+		return 'declaration';
+    }
 };
 
 Blockly.Blocks['broadcast_and_wait'] = {
@@ -113,4 +125,7 @@ Blockly.Blocks['broadcast_and_wait'] = {
 		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_HELPURL);
 	},
+    section: function() {
+		return 'declaration';
+    }
 };

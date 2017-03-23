@@ -40,7 +40,7 @@ Blockly.Lua['configurei2c'] = function(block) {
 	
 	var code = '';
 	
-	code = 'i2c.setup(' + Board.i2cModules[module] + ', ' + speed + ', ' + Board.digitalPins[sda] + ', ' + Board.digitalPins[scl] +')\n';
+	code = 'i2c.setup(' + Code.status.maps.i2cModules[module] + ', ' + speed + ', ' + Code.status.maps.digitalPins[sda] + ', ' + Code.status.maps.digitalPins[scl] +')\n';
 
 	return code;
 };
@@ -50,7 +50,7 @@ Blockly.Lua['i2cstartcondition'] = function(block) {
 	
 	var code = '';
 	
-	code = 'i2c.start(' + Board.i2cModules[module]  + ')\n';
+	code = 'i2c.start(' + Code.status.maps.i2cModules[module]  + ')\n';
 
 	return code;
 };
@@ -60,7 +60,7 @@ Blockly.Lua['i2cstopcondition'] = function(block) {
 	
 	var code = '';
 	
-	code = 'i2c.stop(' + Board.i2cModules[module]  + ')\n';
+	code = 'i2c.stop(' + Code.status.maps.i2cModules[module]  + ')\n';
 
 	return code;
 };
@@ -80,7 +80,7 @@ Blockly.Lua['i2caddress'] = function(block) {
 		direction = 'i2c.WRITE';
 	}
 	
-	code = 'i2c.address(' + Board.i2cModules[module]  + ', ' + address + ', ' + direction + ')\n';
+	code = 'i2c.address(' + Code.status.maps.i2cModules[module]  + ', ' + address + ', ' + direction + ')\n';
 
 	return [code, Blockly.Lua.ORDER_HIGH];
 };
@@ -90,7 +90,7 @@ Blockly.Lua['i2cread'] = function(block) {
 	
 	var code = '';
 	
-	code = 'i2c.read(' + Board.i2cModules[module]  + ')\n';
+	code = 'i2c.read(' + Code.status.maps.i2cModules[module]  + ')\n';
 
 	return [code, Blockly.Lua.ORDER_HIGH];
 };
@@ -101,7 +101,7 @@ Blockly.Lua['i2cwrite'] = function(block) {
 	
 	var code = '';
 	
-	code = 'i2c.write(' + Board.i2cModules[module]  + ', ' + value + ')\n';
+	code = 'i2c.write(' + Code.status.maps.i2cModules[module]  + ', ' + value + ')\n';
 
 	return [code, Blockly.Lua.ORDER_HIGH];
 };

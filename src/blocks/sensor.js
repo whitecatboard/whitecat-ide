@@ -67,6 +67,7 @@ Blockly.Blocks['sensor_attach'] = {
 
 		this.setTooltip(Blockly.Msg.SENSOR_ATTACH_TOOLTIP);
 	},
+	
 	mutationToDom: function() {
 		var container = document.createElement('mutation');
 
@@ -151,6 +152,8 @@ Blockly.Blocks['sensor_read'] = {
 	},
 
 	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,
+	
+	hasWatcher: true,
 };
 
 Blockly.Blocks['sensor_set'] = {
@@ -168,7 +171,7 @@ Blockly.Blocks['sensor_set'] = {
 			.appendField(Blockly.Msg.SENSOR_SET1)
 			.appendField(new Blockly.FieldDropdown([
 				['', '']
-			]), "SETTINGS")
+			]), "PROPERTIES")
 			.appendField(Blockly.Msg.SENSOR_SET2);
 
 		this.appendValueInput("VALUE");
@@ -188,14 +191,14 @@ Blockly.Blocks['sensor_set'] = {
 		var index = this.createSensorIfNeeded(this);
 		if (index == -1) return;
 
-		// Build settings option list
-		var settings = [];
-		this.workspace.sensors.settings[index].forEach(function(item, index) {
-			settings.push([item.id, item.id]);
+		// Build properties option list
+		var properties = [];
+		this.workspace.sensors.properties[index].forEach(function(item, index) {
+			properties.push([item.id, item.id]);
 		});
 
 		this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1", this.name).replace("%2", this.sid));
-		this.getField("SETTINGS").menuGenerator_ = settings;
+		this.getField("properties").menuGenerator_ = properties;
 	},
 
 	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,

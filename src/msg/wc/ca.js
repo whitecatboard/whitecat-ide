@@ -102,4 +102,6 @@ var MSG = {
   catOperatorsNumeric: "Numérics",
   catOperatorsLogic: "Llògics",
   catOperatorsText: "Text",
+  catActuators: "Actuadors",
+  catServo: "Servo",
 };

@@ -47,12 +47,12 @@ Blockly.Lua['configuredigitalpin'] = function(block) {
 		directionCode = 'pio.OUTPUT';
 	}
 	
-	code = 'pio.pin.setdir(' + directionCode + ', pio.' + Board.digitalPins[pin] +')\n';
+	code = 'pio.pin.setdir(' + directionCode + ', pio.' + Code.status.maps.digitalPins[pin][0] +')\n';
 	
 	if (needsPull) {
-		code += 'pio.pin.setpull(pio.PULLUP, pio.' + Board.digitalPins[pin] +')\n';
+		code += 'pio.pin.setpull(pio.PULLUP, pio.' + Code.status.maps.digitalPins[pin][0] +')\n';
 	} else {
-		code += 'pio.pin.setpull(pio.NOPULL, pio.' + Board.digitalPins[pin] +')\n';
+		code += 'pio.pin.setpull(pio.NOPULL, pio.' + Code.status.maps.digitalPins[pin][0] +')\n';
 	}
 	
 	return code;
@@ -64,101 +64,43 @@ Blockly.Lua['configureanalogpin'] = function(block) {
 	
 	var code = '';
 	
-	code  = 'if (adc0 == nil) then\n';
-	code += '  adc0 = adc.setup(adc.ADC0)\n';
+	code  = 'if (adc1 == nil) then\n';
+	code += '  adc1 = adc.setup(adc.ADC1)\n';
 	code += 'end\n';
-	code += 'adc0_chan' + Board.analogPinsChannel[pin] + ' = adc0:setupchan(' + resolution + ', ' + Board.analogPinsChannel[pin] + ')\n';
+	code += 'adc1_chan' + Code.status.maps.analogPinsChannel[pin] + ' = adc1:setupchan(' + resolution + ', adc.' + Code.status.maps.analogPinsChannel[pin] + ')\n';
 
 	return code;
 };
 
-Blockly.Lua['configuredacpwmpin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var resolution = block.getFieldValue('RESOLUTION');
-	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);	
-	
-	if (!value) {
-		value = '0';
-	}
-	
-	var code = '';
-	
-	code += 'pwm.setup(' + Board.pwmPinsChannel[pin] + ', pwm.DAC, ' + resolution + ', ' + value + ')\n';
-
-	return code;
-}
-
-
-Blockly.Lua['configuredefaultpwmpin'] = function(block) {
+Blockly.Lua['setpwmpin'] = function(block) {
 	var pin = block.getFieldValue('PIN');
 	var frequency = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE);	
 	var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE);	
 	
-
+	console.log(1);
 	if (!frequency) {
 		frequency = '1000';
 	}
+	console.log(1);
 
 	if (!duty) {
 		duty = '0';
 	}
+	console.log(1);
 	
 	var code = '';
 
-	code  = 'if (pwm0 == nil) then\n';
-	code += '  pwm0 = pwm.setup(pwm.PWM0)\n';
-	code += 'end\n';
-	code += 'pwm0_chan_pin' + pin + ' = pwm0:setupchan(' + Board.pwmPinsChannel[pin] + ', pio.' + Board.pwmPins[pin] + ', ' + frequency + ', ' + duty + ')\n';
-	
-	return code;
-}
+	console.log(1);
+	if (Code.blockAbstraction == blockAbstraction.Low) {	
+		code = '';
+	} else {
+		if (codeSection["require"].indexOf('require("block-pwm")') == -1) {
+			codeSection["require"].push('require("block-pwm")');
+		}
 
-Blockly.Lua['pwmstart'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	
-	var code = '';
-	
-	code += 'pwm0_chan_pin' + pin + ':start()\n';
-
-	return code;
-}
-
-Blockly.Lua['pwmstop'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	
-	var code = '';
-	
-	code += 'pwm0_chan_pin' + pin + ':stop()\n';
-
-	return code;
-}
-
-Blockly.Lua['pwmsetduty'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE);	
-	
-	var code = '';
-
-	if (!duty) {
-		duty = '0';
+		code = 'wcBlock.pwm.set("' + block.id + '", pio.' + Code.status.maps.pwmPins[pin] + ', ' + frequency + ', ' + duty + ' / 100)\n';
 	}
-	
-	code += 'pwm0_chan_pin' + pin + ':setduty(' + duty +')\n';
-
-	return code;
-}
-
-Blockly.Lua['pwmwrite'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);	
-	
-	var code = '';
-
-	if (!value) {
-		value = '0';
-	}
-	
-	code += 'pwm.write(' + Board.pwmPinsChannel[pin] + ', ' + value + ')\n';
+	console.log(1);
 
 	return code;
 }
@@ -169,8 +111,15 @@ Blockly.Lua['setdigitalpin'] = function(block) {
 	
 	var code = '';
 	
-	code = 'pio.pin.setval(' + value + ', pio.' + Board.digitalPins[pin] +')\n';
-	
+	if (Code.blockAbstraction == blockAbstraction.Low) {	
+		code = 'pio.pin.setval(' + value + ', pio.' + Code.status.maps.digitalPins[pin][0] +')\n';
+	} else {
+		if (codeSection["require"].indexOf('require("block-gpio")') == -1) {
+			codeSection["require"].push('require("block-gpio")');
+		}
+
+		code = 'wcBlock.gpio.set("' + block.id + '", pio.' + Code.status.maps.digitalPins[pin][0] + ', ' + value + ')\n';
+	}
 	return code;
 };
 
@@ -180,7 +129,15 @@ Blockly.Lua['getdigitalpin'] = function(block) {
 	
 	var code = '';
 	
-	code = 'pio.pin.getval(pio.' + Board.digitalPins[pin] +')';
+	if (Code.blockAbstraction == blockAbstraction.Low) {	
+		code = 'pio.pin.getval(pio.' + Code.status.maps.digitalPins[pin][0] +')';
+	} else {
+		if (codeSection["require"].indexOf('require("block-gpio")') == -1) {
+			codeSection["require"].push('require("block-gpio")');
+		}
+
+		code = 'wcBlock.gpio.get("' + block.id + '", pio.' + Code.status.maps.digitalPins[pin][0] + ')\n';		
+	}
 	
 	return [code, Blockly.Lua.ORDER_HIGH];
 };
@@ -189,9 +146,17 @@ Blockly.Lua['getanalogpin'] = function(block) {
 	var pin = block.getFieldValue('PIN');
 	
 	var code = '';
-	
-	code = 'adc0_chan' + Board.analogPinsChannel[pin] + ':read()\n';
-		
+
+	if (Code.blockAbstraction == blockAbstraction.Low) {	
+		code = 'adc1_chan' + Code.status.maps.analogPinsChannel[pin] + ':read()\n';
+	} else {
+		if (codeSection["require"].indexOf('require("block-adc")') == -1) {
+			codeSection["require"].push('require("block-adc")');
+		}
+
+		code = 'wcBlock.adc.get("' + block.id + '", adc.' + Code.status.maps.analogPinsChannel[pin] + ')\n';
+	}
+
 	return [code, Blockly.Lua.ORDER_HIGH];
 };
 

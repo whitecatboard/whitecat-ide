@@ -98,10 +98,24 @@ Blockly.Lua['lora_set_retx'] = function(block) {
 };
 
 Blockly.Lua['lora_join'] = function(block) {
-  return 'lora.join()\n';
+	var code = '';
+	
+	if (Code.blockAbstraction == blockAbstraction.Low) {
+		code = 'lora.join()\n';
+	} else {
+		if (codeSection["require"].indexOf('require("block-lora")') == -1) {
+			codeSection["require"].push('require("block-lora")');
+		}
+		
+		code = 'wcBlock.lora.join("' + block.id + '", lora.BAND' + block.band + ', ' + block.dr + ', ' + block.retx + ', ' + 
+		       block.adr + ', "' + block.deveui + '", "' + block.appeui + '", "' + block.appkey + '");\n';			
+	}
+	
+	return code;
 };
 
 Blockly.Lua['lora_tx'] = function(block) {
+	var code = '';
     var payload = Blockly.Lua.valueToCode(block, 'PAYLOAD', Blockly.Lua.ORDER_NONE) || '\'\'';
     var port = Blockly.Lua.valueToCode(block, 'PORT', Blockly.Lua.ORDER_NONE);
     var confirmed = block.getFieldValue('CONF');
@@ -112,7 +126,25 @@ Blockly.Lua['lora_tx'] = function(block) {
 		confirmed = "true";
 	}
 	
-    return 'lora.tx(' + confirmed + ', ' + port + ', ' + payload + ')\n';
+	if (Code.blockAbstraction == blockAbstraction.Low) {
+    	 code = 'lora.tx(' + confirmed + ', ' + port + ', ' + payload + ')\n';
+	 } else {
+ 		if (codeSection["require"].indexOf('require("block-lora")') == -1) {
+ 			codeSection["require"].push('require("block-lora")');
+ 		}
+
+ 		if (block.activation == 'OTAA') {
+			code = 'wcBlock.lora.tx("' + block.id + '", true, lora.BAND' + block.band + ', ' + block.dr + ', ' + block.retx + ', ' + 
+	                block.adr + ', "' + block.deveui + '", "' + block.appeui + '", "' + block.appkey + '", '+confirmed+', ' +
+				    payload+', '+port+');\n';
+		} else {
+			code = 'wcBlock.lora.tx("' + block.id + '", false, lora.BAND' + block.band + ', ' + block.dr + ', ' + block.retx + ', ' + 
+		            block.adr + ', "' + block.devaddr + '", "' + block.nwkskey + '", "' + block.appskey + '", '+confirmed+', ' +
+				    payload+', '+port+');\n';					
+		}	
+	 }
+	 
+	 return code;
 };
 
 Blockly.Lua['lora_get_port'] = function(block) {

@@ -1,0 +1,19 @@
+function c(a1,a2,a3) 
+	print(a1)
+	print(a2)
+	print(a3)
+end
+
+function b(...)
+	local arguments = {...}
+
+	c(arguments)
+
+	try(
+		function()
+			
+		end
+	)
+end
+
+t = b(1,2,3)

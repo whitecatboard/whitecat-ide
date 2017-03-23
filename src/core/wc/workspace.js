@@ -34,12 +34,28 @@ goog.require('goog.array');
 goog.require('goog.math');
 
 Blockly.Workspace.prototype.wcInit = function() {
+	if (typeof this.lora == "undefined") {
+		this.lora = {
+			"band": "868",
+			"activation": "ABP",
+			"dr": "0",
+			"retx": "0",
+			"adr": "false",
+			"deveui": "",
+			"appeui": "",
+			"appkey": "",
+			"devaddr": "",
+			"nwkskey": "",
+			"appskey": ""
+		}
+	}
+	
 	if (typeof this.sensors == "undefined") {
 		this.sensors = {
-			"names":    [], // Array of sensor names in workspace
+			"names": [], // Array of sensor names in workspace
 			"provides": [], // Array of provides structure for each sensor {id: xxxx, type: xxx}
-			"settings": [], // Array of settings structure for each sensor {id: xxxx, type: xxx}
-			"setup":    [], // Array of setup structure for each sensor {id: TMP36|DHT11|.., name: ..., interface: xxx, pin: xxx}		
+			"properties": [], // Array of property structure for each sensor {id: xxxx, type: xxx}
+			"setup": [], // Array of setup structure for each sensor {id: TMP36|DHT11|.., name: ..., interface: xxx, pin: xxx}		
 		};
 	}
 
@@ -48,15 +64,15 @@ Blockly.Workspace.prototype.wcInit = function() {
 			"builtIn": [
 				'event'
 			],
-			
+
 			"names": [], // Array of event names in workspace
 		};
 
 		// Add built in events
 		var i;
-		for(i=0; i < this.events.builtIn.length;i++) {
-			this.events.names.push(this.events.builtIn[i]);			
-		} 
+		for (i = 0; i < this.events.builtIn.length; i++) {
+			this.events.names.push(this.events.builtIn[i]);
+		}
 	}
 }
 
@@ -86,10 +102,10 @@ Blockly.Workspace.prototype.doCreateEvent = function(oldName, newName) {
 			return -1;
 		} else {
 			if (this.eventIndexOf(newName) == -1) {
-				this.events.names[index] = newName;	
+				this.events.names[index] = newName;
 			} else {
 				// Nothing to update, newName exists	
-				return -1;			
+				return -1;
 			}
 		}
 	} else {
@@ -97,9 +113,9 @@ Blockly.Workspace.prototype.doCreateEvent = function(oldName, newName) {
 			this.events.names.push(newName);
 		} else {
 			// Nothing to create, newName exists	
-			return -1;			
+			return -1;
 		}
-	}		
+	}
 
 	return this.eventIndexOf(newName);
 };
@@ -110,24 +126,24 @@ Blockly.Workspace.prototype.createEvent = function(oldName, focus) {
 	var edit = false;
 
 	if (typeof oldName != "undefined") edit = true;
-	
+
 	if (edit) {
 		// Get event index
 		var index = this.eventIndexOf(oldName);
 
 		if (index < this.events.builtIn.length) {
 			Code.showError(Blockly.Msg.ERROR, Blockly.Msg.EVENT_CANNOT_RENAME, function() {});
-			
+
 			return;
 		}
-		
+
 	}
 
-	dialogForm  = '<form id="event_form">';
-	
+	dialogForm = '<form id="event_form">';
+
 	dialogForm += '<div>';
 	dialogForm += '<label for="event_name">' + Blockly.Msg.EVENT_NAME + ':&nbsp;&nbsp;</label>';
-	
+
 	if (edit) {
 		dialogForm += '<input id="event_name" event_name="name" value="' + oldName + '">';
 	} else {
@@ -151,12 +167,12 @@ Blockly.Workspace.prototype.createEvent = function(oldName, focus) {
 								edit ? oldName : undefined,
 								newName
 							);
-						
+
 							focus.setValue(newName);
 							focus.setText(newName);
 						} else {
 							Code.showError(Blockly.Msg.ERROR, Blockly.Msg.EVENT_ALREADY_EXISTS.replace('%1', newName), function() {});
-						}						
+						}
 					}
 				}
 			},
@@ -168,10 +184,10 @@ Blockly.Workspace.prototype.createEvent = function(oldName, focus) {
 		},
 		closable: false
 	});
-	
+
 	dialog.one("shown.bs.modal", function() {
 		dialog.find("#event_name").focus();
-	});	
+	});
 };
 
 Blockly.Workspace.prototype.deleteEvent = function(name, focus) {
@@ -217,12 +233,12 @@ Blockly.Workspace.prototype.createSensor = function(oldName, setup) {
 	if (update) {
 		this.sensors.names[index] = setup.name;
 
-		// Find sensor in board structures and copy setup, provides and settings
-		Board.sensors.forEach(function(item, idx) {
+		// Find sensor in board structures and copy setup, provides and properties
+		Code.status.sensors.forEach(function(item, idx) {
 			if (item.id == setup.id) {
 				thisInstance.sensors.setup[index] = setup;
 				thisInstance.sensors.provides[index] = item.provides;
-				thisInstance.sensors.settings[index] = item.settings;
+				thisInstance.sensors.properties[index] = item.properties;
 			}
 		});
 
@@ -230,11 +246,11 @@ Blockly.Workspace.prototype.createSensor = function(oldName, setup) {
 
 		for (var i = 0; i < blocks.length; i++) {
 			if ((blocks[i].type == 'sensor_attach') || (blocks[i].type == 'sensor_read') || (blocks[i].type == 'sensor_set')) {
-				if (blocks[i].name == oldName) {
-					blocks[i].interface = setup.interface;
+				if (blocks[i]['name'] == oldName) {
+					blocks[i]['interface'] = setup['interface'];
 					blocks[i].pin = setup.pin;
 					blocks[i].sid = setup.id;
-					blocks[i].name = setup.name;
+					blocks[i]['name'] = setup['name'];
 					blocks[i].updateShape_();
 				}
 			}
@@ -248,14 +264,39 @@ Blockly.Workspace.prototype.createSensor = function(oldName, setup) {
 			// Get sensor index
 			index = this.sensorIndexOf(sname);
 
-			// Find sensor in board structures and copy setup, provides and settings
-			Board.sensors.forEach(function(item, idx) {
+			// Find sensor in board structures and copy setup, provides and properties
+			Code.status.sensors.forEach(function(item, idx) {
 				if (item.id == setup.id) {
 					thisInstance.sensors.setup[index] = setup;
 					thisInstance.sensors.provides[index] = item.provides;
-					thisInstance.sensors.settings[index] = item.settings;
+					thisInstance.sensors.properties[index] = item.properties;
 				}
 			});
+		}
+	}
+};
+
+Blockly.Workspace.prototype.configureLora = function(setup) {
+	var thisInstance = this;
+	
+	thisInstance.lora = setup;
+	
+	var blocks = this.getAllBlocks();
+	
+    for (var i = 0; i < blocks.length; i++) {
+		var block = blocks[i];
+				
+		if ((block.type == 'lora_join') || (block.type == 'lora_tx')) {
+			block.band = setup.band;
+			block.activation = setup.activation;
+			block.dr = setup.dr;
+			block.retx = setup.retx;
+			block.deveui = setup.deveui;
+			block.appeui = setup.appeui;
+			block.appkey = setup.appkey;
+			block.devaddr = setup.devaddr;
+			block.nwkskey = setup.nwkskey;
+			block.appskey = setup.appskey;
 		}
 	}
 };
@@ -267,7 +308,7 @@ Blockly.Workspace.prototype.removeSensor = function(sensor) {
 	// Remove from names
 	this.sensors.names.splice(index, 1);
 	this.sensors.provides.splice(index, 1);
-	this.sensors.settings.splice(index, 1);
+	this.sensors.properties.splice(index, 1);
 	this.sensors.setup.splice(index, 1);
 
 	// Refresh toolbox
@@ -282,5 +323,130 @@ Blockly.Workspace.prototype.removeSensor = function(sensor) {
 				blocks[i].dispose(true);
 			}
 		}
+	}
+}
+
+/**
+ * Select this block.  Highlight it visually as block has an error.
+ */
+Blockly.BlockSvg.prototype.addError = function() {
+  Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_),
+                    'blocklyError');
+  // Move the selected block to the top of the stack.
+  var block = this;
+  do {
+    var root = block.getSvgRoot();
+    root.parentNode.appendChild(root);
+    block = block.getParent();
+  } while (block);
+};
+
+/**
+ * Unselect this block.  Remove its highlighting as block has not an error.
+ */
+Blockly.BlockSvg.prototype.removeError = function() {
+  Blockly.utils.removeClass(/** @type {!Element} */ (this.svgGroup_),
+                       'blocklyError');
+};
+
+/**
+ * Select this block.  Highlight it visually as block is running.
+ */
+Blockly.BlockSvg.prototype.addStart = function() {
+  Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_),
+                    'blocklyStarted');
+  // Move the selected block to the top of the stack.
+  var block = this;
+  do {
+    var root = block.getSvgRoot();
+    root.parentNode.appendChild(root);
+    block = block.getParent();
+  } while (block);
+};
+
+/**
+ * Unselect this block.  Remove its highlighting as block is not running.
+ */
+Blockly.BlockSvg.prototype.removeStart = function() {
+  Blockly.utils.removeClass(/** @type {!Element} */ (this.svgGroup_),
+                       'blocklyStarted');
+};
+
+Blockly.Css.CONTENT.push(
+  '.blocklyStarted>.blocklyPath {',
+    'stroke: #00c800;',
+    'stroke-width: 4px;',
+  '}'
+);
+
+Blockly.Css.CONTENT.push(
+  '.blocklyStarted>.blocklyPathLight {',
+    'display: none;',
+  '}'
+);
+
+Blockly.Css.CONTENT.push(
+  '.blocklyError>.blocklyPath {',
+    'stroke: #ff0000;',
+    'stroke-width: 4px;',
+  '}'
+);
+
+Blockly.Css.CONTENT.push(
+  '.blocklyError>.blocklyPathLight {',
+    'display: none;',
+  '}'
+);
+
+/**
+ * Change the colour of a block.
+ */
+Blockly.BlockSvg.prototype.updateColour = function() {
+  if (this.disabled) {
+    // Disabled blocks don't have colour.
+    return;
+  }
+  var hexColour = this.getColour();
+  var rgb = goog.color.hexToRgb(hexColour);
+  if (this.isShadow()) {
+    //rgb = goog.color.lighten(rgb, 0.6);
+    hexColour = goog.color.rgbArrayToHex(rgb);
+    this.svgPathLight_.style.display = 'none';
+    this.svgPathDark_.setAttribute('fill', hexColour);
+  } else {
+    this.svgPathLight_.style.display = '';
+    var hexLight = goog.color.rgbArrayToHex(goog.color.lighten(rgb, 0.3));
+    var hexDark = goog.color.rgbArrayToHex(goog.color.darken(rgb, 0.2));
+    this.svgPathLight_.setAttribute('stroke', hexLight);
+    this.svgPathDark_.setAttribute('fill', hexDark);
+  }
+  this.svgPath_.setAttribute('fill', hexColour);
+
+  var icons = this.getIcons();
+  for (var i = 0; i < icons.length; i++) {
+    icons[i].updateColour();
+  }
+
+  // Bump every dropdown to change its colour.
+  for (var x = 0, input; input = this.inputList[x]; x++) {
+    for (var y = 0, field; field = input.fieldRow[y]; y++) {
+      field.setText(null);
+    }
+  }
+};
+
+Blockly.WorkspaceSvg.prototype.removeErrors = function() {
+	var blocks = this.getAllBlocks();
+	
+    for (var i = 0; i < blocks.length; i++) {
+		blocks[i].removeError();
+	}
+}
+
+Blockly.WorkspaceSvg.prototype.removeStarts = function() {
+	var blocks = this.getAllBlocks();
+	
+    for (var i = 0; i < blocks.length; i++) {
+		blocks[i].removeStart();
 	}
 }

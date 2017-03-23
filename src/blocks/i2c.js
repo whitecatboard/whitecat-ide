@@ -43,12 +43,12 @@ Blockly.Blocks['configurei2c'] = {
       var modules = [];
   	  var pins = [];
 	
-  	  for(var key in Board.i2cModules) {
+  	  for(var key in Code.status.maps.i2cModules) {
   		modules.push([key, key]);
   	  }  
 	
-  	  for(var key in Board.digitalPins) {
-  		pins.push([key + ' - ' + Board.digitalPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
+  	  for(var key in Code.status.maps.digitalPins) {
+  		pins.push([key + ' - ' + Code.status.maps.digitalPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
   	  }  
 
       this.appendDummyInput()
@@ -80,7 +80,7 @@ Blockly.Blocks['i2cstartcondition'] = {
   init: function() {
       var modules = [];
 	
-  	  for(var key in Board.i2cModules) {
+  	  for(var key in Code.status.maps.i2cModules) {
   		modules.push([key, key]);
   	  }  
 	
@@ -101,7 +101,7 @@ Blockly.Blocks['i2cstopcondition'] = {
   init: function() {
       var modules = [];
 	
-  	  for(var key in Board.i2cModules) {
+  	  for(var key in Code.status.maps.i2cModules) {
   		modules.push([key, key]);
   	  }  
 	
@@ -122,7 +122,7 @@ Blockly.Blocks['i2caddress'] = {
   init: function() {
       var modules = [];
 	
-  	  for(var key in Board.i2cModules) {
+  	  for(var key in Code.status.maps.i2cModules) {
   		modules.push([key, key]);
   	  }  
 	
@@ -153,7 +153,7 @@ Blockly.Blocks['i2cread'] = {
   init: function() {
       var modules = [];
 	
-  	  for(var key in Board.i2cModules) {
+  	  for(var key in Code.status.maps.i2cModules) {
   		modules.push([key, key]);
   	  }  
 	
@@ -175,7 +175,7 @@ Blockly.Blocks['i2cwrite'] = {
   init: function() {
       var modules = [];
 	
-  	  for(var key in Board.i2cModules) {
+  	  for(var key in Code.status.maps.i2cModules) {
   		modules.push([key, key]);
   	  }  
 	
