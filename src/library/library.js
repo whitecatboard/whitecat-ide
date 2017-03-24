@@ -32,7 +32,65 @@
 function blockLibrary() {
 }
 
+blockLibrary.prototype.replace = function(template, char1, char2, block) {
+	var code = "";	
+	var previous = "";
+	var marker = "";
+	var token = "";
+	var id = "";
+	
+	for(var i=0;i < template.length;i++) {
+		if ((marker == char1) || (marker == char2)) {
+			if ((template.charAt(i) == char1) || (template.charAt(i) == char2)) {
+				if ((token == char1 + char1) || (token == char2 + char2)) {
+					if (token == "%%") {
+						code = code + block[id];
+					} else if (token == "$$") {
+						code = code + "'" + eval("block.getFieldValue('"+id+"')") + "'";
+					} else if (token == "@@") {
+						code = code + eval("Blockly.Lua.valueToCode(block, id, Blockly.Lua.ORDER_NONE)");
+					} else if (token == "{{") {
+						code = code + eval(id);
+					}
+					
+					
+					Blockly.Lua.prefixLines('thread.start(function()', Blockly.Lua.INDENT);
+					token = "";
+					id = "";
+				} else {
+					token = template.charAt(i) + template.charAt(i);
+				}
+				
+				marker = "";
+			} else {
+				if (token != "") {
+					id = id + previous;
+				} else {
+					code = code + previous;						
+				}
+				marker = "";
+			}
+		} else {
+			if ((template.charAt(i) == char1) || (template.charAt(i) == char2))  {
+				marker = char2;
+			} else {
+				if (token == "") {
+					code = code + template.charAt(i);
+				} else {
+					id = id + template.charAt(i);
+				}
+			}				
+		}
+		
+		previous = template.charAt(i);
+	}	
+	
+	return code;
+}
+
 blockLibrary.prototype.create = function(xml, block) {
+	var thisInstance = this;
+	
 	// Block def
 	Blockly.Blocks[block.spec.type] = {
 		init: function() {
@@ -47,7 +105,8 @@ blockLibrary.prototype.create = function(xml, block) {
 	
 	// Generator
 	Blockly.Lua[block.spec.type] = function(b) {
-		var code = atob(block.code);
+		var template = atob(block.code);
+		var code = "";
 
 		// Add dependencies
 		for (var module in block.dependency) {
@@ -56,6 +115,13 @@ blockLibrary.prototype.create = function(xml, block) {
 			}
 		}
 		
+		code = thisInstance.replace(template, "$", "$", b);
+		code = thisInstance.replace(code, "%", "%", b);
+		code = thisInstance.replace(code, "$", "$", b);
+		code = thisInstance.replace(code, "@", "@", b);
+		code = thisInstance.replace(code, "{", "}", b);
+		
+		/*
 		// Replace with block id
 		code = code.replace(/%%id%%/g,b.id);
 		
@@ -96,7 +162,7 @@ blockLibrary.prototype.create = function(xml, block) {
 			var regex = /\{\{([a-zA-Z0-9\(\)\+\-\*\.\[\]\'\"]*)\}\}/g;
 			var result;
 		}
-		
+		*/
 		return code + "\n";	
 	};
 	

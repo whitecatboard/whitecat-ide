@@ -372,7 +372,7 @@ Code.buildToolBox = function() {
 		'<block type="when_i_receive"></block>' +
 		'<block type="broadcast"></block>' +
 		'<block type="broadcast_and_wait"></block>' +
-		'<block type="when_i_receive_a_lora_frame"></block>' +
+//		'<block type="when_i_receive_a_lora_frame"></block>' +
 		'</category>' +
 		'<category id="catControl">' +
 		'<category id="catLoops">' +
@@ -1422,7 +1422,6 @@ Code.load = function() {
 };
 
 Code.stop = function() {
-	Blockly.mainWorkspace.removeErrors();
 	Blockly.mainWorkspace.removeStarts();
 
 	Code.agent.send({

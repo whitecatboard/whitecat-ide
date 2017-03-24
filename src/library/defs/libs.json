@@ -40,7 +40,7 @@
 			"interactiveFields": ["VALUE", "NUM"],
 			"whatcher": false,
 			"dependency": ["block"],
-			"code": "ZG8NCiAgICBsb2NhbCBpbnN0YW5jZSA9ICJfYWxhcm17e0NvZGUuc3RhdHVzLm1hcHMucHdtUGluc1skJFBJTiQkXX19Ig0KCQ0KCXRyeSgNCgkJZnVuY3Rpb24oKQ0KCQkJaWYgKF9HW2luc3RhbmNlXSA9PSBuaWwpIHRoZW4NCgkJCSAgICBfR1tpbnN0YW5jZV0gPSBwd20uYXR0YWNoKHBpby57e0NvZGUuc3RhdHVzLm1hcHMucHdtUGluc1skJFBJTiQkXX19LCAxMDAwLCAwKQ0KDQoJCQkJX0dbaW5zdGFuY2VdOnN0YXJ0KCkNCgkJCWVuZA0KCQ0KCQkJX0dbaW5zdGFuY2VdOnNldGR1dHkoKEBAVkFMVUVAQCkgKiAwLjAxKQ0KCQllbmQsDQoJCWZ1bmN0aW9uKHdoZXJlLCBsaW5lLCBlcnIsIG1lc3NhZ2UpDQoJCQl3Y0Jsb2NrLmJsb2NrRXJyb3IoIiUlaWQlJSIsIGVyciwgbWVzc2FnZSkNCgkJZW5kDQoJKTsNCmVuZA=="	
+			"code": "LS0gc2V0IGJ1enplciBvbiB7e0NvZGUuc3RhdHVzLm1hcHMucHdtUGluc1skJFBJTiQkXX19DQpkbw0KICAgIGxvY2FsIGluc3RhbmNlID0gX0dbIl9idXp6ZXJ7e0NvZGUuc3RhdHVzLm1hcHMucHdtUGluc1skJFBJTiQkXX19Il0NCgkNCgl0cnkoDQoJCWZ1bmN0aW9uKCkNCgkJCS0tIEF0dGFjaCBidXp6ZXIgb24ge3tDb2RlLnN0YXR1cy5tYXBzLnB3bVBpbnNbJCRQSU4kJF19fSwgdXNpbmcgYSBQV00gY2hhbm5lbA0KCQkJaWYgKGluc3RhbmNlID09IG5pbCkgdGhlbg0KCQkJICAgIGluc3RhbmNlID0gcHdtLmF0dGFjaChwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLnB3bVBpbnNbJCRQSU4kJF19fSwgMTAwMCwgMCkNCgkJCQlpbnN0YW5jZTpzdGFydCgpDQoJCQkJDQoJCQkJX0dbIl9idXp6ZXJ7e0NvZGUuc3RhdHVzLm1hcHMucHdtUGluc1skJFBJTiQkXX19Il0gPSBpbnN0YW5jZQ0KCQkJZW5kDQoJDQoJCQktLSBVcGRhdGUgZHV0eSBjeWNsZQ0KCQkJaW5zdGFuY2U6c2V0ZHV0eSgoQEBWQUxVRUBAKSAqIDAuMDEpDQoJCWVuZCwNCgkJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCQllbmQNCgkpOw0KZW5k"	
 		},
 		{
 			"category": "catActuators",
@@ -72,7 +72,7 @@
 			},	
 			"whatcher": false,
 			"dependency": ["block"],
-			"code": "dHJ5KA0KCWZ1bmN0aW9uKCkNCgkJcGlvLnBpbi5zZXRkaXIocGlvLk9VVFBVVCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdfX0pDQoJCXBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLnB3bVBpbnNbJCRQSU4kJF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMSwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdfX0pCQ0KCWVuZCwNCglmdW5jdGlvbih3aGVyZSwgbGluZSwgZXJyLCBtZXNzYWdlKQ0KCQl3Y0Jsb2NrLmJsb2NrRXJyb3IoIiUlaWQlJSIsIGVyciwgbWVzc2FnZSkNCgllbmQNCik7"	
+			"code": "LS0gdHVybiBvbiBsZWQgYXQge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0NCnRyeSgNCglmdW5jdGlvbigpDQoJCXBpby5waW4uc2V0ZGlyKHBpby5PVVRQVVQsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXRwdWxsKHBpby5OT1BVTEwsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMSwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQkNCgllbmQsDQoJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJd2NCbG9jay5ibG9ja0Vycm9yKCIlJWlkJSUiLCBlcnIsIG1lc3NhZ2UpDQoJZW5kDQopOw=="	
 		},
 		{
 			"category": "catActuators",
@@ -104,7 +104,7 @@
 				}
 			},	
 			"dependency": ["block"],
-			"code": "dHJ5KA0KCWZ1bmN0aW9uKCkNCgkJcGlvLnBpbi5zZXRkaXIocGlvLk9VVFBVVCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdfX0pDQoJCXBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLnB3bVBpbnNbJCRQSU4kJF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdfX0pCQ0KCWVuZCwNCglmdW5jdGlvbih3aGVyZSwgbGluZSwgZXJyLCBtZXNzYWdlKQ0KCQl3Y0Jsb2NrLmJsb2NrRXJyb3IoIiUlaWQlJSIsIGVyciwgbWVzc2FnZSkNCgllbmQNCik7"	
+			"code": "LS0gdHVybiBvZmYgbGVkIGF0IHt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19DQp0cnkoDQoJZnVuY3Rpb24oKQ0KCQlwaW8ucGluLnNldGRpcihwaW8uT1VUUFVULCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pDQoJCXBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pDQoJCXBpby5waW4uc2V0dmFsKDAsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkJDQoJZW5kLA0KCWZ1bmN0aW9uKHdoZXJlLCBsaW5lLCBlcnIsIG1lc3NhZ2UpDQoJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCWVuZA0KKTs"	
 		},
 		{
 			"category": "catActuators",
@@ -135,7 +135,7 @@
 				}
 			},	
 			"dependency": ["block"],
-			"code": "dHJ5KA0KCWZ1bmN0aW9uKCkNCgkJcGlvLnBpbi5zZXRkaXIocGlvLk9VVFBVVCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdfX0pDQoJCXBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLnB3bVBpbnNbJCRQSU4kJF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMSwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdfX0pCQ0KCWVuZCwNCglmdW5jdGlvbih3aGVyZSwgbGluZSwgZXJyLCBtZXNzYWdlKQ0KCQl3Y0Jsb2NrLmJsb2NrRXJyb3IoIiUlaWQlJSIsIGVyciwgbWVzc2FnZSkNCgllbmQNCik7"	
+			"code": "LS0gdHVybiBvbiByZWxheSBhdCB7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fQ0KdHJ5KA0KCWZ1bmN0aW9uKCkNCgkJcGlvLnBpbi5zZXRkaXIocGlvLk9VVFBVVCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQ0KCQlwaW8ucGluLnNldHB1bGwocGlvLk5PUFVMTCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQ0KCQlwaW8ucGluLnNldHZhbCgxLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pCQ0KCWVuZCwNCglmdW5jdGlvbih3aGVyZSwgbGluZSwgZXJyLCBtZXNzYWdlKQ0KCQl3Y0Jsb2NrLmJsb2NrRXJyb3IoIiUlaWQlJSIsIGVyciwgbWVzc2FnZSkNCgllbmQNCik7"	
 		},
 		{
 			"category": "catActuators",
@@ -166,7 +166,7 @@
 				}
 			},	
 			"dependency": ["block"],
-			"code": "dHJ5KA0KCWZ1bmN0aW9uKCkNCgkJcGlvLnBpbi5zZXRkaXIocGlvLk9VVFBVVCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdfX0pDQoJCXBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLnB3bVBpbnNbJCRQSU4kJF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdfX0pCQ0KCWVuZCwNCglmdW5jdGlvbih3aGVyZSwgbGluZSwgZXJyLCBtZXNzYWdlKQ0KCQl3Y0Jsb2NrLmJsb2NrRXJyb3IoIiUlaWQlJSIsIGVyciwgbWVzc2FnZSkNCgllbmQNCik7"	
+			"code": "LS0gdHVybiBvZmYgcmVsYXkgYXQge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0NCnRyeSgNCglmdW5jdGlvbigpDQoJCXBpby5waW4uc2V0ZGlyKHBpby5PVVRQVVQsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXRwdWxsKHBpby5OT1BVTEwsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQkNCgllbmQsDQoJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJd2NCbG9jay5ibG9ja0Vycm9yKCIlJWlkJSUiLCBlcnIsIG1lc3NhZ2UpDQoJZW5kDQopOw"	
 		},
 		{
 			"category": "catActuators",
@@ -213,7 +213,40 @@
 				}
 			},	
 			"dependency": ["block"],
-			"code": "ZG8NCiAgICBsb2NhbCBpbnN0YW5jZSA9ICJfc3RlcHBlcnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fSINCgkNCiAgICB3Y0Jsb2NrLmJsb2NrU3RhcnQoIiUlaWQlJSIpDQoJdHJ5KA0KCQlmdW5jdGlvbigpDQoJCQlpZiAoX0dbaW5zdGFuY2VdID09IG5pbCkgdGhlbg0KCQkJCV9HW2luc3RhbmNlXSA9IHN0ZXBwZXIuYXR0YWNoKHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0sIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRESVJFQ1RJT04kJF1bMF19fSkNCgkJCWVuZA0KCQkJX0dbaW5zdGFuY2VdOm1vdmUoQEBVTklUU0BAKQ0KCQkJc3RlcHBlci5zdGFydChfR1tpbnN0YW5jZV0pDQoJCWVuZCwNCgkJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCQllbmQNCgkpOw0KICAgIHdjQmxvY2suYmxvY2tFbmQoIiUlaWQlJSIpDQplbmQ="	
+			"code": "LS0gbW92ZSBzdGVwcGVyIG9uIGRpcmVjdGlvbiBwaW4ge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkRElSRUNUSU9OJCRdWzBdfX0sIHN0ZXAgcGluIHt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fQ0KZG8NCiAgICBsb2NhbCBpbnN0YW5jZSA9IF9HWyJfc3RlcHBlcnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fSJdDQoJDQogICAgd2NCbG9jay5ibG9ja1N0YXJ0KCIlJWlkJSUiKQ0KCXRyeSgNCgkJZnVuY3Rpb24oKQ0KCQkJLS0gQXR0YWNoIHN0ZXBwZXINCgkJCWlmIChpbnN0YW5jZSA9PSBuaWwpIHRoZW4NCgkJCQlpbnN0YW5jZSA9IHN0ZXBwZXIuYXR0YWNoKHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRESVJFQ1RJT04kJF1bMF19fSwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fSkNCgkJCWVuZA0KCQkJaW5zdGFuY2U6bW92ZShAQFVOSVRTQEApDQoJCQlzdGVwcGVyLnN0YXJ0KGluc3RhbmNlKQ0KCQkJDQoJCQlfR1siX3N0ZXBwZXJ7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0iXSA9IGluc3RhbmNlDQoJCWVuZCwNCgkJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCQllbmQNCgkpOw0KICAgIHdjQmxvY2suYmxvY2tFbmQoIiUlaWQlJSIpDQplbmQ="	
+		},
+		{
+			"category": "catEvents",
+			"spec": {
+				"type": "event_when_received_lora_frame",
+			    "message0": "",
+			    "args0": [
+			      {
+			        "type": "input_dummy"
+			      },
+			      {
+			        "type": "input_statement",
+			        "name": "DO"
+			      }
+			    ],
+				"colour": "Blockly.Blocks.events.HUE",
+			    "tooltip": "",
+			    "helpUrl": ""			
+			},
+			"whatcher": false,
+			"msg" : {
+				"en": {
+				    "message0": "when I receive a LoRa frame %1 %2"
+				},
+				"ca": {
+				    "message0": "quan es rebi un paquet LoRa %1 %2"
+				},
+				"es": {
+				    "message0": "cuando se reciba un paquete LoRa %1 %2"
+				}
+			},	
+			"dependency": ["block"],
+			"code": "LS0gd2hlbiBJIHJlY2VpdmUgYSBMb1JhIGZyYW1lDQpkbw0KCWxvcmEud2hlblJlY2VpdmVkKGZ1bmN0aW9uKHBvcnQsIHBheWxvYWQpDQoJICAgIHdjQmxvY2suYmxvY2tTdGFydCgiJSVpZCUlIikNCgkJe3tCbG9ja2x5Lkx1YS5zdGF0ZW1lbnRUb0NvZGUoYmxvY2ssICdETycpfX0NCgkgICAgd2NCbG9jay5ibG9ja0VuZCgiJSVpZCUlIikNCgllbmQpDQplbmQ="	
 		}
 	]
 }
