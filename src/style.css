@@ -221,6 +221,70 @@ button {
 	border: 1px solid #ccc;
 }
 
+#content_block_editor_editor {
+	position: absolute !important; 
+	border: 1px solid #ccc;
+}
+#content_block_editor_editor .ace_gutter {
+	color: #000000;
+	background: #EBEBEB;
+	border-right: 1px solid #000000; 
+}
+
+#content_block_editor_editor .ace_gutter-active-line {
+	background-color: #C0C0C0;
+}
+
+#content_block_editor_editor .ace_cursor {
+	color: #000000;
+}
+
+#content_block_editor_editor .ace_active-line {
+	background: #E8E8FF;
+}
+
+#content_block_editor_editor .ace_selection {
+	background: #C0C0C0;
+}
+
+#content_block_editor_editor .ace_print-margin {
+	width: 1px;
+	background: #EBEBEB;
+}
+
+#content_block_editor_editor .ace_selected-word {
+	background-color: #9BFF9B;
+	border: 1px solid #CDFFCD;
+}
+
+#content_block_editor_editor .ace_comment {
+	color: #808080;
+}
+
+#content_block_editor_editor .ace_keyword.ace_operator {
+	color: #000000;
+}
+
+#content_block_editor_editor .ace_keyword {
+	color: #0000FF;
+}
+
+#content_block_editor_editor .ace_constant.ace_language {
+	color: #800080;
+}
+
+#content_block_editor_editor .ace_support.ace_function {
+	color: #000080;
+}
+
+#content_block_editor_editor .ace_numeric {
+	color: #FF8000;
+}
+
+#content_block_editor_editor .ace_string {
+	color: #008000;
+}
+
 .dir-entry {
     margin: 0px 0px 0px 0px !important; 
 	list-style: none;

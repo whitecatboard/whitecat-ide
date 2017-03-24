@@ -233,6 +233,9 @@ blockLibrary.prototype.get = function(xml, id, callback) {
 				// Parse library
 				var def = JSON.parse(data);
 				
+				Code.libraries = [];
+				Code.libraries.push(def);
+				
 				// Parse each block
 				var blocks = def.blocks;
 

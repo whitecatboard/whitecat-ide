@@ -118,6 +118,8 @@ Code.currentStatus = {
 	message: ""
 }
 
+Code.libraries = [];
+
 /**
  * Lookup for names of supported languages.  Keys should be in ISO 639 format.
  */
@@ -136,6 +138,7 @@ Code.workspace = {};
 Code.workspace.type = "blocks";
 Code.workspace.blocks = null;
 Code.workspace.editor = null;
+Code.workspace.block_editor = null;
 Code.workspace.name = "";
 Code.workspace.sourceType = "";
 Code.workspace.source = "";
@@ -310,11 +313,14 @@ Code.tabClick = function(clickedName) {
 	if (Code.selected == 'program') {
 		if (Code.workspace.type == 'blocks') {
 			jQuery("#content_editor").hide();
-		} else {
+		} else if (Code.workspace.type == 'editor') {
 			jQuery("#content_editor").show();
+		} else if (Code.workspace.type == 'block_editor') {
+			jQuery("#content_block_editor").show();
 		}
 	} else {
 		jQuery("#content_editor").hide();
+		jQuery("#content_block_editor").hide();
 	}
 
 	window.dispatchEvent(new Event('resize'));
@@ -327,12 +333,12 @@ Code.renderContent = function() {
 	var content = document.getElementById('content_' + Code.selected);
 
 	Code.tabRefresh();
-
 	if (Code.selected == 'board') {
 		Code.currentFile.path = '';
 		Code.currentFile.file = '';
 
 		jQuery("#content_editor").css('visibility', 'hidden');
+		jQuery("#content_block_editor").css('visibility', 'hidden');
 		jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
 		jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
 		jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
@@ -342,19 +348,30 @@ Code.renderContent = function() {
 		Code.updateStatus();
 	} else if (Code.selected == 'program') {
 		if (Code.workspace.type == 'blocks') {
+			jQuery("#content_block_editor").css('visibility', 'hidden');
 			jQuery("#content_editor").css('visibility', 'hidden');
+			jQuery("#content_block_editor").css('visibility', 'hidden');
 			jQuery(".blocklyWidgetDiv").css('visibility', 'visible');
 			jQuery(".blocklyTooltipDiv").css('visibility', 'visible');
 			jQuery(".blocklyToolboxDiv").css('visibility', 'visible');
 			jQuery("#content_blocks").css('visibility', 'visible');
 
 			Code.workspace.blocks.setVisible(true);
-		} else {
+		} else if (Code.workspace.type == 'editor') {
 			jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
 			jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
 			jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
 			jQuery("#content_blocks").css('visibility', 'hidden');
+			jQuery("#content_block_editor").css('visibility', 'hidden');
 			jQuery("#content_editor").css('visibility', 'visible');
+			jQuery("#content_block_editor").css('visibility', 'hidden');
+		} else if (Code.workspace.type == 'block_editor') {
+			jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
+			jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
+			jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
+			jQuery("#content_blocks").css('visibility', 'hidden');
+			jQuery("#content_editor").css('visibility', 'hidden');
+			jQuery("#content_block_editor").css('visibility', 'visible');
 		}
 	}
 
@@ -886,8 +903,10 @@ Code.init = function() {
 			if (Code.TABS_[i] == 'program') {
 				if (Code.workspace.type == 'blocks') {
 					el = document.getElementById('content_blocks');
-				} else {
+				} else if (Code.workspace.type == 'editor') {
 					el = document.getElementById('content_editor');
+				} else if (Code.workspace.type == 'block_editor') {
+					el = document.getElementById('content_block_editor');
 				}
 
 				el.style.top = bBox.y + 'px';
@@ -979,6 +998,16 @@ Code.init = function() {
 	});
 	Code.workspace.editor.$blockScrolling = Infinity;
 
+	ace.require("ace/ext/language_tools");
+	Code.workspace.block_editor = ace.edit(document.getElementById("content_block_editor_editor"));
+	Code.workspace.block_editor.setShowPrintMargin(true);
+	Code.workspace.block_editor.setPrintMarginColumn(120);
+	Code.workspace.block_editor.getSession().setMode("ace/mode/lua");
+	Code.workspace.block_editor.setOptions({
+		enableBasicAutocompletion: true
+	});
+	Code.workspace.block_editor.$blockScrolling = Infinity;
+
 	if ('BlocklyStorage' in window) {
 		// Hook a save function onto unload.
 		BlocklyStorage.backupOnUnload(Code.workspace.blocks);
@@ -991,6 +1020,8 @@ Code.init = function() {
 			Code.discard();
 			Code.renderContent();
 		});
+		
+	Code.bindClick('blockEditorButton', Code.blockEditor);
 	Code.bindClick('switchToCode', Code.switchToCode);
 	Code.bindClick('switchToBlocks', Code.switchToBlocks);
 	Code.bindClick('loadButton', Code.load);
@@ -1066,7 +1097,7 @@ Code.initLanguage = function() {
 		element.text(MSG[element.attr('id').replace('tab_', '')]);
 	});
 
-	document.getElementById('switchToBlocks').title = MSG['switchToBlocksTooltip'];
+	document.getElementById('switchToBlocks').title = MSG['switchToCodev'];
 	document.getElementById('switchToCode').title = MSG['switchToCodev'];
 	document.getElementById('loadButton').title = MSG['loadButtonTooltip'];
 	document.getElementById('saveButton').title = MSG['saveButtonTooltip'];
@@ -2002,6 +2033,8 @@ Code.tabRefresh = function() {
 	} else if ((Code.selected == 'program') && (Code.workspace.type == 'editor')) {
 		jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToCode").addClass("disabled");
+	} else if ((Code.selected == 'program') && (Code.workspace.type == 'block_editor')) {
+		jQuery("#trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 	} else if (Code.selected == 'board') {
 		jQuery("#switchToCode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
 	}
@@ -2029,6 +2062,23 @@ Code.tabRefresh = function() {
 		jQuery("#targetFile").html('');
 	}
 
+}
+
+Code.blockEditor = function() {
+	Code.workspace.type = "block_editor";
+
+	var html = '';
+	for (var library in Code.libraries) {
+		for (var block in Code.libraries[library].blocks) {
+			html += '<option value="'+Code.libraries[library].blocks[block].spec.type+'">'+Code.libraries[library].blocks[block].spec.type+'</option>'
+		}
+	}
+	
+	jQuery("#content_block_editor_type").html(html);
+	
+	Code.workspace.block_editor.setValue("", -1);
+	Code.workspace.block_editor.focus();
+	Code.renderContent();
 }
 
 Code.switchToCode = function() {
