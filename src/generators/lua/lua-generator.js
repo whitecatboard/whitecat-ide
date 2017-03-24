@@ -143,7 +143,7 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	
 	code = codeSection["require"].join(';') + code.join(';');
 
-	return 'do ' + code + ';end';
+	return 'do\n' + code + ';\nend';
 };
 
 // Generate code for one block

@@ -440,6 +440,7 @@ Blockly.WorkspaceSvg.prototype.removeErrors = function() {
 	
     for (var i = 0; i < blocks.length; i++) {
 		blocks[i].removeError();
+		blocks[i].setWarningText(null);
 	}
 }
 

@@ -364,6 +364,7 @@ Code.renderContent = function() {
 
 Code.buildToolBox = function() {
 	var xml = '';
+	var lib = new blockLibrary();
 
 	xml += '' +
 		'<category id="catEvents">' +
@@ -422,6 +423,7 @@ Code.buildToolBox = function() {
 		'<shadow type="math_number">' +
 		'<field name="NUM"></field>' +
 		'</shadow>' +
+		'</value>' +
 		'</block>' +
 		'</category>' +
 		'</category>';
@@ -823,7 +825,7 @@ Code.buildToolBox = function() {
 		if (Code.blockAbstraction == blockAbstraction.Low) {
 			xml += '<block type="servo_attach"></block>';
 		}
-
+		
 		xml += '<block type="servo_move">' +
 			'<value name="VALUE">' +
 			'<shadow type="math_number">' +
@@ -840,19 +842,21 @@ Code.buildToolBox = function() {
 	}
 
 	xml += '</category>';
+	
+	lib.get(xml, "libs", function(xml){
+		var toolbox = document.getElementById('toolbox');
+		toolbox.innerHTML = xml;
 
-	var toolbox = document.getElementById('toolbox');
-	toolbox.innerHTML = xml;
-
-	jQuery("#catVariables").attr("colour", Blockly.Blocks.variables.HUE);
-	jQuery("#catLists").attr("colour", Blockly.Blocks.lists.HUE);
-	jQuery("#catIO").attr("colour", Blockly.Blocks.io.HUE);
-	jQuery("#catControl").attr("colour", Blockly.Blocks.control.HUE);
-	jQuery("#catEvents").attr("colour", Blockly.Blocks.events.HUE);
-	jQuery("#catSensor").attr("colour", Blockly.Blocks.sensor.HUE);
-	jQuery("#catComm").attr("colour", Blockly.Blocks.i2c.HUE);
-	jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
-	jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);
+		jQuery("#catVariables").attr("colour", Blockly.Blocks.variables.HUE);
+		jQuery("#catLists").attr("colour", Blockly.Blocks.lists.HUE);
+		jQuery("#catIO").attr("colour", Blockly.Blocks.io.HUE);
+		jQuery("#catControl").attr("colour", Blockly.Blocks.control.HUE);
+		jQuery("#catEvents").attr("colour", Blockly.Blocks.events.HUE);
+		jQuery("#catSensor").attr("colour", Blockly.Blocks.sensor.HUE);
+		jQuery("#catComm").attr("colour", Blockly.Blocks.i2c.HUE);
+		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
+		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);		
+	});
 }
 
 Code.updateToolBox = function() {
@@ -2167,6 +2171,7 @@ Code.setup = function() {
 		var error = atob(info.error);
 
 		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).addError();
+		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).setWarningText(error);
 	});
 
 	Code.agent.addListener("boardUpdate", function(id, info) {
