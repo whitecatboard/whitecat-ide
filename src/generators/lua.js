@@ -192,3 +192,28 @@ Blockly.Lua.scrub_ = function(block, code) {
   var nextCode = Blockly.Lua.blockToCode(nextBlock);
   return commentCode + code + nextCode;
 };
+
+Blockly.Lua.tryBlock = function(block, code) {
+	var tryCpde = '';
+	
+	tryCpde += 'try(\n';
+	tryCpde += Blockly.Lua.prefixLines('function()', Blockly.Lua.INDENT) + "\n";
+	if (code != "") {
+		tryCpde += Blockly.Lua.prefixLines(code, Blockly.Lua.INDENT);
+	}
+	tryCpde += Blockly.Lua.prefixLines('end,', Blockly.Lua.INDENT) + "\n";
+	tryCpde += Blockly.Lua.prefixLines('function(where, line, err, message)', Blockly.Lua.INDENT) + "\n";
+	tryCpde += Blockly.Lua.prefixLines(Blockly.Lua.prefixLines('wcBlock.blockError("'+block.id+'", err, message)', Blockly.Lua.INDENT), Blockly.Lua.INDENT) + "\n";
+	tryCpde += Blockly.Lua.prefixLines('end', Blockly.Lua.INDENT) + "\n";
+	tryCpde += ')';
+	
+	return tryCpde;	
+}
+
+Blockly.Lua.indent = function(n, code) {
+	for(var i=0;i<n;i++) {
+		code = Blockly.Lua.prefixLines(code, Blockly.Lua.INDENT);
+	}
+	
+	return code;
+}

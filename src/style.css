@@ -125,9 +125,15 @@ pre.content {
   border: 1px solid #ccc;
   overflow: scroll;
 }
+
 #content_blocks {
   padding: 0;
 }
+
+#content_block_editor {
+  padding: 0;
+}
+
 .blocklySvg {
   border-top: none !important;
 }

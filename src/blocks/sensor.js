@@ -198,7 +198,7 @@ Blockly.Blocks['sensor_set'] = {
 		});
 
 		this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1", this.name).replace("%2", this.sid));
-		this.getField("properties").menuGenerator_ = properties;
+		this.getField("PROPERTIES").menuGenerator_ = properties;
 	},
 
 	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,

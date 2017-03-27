@@ -32,34 +32,25 @@ goog.provide('Blockly.Lua.servo');
 
 goog.require('Blockly.Lua');
 
-Blockly.Lua['servo_attach'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-    var code = '';
-	
-	code = '_servo' + pin + ' = servo.attach(pio.' + Code.status.maps.pwmPins[pin] + ')\r\n';
-
-	return code;
-}
-
 Blockly.Lua['servo_move'] = function(block) {
 	var pin = block.getFieldValue('PIN');
-	var value;
-    var code = '';
-
-	value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
-	if (block.value != -1) {
-		value = block.value;
+	var pioName = Code.status.maps.pwmPins[pin];
+	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE) || '\'\'';
+	var code = '';
+	
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
 	}
-
-	if (Code.blockAbstraction == blockAbstraction.Low) {
-		code = '_servo' + pin + ':move(' + value + ')\r\n';			
-	} else {
-		if (codeSection["require"].indexOf('require("block-servo")') == -1) {
-			codeSection["require"].push('require("block-servo")');
-		}
-
-		code = 'wcBlock.servo.move("' + block.id + '", pio.' + Code.status.maps.pwmPins[pin] + ', ' + value + ')\r\n'			
-	}
+	
+	var tryCode = '';	
+	tryCode += Blockly.Lua.indent(1,'local instance = "_servo'+pioName+'"') + "\n\n";
+	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_G[instance] = servo.attach(pio.'+pioName+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
+	tryCode += Blockly.Lua.indent(1,'_G[instance]:write('+value+')') + "\n";
+		
+	code += Blockly.Lua.indent(0,'-- move servo at pin ' + pioName + ' by ' + value + 'º') + "\n";
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
 	
 	return code;
 }

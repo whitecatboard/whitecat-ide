@@ -32,66 +32,70 @@ goog.provide('Blockly.Lua.sensors');
 
 goog.require('Blockly.Lua');
 
-Blockly.Lua['sensor_attach'] = function(block) {
-	var code = '';
-
-	code  = 'if (_' + block.name + '_' + block.sid + ' == nil) then\n';
-	if (block.interface == 'GPIO') {
-		code += Blockly.Lua.prefixLines('_' + block.name + '_' + block.sid + ' = sensor.setup("' + block.sid + '", pio.' + Code.status.maps.digitalPins[block.pin] + ')\n', Blockly.Lua.INDENT);
-	} else if (block.interface == 'ADC') {
-		code += Blockly.Lua.prefixLines('_' + block.name + '_' + block.sid + ' = sensor.setup("' + block.sid + '", adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin] + ', 12)\n', Blockly.Lua.INDENT);
-	}
-	code += 'end\n';
-	
-	return code;
-};
-
 Blockly.Lua['sensor_read'] = function(block) {
-	var code = '';
 	var magnitude = block.getFieldValue('PROVIDES');
+	var code = '';
 	
-	if (Code.blockAbstraction == blockAbstraction.Low) {
-		code = '_' + block.name + '_' + block.sid + ':read("'+magnitude+'")';
-	} else {
-		if (codeSection["require"].indexOf('require("block-sensor")') == -1) {
-			codeSection["require"].push('require("block-sensor")');
-		}
-				
-		var int = '';
-		
-		if (block.interface == 'GPIO') {
-			int = 'pio.' + Code.status.maps.digitalPins[block.pin];
-		} else if (block.interface == 'ADC') {
-			int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin] + ', 12';
-		}
-
-		code = 'wcBlock.sensor.read("' + block.id + '", "' + block.name + '", "' + block.sid + '", "' + magnitude + '", ' + int + ')';
+	// Get interface
+	var int = '';	
+	if (block.interface == 'GPIO') {
+		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
+	} else if (block.interface == 'ADC') {
+		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin] + ', 12';
 	}
-	return [code, Blockly.Lua.ORDER_HIGH];	
+
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
+	}
+	
+	// Generate code for get sensor value
+	// This code goes to the declaration section
+	var getCode = '';
+	getCode += Blockly.Lua.indent(0, 'function _get'+block.name+'_' + block.sid + '()') + "\n";
+
+	var tryCode = '';	
+	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+block.sid+'"') + "\n\n";
+	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_G[instance] = sensor.setup("'+block.sid+'", '+int+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
+	tryCode += Blockly.Lua.indent(1,'value = _G[instance]:read("'+magnitude+'")') + "\n";
+
+	getCode += Blockly.Lua.indent(1, 'local value\n') + "\n";
+	getCode += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block,tryCode)) + "\n\n";
+	
+	getCode += Blockly.Lua.indent(1, 'return value\n');
+	getCode += Blockly.Lua.indent(0, 'end\n');
+		
+	codeSection["declaration"].push(getCode);
+
+	return ['_get'+block.name+'_' + block.sid + '()', Blockly.Lua.ORDER_HIGH];	
 };
 
 Blockly.Lua['sensor_set'] = function(block) {
-	var code = '';
-	var property = block.getFieldValue('PROVIDES');
+	var property = block.getFieldValue('PROPERTIES');
 	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
-
-	if (Code.blockAbstraction == blockAbstraction.Low) {
-		code = '_' + block.name + '_' + block.sid + ':set("'+property+'", ' + value + ')\r\n';
-	} else {
-		if (codeSection["require"].indexOf('require("block-sensor")') == -1) {
-			codeSection["require"].push('require("block-sensor")');
-		}
-		
-		var int = '';
-		
-		if (block.interface == 'GPIO') {
-			int = 'pio.' + Code.status.maps.digitalPins[block.pin];
-		} else if (block.interface == 'ADC') {
-			int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin] + ', 12';
-		}
-
-		code = 'wcBlock.sensor.set("' + block.id + '", "' + block.name + '", "' + block.sid + '", "' + property + '", ' + value + ', ' + int + ')\r\n';		
+	var code = '';
+	
+	// Get interface
+	var int = '';	
+	if (block.interface == 'GPIO') {
+		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
+	} else if (block.interface == 'ADC') {
+		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin] + ', 12';
 	}
+
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
+	}
+	
+	var tryCode = '';	
+	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+block.sid+'"') + "\n\n";
+	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_G[instance] = sensor.setup("'+block.sid+'", '+int+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
+	tryCode += Blockly.Lua.indent(1,'_G[instance]:set("'+property+'", '+value+')') + "\n";
+
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
 	
 	return code;	
 };

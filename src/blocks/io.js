@@ -95,57 +95,6 @@ Blockly.Blocks.io.helper = {
 	},
 };
 
-Blockly.Blocks['configuredigitalpin'] = {
-	init: function() {
-		var pins = Blockly.Blocks.io.helper.getDigitalPins();
-
-		this.appendDummyInput()
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.configuredigitalpin)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN");
-		this.appendDummyInput()
-			.appendField(' ' + Blockly.Msg.AS + ' ')
-			.appendField(new Blockly.FieldDropdown([
-				[Blockly.Msg.INPUT, "Input"],
-				[Blockly.Msg.OUTPUT, "Output"]
-			]), "DIRECTION");
-		this.setInputsInline(true);
-		this.setPreviousStatement(true, null);
-		this.setNextStatement(true, null);
-		this.setColour(Blockly.Blocks.io.HUE);
-		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
-	}
-};
-
-Blockly.Blocks['configureanalogpin'] = {
-	init: function() {
-		var pins = Blockly.Blocks.io.helper.getAnalogPins();
-
-		this.appendDummyInput()
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.configureanalogpin)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN");
-		this.appendDummyInput()
-			.appendField(Blockly.Msg.WITH)
-			.appendField(new Blockly.FieldDropdown([
-				["12", "12"],
-				["11", "11"],
-				["10", "10"],
-				["9", "9"],
-				["8", "8"],
-				["6", "6"]
-			]), "RESOLUTION")
-			.appendField(' ' + Blockly.Msg.BITSOFRESOLUTION + ' ');
-		this.setInputsInline(true);
-		this.setPreviousStatement(true, null);
-		this.setNextStatement(true, null);
-		this.setColour(Blockly.Blocks.io.HUE);
-		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
-	}
-};
-
 Blockly.Blocks['setpwmpin'] = {
 	init: function() {
 		var pins = Blockly.Blocks.io.helper.getPwmPins();
@@ -235,7 +184,9 @@ Blockly.Blocks['getanalogpin'] = {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(Blockly.Msg.getanalogpin)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+			.appendField(new Blockly.FieldDropdown(pins), "PIN")
+			.appendField(Blockly.Msg.IN)
+			.appendField(new Blockly.FieldDropdown([["mvolts", "mvolts"],["raw", "raw"]]), "FORMAT");
 		this.setOutput(true, null);
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);

@@ -548,5 +548,6 @@
 	"LORA_CONFIG_TITLE": "LoRa WAN configuration ...",
 	"LORA_CONFIG_RETX": "Retransmissions",
 	"LORA_ACTIVATION": "Activation",
-	"LORA_INVALID": "Invalid %1 value."
+	"LORA_INVALID": "Invalid %1 value.",
+	"IN": "in"
 }

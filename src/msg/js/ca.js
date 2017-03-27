@@ -120,6 +120,7 @@ Blockly.Msg.FREQUENCY = "amb frecuencia";
 Blockly.Msg.HELP = "Ajuda";
 Blockly.Msg.HERTZS = "hertzs";
 Blockly.Msg.HIGH = "alt";
+Blockly.Msg.IN = "en";
 Blockly.Msg.INLINE_INPUTS = "Entrades en línia";
 Blockly.Msg.INPUT = "entrada";
 Blockly.Msg.Khz = "Khz";

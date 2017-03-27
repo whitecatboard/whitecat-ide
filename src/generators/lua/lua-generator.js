@@ -5,6 +5,8 @@ codeSection["declaration"] = [];
 codeSection["start"] = [];
 codeSection["default"] = [];
 
+Blockly.Generator.prototype.INDENT = '\t';
+
 Blockly.Generator.prototype.workspaceToCode = function(workspace) {  
   if (!workspace) {
     // Backwards compatability from before there could be multiple workspaces.
@@ -125,25 +127,23 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	this.init(workspace);
 	
     codeSection["require"] = [];
-	
-	var line = this.oneBlockToCode(block);
-	if (goog.isArray(line)) {
-		line = line[0];
-	}
-	
-	line = line.replace(/\n$/, "").replace(/\r$/, "");
-	
-	if (line) {
-		code.push('print(' + line + ')');
-	}
-	
-	if (codeSection["require"].length == 1) {
-		codeSection["require"].push("");
-	}
-	
-	code = codeSection["require"].join(';') + code.join(';');
+    codeSection["declaration"] = [];
 
-	return 'do\n' + code + ';\nend';
+	// Get code
+	var line = this.oneBlockToCode(block);
+	
+	code += codeSection["require"].join('\n') + "\n";
+	code += codeSection["declaration"].join("\n") + "\n";
+	
+	code += "function _code()"
+	if (goog.isArray(line)) {
+		code += "print("+line[0]+")\n";
+	} else {
+		code += "print("+line+")\n";		
+	}
+	code += "end";
+		
+	return code;
 };
 
 // Generate code for one block

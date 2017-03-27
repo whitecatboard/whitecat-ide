@@ -120,6 +120,7 @@ Blockly.Msg.FREQUENCY = "to frequency";  // untranslated
 Blockly.Msg.HELP = "सहायता";
 Blockly.Msg.HERTZS = "hertzs";  // untranslated
 Blockly.Msg.HIGH = "high";  // untranslated
+Blockly.Msg.IN = "in";  // untranslated
 Blockly.Msg.INLINE_INPUTS = "इनलाइन इनपुट";
 Blockly.Msg.INPUT = "input";  // untranslated
 Blockly.Msg.Khz = "Khz";  // untranslated

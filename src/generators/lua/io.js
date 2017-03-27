@@ -32,131 +32,128 @@ goog.provide('Blockly.Lua.io');
 
 goog.require('Blockly.Lua');
 
-Blockly.Lua['configuredigitalpin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var direction = block.getFieldValue('DIRECTION');
-	
-	var code = '';
-	var directionCode = '';
-	var needsPull = false;
-	
-	if (direction == 'Input') {
-		directionCode = 'pio.INPUT';
-		needsPull = true;
-	} else {
-		directionCode = 'pio.OUTPUT';
-	}
-	
-	code = 'pio.pin.setdir(' + directionCode + ', pio.' + Code.status.maps.digitalPins[pin][0] +')\n';
-	
-	if (needsPull) {
-		code += 'pio.pin.setpull(pio.PULLUP, pio.' + Code.status.maps.digitalPins[pin][0] +')\n';
-	} else {
-		code += 'pio.pin.setpull(pio.NOPULL, pio.' + Code.status.maps.digitalPins[pin][0] +')\n';
-	}
-	
-	return code;
-};
-
-Blockly.Lua['configureanalogpin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var resolution = block.getFieldValue('RESOLUTION');
-	
-	var code = '';
-	
-	code  = 'if (adc1 == nil) then\n';
-	code += '  adc1 = adc.setup(adc.ADC1)\n';
-	code += 'end\n';
-	code += 'adc1_chan' + Code.status.maps.analogPinsChannel[pin] + ' = adc1:setupchan(' + resolution + ', adc.' + Code.status.maps.analogPinsChannel[pin] + ')\n';
-
-	return code;
-};
-
-Blockly.Lua['setpwmpin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var frequency = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE);	
-	var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE);	
-	
-	console.log(1);
-	if (!frequency) {
-		frequency = '1000';
-	}
-	console.log(1);
-
-	if (!duty) {
-		duty = '0';
-	}
-	console.log(1);
-	
-	var code = '';
-
-	console.log(1);
-	if (Code.blockAbstraction == blockAbstraction.Low) {	
-		code = '';
-	} else {
-		if (codeSection["require"].indexOf('require("block-pwm")') == -1) {
-			codeSection["require"].push('require("block-pwm")');
-		}
-
-		code = 'wcBlock.pwm.set("' + block.id + '", pio.' + Code.status.maps.pwmPins[pin] + ', ' + frequency + ', ' + duty + ' / 100)\n';
-	}
-	console.log(1);
-
-	return code;
-}
-
 Blockly.Lua['setdigitalpin'] = function(block) {
 	var pin = block.getFieldValue('PIN');
+	var pioName = Code.status.maps.digitalPins[pin][0];
 	var value = block.getFieldValue('VALUE');
-	
 	var code = '';
 	
-	if (Code.blockAbstraction == blockAbstraction.Low) {	
-		code = 'pio.pin.setval(' + value + ', pio.' + Code.status.maps.digitalPins[pin][0] +')\n';
-	} else {
-		if (codeSection["require"].indexOf('require("block-gpio")') == -1) {
-			codeSection["require"].push('require("block-gpio")');
-		}
-
-		code = 'wcBlock.gpio.set("' + block.id + '", pio.' + Code.status.maps.digitalPins[pin][0] + ', ' + value + ')\n';
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
 	}
+	
+	var tryCode = '';	
+	tryCode += Blockly.Lua.indent(1,'pio.pin.setdir(pio.OUTPUT, pio.'+pioName+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'pio.pin.setpull(pio.NOPULL, pio.'+pioName+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'pio.pin.setval('+value+', pio.'+pioName+')') + "\n";
+		
+	code += Blockly.Lua.indent(0,'-- set digital pin ' + pioName + ' to ' + value) + "\n";
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
+	
 	return code;
 };
 
 Blockly.Lua['getdigitalpin'] = function(block) {
 	var pin = block.getFieldValue('PIN');
-	var value = block.getFieldValue('VALUE');
-	
+	var pioName = Code.status.maps.digitalPins[pin][0];
 	var code = '';
-	
-	if (Code.blockAbstraction == blockAbstraction.Low) {	
-		code = 'pio.pin.getval(pio.' + Code.status.maps.digitalPins[pin][0] +')';
-	} else {
-		if (codeSection["require"].indexOf('require("block-gpio")') == -1) {
-			codeSection["require"].push('require("block-gpio")');
-		}
-
-		code = 'wcBlock.gpio.get("' + block.id + '", pio.' + Code.status.maps.digitalPins[pin][0] + ')\n';		
+		
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
 	}
+
+	// Generate code for get digital value
+	// This code goes to the declaration section
+	var getCode = '';
+	getCode += Blockly.Lua.indent(0, '-- configure ' + pioName + ' as input and get value') + "\n";
+	getCode += Blockly.Lua.indent(0, 'function _getDigitalPin' + pioName + '()') + "\n";
 	
-	return [code, Blockly.Lua.ORDER_HIGH];
+	var tryCode = '';
+	tryCode += Blockly.Lua.indent(1, 'pio.pin.setdir(pio.INPUT, pio.'+pioName+')') + "\n";
+	tryCode += Blockly.Lua.indent(1, 'pio.pin.setpull(pio.PULLUP, pio.'+pioName+')') + "\n";
+	tryCode += Blockly.Lua.indent(1, 'value = pio.pin.getval(pio.'+pioName+')') + "\n";
+
+	getCode += Blockly.Lua.indent(1, 'local value\n') + "\n";
+	getCode += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
+	
+	getCode += Blockly.Lua.indent(1, 'return value\n');
+	getCode += Blockly.Lua.indent(0, 'end\n');
+			
+	codeSection["declaration"].push(getCode);
+	
+	return ['_getDigitalPin' + pioName + '()', Blockly.Lua.ORDER_HIGH];	
 };
 
 Blockly.Lua['getanalogpin'] = function(block) {
 	var pin = block.getFieldValue('PIN');
-	
+	var adcName = Code.status.maps.analogPinsChannel[pin];
+	var format = block.getFieldValue('FORMAT');
 	var code = '';
-
-	if (Code.blockAbstraction == blockAbstraction.Low) {	
-		code = 'adc1_chan' + Code.status.maps.analogPinsChannel[pin] + ':read()\n';
-	} else {
-		if (codeSection["require"].indexOf('require("block-adc")') == -1) {
-			codeSection["require"].push('require("block-adc")');
-		}
-
-		code = 'wcBlock.adc.get("' + block.id + '", adc.' + Code.status.maps.analogPinsChannel[pin] + ')\n';
+		
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
 	}
 
-	return [code, Blockly.Lua.ORDER_HIGH];
+	// Generate code for get analog value
+	// This code goes to the declaration section
+	var getCode = '';
+	getCode += Blockly.Lua.indent(0, '-- configure ' + adcName + ' and get value') + "\n";
+	getCode += Blockly.Lua.indent(0, 'function _getAnalogPin' + adcName + '()') + "\n";
+	
+	var tryCode = '';
+	tryCode += Blockly.Lua.indent(1, 'if (_G["_adc'+adcName+'"] == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2, '_G["_adc'+adcName+'"] = adc.setup(adc.ADC1, adc.'+adcName+', 12)') + "\n";
+	tryCode += Blockly.Lua.indent(1, 'end') + "\n\n";
+	tryCode += Blockly.Lua.indent(1, 'raw, mvolts = _G["_adc'+adcName+'"]:read()') + "\n";
+
+	getCode += Blockly.Lua.indent(1, 'local raw = nil') + "\n";
+	getCode += Blockly.Lua.indent(1, 'local mvolts = nil\n') + "\n";
+	getCode += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block,tryCode)) + "\n\n";
+	
+	if (format == 'mvolts') {
+		getCode += Blockly.Lua.indent(1, 'return mvolts\n');
+	} else {
+		getCode += Blockly.Lua.indent(1, 'return raw\n');		
+	}
+	
+	getCode += Blockly.Lua.indent(0, 'end\n');
+			
+	codeSection["declaration"].push(getCode);
+	
+	return ['_getAnalogPin' + adcName + '()', Blockly.Lua.ORDER_HIGH];	
+};
+
+Blockly.Lua['setpwmpin'] = function(block) {
+	var pin = block.getFieldValue('PIN');
+    var frequency = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE) || '\'\'';
+    var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE) || '\'\'';	
+	var pioName = Code.status.maps.digitalPins[pin][0];
+	var code = '';
+	
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
+	}
+
+	if (frequency == "") {
+		frequency = "0";
+	}
+	
+	if (duty == "") {
+		duty = "0";
+	}
+	
+	var tryCode = '';	
+	tryCode += Blockly.Lua.indent(1,'local instance = "_pwm'+pioName+'"') + "\n\n";
+	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_G[instance] = pwm.attach(pio.'+pioName+', '+frequency+', '+duty * 0.01 +')') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_G[instance]:start()') + "\n";
+	tryCode += Blockly.Lua.indent(1,'else') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_G[instance]:setduty('+duty * 0.01 +')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'end') + "\n";
+
+	code += Blockly.Lua.indent(0,'-- set pwm pin ' + pioName + ' to freq ' + frequency + ' hz,  duty ' + duty + '%') + "\n";
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
+	
+	return code;
 };
 

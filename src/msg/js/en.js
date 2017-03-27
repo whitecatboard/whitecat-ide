@@ -120,6 +120,7 @@ Blockly.Msg.FREQUENCY = "to frequency";
 Blockly.Msg.HELP = "Help";
 Blockly.Msg.HERTZS = "hertzs";
 Blockly.Msg.HIGH = "high";
+Blockly.Msg.IN = "in";
 Blockly.Msg.INLINE_INPUTS = "Inline Inputs";
 Blockly.Msg.INPUT = "input";
 Blockly.Msg.Khz = "Khz";

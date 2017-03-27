@@ -481,5 +481,6 @@
 	"LORA_CONFIG_TITLE": "Configuració de LoRa WAN ...",
 	"LORA_CONFIG_RETX": "Retransmisions",
 	"LORA_ACTIVATION": "Activació",
-	"LORA_INVALID": "El valor de %1 no és vàlid."
+	"LORA_INVALID": "El valor de %1 no és vàlid.",
+	"IN": "en"
 }

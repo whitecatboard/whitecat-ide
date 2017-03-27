@@ -120,6 +120,7 @@ Blockly.Msg.FREQUENCY = "to frequency";  // untranslated
 Blockly.Msg.HELP = "說明";
 Blockly.Msg.HERTZS = "hertzs";  // untranslated
 Blockly.Msg.HIGH = "high";  // untranslated
+Blockly.Msg.IN = "in";  // untranslated
 Blockly.Msg.INLINE_INPUTS = "單行輸入";
 Blockly.Msg.INPUT = "input";  // untranslated
 Blockly.Msg.Khz = "Khz";  // untranslated

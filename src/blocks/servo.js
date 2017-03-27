@@ -36,22 +36,6 @@ goog.require('Blockly.Blocks.io.helper');
 
 Blockly.Blocks.actuators.HUE = 260;
 
-Blockly.Blocks['servo_attach'] = {
-	init: function() {
-		var pins = Blockly.Blocks.io.helper.getPwmPins();
-
-		this.appendDummyInput()
-			.appendField(Blockly.Msg.SERVO_ATTACH)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN");	
-				
-		this.setPreviousStatement(true, null);
-		this.setNextStatement(true, null);
-		this.setColour(Blockly.Blocks.actuators.HUE);
-		this.setTooltip(Blockly.Msg.SERVO_ATTACH_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.SERVO_ATTACH_HELPURL);
-	},
-};
-
 Blockly.Blocks['servo_move'] = {
 	init: function() {
 		var thisInstance = this;
