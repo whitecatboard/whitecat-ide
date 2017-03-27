@@ -50,6 +50,14 @@ Blockly.Workspace.prototype.wcInit = function() {
 		}
 	}
 	
+	if (typeof this.Wifi == "undefined") {
+		this.Wifi = {
+			"wtype": "STA",
+			"ssid": "",
+			"password": ""
+		}
+	}
+
 	if (typeof this.sensors == "undefined") {
 		this.sensors = {
 			"names": [], // Array of sensor names in workspace
@@ -297,6 +305,24 @@ Blockly.Workspace.prototype.configureLora = function(setup) {
 			block.devaddr = setup.devaddr;
 			block.nwkskey = setup.nwkskey;
 			block.appskey = setup.appskey;
+		}
+	}
+};
+
+Blockly.Workspace.prototype.configureWifi = function(setup) {
+	var thisInstance = this;
+	
+	thisInstance.Wifi = setup;
+	
+	var blocks = this.getAllBlocks();
+	
+    for (var i = 0; i < blocks.length; i++) {
+		var block = blocks[i];
+				
+		if ((block.type == 'wifi_start') || (block.type == 'wifi_stop')) {
+			block.wtype = setup.wtype;
+			block.ssid = setup.ssid;
+			block.password = setup.password;
 		}
 	}
 };

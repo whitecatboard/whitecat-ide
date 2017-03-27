@@ -482,5 +482,12 @@
 	"LORA_CONFIG_RETX": "Retransmisions",
 	"LORA_ACTIVATION": "Activació",
 	"LORA_INVALID": "El valor de %1 no és vàlid.",
-	"IN": "en"
+	"IN": "en",
+	"CONFIGURE_WIFI": "Configurar...",
+	"WIFI_TYPE": "Tipus",
+	"WIFI_CONFIG_TITLE": "Configuració de Wi-Fi ...",
+	"CONFIGURE": "Configurar",
+	"WIFI_INVALID": "El valor de %1 no és vàlid.",
+	"WIFI_START": "iniciar Wi-Fi",
+	"WIFI_STOP": "aturar Wi-Fi"
 }

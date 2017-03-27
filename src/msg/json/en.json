@@ -549,5 +549,12 @@
 	"LORA_CONFIG_RETX": "Retransmissions",
 	"LORA_ACTIVATION": "Activation",
 	"LORA_INVALID": "Invalid %1 value.",
-	"IN": "in"
+	"IN": "in",
+	"CONFIGURE_WIFI": "Configure...",
+	"WIFI_TYPE": "Type",
+	"WIFI_CONFIG_TITLE": "Wi-Fi contiguration ...",
+	"CONFIGURE": "Configure",
+	"WIFI_INVALID": "Invalid %1 value.",
+	"WIFI_START": "start Wi-Fi",
+	"WIFI_STOP": "stop Wi-Fi"
 }

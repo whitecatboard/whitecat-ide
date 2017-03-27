@@ -37,7 +37,7 @@ do
 	    __m_ena("i2c",i2c)
 	    __m_ena("pio",pio)
 	    __m_ena("pwm",pwm)
-	    __m_ena("screen",screen)
+	    __m_ena("tft",tft)
 	    __m_ena("spi",spi)
 	    __m_ena("tmr",tmr)
 	    __m_ena("uart",uart)
@@ -46,6 +46,8 @@ do
 	    __m_ena("mqtt",mqtt)
 	    __m_ena("sensor",sensor)
 	    __m_ena("servo",servo)
+	    __m_ena("sdisplay",sdisplay)
+	    __m_ena("net",net)
 		io.write("},")
 	end
 	

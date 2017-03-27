@@ -73,7 +73,7 @@ Code.defaultStatus = {
 		"pio": true,
 		"adc": true,
 		"pwm": true,
-		"screen": false,
+		"tft": true,
 		"spi": true,
 		"tmr": true,
 		"uart": true,
@@ -81,6 +81,7 @@ Code.defaultStatus = {
 		"mqtt": true,
 		"sensor": true,
 		"servo": true,
+		"net": true,
 	},
 	maps: []
 };
@@ -885,12 +886,28 @@ Code.buildToolBox = function(callback) {
 	}
 	xml += '</category>';
 
+	if (Code.status.modules.net) {
+		xml += '<category id="catNET" colour="20">';
+		xml += '<category id="catWIFI" custom="WIFI" colour="20">';
+		xml += '</category>';
+		xml += '</category>';
+	}
+	
 	if (Code.status.modules.lora) {
 		xml +=  '<category id="catLora" custom="LORA" colour="20">';
 		xml +=  '<button function="expand(1)">Expand section</button>';
+		xml += '</category>';
 	}
 
-	xml += '</category>';
+	if (Code.status.modules.mqtt) {
+		xml +=  '<category id="catMQTT"colour="20">';
+		xml += '</category>';
+	}
+
+	if (Code.status.modules.tft) {
+		xml += '<category id="catTFT"colour="20">';
+		xml += '</category>';
+	}
 
 	Code.lib.get(xml, "libs", function(xml){
 		var toolbox = document.getElementById('toolbox');
@@ -905,6 +922,10 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catComm").attr("colour", Blockly.Blocks.i2c.HUE);
 		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);	
+		jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
+		jQuery("#catNET").attr("colour", Blockly.Blocks.i2c.HUE);
+		jQuery("#catWIFI").attr("colour", Blockly.Blocks.i2c.HUE);
+		jQuery("#catMQTT").attr("colour", Blockly.Blocks.i2c.HUE);
 		
 		callback();	
 	});
@@ -1168,6 +1189,19 @@ Code.initLanguage = function() {
 	if (Code.status.modules.lora) categories.push('catLora');
 	//if (Code.status.modules.lora) categories.push('catLoraOTAA');
 	//if (Code.status.modules.lora) categories.push('catLoraABP');
+
+	if (Code.status.modules.tft) {
+		categories.push('catTFT');
+	}
+
+	if (Code.status.modules.net) {
+		categories.push('catNET');
+		categories.push('catWIFI');
+	}
+
+	if (Code.status.modules.mqtt) {
+		categories.push('catMQTT');
+	}
 
 	categories.push('catControl');
 	categories.push('catOperators');
@@ -1635,7 +1669,7 @@ Code.save = function() {
 					MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="unnamed">' + '.' + extension,
 				buttons: {
 					main: {
-						label: MSG['º'],
+						label: MSG['saveToBoard'],
 						className: "btn-primary",
 						callback: function() {
 							var file = jQuery("#selectedFileName").val();

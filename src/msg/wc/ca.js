@@ -104,4 +104,8 @@ var MSG = {
   catOperatorsText: "Text",
   catActuators: "Actuadors",
   catServo: "Servo",
+  catTFT: "Display TFT",
+  catWIFI: "Wi-Fi",
+  catNET: "Xarxa",
+  catMQTT: "MQTT",
 };
