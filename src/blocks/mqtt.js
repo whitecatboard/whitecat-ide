@@ -111,8 +111,8 @@ Blockly.Blocks['mqtt_subscribe'] = {
 	    this.setColour(230);
 	    this.setTooltip('');
 	    this.setHelpUrl('');
-	    this.setPreviousStatement(true, null);
-	    this.setNextStatement(true, null);
+	    this.setPreviousStatement(false, null);
+	    this.setNextStatement(false, null);
 	    this.setColour(Blockly.Blocks.MQTT.HUE);
 	    this.setTooltip('');
 		this.setHelpUrl('http://www.example.com/');

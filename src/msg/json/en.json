@@ -561,9 +561,9 @@
 	"MQTT_CONFIG_TITLE": "Configure MQTT client ...",
 	"MQTT_INVALID": "Invalid value %1.",
 	"MQTT_PUBLISH": "publish",
-	"MQTT_TO_TOPIC": "to topic",
+	"MQTT_TO_TOPIC": "to",
 	"MQTT_QOS": "with",
-	"MQTT_SUBSCRIBE": "subscribe to topic",
+	"MQTT_SUBSCRIBE": "when a message is received to",
 	"MQTT_GET_LEN": "get length of the received message",
 	"MQTT_GET_PAYLOAD": "get the received message"
 }

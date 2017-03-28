@@ -50,6 +50,34 @@ Blockly.MQTT.flyoutCategory = function(workspace) {
 
 	xmlList.push(button);
 
+	if (Blockly.Blocks['mqtt_subscribe']) {
+		var mutation = goog.dom.createDom('mutation', '');
+		mutation.setAttribute('clientid', MQTT.clientid);
+		mutation.setAttribute('host', MQTT.host);
+		mutation.setAttribute('port', MQTT.port);
+		mutation.setAttribute('secure', MQTT.secure);
+		mutation.setAttribute('username', MQTT.username);
+		mutation.setAttribute('password', MQTT.password);
+
+		var block = goog.dom.createDom('block');
+		block.setAttribute('type', 'mqtt_subscribe');
+
+		var field = goog.dom.createDom('field', null, "");
+		field.setAttribute('name', 'TEXT');
+
+		var shadow = goog.dom.createDom('shadow', null, field);
+		shadow.setAttribute('type', 'text');
+
+		var value = goog.dom.createDom('value', null, shadow);
+		value.setAttribute('name', 'TOPIC');
+		block.appendChild(value);
+		block.appendChild(field);
+
+		block.appendChild(mutation);
+
+		xmlList.push(block);
+	}
+	
 	if (Blockly.Blocks['mqtt_publish']) {
 		var mutation = goog.dom.createDom('mutation', '');
 		mutation.setAttribute('clientid', MQTT.clientid);
@@ -73,34 +101,6 @@ Blockly.MQTT.flyoutCategory = function(workspace) {
 		block.appendChild(value);
 		block.appendChild(field);
 		
-		var field = goog.dom.createDom('field', null, "");
-		field.setAttribute('name', 'TEXT');
-
-		var shadow = goog.dom.createDom('shadow', null, field);
-		shadow.setAttribute('type', 'text');
-
-		var value = goog.dom.createDom('value', null, shadow);
-		value.setAttribute('name', 'TOPIC');
-		block.appendChild(value);
-		block.appendChild(field);
-
-		block.appendChild(mutation);
-
-		xmlList.push(block);
-	}
-	
-	if (Blockly.Blocks['mqtt_subscribe']) {
-		var mutation = goog.dom.createDom('mutation', '');
-		mutation.setAttribute('clientid', MQTT.clientid);
-		mutation.setAttribute('host', MQTT.host);
-		mutation.setAttribute('port', MQTT.port);
-		mutation.setAttribute('secure', MQTT.secure);
-		mutation.setAttribute('username', MQTT.username);
-		mutation.setAttribute('password', MQTT.password);
-
-		var block = goog.dom.createDom('block');
-		block.setAttribute('type', 'mqtt_subscribe');
-
 		var field = goog.dom.createDom('field', null, "");
 		field.setAttribute('name', 'TEXT');
 

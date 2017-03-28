@@ -494,9 +494,9 @@
 	"MQTT_CONFIG_TITLE": "Configuració del client MQTT ...",
 	"MQTT_INVALID": "El valor de %1 no és vàlid.",
 	"MQTT_PUBLISH": "publicar",
-	"MQTT_TO_TOPIC": "al tòpic",
+	"MQTT_TO_TOPIC": "a",
 	"MQTT_QOS": "amb",
-	"MQTT_SUBSCRIBE": "subscriure's al tòpic",
+	"MQTT_SUBSCRIBE": "quen es rebi un missatge a",
 	"MQTT_GET_LEN": "llegir la mida del missatge rebut",
 	"MQTT_GET_PAYLOAD": "llegir el missatge rebut"
 }
