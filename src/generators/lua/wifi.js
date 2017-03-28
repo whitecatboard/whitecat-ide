@@ -52,7 +52,7 @@ Blockly.Lua['wifi_stop'] = function(block) {
 	tryCode += Blockly.Lua.indent(1, 'net.wf.setup(net.wf.mode.'+block.wtype+', "'+block.ssid+'","'+block.password+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1, 'net.wf.stop()') + "\n";
 		
-	code += Blockly.Lua.indent(0,'-- configure wifi and start wifi') + "\n";
+	code += Blockly.Lua.indent(0,'-- configure wifi and stop wifi') + "\n";
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
 
 	return code;

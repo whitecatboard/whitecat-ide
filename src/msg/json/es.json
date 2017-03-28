@@ -516,5 +516,14 @@
 	"CONFIGURE": "Configurar",
 	"WIFI_INVALID": "El valor de %1 no es válido.",
 	"WIFI_START": "iniciar Wi-Fi",
-	"WIFI_STOP": "parar Wi-Fi"
+	"WIFI_STOP": "parar Wi-Fi",
+	"CONFIGURE_MQTT": "Configurar el cliente...",
+	"MQTT_CONFIG_TITLE": "Configuración del cliente MQTT ...",
+	"MQTT_INVALID": "El valor de %1 no es válido.",
+	"MQTT_PUBLISH": "publicar",
+	"MQTT_TO_TOPIC": "al tópico",
+	"MQTT_QOS": "con",
+	"MQTT_SUBSCRIBE": "suscribir al tópico",
+	"MQTT_GET_LEN": "obtener la longitud del mensaje recibido",
+	"MQTT_GET_PAYLOAD": "obtener el mensaje recibido"
 }

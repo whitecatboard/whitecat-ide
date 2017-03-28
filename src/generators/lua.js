@@ -193,21 +193,27 @@ Blockly.Lua.scrub_ = function(block, code) {
   return commentCode + code + nextCode;
 };
 
+Blockly.Lua.developerMode = true;
+
 Blockly.Lua.tryBlock = function(block, code) {
-	var tryCpde = '';
-	
-	tryCpde += 'try(\n';
-	tryCpde += Blockly.Lua.prefixLines('function()', Blockly.Lua.INDENT) + "\n";
-	if (code != "") {
-		tryCpde += Blockly.Lua.prefixLines(code, Blockly.Lua.INDENT);
+	if (!Blockly.Lua.developerMode) {
+		return code;
 	}
-	tryCpde += Blockly.Lua.prefixLines('end,', Blockly.Lua.INDENT) + "\n";
-	tryCpde += Blockly.Lua.prefixLines('function(where, line, err, message)', Blockly.Lua.INDENT) + "\n";
-	tryCpde += Blockly.Lua.prefixLines(Blockly.Lua.prefixLines('wcBlock.blockError("'+block.id+'", err, message)', Blockly.Lua.INDENT), Blockly.Lua.INDENT) + "\n";
-	tryCpde += Blockly.Lua.prefixLines('end', Blockly.Lua.INDENT) + "\n";
-	tryCpde += ')';
 	
-	return tryCpde;	
+	var tryCode = '';
+	
+	tryCode += 'try(\n';
+	tryCode += Blockly.Lua.prefixLines('function()', Blockly.Lua.INDENT) + "\n";
+	if (code != "") {
+		tryCode += Blockly.Lua.prefixLines(code, Blockly.Lua.INDENT);
+	}
+	tryCode += Blockly.Lua.prefixLines('end,', Blockly.Lua.INDENT) + "\n";
+	tryCode += Blockly.Lua.prefixLines('function(where, line, err, message)', Blockly.Lua.INDENT) + "\n";
+	tryCode += Blockly.Lua.prefixLines(Blockly.Lua.prefixLines('wcBlock.blockError("'+block.id+'", err, message)', Blockly.Lua.INDENT), Blockly.Lua.INDENT) + "\n";
+	tryCode += Blockly.Lua.prefixLines('end', Blockly.Lua.INDENT) + "\n";
+	tryCode += ')';
+	
+	return tryCode;	
 }
 
 Blockly.Lua.indent = function(n, code) {

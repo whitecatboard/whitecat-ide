@@ -58,6 +58,17 @@ Blockly.Workspace.prototype.wcInit = function() {
 		}
 	}
 
+	if (typeof this.MQTT == "undefined") {
+		this.MQTT = {
+			"clientid": "",
+			"host": "",
+			"port": "1883",
+			"secure": false,
+			"username": "",
+			"password": "",
+		}
+	}
+
 	if (typeof this.sensors == "undefined") {
 		this.sensors = {
 			"names": [], // Array of sensor names in workspace
@@ -322,6 +333,27 @@ Blockly.Workspace.prototype.configureWifi = function(setup) {
 		if ((block.type == 'wifi_start') || (block.type == 'wifi_stop')) {
 			block.wtype = setup.wtype;
 			block.ssid = setup.ssid;
+			block.password = setup.password;
+		}
+	}
+};
+
+Blockly.Workspace.prototype.configureMQTT = function(setup) {
+	var thisInstance = this;
+	
+	thisInstance.MQTT = setup;
+	
+	var blocks = this.getAllBlocks();
+	
+    for (var i = 0; i < blocks.length; i++) {
+		var block = blocks[i];
+				
+		if ((block.type == 'mqtt_publish') || (block.type == 'mqtt_subscribe')) {
+			block.clientid = setup.clientid;
+			block.host = setup.host;
+			block.port = setup.port;
+			block.secure = setup.secure;
+			block.username = setup.username;
 			block.password = setup.password;
 		}
 	}

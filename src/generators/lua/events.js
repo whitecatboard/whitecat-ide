@@ -41,14 +41,15 @@ Blockly.Lua['when_board_starts'] = function(block) {
 	}
 	
 	code += Blockly.Lua.indent(0,'-- when board starts') + "\n";
-	code += Blockly.Lua.indent(0,'wcBlock.blockStart("'+block.id+'")') + "\n";
 	
 	if (statement != '') {
-		code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block, statement)) + "\n";
+		code += Blockly.Lua.indent(0,'thread.start(function()') + "\n";
+		code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
+		code += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block, statement)) + "\n";
+		code += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+		code += Blockly.Lua.indent(0,'end)') + "\n";
 	}
-	
-	code += Blockly.Lua.indent(0,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-	
+		
 	return code;
 }
 

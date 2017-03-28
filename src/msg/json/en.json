@@ -556,5 +556,14 @@
 	"CONFIGURE": "Configure",
 	"WIFI_INVALID": "Invalid %1 value.",
 	"WIFI_START": "start Wi-Fi",
-	"WIFI_STOP": "stop Wi-Fi"
+	"WIFI_STOP": "stop Wi-Fi",
+	"CONFIGURE_MQTT": "Configure client...",
+	"MQTT_CONFIG_TITLE": "Configure MQTT client ...",
+	"MQTT_INVALID": "Invalid value %1.",
+	"MQTT_PUBLISH": "publish",
+	"MQTT_TO_TOPIC": "to topic",
+	"MQTT_QOS": "with",
+	"MQTT_SUBSCRIBE": "subscribe to topic",
+	"MQTT_GET_LEN": "get length of the received message",
+	"MQTT_GET_PAYLOAD": "get the received message"
 }

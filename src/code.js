@@ -900,7 +900,8 @@ Code.buildToolBox = function(callback) {
 	}
 
 	if (Code.status.modules.mqtt) {
-		xml +=  '<category id="catMQTT"colour="20">';
+		xml +=  '<category id="catMQTT" custom="MQTT"colour="20">';
+		xml +=  '<button function="expand(1)">Expand section</button>';
 		xml += '</category>';
 	}
 

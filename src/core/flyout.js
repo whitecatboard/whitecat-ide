@@ -746,7 +746,11 @@ Blockly.Flyout.prototype.show = function(xmlList) {
 	    // Special category for sensors.
 	    xmlList =
 	        Blockly.Wifi.flyoutCategory(this.workspace_.targetWorkspace);
- }
+  } else if (xmlList == Blockly.MQTT.NAME_TYPE) {
+      // Special category for sensors.
+      xmlList =
+          Blockly.MQTT.flyoutCategory(this.workspace_.targetWorkspace);
+  }
 
   this.setVisible(true);
   // Create the blocks to be shown in this flyout.

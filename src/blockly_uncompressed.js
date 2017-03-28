@@ -92,6 +92,7 @@ goog.addDependency("../../../" + dir + "/core/zoom_controls.js", ['Blockly.ZoomC
 goog.addDependency("../../../" + dir + "/core/wc/block.js", [], []);
 goog.addDependency("../../../" + dir + "/core/wc/field_event.js", ['Blockly.wc.FieldEvent'], ['Blockly.FieldDropdown', 'Blockly.Msg', 'Blockly.Events', 'goog.asserts', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/lora.js", ['Blockly.Lora'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
+goog.addDependency("../../../" + dir + "/core/wc/mqtt.js", ['Blockly.MQTT'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/sensors.js", ['Blockly.Sensors'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string', 'Blockly.Blocks.io.helper']);
 goog.addDependency("../../../" + dir + "/core/wc/wifi.js", ['Blockly.Wifi'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/workspace.js", [], ['Blockly.Workspace', 'goog.array', 'goog.math']);
@@ -1634,6 +1635,7 @@ goog.require('Blockly.Generator');
 goog.require('Blockly.Icon');
 goog.require('Blockly.Input');
 goog.require('Blockly.Lora');
+goog.require('Blockly.MQTT');
 goog.require('Blockly.Msg');
 goog.require('Blockly.Mutator');
 goog.require('Blockly.Names');

@@ -489,5 +489,14 @@
 	"CONFIGURE": "Configurar",
 	"WIFI_INVALID": "El valor de %1 no és vàlid.",
 	"WIFI_START": "iniciar Wi-Fi",
-	"WIFI_STOP": "aturar Wi-Fi"
+	"WIFI_STOP": "aturar Wi-Fi",
+	"CONFIGURE_MQTT": "Configurar el client...",
+	"MQTT_CONFIG_TITLE": "Configuració del client MQTT ...",
+	"MQTT_INVALID": "El valor de %1 no és vàlid.",
+	"MQTT_PUBLISH": "publicar",
+	"MQTT_TO_TOPIC": "al tòpic",
+	"MQTT_QOS": "amb",
+	"MQTT_SUBSCRIBE": "subscriure's al tòpic",
+	"MQTT_GET_LEN": "llegir la mida del missatge rebut",
+	"MQTT_GET_PAYLOAD": "llegir el missatge rebut"
 }
