@@ -197,12 +197,12 @@ blockLibrary.prototype.create = function(xml, block) {
 
 						var shadow = goog.dom.createDom('shadow');
 						shadow.setAttribute('type', block.shadow[block.spec[prop][arg].name].type);
-
+						shadow.appendChild(field);
+						
 						var value = goog.dom.createDom('value');
 						value.setAttribute('name', block.spec[prop][arg].name);
-						
-						shadow.appendChild(field);
 						value.appendChild(shadow);
+						
 						newBlock.appendChild(value);
 					}
 				}

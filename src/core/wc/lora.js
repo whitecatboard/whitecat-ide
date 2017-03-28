@@ -96,27 +96,34 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 		var block = goog.dom.createDom('block');
 		block.setAttribute('type', 'lora_tx');
 
-		var field = goog.dom.createDom('field', null, "1");
+		var field = goog.dom.createDom('field',null,"1");
 		field.setAttribute('name', 'NUM');
 
-		var shadow = goog.dom.createDom('shadow', null, field);
+		var shadow = goog.dom.createDom('shadow');
 		shadow.setAttribute('type', 'math_number');
+		shadow.appendChild(field);
 
-		var value = goog.dom.createDom('value', null, shadow);
+		var value = goog.dom.createDom('value');
 		value.setAttribute('name', 'PORT');
+		value.appendChild(shadow);
+
 		block.appendChild(value);
-		block.appendChild(field);
 
 		var field = goog.dom.createDom('field', null, "");
 		field.setAttribute('name', 'TEXT');
 
-		var shadow = goog.dom.createDom('shadow', null, field);
-		shadow.setAttribute('type', 'text');
+		var field = goog.dom.createDom('field',null,"");
+		field.setAttribute('name', 'TEXT');
 
-		var value = goog.dom.createDom('value', null, shadow);
+		var shadow = goog.dom.createDom('shadow');
+		shadow.setAttribute('type', 'text');
+		shadow.appendChild(field);
+
+		var value = goog.dom.createDom('value');
 		value.setAttribute('name', 'PAYLOAD');
+		value.appendChild(shadow);
+
 		block.appendChild(value);
-		block.appendChild(field);
 
 		block.appendChild(mutation);
 

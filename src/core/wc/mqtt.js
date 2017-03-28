@@ -62,17 +62,18 @@ Blockly.MQTT.flyoutCategory = function(workspace) {
 		var block = goog.dom.createDom('block');
 		block.setAttribute('type', 'mqtt_subscribe');
 
-		var field = goog.dom.createDom('field', null, "");
+		var field = goog.dom.createDom('field',null,"");
 		field.setAttribute('name', 'TEXT');
 
-		var shadow = goog.dom.createDom('shadow', null, field);
+		var shadow = goog.dom.createDom('shadow');
 		shadow.setAttribute('type', 'text');
+		shadow.appendChild(field);
 
-		var value = goog.dom.createDom('value', null, shadow);
+		var value = goog.dom.createDom('value');
 		value.setAttribute('name', 'TOPIC');
+		value.appendChild(shadow);
+		
 		block.appendChild(value);
-		block.appendChild(field);
-
 		block.appendChild(mutation);
 
 		xmlList.push(block);
@@ -90,27 +91,31 @@ Blockly.MQTT.flyoutCategory = function(workspace) {
 		var block = goog.dom.createDom('block');
 		block.setAttribute('type', 'mqtt_publish');
 
-		var field = goog.dom.createDom('field', null, "");
+		var field = goog.dom.createDom('field',null,"");
 		field.setAttribute('name', 'TEXT');
 
-		var shadow = goog.dom.createDom('shadow', null, field);
+		var shadow = goog.dom.createDom('shadow');
 		shadow.setAttribute('type', 'text');
+		shadow.appendChild(field);
 
-		var value = goog.dom.createDom('value', null, shadow);
+		var value = goog.dom.createDom('value');
 		value.setAttribute('name', 'PAYLOAD');
+		value.appendChild(shadow);
+
 		block.appendChild(value);
-		block.appendChild(field);
-		
-		var field = goog.dom.createDom('field', null, "");
+
+		var field = goog.dom.createDom('field',null,"");
 		field.setAttribute('name', 'TEXT');
 
-		var shadow = goog.dom.createDom('shadow', null, field);
+		var shadow = goog.dom.createDom('shadow');
 		shadow.setAttribute('type', 'text');
+		shadow.appendChild(field);
 
-		var value = goog.dom.createDom('value', null, shadow);
+		var value = goog.dom.createDom('value');
 		value.setAttribute('name', 'TOPIC');
+		value.appendChild(shadow);
+		
 		block.appendChild(value);
-		block.appendChild(field);
 
 		block.appendChild(mutation);
 
