@@ -76,25 +76,6 @@ Blockly.Blocks['when_i_receive'] = {
     }
 };
 
-Blockly.Blocks['when_i_receive_a_lora_frame'] = {
-	init: function() {
-		this.appendDummyInput()
-			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME);
-		
-		this.appendStatementInput('DO')
-			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
-
-		this.setPreviousStatement(false, null);
-		this.setNextStatement(false, null);
-		this.setColour(Blockly.Blocks.events.HUE);
-		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_HELPURL);
-	},
-    section: function() {
-		return 'declaration';
-    }
-};
-
 Blockly.Blocks['broadcast'] = {
 	init: function() {
 		this.appendDummyInput()

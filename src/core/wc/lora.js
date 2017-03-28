@@ -50,6 +50,13 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 
 	xmlList.push(button);
 
+	if (Blockly.Blocks['when_i_receive_a_lora_frame']) {
+		var block = goog.dom.createDom('block');
+		block.setAttribute('type', 'when_i_receive_a_lora_frame');
+
+		xmlList.push(block);
+	}
+	
 	if (Blockly.Blocks['lora_join'] && (workspace.lora.activation == 'OTAA')) {
 		var mutation = goog.dom.createDom('mutation', '');
 		mutation.setAttribute('band', lora.band);
