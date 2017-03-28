@@ -105,9 +105,9 @@ Blockly.Lua['lora_join'] = function(block) {
 	}
 	
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(1,'local instance = "_lora"') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_G[instance] = lora.setup(lora.BAND'+block.band+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'if (_lora == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_lora = true') + "\n";
+	tryCode += Blockly.Lua.indent(2,'lora.setup(lora.BAND'+block.band+')') + "\n";
 	tryCode += Blockly.Lua.indent(2,'lora.setDr('+block.dr+')') + "\n";
 	tryCode += Blockly.Lua.indent(2,'lora.setAdr('+block.adr+')') + "\n";
 	tryCode += Blockly.Lua.indent(2,'lora.setReTx('+block.retx+')') + "\n";
@@ -120,7 +120,9 @@ Blockly.Lua['lora_join'] = function(block) {
 
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 	
+	tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1,'lora.join()') + "\n";
+	tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
 	
 	code += Blockly.Lua.indent(0,'-- lora join') + "\n";
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
@@ -145,9 +147,9 @@ Blockly.Lua['lora_tx'] = function(block) {
 	}
 	
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(1,'local instance = "_lora"') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_G[instance] = lora.setup(lora.BAND'+block.band+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'if (_lora == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_lora = true') + "\n";
+	tryCode += Blockly.Lua.indent(2,'lora.setup(lora.BAND'+block.band+')') + "\n";
 
 	if (block.activation == 'OTAA') {
 		tryCode += Blockly.Lua.indent(2,'\nif (os.flashEUI() == nil) then') + "\n";
@@ -168,7 +170,9 @@ Blockly.Lua['lora_tx'] = function(block) {
 
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 
+	tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1,'lora.tx('+confirmed+', '+port+', '+payload+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
 	
 	code += Blockly.Lua.indent(0,'-- lora tx') + "\n";
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";

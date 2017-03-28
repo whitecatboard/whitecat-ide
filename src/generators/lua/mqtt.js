@@ -43,13 +43,12 @@ Blockly.Lua['mqtt_publish'] = function(block) {
 	}
 	
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(1,'local instance = "_mqtt"') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_G[instance] = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', '+block.secure+')') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_G[instance]:connect("'+block.username+'","'+block.password+'")') + "\n";
+	tryCode += Blockly.Lua.indent(1,'if (_mqtt == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_mqtt = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', '+block.secure+')') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_mqtt:connect("'+block.username+'","'+block.password+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 
-	tryCode += Blockly.Lua.indent(1,'_G[instance]:publish('+topic+', '+payload+', mqtt.QOS'+qos+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'_mqtt:publish('+topic+', '+payload+', mqtt.QOS'+qos+')') + "\n";
 
 	code += Blockly.Lua.indent(0,'-- publish to MQTT topic ' + topic) + "\n";
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
@@ -68,13 +67,12 @@ Blockly.Lua['mqtt_subscribe'] = function(block) {
 	}
 	
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(1,'local instance = "_mqtt"') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_G[instance] = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', '+block.secure+')') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_G[instance]:connect("'+block.username+'","'+block.password+'")') + "\n";
+	tryCode += Blockly.Lua.indent(1,'if (_mqtt == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_mqtt = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', '+block.secure+')') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_mqtt:connect("'+block.username+'","'+block.password+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 
-	tryCode += Blockly.Lua.indent(1,'_G[instance]:subscribe('+topic+', mqtt.QOS'+qos+', function(_len, _payload)') + "\n";
+	tryCode += Blockly.Lua.indent(1,'_mqtt:subscribe('+topic+', mqtt.QOS'+qos+', function(_len, _payload)') + "\n";
 	if (statement != "") {
 		tryCode += Blockly.Lua.indent(2, "thread.start(function()" + "\n");
 		tryCode += Blockly.Lua.indent(2, statement);
@@ -83,8 +81,11 @@ Blockly.Lua['mqtt_subscribe'] = function(block) {
 	tryCode += Blockly.Lua.indent(1,'end)') + "\n";
 	
 	code += Blockly.Lua.indent(0,'-- subscribe to MQTT topic ' + topic) + "\n";
-	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
 	
+	code += Blockly.Lua.indent(0,'_eventBoardStarted:addlistener(function()') + "\n";
+	code += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
+	code += Blockly.Lua.indent(0,'end)') + "\n";
+		
 	return code;
 };
 

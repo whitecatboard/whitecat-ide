@@ -79,7 +79,7 @@ Blockly.Lua['getdigitalpin'] = function(block) {
 	getCode += Blockly.Lua.indent(1, 'return value\n');
 	getCode += Blockly.Lua.indent(0, 'end\n');
 			
-	codeSection["declaration"].push(getCode);
+	codeSection["functions"].push(getCode);
 	
 	return ['_getDigitalPin' + pioName + '()', Blockly.Lua.ORDER_HIGH];	
 };
@@ -118,7 +118,7 @@ Blockly.Lua['getanalogpin'] = function(block) {
 	
 	getCode += Blockly.Lua.indent(0, 'end\n');
 			
-	codeSection["declaration"].push(getCode);
+	codeSection["functions"].push(getCode);
 	
 	return ['_getAnalogPin' + adcName + '()', Blockly.Lua.ORDER_HIGH];	
 };

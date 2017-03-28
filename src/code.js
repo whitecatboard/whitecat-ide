@@ -2419,8 +2419,13 @@ window.addEventListener('load', function() {
 	Code.agent = new agent();
 	Code.board = new board();
 	Code.lib = new blockLibrary();
-    //Code.blocklyFactory = new AppController();
-		
+    
+	if (typeof require != "undefined") {
+		if (typeof require('nw.gui') != "undefined") {	
+			Code.blocklyFactory = new AppController();
+		}
+	}
+	
 	Code.setup();
 });
 

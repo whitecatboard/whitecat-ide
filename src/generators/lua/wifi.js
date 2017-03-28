@@ -36,8 +36,10 @@ Blockly.Lua['wifi_start'] = function(block) {
 	var code = '';
 
 	var tryCode = '';
+	tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1, 'net.wf.setup(net.wf.mode.'+block.wtype+', "'+block.ssid+'","'+block.password+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1, 'net.wf.start()') + "\n";
+	tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
 		
 	code += Blockly.Lua.indent(0,'-- configure wifi and start wifi') + "\n";
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";

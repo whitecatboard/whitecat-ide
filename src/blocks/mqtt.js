@@ -118,6 +118,10 @@ Blockly.Blocks['mqtt_subscribe'] = {
 		this.setHelpUrl('http://www.example.com/');
 	},
 
+    section: function() {
+		return 'declaration';
+    },
+
 	configureMQTT: Blockly.Blocks['mqtt_publish'].configureMQTT,
 	mutationToDom: Blockly.Blocks['mqtt_publish'].mutationToDom,
 	domToMutation: Blockly.Blocks['mqtt_publish'].domToMutation,
