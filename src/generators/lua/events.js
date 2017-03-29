@@ -41,17 +41,14 @@ Blockly.Lua['when_board_starts'] = function(block) {
 		codeSection["require"].push('require("block")');
 	}
 	
-	initCode += Blockly.Lua.indent(0,'-- this event syncronizes events that can\'t start before the "when board starts" event') + "\n";
-	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n";
-	codeSection["events"].push(initCode);
-	
 	code += Blockly.Lua.indent(0,'-- when board starts') + "\n";
 	
 	if (statement != '') {
 		code += Blockly.Lua.indent(0,'wcBlock.blockStart("'+block.id+'")') + "\n";
-		code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block, statement)) + "\n\n";
+		code += Blockly.Lua.indent(0,'thread.start(function()') + "\n";
+		code += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block, statement)) + "\n";
+		code += Blockly.Lua.indent(0,'end)') + "\n";
 		code += Blockly.Lua.indent(0,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-		code += Blockly.Lua.indent(0,'_eventBoardStarted:broadcast(false)') + "\n";
 	}
 		
 	return code;
@@ -73,16 +70,18 @@ Blockly.Lua['when_i_receive'] = function(block) {
 	initCode += Blockly.Lua.indent(0,'_event'+eventId+' = event.create()') + "\n";
 	codeSection["events"].push(initCode);
 		
-	tryCode += Blockly.Lua.indent(1,'_event'+eventId+':addlistener(function()') + "\n";
-	tryCode += Blockly.Lua.indent(2,'thread.start(function()') + "\n";
+	tryCode += Blockly.Lua.indent(1,'thread.start(function()') + "\n";
+	tryCode += Blockly.Lua.indent(2,'while true do') + "\n";
+	tryCode += Blockly.Lua.indent(3,'_event'+eventId+':wait()') + "\n";
 	tryCode += Blockly.Lua.indent(3,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	
+
 	if (statement != "") {
 		tryCode += Blockly.Lua.indent(2, statement);
 	}
-	
+
 	tryCode += Blockly.Lua.indent(3,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-	tryCode += Blockly.Lua.indent(2,'end)') + "\n";
+	tryCode += Blockly.Lua.indent(2,'end') + "\n";
+
 	tryCode += Blockly.Lua.indent(1,'end)') + "\n";
 	
 	code += Blockly.Lua.indent(0, '-- when I receive ' + when) + "\n";

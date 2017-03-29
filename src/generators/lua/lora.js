@@ -108,15 +108,14 @@ Blockly.Lua['lora_join'] = function(block) {
 	tryCode += Blockly.Lua.indent(1,'if (_lora == nil) then') + "\n";
 	tryCode += Blockly.Lua.indent(2,'_lora = true') + "\n";
 	tryCode += Blockly.Lua.indent(2,'lora.setup(lora.BAND'+block.band+')') + "\n";
+	tryCode += Blockly.Lua.indent(2,'lora.setAppEui("'+block.appeui+'")') + "\n";
+	tryCode += Blockly.Lua.indent(2,'lora.setAppKey("'+block.appkey+'")') + "\n";		
 	tryCode += Blockly.Lua.indent(2,'lora.setDr('+block.dr+')') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setAdr('+block.adr+')') + "\n";
+	//tryCode += Blockly.Lua.indent(2,'lora.setAdr('+block.adr+')') + "\n";
 	tryCode += Blockly.Lua.indent(2,'lora.setReTx('+block.retx+')') + "\n";
 	tryCode += Blockly.Lua.indent(2,'\nif (os.flashEUI() == nil) then') + "\n";
 	tryCode += Blockly.Lua.indent(3,'lora.setDevEui("'+block.deveui+'")') + "\n";
 	tryCode += Blockly.Lua.indent(2,'end') + "\n\n";
-
-	tryCode += Blockly.Lua.indent(2,'lora.setAppEui("'+block.appeui+'")') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setAppKey("'+block.appkey+'")') + "\n";		
 
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 	
@@ -165,7 +164,7 @@ Blockly.Lua['lora_tx'] = function(block) {
 	}
 	
 	tryCode += Blockly.Lua.indent(2,'lora.setDr('+block.dr+')') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setAdr('+block.adr+')') + "\n";
+	//tryCode += Blockly.Lua.indent(2,'lora.setAdr('+block.adr+')') + "\n";
 	tryCode += Blockly.Lua.indent(2,'lora.setReTx('+block.retx+')') + "\n";
 
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";

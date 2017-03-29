@@ -110,9 +110,16 @@ Code.platforms = ["MacIntel", "Win32", "Linux x86_64"];
 
 Code.progressDialog = false;
 
+var fileFrom = {
+	Board: 0,
+	Computer: 1,
+	Cloud: 3
+};
+
 Code.currentFile = {
 	path: '/',
-	file: ''
+	file: '',
+	from: fileFrom.Board
 };
 
 Code.settings = {
@@ -251,12 +258,7 @@ Code.changeLanguage = function() {
 
 	Code.settings.language = newLang;
 
-	if (typeof require != "undefined") {
-		if (typeof require('nw.gui') != "undefined") {
-			Settings.save(Code.settings);
-			chrome.runtime.reload();
-		}
-	}
+	Settings.save(Code.settings);
 };
 
 Code.bindClick = function(element, func) {
@@ -1420,6 +1422,9 @@ Code.loadFileFromComputer = function(fileEntry) {
 			} else {
 				Code.workspace.editor.setValue(e.target.result, -1);
 			}
+			
+			Code.currentFile.from = fileFrom.Computer;
+			Code.tabRefresh();
 		};
 		reader.readAsText(file);
 		
@@ -1463,6 +1468,8 @@ Code.loadFileFromBoard = function(file) {
 		} else {
 			Code.workspace.editor.setValue(fileContent, -1);
 		}
+		
+		Code.currentFile.from = fileFrom.Board;
 		
 		Code.tabRefresh();
 	});
@@ -2209,7 +2216,15 @@ Code.tabRefresh = function() {
 			var file = Code.getCurrentFullPath();
 			var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
 			
-			jQuery("#targetFile").html(file.replace(fileExtension, extension));
+			var icon = '';
+
+			if (Code.currentFile.from == fileFrom.Board) {
+				icon = '<span><span class="icon icon-chip" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
+			} else if (Code.currentFile.from == fileFrom.Computer) {
+				icon = '<span><span class="icon icon-display" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
+			}
+			
+			jQuery("#targetFile").html("|&nbsp;&nbsp;" + icon + file.replace(fileExtension, extension));
 		} else {
 			jQuery("#targetFile").html('');
 		}

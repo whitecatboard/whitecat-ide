@@ -1,0 +1,46 @@
+./build.py
+java -jar ./../yuicompressor-2.4.8.jar blockly_compressed.js > wc.js
+java -jar ./../yuicompressor-2.4.8.jar blocks_compressed.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar core/wc/workspace.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar core/wc/sensors.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar core/wc/wifi.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar core/wc/mqtt.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar core/wc/lora.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar core/wc/field_event.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar core/wc/block.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/settings.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/watcher.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar lua_compressed.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar boards/board.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar boards/agent.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar lib/luaparser.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar library/blocks.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar library/library.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar code.js >> wc.js
+
+java -jar ./../yuicompressor-2.4.8.jar icon.css > css-min.css
+java -jar ./../yuicompressor-2.4.8.jar style.css >> css-min.css
+
+rm -f -r /Users/jaumeolivepetrus/whitecat-ide/src/deploy
+mkdir /Users/jaumeolivepetrus/whitecat-ide/src/deploy
+cd /Users/jaumeolivepetrus/whitecat-ide/src/deploy
+mkdir -p /Users/jaumeolivepetrus/whitecat-ide/src/deploy/msg
+mkdir -p /Users/jaumeolivepetrus/whitecat-ide/src/deploy/msg/js
+mkdir -p /Users/jaumeolivepetrus/whitecat-ide/src/deploy/msg/wc
+mkdir -p /Users/jaumeolivepetrus/whitecat-ide/src/deploy/boards/defs
+mkdir -p /Users/jaumeolivepetrus/whitecat-ide/src/deploy/library/defs
+
+cp -f -r ./../aceeditor ./
+cp -f -r ./../boards/defs/* ./boards/defs
+cp -f -r ./../fonts ./
+cp -f -r ./../lib ./
+cp -f -r ./../library/defs/libs.json ./library/defs
+cp -f -r ./../media ./
+cp -f -r ./../msg/js/* ./msg/js
+cp -f -r ./../msg/wc/* ./msg/wc
+cp -f -r ./../msg/*.js ./msg
+cp -f -r ./../wc ./
+cp -f -r ./../wc.js ./
+cp -f -r ./../prettify.js ./
+cp -f -r ./../*-min.css ./
+cp -f -r ./../prettify.css ./

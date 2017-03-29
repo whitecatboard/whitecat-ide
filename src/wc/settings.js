@@ -60,6 +60,11 @@ Settings.load = function(appSettings) {
 				Code.showError(MSG['error'], MSG['youHaveAnErrorInSettings'] + '<br><br>' + error);	
 			}
 		}
+	} else {
+		appSettings.language = jQuery("#laguagePreferences").attr('value');
+		if (appSettings.language == "") {
+			appSettings.language = 'en';
+		}
 	}
 }
 
@@ -73,6 +78,11 @@ Settings.save = function(appSettings) {
 		    var filePath = path.join(process.cwd(), file);  
     
 		    fs.writeFileSync(filePath, JSON.stringify(appSettings));
+			
+			chrome.runtime.reload();
 		}
+	} else {
+		jQuery("#laguagePreferences").attr('value',appSettings.language);
+		jQuery("#preferencesForm").submit();
 	}
 }
