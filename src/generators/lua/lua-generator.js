@@ -139,7 +139,8 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	code += codeSection["require"].join('\n') + "\n";
 	code += codeSection["declaration"].join("\n") + "\n";
 	
-	code += "function _code()"
+	code += "function _code()\n";
+	code += "wcBlock.developerMode = false\n";
 	if (goog.isArray(line)) {
 		code += "print("+line[0]+")\n";
 	} else {
@@ -166,7 +167,8 @@ Blockly.Generator.prototype.blockCode = function(block) {
 	code += codeSection["require"].join('\n') + "\n";
 	code += codeSection["declaration"].join("\n") + "\n";
 	
-	code += "function _code()"
+	code += "function _code()\n";
+	code += "wcBlock.developerMode = false\n";
 	if (goog.isArray(line)) {
 		code += line[0] + "\n";
 	} else {

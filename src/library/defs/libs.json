@@ -224,7 +224,6 @@
         "helpUrl": "",
         "inputsInline": true
       },
-      "whatcher": false,
       "shadow": {
         "UNITS": {
           "value": "0",
@@ -232,12 +231,12 @@
           "type": "math_number"
         },
         "SPEED": {
-          "value": "0",
+          "value": "60",
           "name": "NUM",
           "type": "math_number"
         },
         "ACCEL": {
-          "value": "0",
+          "value": "2",
           "name": "NUM",
           "type": "math_number"
         }
@@ -253,10 +252,11 @@
           "message0": "mueve stepper d. %1, p. %2 en %3 unidades, vel %4, accel %5"
         }
       },
+      "whatcher": false,
       "dependency": [
         "block"
       ],
-      "code": "LS0gbW92ZSBzdGVwcGVyIG9uIGRpcmVjdGlvbiBwaW4ge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkRElSRUNUSU9OJCRdWzBdfX0sIHN0ZXAgcGluIHt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fQ0Kd2NCbG9jay5ibG9ja1N0YXJ0KCIlJWlkJSUiKQ0KdHJ5KA0KCWZ1bmN0aW9uKCkNCgkJLS0gQXR0YWNoIHN0ZXBwZXINCgkJaWYgKF9zdGVwcGVye3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkU1RFUCQkXVswXX19ID09IG5pbCkgdGhlbg0KCQkJX3N0ZXBwZXJ7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0gPSBzdGVwcGVyLmF0dGFjaChwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkRElSRUNUSU9OJCRdWzBdfX0sIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0pDQoJCWVuZA0KCQlfc3RlcHBlcnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fTptb3ZlKEBAVU5JVFNAQCwgQEBTUEVFREBALCBAQEFDQ0VMQEApDQoJCXN0ZXBwZXIuc3RhcnQoX3N0ZXBwZXJ7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0pDQoJZW5kLA0KCWZ1bmN0aW9uKHdoZXJlLCBsaW5lLCBlcnIsIG1lc3NhZ2UpDQoJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCWVuZA0KKQ0Kd2NCbG9jay5ibG9ja0VuZCgiJSVpZCUlIik="
+      "code": "LS0gbW92ZSBzdGVwcGVyIG9uIGRpcmVjdGlvbiBwaW4ge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkRElSRUNUSU9OJCRdWzBdfX0sIHN0ZXAgcGluIHt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fQ0KdHJ5KA0KCWZ1bmN0aW9uKCkNCgkJLS0gQXR0YWNoIHN0ZXBwZXINCgkJaWYgKF9zdGVwcGVye3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkU1RFUCQkXVswXX19ID09IG5pbCkgdGhlbg0KCQkJX3N0ZXBwZXJ7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0gPSBzdGVwcGVyLmF0dGFjaChwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkRElSRUNUSU9OJCRdWzBdfX0sIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0pDQoJCWVuZA0KCQlfc3RlcHBlcnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fTptb3ZlKEBAVU5JVFNAQCwgQEBTUEVFREBALCBAQEFDQ0VMQEApDQoJCXN0ZXBwZXIuc3RhcnQoX3N0ZXBwZXJ7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0pDQoJZW5kLA0KCWZ1bmN0aW9uKHdoZXJlLCBsaW5lLCBlcnIsIG1lc3NhZ2UpDQoJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCWVuZA0KKQ=="
     }
   ]
 }

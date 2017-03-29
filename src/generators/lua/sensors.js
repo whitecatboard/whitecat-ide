@@ -54,11 +54,10 @@ Blockly.Lua['sensor_read'] = function(block) {
 	getCode += Blockly.Lua.indent(0, 'function _get'+block.name+'_' + block.sid + '()') + "\n";
 
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+block.sid+'"') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_G[instance] = sensor.setup("'+block.sid+'", '+int+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'if (_'+block.name+'_'+block.sid+' == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_'+block.name+'_'+block.sid+' = sensor.setup("'+block.sid+'", '+int+')') + "\n";
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'value = _G[instance]:read("'+magnitude+'")') + "\n";
+	tryCode += Blockly.Lua.indent(1,'value = _'+block.name+'_'+block.sid+':read("'+magnitude+'")') + "\n";
 
 	getCode += Blockly.Lua.indent(1, 'local value\n') + "\n";
 	getCode += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block,tryCode)) + "\n\n";
@@ -90,10 +89,10 @@ Blockly.Lua['sensor_set'] = function(block) {
 	
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+block.sid+'"') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'if (_G[instance] == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_G[instance] = sensor.setup("'+block.sid+'", '+int+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'if (_'+block.name+'_'+block.sid+' == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_'+block.name+'_'+block.sid+' = sensor.setup("'+block.sid+'", '+int+')') + "\n";
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'_G[instance]:set("'+property+'", '+value+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'_'+block.name+'_'+block.sid+':set("'+property+'", '+value+')') + "\n";
 
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
 	

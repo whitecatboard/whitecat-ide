@@ -119,7 +119,7 @@ Blockly.Blocks['mqtt_subscribe'] = {
 	},
 
     section: function() {
-		return 'declaration';
+		return 'default';
     },
 
 	configureMQTT: Blockly.Blocks['mqtt_publish'].configureMQTT,
