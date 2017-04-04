@@ -198,3 +198,33 @@ Blockly.Blocks['getanalogpin'] = {
 
 	hasWatcher: true,
 };
+
+Blockly.Blocks['when_digital_pin'] = {
+	init: function() {
+		var pins = Blockly.Blocks.io.helper.getInputDigitalPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN")
+			.appendField(Blockly.Msg.EVENT_WHEN_DIGITAL_CHANGES)
+			.appendField(new Blockly.FieldDropdown(
+				[
+					[Blockly.Msg["positive_edge"],"IntrPosEdge"],
+					[Blockly.Msg["negative_edge"],"IntrNegEdge"],
+					[Blockly.Msg["any_edge"],"IntrAnyEdge"],
+					[Blockly.Msg["low_level"],"IntrLowLevel"],
+					[Blockly.Msg["high_level"],"IntrHighLevel"],
+				]), "WHEN");
+
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+				
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN_HELPURL);
+	}
+};

@@ -97,6 +97,34 @@ Blockly.Lua['lora_set_retx'] = function(block) {
   return 'lora.setReTx(' + value + ')\n';
 };
 
+Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
+	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
+	var code = '';
+	
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
+	}
+	
+	code += Blockly.Lua.indent(0,'-- when I receive a LoRa frame') + "\n";
+	code += Blockly.Lua.indent(0,'lora.whenReceived(function(_port, _payload)') + "\n";
+	
+	if (Blockly.Lua.developerMode) {
+		code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
+	}
+	
+	if (statement != '') {
+		code += Blockly.Lua.tryBlock(1,block, statement);
+	}
+	
+	if (Blockly.Lua.developerMode) {
+		code += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+	}
+	
+	code += Blockly.Lua.indent(0,'end)') + "\n";
+	
+	return code;
+}
+
 Blockly.Lua['lora_join'] = function(block) {
 	var code = '';
 
@@ -105,26 +133,30 @@ Blockly.Lua['lora_join'] = function(block) {
 	}
 	
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(1,'if (_lora == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_lora = true') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setup(lora.BAND'+block.band+')') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setAppEui("'+block.appeui+'")') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setAppKey("'+block.appkey+'")') + "\n";		
-	tryCode += Blockly.Lua.indent(2,'lora.setDr('+block.dr+')') + "\n";
+	tryCode += Blockly.Lua.indent(0,'if (_lora == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(1,'_lora = true') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.setup(lora.BAND'+block.band+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.setAppEui("'+block.appeui+'")') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.setAppKey("'+block.appkey+'")') + "\n";		
+	tryCode += Blockly.Lua.indent(1,'lora.setDr('+block.dr+')') + "\n";
 	//tryCode += Blockly.Lua.indent(2,'lora.setAdr('+block.adr+')') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setReTx('+block.retx+')') + "\n";
-	tryCode += Blockly.Lua.indent(2,'\nif (os.flashEUI() == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(3,'lora.setDevEui("'+block.deveui+'")') + "\n";
-	tryCode += Blockly.Lua.indent(2,'end') + "\n\n";
-
+	tryCode += Blockly.Lua.indent(1,'lora.setReTx('+block.retx+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'\nif (os.flashEUI() == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(2,'lora.setDevEui("'+block.deveui+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
+
+	tryCode += Blockly.Lua.indent(0,'end') + "\n\n";
 	
-	tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	tryCode += Blockly.Lua.indent(1,'lora.join()') + "\n";
-	tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+	if (Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(0,'wcBlock.blockStart("'+block.id+'")') + "\n";
+	}
 	
+	tryCode += Blockly.Lua.indent(0,'lora.join()') + "\n";
+	if (Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(0,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+	}
 	code += Blockly.Lua.indent(0,'-- lora join') + "\n";
-	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
+	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
 	
 	return code;
 };
@@ -146,35 +178,43 @@ Blockly.Lua['lora_tx'] = function(block) {
 	}
 	
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(1,'if (_lora == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_lora = true') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setup(lora.BAND'+block.band+')') + "\n";
+
+	if (Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(0,'wcBlock.blockStart("'+block.id+'")') + "\n";
+	}
+
+	tryCode += Blockly.Lua.indent(0,'-- setup LoRa WAN stack, if needed') + "\n";
+	tryCode += Blockly.Lua.indent(0,'if (_lora == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(1,'_lora = true') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.setup(lora.BAND'+block.band+')') + "\n";
 
 	if (block.activation == 'OTAA') {
-		tryCode += Blockly.Lua.indent(2,'\nif (os.flashEUI() == nil) then') + "\n";
-		tryCode += Blockly.Lua.indent(3,'lora.setDevEui("'+block.deveui+'")') + "\n";
-		tryCode += Blockly.Lua.indent(2,'end') + "\n\n";
+		tryCode += Blockly.Lua.indent(1,'\nif (os.flashEUI() == nil) then') + "\n";
+		tryCode += Blockly.Lua.indent(2,'lora.setDevEui("'+block.deveui+'")') + "\n";
+		tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 
-		tryCode += Blockly.Lua.indent(2,'lora.setAppEui("'+block.appeui+'")') + "\n";
-		tryCode += Blockly.Lua.indent(2,'lora.setAppKey("'+block.appkey+'")') + "\n";		
+		tryCode += Blockly.Lua.indent(1,'lora.setAppEui("'+block.appeui+'")') + "\n";
+		tryCode += Blockly.Lua.indent(1,'lora.setAppKey("'+block.appkey+'")') + "\n";		
 	} else {
-		tryCode += Blockly.Lua.indent(2,'lora.setDevAddr("'+block.devaddr+'")') + "\n";
-		tryCode += Blockly.Lua.indent(2,'lora.setNwksKey("'+block.nwkskey+'")') + "\n";				
-		tryCode += Blockly.Lua.indent(2,'lora.setAppsKey("'+block.appskey+'")') + "\n";				
+		tryCode += Blockly.Lua.indent(1,'lora.setDevAddr("'+block.devaddr+'")') + "\n";
+		tryCode += Blockly.Lua.indent(1,'lora.setNwksKey("'+block.nwkskey+'")') + "\n";				
+		tryCode += Blockly.Lua.indent(1,'lora.setAppsKey("'+block.appskey+'")') + "\n";				
 	}
 	
-	tryCode += Blockly.Lua.indent(2,'lora.setDr('+block.dr+')') + "\n";
-	//tryCode += Blockly.Lua.indent(2,'lora.setAdr('+block.adr+')') + "\n";
-	tryCode += Blockly.Lua.indent(2,'lora.setReTx('+block.retx+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.setDr('+block.dr+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.setAdr('+block.adr+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.setReTx('+block.retx+')') + "\n";
 
-	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
+	tryCode += Blockly.Lua.indent(0,'end') + "\n\n";
 
-	tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	tryCode += Blockly.Lua.indent(1,'lora.tx('+confirmed+', '+port+', '+payload+')') + "\n";
-	tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+	tryCode += Blockly.Lua.indent(0,'-- transmit') + "\n";
+	tryCode += Blockly.Lua.indent(0,'lora.tx('+confirmed+', '+port+', '+payload+')') + "\n";
+	if (Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(0,'wcBlock.blockEnd("'+block.id+'")' + "\n");
+	}
 	
 	code += Blockly.Lua.indent(0,'-- lora tx') + "\n";
-	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
+	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
 	
 	return code;
 };

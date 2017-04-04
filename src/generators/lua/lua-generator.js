@@ -7,7 +7,18 @@ codeSection["declaration"] = [];
 codeSection["start"] = [];
 codeSection["default"] = [];
 
+// Whe indent using a tab
 Blockly.Generator.prototype.INDENT = '\t';
+
+Blockly.Generator.prototype.statementToCodeNoIndent = function(block, name) {
+  var targetBlock = block.getInputTargetBlock(name);
+  var code = this.blockToCode(targetBlock);
+  // Value blocks must return code and order of operations info.
+  // Statement blocks must only return code.
+  goog.asserts.assertString(code, 'Expecting code from statement block "%s".',
+      targetBlock && targetBlock.type);
+  return code;
+};
 
 Blockly.Generator.prototype.workspaceToCode = function(workspace) {  
   if (!workspace) {

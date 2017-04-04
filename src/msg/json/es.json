@@ -525,5 +525,18 @@
 	"MQTT_QOS": "con",
 	"MQTT_SUBSCRIBE": "cuando se reciba un mensaje en",
 	"MQTT_GET_LEN": "obtener la longitud del mensaje recibido",
-	"MQTT_GET_PAYLOAD": "obtener el mensaje recibido"
+	"MQTT_GET_PAYLOAD": "obtener el mensaje recibido",
+	"EVENT_IS_BEING_PROCESSED_P": "¿",
+	"EVENT_IS_BEING_PROCESSED": "se está procesando?",
+	"EVENT_IS_BEING_PROCESSED_TOOLTIP": "",
+	"EVENT_IS_BEING_PROCESSED_HELPURL": "",
+	"EVENT_WHEN_DIGITAL_PIN": "cuando el valor del pin digital",
+	"EVENT_WHEN_DIGITAL_CHANGES": "cambie a",
+	"EVENT_WHEN_DIGITAL_PIN_TOOLTIP": "",
+	"EVENT_WHEN_DIGITAL_PIN_HELPURL": "",
+	"positive_edge": "flanco positivo",
+	"negative_edge": "flanco negativo",
+	"any_edge": "cualquier flanco",
+	"low_level": "nivel bajo",
+	"high_level": "nivel alto"
 }

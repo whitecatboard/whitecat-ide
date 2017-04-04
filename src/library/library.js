@@ -94,54 +94,59 @@ blockLibrary.prototype.update = function() {
 
 blockLibrary.prototype.replace = function(template, char1, char2, block) {
 	var code = "";	
-	var previous = "";
-	var marker = "";
-	var token = "";
 	var id = "";
-	
+
 	for(var i=0;i < template.length;i++) {
-		if ((marker == char1) || (marker == char2)) {
-			if ((template.charAt(i) == char1) || (template.charAt(i) == char2)) {
-				if ((token == char1 + char1) || (token == char2 + char2)) {
-					if (token == "%%") {
-						code = code + block[id];
-					} else if (token == "$$") {
-						code = code + "'" + eval("block.getFieldValue('"+id+"')") + "'";
-					} else if (token == "@@") {
-						code = code + eval("Blockly.Lua.valueToCode(block, id, Blockly.Lua.ORDER_NONE)");
-					} else if (token == "{{") {
-						code = code + eval(id);
+		if (template.charAt(i) == char1) {
+			if (i + 1 < template.length) {
+				i++;
+				if (template.charAt(i) == char1) {
+					// Finded token begin, for example $$
+					if (i + 1 < template.length) {
+						i++;
+						id = "";
+						for(;i < template.length;i++) {
+							if (template.charAt(i) == char2) {
+								if (i + 1 < template.length) {
+									i++;
+									if (template.charAt(i) == char2) {
+										// Finded token end, for example $$
+										if (char2 == "%") {
+											code = code + block[id];
+											break;
+										} else if (char2 == "$") {
+											code = code + "'" + eval("block.getFieldValue('"+id+"')") + "'";
+											break;
+										} else if (char2 == "@") {
+											code = code + eval("Blockly.Lua.valueToCode(block, id, Blockly.Lua.ORDER_NONE)");
+											break;
+										} else if (char2 == "}") {
+											code = code + eval(id);
+											break;
+										}
+									} else {
+										code += id + template.charAt(i);										
+									}
+								} else {
+									code += id + template.charAt(i);									
+								}
+							} else {
+								id += template.charAt(i);
+							}
+						}
+					} else {
+						code += template.charAt(i);											
 					}
-					
-					token = "";
-					id = "";
 				} else {
-					token = template.charAt(i) + template.charAt(i);
+					code += template.charAt(i);					
 				}
-				
-				marker = "";
 			} else {
-				if (token != "") {
-					id = id + previous;
-				} else {
-					code = code + previous;						
-				}
-				marker = "";
+				code += template.charAt(i);				
 			}
 		} else {
-			if ((template.charAt(i) == char1) || (template.charAt(i) == char2))  {
-				marker = char2;
-			} else {
-				if (token == "") {
-					code = code + template.charAt(i);
-				} else {
-					id = id + template.charAt(i);
-				}
-			}				
+			code += template.charAt(i);
 		}
-		
-		previous = template.charAt(i);
-	}	
+	}
 	
 	return code;
 }

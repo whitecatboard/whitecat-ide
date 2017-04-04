@@ -33,6 +33,9 @@
  */
 'use strict';
 
+// By default, enable developer mode
+Blockly.Lua.developerMode = true;
+
 /**
  * Create a namespace for the application.
  */
@@ -432,6 +435,7 @@ Code.buildToolBox = function(callback) {
 		'<block type="when_i_receive"></block>' +
 		'<block type="broadcast"></block>' +
 		'<block type="broadcast_and_wait"></block>' +
+		'<block type="event_is_being_processed"></block>' +
 		'</category>' +
 		'<category id="catControl">' +
 		'<category id="catLoops">' +
@@ -707,7 +711,8 @@ Code.buildToolBox = function(callback) {
 		xml += '<category id="catIO" colour="20">';
 
 		if (Code.status.modules.pio) {
-			xml += '<block type="setdigitalpin"></block>' +
+			xml += '<block type="when_digital_pin"></block>' +
+				'<block type="setdigitalpin"></block>' +
 				'<block type="getdigitalpin"></block>';
 		}
 
@@ -1096,6 +1101,7 @@ Code.init = function() {
 	}
 
 	Code.bindClick('switchToCode', Code.switchToCode);
+	Code.bindClick('developerMode', Code.developerMode);
 	Code.bindClick('switchToBlocks', Code.switchToBlocks);
 	Code.bindClick('loadButton', Code.load);
 	Code.bindClick('saveButton', Code.save);
@@ -1158,6 +1164,7 @@ Code.initLanguage = function() {
 		element.text(MSG[element.attr('id').replace('tab_', '')]);
 	});
 
+	document.getElementById('developerMode').title = MSG['developerMode'];
 	document.getElementById('switchToBlocks').title = MSG['switchToCodev'];
 	document.getElementById('switchToCode').title = MSG['switchToCodev'];
 	document.getElementById('loadButton').title = MSG['loadButtonTooltip'];
@@ -2182,16 +2189,16 @@ Code.listBoardDirectory = function(container, extension, folderSelect, fileSelec
 
 Code.tabRefresh = function() {
 	if ((Code.selected == 'program') && (Code.workspace.type == 'blocks')) {
-		jQuery("#switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("#developerMode, #switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToBlocks").addClass("disabled");
 	} else if ((Code.selected == 'program') && (Code.workspace.type == 'editor')) {
-		jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("developerMode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToCode").addClass("disabled");
 	} else if ((Code.selected == 'program') && (Code.workspace.type == 'block_editor')) {
 		jQuery("#trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
-		jQuery("#switchToCode, #switchToBlocks").addClass("disabled");
+		jQuery("#developerMode, #switchToCode, #switchToBlocks").addClass("disabled");
 	} else if (Code.selected == 'board') {
-		jQuery("#switchToCode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
+		jQuery("#developerMode, #switchToCode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
 	}
 
 	if (!Code.status.connected) {
@@ -2232,6 +2239,25 @@ Code.tabRefresh = function() {
 		jQuery("#targetFile").html('');
 	}
 
+}
+
+Code.developerMode = function() {
+	var on = true;
+	
+	if (jQuery("#developerMode").hasClass("on")) {
+		jQuery("#developerMode").removeClass("on");
+		jQuery("#developerMode").find(".icon").addClass("off");
+		
+		on = false;
+	} else {
+		jQuery("#developerMode").addClass("on");
+		jQuery("#developerMode").find(".icon").removeClass("off");
+	}
+	
+	Blockly.Lua.developerMode = on;
+	if (Code.workspace.type == "editor") {
+		Code.switchToCode();
+	}
 }
 
 Code.blockEditor = function() {

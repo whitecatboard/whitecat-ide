@@ -498,5 +498,18 @@
 	"MQTT_QOS": "amb",
 	"MQTT_SUBSCRIBE": "quen es rebi un missatge a",
 	"MQTT_GET_LEN": "llegir la mida del missatge rebut",
-	"MQTT_GET_PAYLOAD": "llegir el missatge rebut"
+	"MQTT_GET_PAYLOAD": "llegir el missatge rebut",
+	"EVENT_IS_BEING_PROCESSED_P": "",
+	"EVENT_IS_BEING_PROCESSED": "s'està processant?",
+	"EVENT_IS_BEING_PROCESSED_TOOLTIP": "",
+	"EVENT_IS_BEING_PROCESSED_HELPURL": "",
+	"EVENT_WHEN_DIGITAL_PIN": "quan el valor del pin digital",
+	"EVENT_WHEN_DIGITAL_CHANGES": "canviï a",
+	"EVENT_WHEN_DIGITAL_PIN_TOOLTIP": "",
+	"EVENT_WHEN_DIGITAL_PIN_HELPURL": "",
+	"positive_edge": "flanc positiu",
+	"negative_edge": "flanc negatiu",
+	"any_edge": "qualsevol flanc",
+	"low_level": "nivell baix",
+	"high_level": "nivell alt"
 }

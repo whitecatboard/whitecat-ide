@@ -33,33 +33,53 @@ goog.provide('Blockly.Lua.events');
 goog.require('Blockly.Lua');
 
 Blockly.Lua['when_board_starts'] = function(block) {
-	var statement = Blockly.Lua.statementToCode(block, 'DO');
+	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var code = '';
 	var initCode = '';
-	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
-	
-	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n";
-	codeSection["events"].push(initCode);
-
-	code += Blockly.Lua.indent(0,'-- when board starts') + "\n";
-	
+		
 	if (statement != '') {
-		code += Blockly.Lua.indent(0,'wcBlock.blockStart("'+block.id+'")') + "\n";
+		if (codeSection["require"].indexOf('require("block")') == -1) {
+			codeSection["require"].push('require("block")');
+		}
+
+		initCode += Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";
+		initCode += Blockly.Lua.indent(0,'-- that must wait for this situation') + "\n";
+		initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n";
+		codeSection["events"].push(initCode);
+
+		code += Blockly.Lua.indent(0,'-- when board starts') + "\n";
+	
 		code += Blockly.Lua.indent(0,'thread.start(function()') + "\n";
-		code += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block, statement)) + "\n";
-		code += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(false)') + "\n";
-		code += Blockly.Lua.indent(0,'end)') + "\n";
-		code += Blockly.Lua.indent(0,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+
+		if (Blockly.Lua.developerMode) {
+			code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
+		}
+
+		code += Blockly.Lua.tryBlock(1, block, statement);
+
+		if (Blockly.Lua.developerMode) {
+			code += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n\n";
+		} else {
+			code += '\n';
+		}
+
+		if (statement != '') {
+			code += Blockly.Lua.indent((statement != '')?1:0,'-- board is started, broadcast to threads that are waiting') + "\n";
+			code += Blockly.Lua.indent((statement != '')?1:0,'_eventBoardStarted:broadcast(false)') + "\n";
+	
+			code += Blockly.Lua.indent(0,'end)') + "\n\n";		
+
+			code += '-- wait for board started\n'
+			code += '_eventBoardStarted:wait()\n'
+		}
 	}
+	
 		
 	return code;
 }
 
 Blockly.Lua['when_i_receive'] = function(block) {
-	var statement = Blockly.Lua.statementToCode(block, 'DO');
+	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var when = block.getFieldValue('WHEN');
 	var eventId = this.workspace.eventIndexOf(when);
 	var code = '';
@@ -74,44 +94,31 @@ Blockly.Lua['when_i_receive'] = function(block) {
 	initCode += Blockly.Lua.indent(0,'_event'+eventId+' = event.create()') + "\n";
 	codeSection["events"].push(initCode);
 		
-	tryCode += Blockly.Lua.indent(1,'thread.start(function()') + "\n";
-	tryCode += Blockly.Lua.indent(2,'while true do') + "\n";
-	tryCode += Blockly.Lua.indent(3,'_event'+eventId+':wait()') + "\n";
-	tryCode += Blockly.Lua.indent(3,'wcBlock.blockStart("'+block.id+'")') + "\n";
-
+	tryCode += Blockly.Lua.indent(0,'thread.start(function()') + "\n";
+	tryCode += Blockly.Lua.indent(1,'while true do') + "\n";
+	tryCode += Blockly.Lua.indent(2,'-- wait for event "' + when + '"') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_event'+eventId+':wait()') + "\n\n";
+	
+	if (Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(2,'wcBlock.blockStart("'+block.id+'")') + "\n";
+	}
+	
 	if (statement != "") {
 		tryCode += Blockly.Lua.indent(2, statement);
 	}
 
-	tryCode += Blockly.Lua.indent(3,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-	tryCode += Blockly.Lua.indent(2,'end') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_event'+eventId+':done()') + "\n\n";
 
-	tryCode += Blockly.Lua.indent(1,'end)') + "\n";
+	if (Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(2,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+	}
+	
+	tryCode += Blockly.Lua.indent(1,'end') + "\n";
+
+	tryCode += Blockly.Lua.indent(0,'end)') + "\n";
 	
 	code += Blockly.Lua.indent(0, '-- when I receive ' + when) + "\n";
-	code += Blockly.Lua.indent(0, Blockly.Lua.tryBlock(block, tryCode)) + "\n";
-	
-	return code;
-}
-
-Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
-	var statement = Blockly.Lua.statementToCode(block, 'DO');
-	var code = '';
-	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
-	
-	code += Blockly.Lua.indent(0,'-- when I receive a LoRa frame') + "\n";
-	code += Blockly.Lua.indent(0,'lora.whenReceived(function(_port, _payload)') + "\n";
-	code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	
-	if (statement != '') {
-		code += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block, statement)) + "\n";
-	}
-	
-	code += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-	code += Blockly.Lua.indent(0,'end)') + "\n";
+	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
 	
 	return code;
 }
@@ -125,12 +132,7 @@ Blockly.Lua['broadcast'] = function(block) {
 		codeSection["require"].push('require("block")');
 	}
 	
-	code += Blockly.Lua.indent(0,'-- boardcast ' + when) + "\n";
-	
-	var statement = '';
-	statement += Blockly.Lua.indent(1,'_event'+eventId+':broadcast(false)') + "\n";
-	
-	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block, statement)) + "\n";
+	code += Blockly.Lua.indent(0,'_event'+eventId+':broadcast(false)' + '  -- boardcast "' + when + '"') + "\n";
 	
 	return code;
 }
@@ -144,12 +146,18 @@ Blockly.Lua['broadcast_and_wait'] = function(block) {
 		codeSection["require"].push('require("block")');
 	}
 	
-	code += Blockly.Lua.indent(0,'-- boardcast and wait ' + when) + "\n";
-	
-	var statement = '';
-	
-	statement += '_event'+eventId+':broadcast(false)';
-	code += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block, statement)) + "\n";
+	code += Blockly.Lua.indent(0,'_event'+eventId+':broadcast(true)' + '  -- boardcast and wait "' + when + '"') + "\n";
 	
 	return code;
+}
+
+Blockly.Lua['event_is_being_processed'] = function(block) {
+	var when = block.getFieldValue('WHEN');
+	var eventId = this.workspace.eventIndexOf(when);
+	
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
+	}
+	
+    return ['_event'+eventId+':pending()', Blockly.Lua.ORDER_HIGH];
 }

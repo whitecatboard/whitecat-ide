@@ -87,10 +87,7 @@ Blockly.Blocks['broadcast'] = {
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_HELPURL);
-	},
-    section: function() {
-		return 'declaration';
-    }
+	}
 };
 
 Blockly.Blocks['broadcast_and_wait'] = {
@@ -105,8 +102,21 @@ Blockly.Blocks['broadcast_and_wait'] = {
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_HELPURL);
-	},
-    section: function() {
-		return 'declaration';
-    }
+	}
+};
+
+Blockly.Blocks['event_is_being_processed'] = {
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.EVENT_IS_BEING_PROCESSED_P)
+		    .appendField(new Blockly.wc.FieldEvent(Blockly.Msg.DEFAULT_EVENT),"WHEN")
+			.appendField(Blockly.Msg.EVENT_IS_BEING_PROCESSED);
+
+		this.setOutput(true, null);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_IS_BEING_PROCESSED_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.EVENT_IS_BEING_PROCESSED_HELPURL);
+	}
 };

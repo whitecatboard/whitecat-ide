@@ -59,6 +59,14 @@ button.disabled {
   display: none;
 }
 
+.icon.off {
+  color: #919191;
+}
+
+.icon:hover { 
+    color: inherited !important;
+}
+
 li.disabled {
   display: none !important;
 }
@@ -439,7 +447,7 @@ body.modal-open .modal .modal-dialog {
 	min-height: 38px;
 }
 
-#boardConsole {
+Console {
     font-family: monospace  !important;
     font-size: 12px  !important;
     background: none  !important;
