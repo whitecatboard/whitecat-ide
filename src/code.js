@@ -3,9 +3,9 @@
  * Board. Blocky Environment, Board. board definition
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
- * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@Board.board.org)
+ * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  *
  * -----------------------------------------------------------------------
  * 
@@ -400,6 +400,8 @@ Code.renderContent = function() {
 			
 			if (Code.workspace.blocks) {
 				Code.workspace.blocks.setVisible(true);
+				
+				Code.updateToolBox();	
 			}
 		} else if (Code.workspace.type == 'editor') {
 			jQuery("#content_blocks").css('visibility', 'hidden');
@@ -422,7 +424,7 @@ Code.renderContent = function() {
 			}
 		}
 	}
-	Code.updateToolBox();
+	
 	window.dispatchEvent(new Event('resize'));
 };
 
@@ -970,7 +972,7 @@ Code.init = function() {
 	var onresize = function(e) {
 		var bBox = Code.getBBox_(container);
 		for (var i = 0; i < Code.TABS_.length; i++) {
-			var el;
+			var el = document.getElementById('content_' + Code.TABS_[i]);
 			if (Code.TABS_[i] == 'program') {
 				if (Code.workspace.type == 'blocks') {
 					el = document.getElementById('content_blocks');
@@ -979,34 +981,17 @@ Code.init = function() {
 				} else if (Code.workspace.type == 'block_editor') {
 					el = document.getElementById('content_block_editor');
 				}
-
-				el.style.top = bBox.y + 'px';
-				el.style.left = bBox.x + 'px';
-				// Height and width need to be set, read back, then set again to
-				// compensate for scrollbars.
-				el.style.height = (bBox.height) + 'px';
-				//el.style.height = (bBox.height - el.offsetHeight) + 'px';
-			
-				el.style.width = bBox.width + 'px';
-				//el.style.width = (bBox.width - el.offsetWidth) + 'px';
 			}
-
-			el = document.getElementById('content_' + Code.TABS_[i]);
+			
 			el.style.top = bBox.y + 'px';
 			el.style.left = bBox.x + 'px';
+			
 			// Height and width need to be set, read back, then set again to
 			// compensate for scrollbars.
-			el.style.height = bBox.height + 'px';
-			//el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
-			el.style.width = bBox.width + 'px';
-			//el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
-
-			//el = document.getElementById('logo');
-			//el.style.position = 'absolute';
-			//el.style.width = '100px';
-			//el.style.top = 5 + 'px';
-			//el.style.left = (bBox.width - bBox.x - 110) + 'px';
-			//el.style.visibility = 'visible';
+	        el.style.height = bBox.height + 'px';
+	        el.style.height = (2 * bBox.height - el.offsetHeight - 34) + 'px';
+	        el.style.width = bBox.width + 'px';
+	        el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
 
 			el = document.getElementById('languageDiv');
 
@@ -1018,21 +1003,10 @@ Code.init = function() {
 			el.style.top = (bBox.y - 38) + 'px';
 			el.style.left = (bBox.width - bBox.x - bBox2.width - 10) + 'px';
 			el.style.visibility = 'visible';
-
-			//var bBoxBoardStatus = Code.getBBox_(document.getElementById('boardStatus'));
-			//var boardConsole = document.getElementById('boardConsole');
-			//var width = bBox.width - bBoxBoardStatus.x - bBoxBoardStatus.width - 40;
-			//var height = bBox.height - bBoxBoardStatus.y - 20;
-
-			//boardConsole.style.width = width + 'px';
-			//boardConsole.style.height = height + 'px';
-
-			//Term.resize(width, height);
 		}
 	};
 
 	Code.workspace.type = 'blocks';
-	onresize(undefined);
 	window.addEventListener('resize', onresize, false);
 
 	var toolbox = document.getElementById('toolbox');
@@ -1062,6 +1036,9 @@ Code.init = function() {
 	// and the infinite loop detection function.
 
 	Code.loadBlocks('');
+	
+	onresize();
+	Blockly.svgResize(Code.workspace.blocks);
 
 	ace.require("ace/ext/language_tools");
 	Code.workspace.editor = ace.edit(document.getElementById("content_editor"));
@@ -1422,10 +1399,11 @@ Code.loadFileFromComputer = function(fileEntry) {
 			}
 
 			if (Code.workspace.type == 'blocks') {
-				Code.workspace.blocks.clear();
 				var xml = Blockly.Xml.textToDom(e.target.result);
-				Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
-				Code.workspace.blocks.scrollCenter();
+
+				Code.workspace.blocks.clear();
+				Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);		
+				Blockly.resizeSvgContents(Code.workspace.blocks);
 			} else {
 				Code.workspace.editor.setValue(e.target.result, -1);
 			}
@@ -1468,10 +1446,10 @@ Code.loadFileFromBoard = function(file) {
 		bootbox.hideAll();
 
 		if (Code.workspace.type == 'blocks') {
-			Code.workspace.blocks.clear();
 			var xml = Blockly.Xml.textToDom(fileContent);
-			Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
-			Code.workspace.blocks.scrollCenter();
+			Code.workspace.blocks.clear();
+			Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);	
+			Blockly.resizeSvgContents(Code.workspace.blocks);
 		} else {
 			Code.workspace.editor.setValue(fileContent, -1);
 		}

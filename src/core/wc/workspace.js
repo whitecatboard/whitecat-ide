@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, whitecat workspace
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -34,6 +34,8 @@ goog.require('goog.array');
 goog.require('goog.math');
 
 Blockly.Workspace.prototype.wcInit = function() {
+	var thisInstance = this;
+	
 	if (typeof this.lora == "undefined") {
 		this.lora = {
 			"band": "868",
@@ -93,6 +95,12 @@ Blockly.Workspace.prototype.wcInit = function() {
 			this.events.names.push(this.events.builtIn[i]);
 		}
 	}
+	
+	
+	this.registerToolboxCategoryCallback(Blockly.Sensors.NAME_TYPE, Blockly.Sensors.flyoutCategory);
+	this.registerToolboxCategoryCallback(Blockly.Lora.NAME_TYPE, Blockly.Lora.flyoutCategory);
+	this.registerToolboxCategoryCallback(Blockly.Wifi.NAME_TYPE, Blockly.Wifi.flyoutCategory);
+	this.registerToolboxCategoryCallback(Blockly.MQTT.NAME_TYPE, Blockly.MQTT.flyoutCategory);
 }
 
 Blockly.Workspace.prototype.eventIndexOf = function(name) {

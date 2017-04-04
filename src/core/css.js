@@ -24,6 +24,10 @@
  */
 'use strict';
 
+/**
+ * @name Blockly.Css
+ * @namespace
+ */
 goog.provide('Blockly.Css');
 
 
@@ -386,10 +390,17 @@ Blockly.Css.CONTENT = [
     'fill-opacity: .8;',
   '}',
 
+  '.blocklyMainWorkspaceScrollbar {',
+    'z-index: 20;',
+  '}',
+
+  '.blocklyFlyoutScrollbar {',
+    'z-index: 30;',
+  '}',
+
   '.blocklyScrollbarHorizontal, .blocklyScrollbarVertical {',
     'position: absolute;',
     'outline: none;',
-    'z-index: 30;',
   '}',
 
   '.blocklyScrollbarBackground {',
@@ -453,6 +464,7 @@ Blockly.Css.CONTENT = [
     'stroke: #f00;',
     'stroke-width: 2;',
     'stroke-linecap: round;',
+    'pointer-events: none;',
   '}',
 
   '.blocklyContextMenu {',
@@ -471,7 +483,7 @@ Blockly.Css.CONTENT = [
 
   /* Category tree in Toolbox. */
   '.blocklyToolboxDiv {',
-    'background-color: #e0e0e0;',
+    'background-color: #ddd;',
     'overflow-x: visible;',
     'overflow-y: auto;',
     'position: absolute;',
@@ -513,13 +525,13 @@ Blockly.Css.CONTENT = [
   '}',
 
   '.blocklyTreeSeparator {',
-    'border-bottom: solid black 1px;',
+    'border-bottom: solid #e5e5e5 1px;',
     'height: 0;',
     'margin: 5px 0;',
   '}',
 
   '.blocklyTreeSeparatorHorizontal {',
-    'border-right: solid black 1px;',
+    'border-right: solid #e5e5e5 1px;',
     'width: 0;',
     'padding: 5px 0;',
     'margin: 0 5px;',

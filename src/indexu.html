@@ -96,466 +96,467 @@
 
   <script src="wc/settings.js"></script>
   <script src="code.js"></script>
+  
+  <style type="text/css">
+	  .blocklyWsDragSurface{ overflow: visible !important;}
+  </style>
 </head>
-<body>
 
+<body>
+	
 <div id="languageDiv" style="width: 800px;visibility: hidden;text-align: right;display: flex;align-items: center;justify-content:flex-end;">	  
 	<div id="statusBar" style="margin-right: 10px;text-align: right;display: flex;align-items: center;justify-content:flex-end;">
 		<span class="statusBar"></span>
   	</div>
 
-	<div id="targetFile" style="margin-right: 10px;text-align: right;display: flex;align-items: center;justify-content:flex-end;">
-  	</div>
+	<div id="targetFile" style="margin-right: 10px;text-align: right;display: flex;align-items: center;justify-content:flex-end;"></div>
   	<select id="languageMenu"></select>
-  </div>
-  
-  <table width="100%" height="100%">
-    <tr>
-      <td colspan=2>
-		  <div class="btn-toolbar" role="toolbar" style="background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);"> 
-		  	<div class="btn-group">
-  			  <button id="blockEditorButton" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-design" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="trashButton" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-bin" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="switchToBlocks" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-puzzle" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="switchToCode" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-code" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="developerMode" type="button" class="on btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-bug2" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="loadButton" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-folder-open" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="saveButton" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-floppy-disk" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="saveAsButton" type="button" class="btn btn-default" aria-label="Left Align">
-  			    <span class="icon icon-floppy-disks" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="rebootButton"type="button" class="btn btn-default disabled" aria-label="Left Align">
-  			    <span class="icon icon-spinner11" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="stopButton"type="button" class="btn btn-default disabled" aria-label="Left Align">
-  			    <span class="icon icon-stop2" aria-hidden="true"></span>
-  			  </button>
-  			  <button id="runButton" type="button" class="btn btn-default disabled" aria-label="Left Align">
-  			    <span class="icon icon-play4" aria-hidden="true"></span>
-  			  </button>
-		    </div>
-		  </div>
-      </td>
-    </tr>
-    <tr>
-      <td height="99%" colspan=2 id="content_area">
-      </td>
-    </tr>
-  </table>
-  <div id="content_board" class="content">
-	<div class="portlet">
-		<div class="portlet-title">
-			<div class="caption">
-				<i class="icon icon-file-stats"></i>
-				<span class="caption-subject">fileSystem</span>
-			</div>
-		</div>
-		<div class="portlet-body">
-		  	<div id="filesystem" style="position: relative; left: -25px;"></div>
-		</div>
-	</div>
-	<div class="portlet">
-		<div class="portlet-title">
-			<div class="caption">
-				<i class="icon icon-chip"></i>
-				<span class="caption-subject">status</span>	
-			</div>
-		</div>
-		<div class="portlet-body">
-		  	<div id="boardStatus">
-		  	</div>
-		</div>
-	</div>
-	<div class="portlet">
-		<div class="portlet-title">
-			<div class="caption">
-				<i class="icon icon-display4"></i>
-				<span class="caption-subject">console</span>	
-			</div>
-		</div>
-		<div class="portlet-body">
-		  	<div id="boardConsole" tabindex="1">
-		  	</div>
-		</div>
-	</div>
-  </div>
-  <div id="content_program">
-	  <div id="content_blocks" class="content"></div>
-  	  <div id="content_editor" class="content"></div>
-  	  <div id="content_block_editor" class="content">
-	      	<div id="block_editor_tool" style="position: absolute;">
-			</div>
-	      	<div id="block_editor_options" style="position: absolute;">
-	      		Block:&nbsp;<select id="content_block_editor_type"></select>
-	      	</div>
-	      	<div id="preview" style="position: absolute;"></div>
-	      	<div id="block_editor_code" style="position: absolute;"></div>			
-		    <div id="modalShadow"></div>
-		    <xml id="blockfactory_toolbox" class="toolbox"  style="display: none">
-		      <category name="Input">
-		        <block type="input_value">
-		          <value name="TYPE">
-		            <shadow type="type_null"></shadow>
-		          </value>
-		        </block>
-		        <block type="input_statement">
-		          <value name="TYPE">
-		            <shadow type="type_null"></shadow>
-		          </value>
-		        </block>
-		        <block type="input_dummy"></block>
-		      </category>
-		      <category name="Field">
-		        <block type="field_static"></block>
-		        <block type="field_input"></block>
-		        <block type="field_number"></block>
-		        <block type="field_angle"></block>
-		        <block type="field_dropdown"></block>
-		        <block type="field_checkbox"></block>
-		        <block type="field_colour"></block>
-		        <!--
-		        Date picker commented out since it increases footprint by 60%.
-		        Add it only if you need it.  See also goog.require in blockly.js.
-		        <block type="field_date"></block>
-		        -->
-		        <block type="field_variable"></block>
-		        <block type="field_image"></block>
-		      </category>
-		      <category name="Type">
-		        <block type="type_group"></block>
-		        <block type="type_null"></block>
-		        <block type="type_boolean"></block>
-		        <block type="type_number"></block>
-		        <block type="type_string"></block>
-		        <block type="type_list"></block>
-		        <block type="type_other"></block>
-		      </category>
-		      <category name="Colour" id="colourCategory">
-		        <block type="colour_hue"><mutation colour="20"></mutation><field name="HUE">20</field></block>
-		        <block type="colour_hue"><mutation colour="65"></mutation><field name="HUE">65</field></block>
-		        <block type="colour_hue"><mutation colour="120"></mutation><field name="HUE">120</field></block>
-		        <block type="colour_hue"><mutation colour="160"></mutation><field name="HUE">160</field></block>
-		        <block type="colour_hue"><mutation colour="210"></mutation><field name="HUE">210</field></block>
-		        <block type="colour_hue"><mutation colour="230"></mutation><field name="HUE">230</field></block>
-		        <block type="colour_hue"><mutation colour="260"></mutation><field name="HUE">260</field></block>
-		        <block type="colour_hue"><mutation colour="290"></mutation><field name="HUE">290</field></block>
-		        <block type="colour_hue"><mutation colour="330"></mutation><field name="HUE">330</field></block>
-		      </category>
-		    </xml>
+</div>
 
-		    <xml id="workspacefactory_toolbox" class="toolbox" style="display: none">
-		      <category name="Logic" colour="210">
-		        <block type="controls_if"></block>
-		        <block type="logic_compare"></block>
-		        <block type="logic_operation"></block>
-		        <block type="logic_negate"></block>
-		        <block type="logic_boolean"></block>
-		        <block type="logic_null"></block>
-		        <block type="logic_ternary"></block>
-		      </category>
-		      <category name="Loops" colour="120">
-		        <block type="controls_repeat_ext">
-		          <value name="TIMES">
-		            <shadow type="math_number">
-		              <field name="NUM">10</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="controls_whileUntil"></block>
-		        <block type="controls_for">
-		          <value name="FROM">
-		            <shadow type="math_number">
-		              <field name="NUM">1</field>
-		            </shadow>
-		          </value>
-		          <value name="TO">
-		            <shadow type="math_number">
-		              <field name="NUM">10</field>
-		            </shadow>
-		          </value>
-		          <value name="BY">
-		            <shadow type="math_number">
-		              <field name="NUM">1</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="controls_forEach"></block>
-		        <block type="controls_flow_statements"></block>
-		      </category>
-		      <category name="Math" colour="230">
-		        <block type="math_number"></block>
-		        <block type="math_arithmetic">
-		          <value name="A">
-		            <shadow type="math_number">
-		              <field name="NUM">1</field>
-		            </shadow>
-		          </value>
-		          <value name="B">
-		            <shadow type="math_number">
-		              <field name="NUM">1</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="math_single">
-		          <value name="NUM">
-		            <shadow type="math_number">
-		              <field name="NUM">9</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="math_trig">
-		          <value name="NUM">
-		            <shadow type="math_number">
-		              <field name="NUM">45</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="math_constant"></block>
-		        <block type="math_number_property">
-		          <value name="NUMBER_TO_CHECK">
-		            <shadow type="math_number">
-		              <field name="NUM">0</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="math_round">
-		          <value name="NUM">
-		            <shadow type="math_number">
-		              <field name="NUM">3.1</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="math_on_list"></block>
-		        <block type="math_modulo">
-		          <value name="DIVIDEND">
-		            <shadow type="math_number">
-		              <field name="NUM">64</field>
-		            </shadow>
-		          </value>
-		          <value name="DIVISOR">
-		            <shadow type="math_number">
-		              <field name="NUM">10</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="math_constrain">
-		          <value name="VALUE">
-		            <shadow type="math_number">
-		              <field name="NUM">50</field>
-		            </shadow>
-		          </value>
-		          <value name="LOW">
-		            <shadow type="math_number">
-		              <field name="NUM">1</field>
-		            </shadow>
-		          </value>
-		          <value name="HIGH">
-		            <shadow type="math_number">
-		              <field name="NUM">100</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="math_random_int">
-		          <value name="FROM">
-		            <shadow type="math_number">
-		              <field name="NUM">1</field>
-		            </shadow>
-		          </value>
-		          <value name="TO">
-		            <shadow type="math_number">
-		              <field name="NUM">100</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="math_random_float"></block>
-		      </category>
-		      <category name="Text" colour="160">
-		        <block type="text"></block>
-		        <block type="text_join"></block>
-		        <block type="text_append">
-		          <value name="TEXT">
-		            <shadow type="text"></shadow>
-		          </value>
-		        </block>
-		        <block type="text_length">
-		          <value name="VALUE">
-		            <shadow type="text">
-		              <field name="TEXT">abc</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="text_isEmpty">
-		          <value name="VALUE">
-		            <shadow type="text">
-		              <field name="TEXT"></field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="text_indexOf">
-		          <value name="VALUE">
-		            <block type="variables_get">
-		              <field name="VAR">text</field>
-		            </block>
-		          </value>
-		          <value name="FIND">
-		            <shadow type="text">
-		              <field name="TEXT">abc</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="text_charAt">
-		          <value name="VALUE">
-		            <block type="variables_get">
-		              <field name="VAR">text</field>
-		            </block>
-		          </value>
-		        </block>
-		        <block type="text_getSubstring">
-		          <value name="STRING">
-		            <block type="variables_get">
-		              <field name="VAR">text</field>
-		            </block>
-		          </value>
-		        </block>
-		        <block type="text_changeCase">
-		          <value name="TEXT">
-		            <shadow type="text">
-		              <field name="TEXT">abc</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="text_trim">
-		          <value name="TEXT">
-		            <shadow type="text">
-		              <field name="TEXT">abc</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="text_print">
-		          <value name="TEXT">
-		            <shadow type="text">
-		              <field name="TEXT">abc</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="text_prompt_ext">
-		          <value name="TEXT">
-		            <shadow type="text">
-		              <field name="TEXT">abc</field>
-		            </shadow>
-		          </value>
-		        </block>
-		      </category>
-		      <category name="Lists" colour="260">
-		        <block type="lists_create_with">
-		          <mutation items="0"></mutation>
-		        </block>
-		        <block type="lists_create_with"></block>
-		        <block type="lists_repeat">
-		          <value name="NUM">
-		            <shadow type="math_number">
-		              <field name="NUM">5</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="lists_length"></block>
-		        <block type="lists_isEmpty"></block>
-		        <block type="lists_indexOf">
-		          <value name="VALUE">
-		            <block type="variables_get">
-		              <field name="VAR">list</field>
-		            </block>
-		          </value>
-		        </block>
-		        <block type="lists_getIndex">
-		          <value name="VALUE">
-		            <block type="variables_get">
-		              <field name="VAR">list</field>
-		            </block>
-		          </value>
-		        </block>
-		        <block type="lists_setIndex">
-		          <value name="LIST">
-		            <block type="variables_get">
-		              <field name="VAR">list</field>
-		            </block>
-		          </value>
-		        </block>
-		        <block type="lists_getSublist">
-		          <value name="LIST">
-		            <block type="variables_get">
-		              <field name="VAR">list</field>
-		            </block>
-		          </value>
-		        </block>
-		        <block type="lists_split">
-		          <value name="DELIM">
-		            <shadow type="text">
-		              <field name="TEXT">,</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="lists_sort"></block>
-		      </category>
-		      <category name="Colour" colour="20">
-		        <block type="colour_picker"></block>
-		        <block type="colour_random"></block>
-		        <block type="colour_rgb">
-		          <value name="RED">
-		            <shadow type="math_number">
-		              <field name="NUM">100</field>
-		            </shadow>
-		          </value>
-		          <value name="GREEN">
-		            <shadow type="math_number">
-		              <field name="NUM">50</field>
-		            </shadow>
-		          </value>
-		          <value name="BLUE">
-		            <shadow type="math_number">
-		              <field name="NUM">0</field>
-		            </shadow>
-		          </value>
-		        </block>
-		        <block type="colour_blend">
-		          <value name="COLOUR1">
-		            <shadow type="colour_picker">
-		              <field name="COLOUR">#ff0000</field>
-		            </shadow>
-		          </value>
-		          <value name="COLOUR2">
-		            <shadow type="colour_picker">
-		              <field name="COLOUR">#3333ff</field>
-		            </shadow>
-		          </value>
-		          <value name="RATIO">
-		            <shadow type="math_number">
-		              <field name="NUM">0.5</field>
-		            </shadow>
-		          </value>
-		        </block>
-		      </category>
-		    </xml>
+<div class="btn-toolbar" role="toolbar" style="background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);"> 
+	<div class="btn-group">
+	  <button id="blockEditorButton" type="button" class="btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-design" aria-hidden="true"></span>
+	  </button>
+	  <button id="trashButton" type="button" class="btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-bin" aria-hidden="true"></span>
+	  </button>
+	  <button id="switchToBlocks" type="button" class="btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-puzzle" aria-hidden="true"></span>
+	  </button>
+	  <button id="switchToCode" type="button" class="btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-code" aria-hidden="true"></span>
+	  </button>
+	  <button id="developerMode" type="button" class="on btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-bug2" aria-hidden="true"></span>
+	  </button>
+	  <button id="loadButton" type="button" class="btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-folder-open" aria-hidden="true"></span>
+	  </button>
+	  <button id="saveButton" type="button" class="btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-floppy-disk" aria-hidden="true"></span>
+	  </button>
+	  <button id="saveAsButton" type="button" class="btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-floppy-disks" aria-hidden="true"></span>
+	  </button>
+	  <button id="rebootButton"type="button" class="btn btn-default disabled" aria-label="Left Align">
+	    <span class="icon icon-spinner11" aria-hidden="true"></span>
+	  </button>
+	  <button id="stopButton"type="button" class="btn btn-default disabled" aria-label="Left Align">
+	    <span class="icon icon-stop2" aria-hidden="true"></span>
+	  </button>
+	  <button id="runButton" type="button" class="btn btn-default disabled" aria-label="Left Align">
+	    <span class="icon icon-play4" aria-hidden="true"></span>
+	  </button>
+	</div>
+</div>
+	    
+<table width="100%" height="100%">
+	<tr>
+	  <td height="100%" id="content_area"></td>
+	</tr>
+</table>
+	
+<div id="content_board" class="content" style="position: absolute;">
+<div class="portlet">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon icon-file-stats"></i>
+			<span class="caption-subject">fileSystem</span>
+		</div>
+	</div>
+	<div class="portlet-body">
+	  	<div id="filesystem" style="position: relative; left: -25px;"></div>
+	</div>
+</div>
+<div class="portlet">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon icon-chip"></i>
+			<span class="caption-subject">status</span>	
+		</div>
+	</div>
+	<div class="portlet-body">
+	  	<div id="boardStatus">
+	  	</div>
+	</div>
+</div>
+<div class="portlet">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon icon-display4"></i>
+			<span class="caption-subject">console</span>	
+		</div>
+	</div>
+	<div class="portlet-body">
+	  	<div id="boardConsole" tabindex="1">
+	  	</div>
+	</div>
+</div>
+</div>
+<div id="content_program">
+  <div id="content_blocks" class="content"></div>
+  <div id="content_editor" class="content"></div>
+  <div id="content_block_editor" class="content">
+      	<div id="block_editor_tool" style="position: absolute;">
+		</div>
+      	<div id="block_editor_options" style="position: absolute;">
+      		Block:&nbsp;<select id="content_block_editor_type"></select>
+      	</div>
+      	<div id="preview" style="position: absolute;"></div>
+      	<div id="block_editor_code" style="position: absolute;"></div>			
+	    <div id="modalShadow"></div>
+	    <xml id="blockfactory_toolbox" class="toolbox"  style="display: none">
+	      <category name="Input">
+	        <block type="input_value">
+	          <value name="TYPE">
+	            <shadow type="type_null"></shadow>
+	          </value>
+	        </block>
+	        <block type="input_statement">
+	          <value name="TYPE">
+	            <shadow type="type_null"></shadow>
+	          </value>
+	        </block>
+	        <block type="input_dummy"></block>
+	      </category>
+	      <category name="Field">
+	        <block type="field_static"></block>
+	        <block type="field_input"></block>
+	        <block type="field_number"></block>
+	        <block type="field_angle"></block>
+	        <block type="field_dropdown"></block>
+	        <block type="field_checkbox"></block>
+	        <block type="field_colour"></block>
+	        <!--
+	        Date picker commented out since it increases footprint by 60%.
+	        Add it only if you need it.  See also goog.require in blockly.js.
+	        <block type="field_date"></block>
+	        -->
+	        <block type="field_variable"></block>
+	        <block type="field_image"></block>
+	      </category>
+	      <category name="Type">
+	        <block type="type_group"></block>
+	        <block type="type_null"></block>
+	        <block type="type_boolean"></block>
+	        <block type="type_number"></block>
+	        <block type="type_string"></block>
+	        <block type="type_list"></block>
+	        <block type="type_other"></block>
+	      </category>
+	      <category name="Colour" id="colourCategory">
+	        <block type="colour_hue"><mutation colour="20"></mutation><field name="HUE">20</field></block>
+	        <block type="colour_hue"><mutation colour="65"></mutation><field name="HUE">65</field></block>
+	        <block type="colour_hue"><mutation colour="120"></mutation><field name="HUE">120</field></block>
+	        <block type="colour_hue"><mutation colour="160"></mutation><field name="HUE">160</field></block>
+	        <block type="colour_hue"><mutation colour="210"></mutation><field name="HUE">210</field></block>
+	        <block type="colour_hue"><mutation colour="230"></mutation><field name="HUE">230</field></block>
+	        <block type="colour_hue"><mutation colour="260"></mutation><field name="HUE">260</field></block>
+	        <block type="colour_hue"><mutation colour="290"></mutation><field name="HUE">290</field></block>
+	        <block type="colour_hue"><mutation colour="330"></mutation><field name="HUE">330</field></block>
+	      </category>
+	    </xml>
 
-		  <input type="hidden" id="languagePre"></input>
-  	  </div>
+	    <xml id="workspacefactory_toolbox" class="toolbox" style="display: none">
+	      <category name="Logic" colour="210">
+	        <block type="controls_if"></block>
+	        <block type="logic_compare"></block>
+	        <block type="logic_operation"></block>
+	        <block type="logic_negate"></block>
+	        <block type="logic_boolean"></block>
+	        <block type="logic_null"></block>
+	        <block type="logic_ternary"></block>
+	      </category>
+	      <category name="Loops" colour="120">
+	        <block type="controls_repeat_ext">
+	          <value name="TIMES">
+	            <shadow type="math_number">
+	              <field name="NUM">10</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="controls_whileUntil"></block>
+	        <block type="controls_for">
+	          <value name="FROM">
+	            <shadow type="math_number">
+	              <field name="NUM">1</field>
+	            </shadow>
+	          </value>
+	          <value name="TO">
+	            <shadow type="math_number">
+	              <field name="NUM">10</field>
+	            </shadow>
+	          </value>
+	          <value name="BY">
+	            <shadow type="math_number">
+	              <field name="NUM">1</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="controls_forEach"></block>
+	        <block type="controls_flow_statements"></block>
+	      </category>
+	      <category name="Math" colour="230">
+	        <block type="math_number"></block>
+	        <block type="math_arithmetic">
+	          <value name="A">
+	            <shadow type="math_number">
+	              <field name="NUM">1</field>
+	            </shadow>
+	          </value>
+	          <value name="B">
+	            <shadow type="math_number">
+	              <field name="NUM">1</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="math_single">
+	          <value name="NUM">
+	            <shadow type="math_number">
+	              <field name="NUM">9</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="math_trig">
+	          <value name="NUM">
+	            <shadow type="math_number">
+	              <field name="NUM">45</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="math_constant"></block>
+	        <block type="math_number_property">
+	          <value name="NUMBER_TO_CHECK">
+	            <shadow type="math_number">
+	              <field name="NUM">0</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="math_round">
+	          <value name="NUM">
+	            <shadow type="math_number">
+	              <field name="NUM">3.1</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="math_on_list"></block>
+	        <block type="math_modulo">
+	          <value name="DIVIDEND">
+	            <shadow type="math_number">
+	              <field name="NUM">64</field>
+	            </shadow>
+	          </value>
+	          <value name="DIVISOR">
+	            <shadow type="math_number">
+	              <field name="NUM">10</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="math_constrain">
+	          <value name="VALUE">
+	            <shadow type="math_number">
+	              <field name="NUM">50</field>
+	            </shadow>
+	          </value>
+	          <value name="LOW">
+	            <shadow type="math_number">
+	              <field name="NUM">1</field>
+	            </shadow>
+	          </value>
+	          <value name="HIGH">
+	            <shadow type="math_number">
+	              <field name="NUM">100</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="math_random_int">
+	          <value name="FROM">
+	            <shadow type="math_number">
+	              <field name="NUM">1</field>
+	            </shadow>
+	          </value>
+	          <value name="TO">
+	            <shadow type="math_number">
+	              <field name="NUM">100</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="math_random_float"></block>
+	      </category>
+	      <category name="Text" colour="160">
+	        <block type="text"></block>
+	        <block type="text_join"></block>
+	        <block type="text_append">
+	          <value name="TEXT">
+	            <shadow type="text"></shadow>
+	          </value>
+	        </block>
+	        <block type="text_length">
+	          <value name="VALUE">
+	            <shadow type="text">
+	              <field name="TEXT">abc</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="text_isEmpty">
+	          <value name="VALUE">
+	            <shadow type="text">
+	              <field name="TEXT"></field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="text_indexOf">
+	          <value name="VALUE">
+	            <block type="variables_get">
+	              <field name="VAR">text</field>
+	            </block>
+	          </value>
+	          <value name="FIND">
+	            <shadow type="text">
+	              <field name="TEXT">abc</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="text_charAt">
+	          <value name="VALUE">
+	            <block type="variables_get">
+	              <field name="VAR">text</field>
+	            </block>
+	          </value>
+	        </block>
+	        <block type="text_getSubstring">
+	          <value name="STRING">
+	            <block type="variables_get">
+	              <field name="VAR">text</field>
+	            </block>
+	          </value>
+	        </block>
+	        <block type="text_changeCase">
+	          <value name="TEXT">
+	            <shadow type="text">
+	              <field name="TEXT">abc</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="text_trim">
+	          <value name="TEXT">
+	            <shadow type="text">
+	              <field name="TEXT">abc</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="text_print">
+	          <value name="TEXT">
+	            <shadow type="text">
+	              <field name="TEXT">abc</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="text_prompt_ext">
+	          <value name="TEXT">
+	            <shadow type="text">
+	              <field name="TEXT">abc</field>
+	            </shadow>
+	          </value>
+	        </block>
+	      </category>
+	      <category name="Lists" colour="260">
+	        <block type="lists_create_with">
+	          <mutation items="0"></mutation>
+	        </block>
+	        <block type="lists_create_with"></block>
+	        <block type="lists_repeat">
+	          <value name="NUM">
+	            <shadow type="math_number">
+	              <field name="NUM">5</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="lists_length"></block>
+	        <block type="lists_isEmpty"></block>
+	        <block type="lists_indexOf">
+	          <value name="VALUE">
+	            <block type="variables_get">
+	              <field name="VAR">list</field>
+	            </block>
+	          </value>
+	        </block>
+	        <block type="lists_getIndex">
+	          <value name="VALUE">
+	            <block type="variables_get">
+	              <field name="VAR">list</field>
+	            </block>
+	          </value>
+	        </block>
+	        <block type="lists_setIndex">
+	          <value name="LIST">
+	            <block type="variables_get">
+	              <field name="VAR">list</field>
+	            </block>
+	          </value>
+	        </block>
+	        <block type="lists_getSublist">
+	          <value name="LIST">
+	            <block type="variables_get">
+	              <field name="VAR">list</field>
+	            </block>
+	          </value>
+	        </block>
+	        <block type="lists_split">
+	          <value name="DELIM">
+	            <shadow type="text">
+	              <field name="TEXT">,</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="lists_sort"></block>
+	      </category>
+	      <category name="Colour" colour="20">
+	        <block type="colour_picker"></block>
+	        <block type="colour_random"></block>
+	        <block type="colour_rgb">
+	          <value name="RED">
+	            <shadow type="math_number">
+	              <field name="NUM">100</field>
+	            </shadow>
+	          </value>
+	          <value name="GREEN">
+	            <shadow type="math_number">
+	              <field name="NUM">50</field>
+	            </shadow>
+	          </value>
+	          <value name="BLUE">
+	            <shadow type="math_number">
+	              <field name="NUM">0</field>
+	            </shadow>
+	          </value>
+	        </block>
+	        <block type="colour_blend">
+	          <value name="COLOUR1">
+	            <shadow type="colour_picker">
+	              <field name="COLOUR">#ff0000</field>
+	            </shadow>
+	          </value>
+	          <value name="COLOUR2">
+	            <shadow type="colour_picker">
+	              <field name="COLOUR">#3333ff</field>
+	            </shadow>
+	          </value>
+	          <value name="RATIO">
+	            <shadow type="math_number">
+	              <field name="NUM">0.5</field>
+	            </shadow>
+	          </value>
+	        </block>
+	      </category>
+	    </xml>
+
+	  <input type="hidden" id="languagePre"></input>
   </div>
-  <xml id="toolbox" style="display: none"></xml>
-  <xml id="block_editortoolbox" style="display: none"></xml>
-  <xml id="block_editortoolboxpreview" style="display: none"></xml>
+</div>
+<xml id="toolbox" style="display: none"></xml>
+<xml id="block_editortoolbox" style="display: none"></xml>
+<xml id="block_editortoolboxpreview" style="display: none"></xml>
 </body>
 </html>

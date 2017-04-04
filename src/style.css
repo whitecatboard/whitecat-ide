@@ -444,7 +444,7 @@ body.modal-open .modal .modal-dialog {
 }
 
 .btn-toolbar {
-	min-height: 38px;
+/*	min-height: 38px; */
 }
 
 Console {

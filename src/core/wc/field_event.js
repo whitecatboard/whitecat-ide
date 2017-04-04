@@ -107,7 +107,7 @@ Blockly.wc.FieldEvent.prototype.setValue = function(newValue) {
 
 	this.value_ = newValue;
 	// Look up and display the human-readable text.
-	var options = this.getOptions_();
+	var options = this.getOptions();
 	for (var i = 0; i < options.length; i++) {
 		// Options are tuples of human-readable text and language-neutral values.
 		if (options[i][1] == newValue) {
