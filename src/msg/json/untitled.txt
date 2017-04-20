@@ -1,0 +1,4 @@
+ip = net.packip(192,168,1,150)
+msk = net.packip(255,255,255,0)
+gw = net.packip(192,168,1,1)
+net.en.setup(net.packip(192,168,1,150), net.packip(255,255,255,0), net.packip(192,168,1,1))
