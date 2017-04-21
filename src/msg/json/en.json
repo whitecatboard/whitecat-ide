@@ -578,5 +578,9 @@
 	"negative_edge": "negative edge",
 	"any_edge": "any edge",
 	"low_level": "low level",
-	"high_level": "high level"
+	"high_level": "high level",
+	
+	"WARNING_ONLY_ONE_INSTANCE_ALLOWED": "Warning: only one instance of this block is allowed.",
+	"WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK": "Warning: events can only be processed in one event block.",
+	"WARNING_NOT_IN_HAT_BLOCK": "Warning: this block may only be used within a hat block."
 }

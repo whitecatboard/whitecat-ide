@@ -538,5 +538,9 @@
 	"negative_edge": "flanco negativo",
 	"any_edge": "cualquier flanco",
 	"low_level": "nivel bajo",
-	"high_level": "nivel alto"
+	"high_level": "nivel alto",
+
+	"WARNING_ONLY_ONE_INSTANCE_ALLOWED": "Atención: solo se permite una instancia de este bloque.",
+	"WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK": "Atención: los eventos solo se pueden procesar dentro de un único bloque de eventos.",
+	"WARNING_NOT_IN_HAT_BLOCK": "Atención: este bloque solo se puede utilizar dentro de un bloque hat."
 }

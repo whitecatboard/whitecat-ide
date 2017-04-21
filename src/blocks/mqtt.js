@@ -117,7 +117,31 @@ Blockly.Blocks['mqtt_subscribe'] = {
 	    this.setTooltip('');
 		this.setHelpUrl('http://www.example.com/');
 	},
+	onchange: function(e) {
+		if (!this.workspace.isDragging || this.workspace.isDragging()) {
+			return;
+		}
 
+		var uses = 0;
+		var blocks = this.workspace.getTopBlocks(true);
+		for (var x = 0, block; block = blocks[x]; x++) {
+			if ((Blockly.Lua.valueToCode(blocks[x], 'TOPIC', Blockly.Lua.ORDER_NONE) == Blockly.Lua.valueToCode(this, 'TOPIC', Blockly.Lua.ORDER_NONE)) && (blocks[x].type == this.type)) {
+				uses++;
+			}
+		}
+
+		if (uses > 1) {
+			this.setWarningText(Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);
+			if (!this.isInFlyout && !this.getInheritedDisabled()) {
+				this.setDisabled(true);
+			}			
+		} else {
+			this.setWarningText(null);
+			if (!this.isInFlyout) {
+				this.setDisabled(false);
+			}			
+		}
+	},
     section: function() {
 		return 'default';
     },

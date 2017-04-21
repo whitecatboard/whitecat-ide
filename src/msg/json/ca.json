@@ -511,5 +511,9 @@
 	"negative_edge": "flanc negatiu",
 	"any_edge": "qualsevol flanc",
 	"low_level": "nivell baix",
-	"high_level": "nivell alt"
+	"high_level": "nivell alt",
+
+	"WARNING_ONLY_ONE_INSTANCE_ALLOWED": "Atenció: només es permet una instància d'aquest bloc.",
+	"WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK": "Atenció: els events només es poden processar dins d'un únic bloc d'esdeveniment.",
+	"WARNING_NOT_IN_HAT_BLOCK": "Atenció: aquest bloc només es pot utilitzar dins d'un bloc hat."
 }

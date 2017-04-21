@@ -386,6 +386,31 @@ Blockly.Blocks['when_i_receive_a_lora_frame'] = {
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_HELPURL);
 	},
+	onchange: function(e) {
+		if (!this.workspace.isDragging || this.workspace.isDragging()) {
+			return;
+		}
+
+		var instances = 0;
+		var blocks = this.workspace.getTopBlocks(true);
+		for (var x = 0, block; block = blocks[x]; x++) {
+			if (blocks[x].type == this.type) {
+				instances++;
+			}
+		}
+		
+		if (instances > 1) {
+			this.setWarningText(Blockly.Msg.WARNING_ONLY_ONE_INSTANCE_ALLOWED);
+			if (!this.isInFlyout && !this.getInheritedDisabled()) {
+				this.setDisabled(true);
+			}			
+		} else {
+			this.setWarningText(null);
+			if (!this.isInFlyout) {
+				this.setDisabled(false);
+			}			
+		}
+	},
     section: function() {
 		return 'declaration';
     }

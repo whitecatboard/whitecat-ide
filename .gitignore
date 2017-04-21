@@ -1,6 +1,5 @@
 app/
 **/.DS_Store
-src/compress
 src/deploy
 src/blockly_uncompressed.js
 src/blocks_compressed.js
