@@ -1,31 +1,28 @@
-# What's Whitecat Ecosystem Blockly Based Web IDE?
+# What's The Whitecat IDE?
 
-Whitecat Ecosystem Blockly Based Web IDE is a programming environment for boards compatible with the Whitecat ecosystem. This means that you can use it to program boards with a Lua RTOS firmware installed.
+Whitecat ecosystem can be programmed in two ways: using blocks or using the Lua programming language. No matter if you use blocks or Lua, both forms of programming are made from the The Whitecat IDE. It is cross-platform and localised.
+
+Our programming model comes from years of experience and research of the Whitecat team members, formed by engineers, educators and living lab designers. We want to share our knowledge with you, so that you can develop your IOT projects in a fast and agile way.
+
 
 # What's Lua RTOS?
 
 Lua RTOS is a real-time operating system designed to run on embedded systems, with minimal requirements of FLASH and RAM memory. Currently Lua RTOS is available for ESP32, ESP8266 and PIC32MZ platforms, and can be easilly ported to other 32-bit platforms.
 
-Lua RTOS is the main-core of the Whitecat ecosystem, that is being developed by a team of engineers, educators and living lab designers, designed for build Internet Of Things networks in an easy way.
+Lua RTOS has a 3-layer design:
 
-Lua RTOS has a 3-layers design:
+1. In the top layer there is a Lua 5.3.4 interpreter which offers to the programmer all the resources provided by the Lua programming language, plus special modules for access the hardware (PIO, ADC, I2C, RTC, etc …), and middleware services provided by Lua RTOS (Lua Threads, LoRa WAN, MQTT, …).
+1. In the middle layer there is a Real-Time micro-kernel, powered by FreeRTOS. This is the responsible for that things happen in the expected time.
+1. In the bottom layer there is a hardware abstraction layer, which talk directly with the platform hardware.
 
-1. In the top layer there is a Lua 5.3.2 interpreter which offers to the programmer all resources provided by Lua 5.3.2 programming language, plus special modules for access the hardware (PIO, ADC, I2C, RTC, etc ...) and middleware services provided by Lua RTOS (LoRa WAN, MQTT, ...).
+![](http://git.whitecatboard.org/luartos.png)
 
-2. In the middle layer there is a Real-Time micro-kernel, powered by FreeRTOS. This is the responsible for that things happen in the expected time.
-
-3. In the bottom layer there is a hardware abstraction layer, which talk directly with the platform hardware.
-
-![](http://whitecatboard.org/git/luaos.png)
-
-You can find all related to Lua RTOS in:
-
-[https://github.com/whitecatboard/Lua-RTOS-ESP32](https://github.com/whitecatboard/Lua-RTOS-ESP32)
+For porting Lua RTOS to other platforms is only necessary to write the code for the bottom layer, because the top and the middle layer are the same for all platforms.
 
 
 # Blocks and Lua programming
 
-The Lua RTOS compatible boards can be programmed in two ways: using the Lua programming language directly, or using a block-based programming language that translates blocks to Lua. No matter if you use Lua or blocks, both forms of programming are made from the same programming environment. The programmer can decide, for example, to made a fast prototype using blocks, then change to Lua, and finally back to blocks.
+The Lua RTOS compatible boards can be programmed using The Whitecat IDE, using blocks or lua. No matter if you use Lua or blocks. The programmer can decide, for example, to made a fast prototype using blocks, then change to Lua, and finally back to blocks.
 
 ![](http://whitecatboard.org/wp-content/uploads/2016/11/block-example.png)
 
