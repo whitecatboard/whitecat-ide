@@ -24,16 +24,11 @@ For porting Lua RTOS to other platforms is only necessary to write the code for 
 
 The Lua RTOS compatible boards can be programmed using The Whitecat IDE, using blocks or lua. No matter if you use Lua or blocks. The programmer can decide, for example, to made a fast prototype using blocks, then change to Lua, and finally back to blocks.
 
-![](http://whitecatboard.org/wp-content/uploads/2016/11/block-example.png)
+![](http://git.whitecatboard.org/block-example.png)
 
-![](http://whitecatboard.org/wp-content/uploads/2016/11/code-example.png)
+![](http://git.whitecatboard.org/code-example.png)
 
-You can find all the documentataion in:
-
-* [Blocks] (https://github.com/whitecatboard/blockly-environment/wiki) 
-* [Lua] (https://github.com/whitecatboard/Lua-RTOS-ESP32/wiki) 
-
-
-**Contribute to The Whitecat IDE development making a donation**
+---
+The Whitecat IDE is free for you, but funds are required for make this possible. Feel free to donate as little or as much as you wish. Every donation is very much appreciated.
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M8BG7JGEPZUP6)
