@@ -116,4 +116,5 @@ var MSG = {
   catWIFI: "Wi-Fi",
   catNET: "Network",
   catMQTT: "MQTT",
+  attachBoardForUseThisOption: "Please, attach a board for use this option.",
 };

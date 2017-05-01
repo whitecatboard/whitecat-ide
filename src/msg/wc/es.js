@@ -107,4 +107,5 @@ var MSG = {
   catWIFI: "Wi-Fi",
   catNET: "Red",
   catMQTT: "MQTT",
+  attachBoardForUseThisOption: "Por favor, conecta una placa antes de utilizar esta opción.",
 };

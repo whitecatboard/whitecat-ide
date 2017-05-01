@@ -86,7 +86,8 @@ Code.defaultStatus = {
 		"servo": true,
 		"net": true,
 	},
-	maps: []
+	maps: [],
+	sensors: []
 };
 
 Code.devices = [
@@ -878,21 +879,21 @@ Code.buildToolBox = function(callback) {
 		xml += '</category>';
 	}
 
-	xml += '<category id="catActuators">';
-	if (Code.status.modules.servo) {
-		if (Code.blockAbstraction == blockAbstraction.Low) {
-			xml += '<block type="servo_attach"></block>';
-		}
+	//xml += '<category id="catActuators">';
+	//if (Code.status.modules.servo) {
+	//	if (Code.blockAbstraction == blockAbstraction.Low) {
+	//		xml += '<block type="servo_attach"></block>';
+	//	}
 	
-		xml += '<block type="servo_move">' +
-			'<value name="VALUE">' +
-			'<shadow type="math_number">' +
-			'<field name="NUM">0</field>' +
-			'</shadow>' +
-			'</value>' +
-			'</block>';
-	}
-	xml += '</category>';
+	//	xml += '<block type="servo_move">' +
+	//		'<value name="VALUE">' +
+	//		'<shadow type="math_number">' +
+	//		'<field name="NUM">0</field>' +
+	//		'</shadow>' +
+	//		'</value>' +
+	//		'</block>';
+	//}
+	//xml += '</category>';
 
 	if (Code.status.modules.net) {
 		xml += '<category id="catNET" colour="20">';
@@ -913,10 +914,10 @@ Code.buildToolBox = function(callback) {
 		xml += '</category>';
 	}
 
-	if (Code.status.modules.tft) {
-		xml += '<category id="catTFT"colour="20">';
-		xml += '</category>';
-	}
+	//if (Code.status.modules.tft) {
+	//	xml += '<category id="catTFT"colour="20">';
+	//	xml += '</category>';
+	//}
 
 	Code.lib.get(xml, "libs", function(xml){
 		var toolbox = document.getElementById('toolbox');
@@ -929,9 +930,9 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catEvents").attr("colour", Blockly.Blocks.events.HUE);
 		jQuery("#catSensor").attr("colour", Blockly.Blocks.sensor.HUE);
 		jQuery("#catComm").attr("colour", Blockly.Blocks.i2c.HUE);
-		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
+		//jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);	
-		jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
+		//jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catNET").attr("colour", Blockly.Blocks.i2c.HUE);
 		jQuery("#catWIFI").attr("colour", Blockly.Blocks.i2c.HUE);
 		jQuery("#catMQTT").attr("colour", Blockly.Blocks.i2c.HUE);
@@ -1165,7 +1166,7 @@ Code.initLanguage = function() {
 		categories.push('catSensor');
 	}
 
-	categories.push('catActuators');
+	//categories.push('catActuators');
 
 	//if (Code.status.modules.i2c || Code.status.modules.lora) {
 	//	categories.push('catComm');
@@ -1176,9 +1177,9 @@ Code.initLanguage = function() {
 	//if (Code.status.modules.lora) categories.push('catLoraOTAA');
 	//if (Code.status.modules.lora) categories.push('catLoraABP');
 
-	if (Code.status.modules.tft) {
-		categories.push('catTFT');
-	}
+	//if (Code.status.modules.tft) {
+	//	categories.push('catTFT');
+	//}
 
 	if (Code.status.modules.net) {
 		categories.push('catNET');
@@ -2409,7 +2410,7 @@ Code.setup = function() {
 	Blockly.Blocks.events.HUE = "#c88330";
 	Blockly.Blocks.sensor.HUE = "#2ca5e2";
 	Blockly.Blocks.operators.HUE = "#5cb712";
-	Blockly.Blocks.actuators.HUE = "#4a6cd4";
+	//Blockly.Blocks.actuators.HUE = "#4a6cd4";
 
 	Blockly.Blocks['try'].HUE = Blockly.Blocks.control.HUE;
 	Blockly.Blocks.loops.HUE = Blockly.Blocks.control.HUE;

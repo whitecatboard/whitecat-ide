@@ -40,7 +40,7 @@ Blockly.Sensors.NAME_TYPE = 'SENSOR';
 Blockly.Sensors.flyoutCategory = function(workspace) {
 	var xmlList = [];
 	var sensors = workspace.sensors;
-
+	
 	var button = goog.dom.createDom('button');
 	button.setAttribute('text', Blockly.Msg.NEW_SENSOR);
 	button.setAttribute('callbackKey', 'CREATE_SENSOR');
@@ -177,6 +177,12 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	var edit = false;
 
 	if (typeof block != "undefined") edit = true;
+
+	if (Code.status.sensors.length == 0) {
+		Code.showError(MSG['error'], MSG['attachBoardForUseThisOption'], function() {});
+		
+		return;
+	}
 
 	// Build sensor selection
 	if (edit) {
