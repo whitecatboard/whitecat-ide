@@ -34,6 +34,7 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	 * This part define sections of code
 	 */
 	var section = "default";
+	var key;
 
 	for (key in codeSection) {
 		codeSection[key] = [];
@@ -135,7 +136,8 @@ Blockly.Generator.prototype.oneBlockToCode = function(block) {
 Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	var workspace = block.workspace;
 	var code = [];
-
+	var key;
+	
 	this.init(workspace);
 
 	for (key in codeSection) {
@@ -167,7 +169,8 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 Blockly.Generator.prototype.blockCode = function(block) {
 	var workspace = block.workspace;
 	var code = [];
-
+	var key;
+	
 	this.init(workspace);
 
 	for(key in codeSection) {

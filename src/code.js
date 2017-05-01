@@ -98,7 +98,7 @@ Code.devices = [
 	},
 	{
 		"vendorId": "0x403",
-		"productId": "0x6001",
+		"productId": "0x6015",
 		"vendor": "FTDI"
 	},
 	{
