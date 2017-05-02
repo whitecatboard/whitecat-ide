@@ -102,6 +102,11 @@ Code.devices = [
 		"vendor": "FTDI"
 	},
 	{
+		"vendorId": "0x403",
+		"productId": "0x6001",
+		"vendor": "FTDI"
+	},
+	{
 		"vendorId": "0x1a86",
 		"productId": "0x7523",
 		"vendor": "CH340"
@@ -2301,7 +2306,7 @@ Code.openAgent = function() {
 		    var path = require('path');
 			var os = require('os');
 			var exec = require('child_process').exec;
-  
+
 		    var cwd = path.join(process.cwd(), "bin/" + os.platform());  
 			var app = path.join(cwd, "/whitecat-create-agent");  
 		
