@@ -52,5 +52,5 @@ function wcBlock.blockError(id, err, msg)
 	end
 	
 	thread.stop();
-	-- error(err..":"..msg)
+	error(err..":"..msg)
 end

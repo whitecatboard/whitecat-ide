@@ -2307,9 +2307,8 @@ Code.openAgent = function() {
 			var os = require('os');
 			var exec = require('child_process').exec;
 
-		    var cwd = path.join(process.cwd(), "bin/" + os.platform());  
-			var app = path.join(cwd, "/whitecat-create-agent");  
-		
+			var cwd = path.join(process.cwd(), "bin/");
+		    var app = path.join(cwd, os.platform() + "-whitecat-create-agent");  
 			require('child_process').spawn(app, {
 				cwd: cwd
 			});	
