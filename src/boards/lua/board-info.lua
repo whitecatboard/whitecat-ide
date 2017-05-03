@@ -24,6 +24,7 @@ do
 	    io.write("\"os\": \""..curr_os.."\",")
 	    io.write("\"version\": \""..curr_ver.."\",")
 	    io.write("\"build\": \""..curr_build.."\",")
+	    io.write("\"board\": \""..os.board().."\",")
 	end
 
 	function __mods()
@@ -36,7 +37,7 @@ do
 	    __m_ena("i2c",i2c)
 	    __m_ena("pio",pio)
 	    __m_ena("pwm",pwm)
-	    __m_ena("screen",screen)
+	    __m_ena("tft",tft)
 	    __m_ena("spi",spi)
 	    __m_ena("tmr",tmr)
 	    __m_ena("uart",uart)
@@ -44,6 +45,9 @@ do
 	    __m_ena("lora",lora)
 	    __m_ena("mqtt",mqtt)
 	    __m_ena("sensor",sensor)
+	    __m_ena("servo",servo)
+	    __m_ena("sdisplay",sdisplay)
+	    __m_ena("net",net)
 		io.write("},")
 	end
 	
@@ -53,8 +57,8 @@ do
 		for sk,sv in pairs(sensor.list(true)) do 
 			io.write("{")
 			for k,v in pairs(sv) do 
-				if (k == "settings") then
-					io.write("\"settings\":[")
+				if (k == "properties") then
+					io.write("\"properties\":[")
 					for ask,asv in pairs(v) do 
 						io.write("{");
 						for tsk,tsv in pairs(asv) do 

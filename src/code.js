@@ -2346,9 +2346,9 @@ Code.setup = function() {
 		Code.status.connected = true;
 		Code.status.firmware = info.info.os + "-" + info.info.version.replace(" ", "-") + "-" + info.info.build;
 
-		if (info.newBuild) {
-			Code.newFirmware();
-		}
+		//if (info.newBuild) {
+		//	Code.newFirmware();
+		//}
 
 		Code.renderContent();
 	});

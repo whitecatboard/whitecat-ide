@@ -23,6 +23,9 @@ java -jar ./../yuicompressor-2.4.8.jar style.css >> css-min.css
 
 rm -f -r /Users/jaumeolivepetrus/whitecat-ide/src/deploy
 mkdir /Users/jaumeolivepetrus/whitecat-ide/src/deploy
+
+cd /Users/jaumeolivepetrus/whitecat-ide/src/boards
+zip -r prerequisites.zip lua/*
 cd /Users/jaumeolivepetrus/whitecat-ide/src/deploy
 mkdir -p /Users/jaumeolivepetrus/whitecat-ide/src/deploy/msg
 mkdir -p /Users/jaumeolivepetrus/whitecat-ide/src/deploy/msg/js
@@ -32,6 +35,9 @@ mkdir -p /Users/jaumeolivepetrus/whitecat-ide/src/deploy/library/defs
 
 cp -f -r ./../aceeditor ./
 cp -f -r ./../boards/defs/* ./boards/defs
+cp /Users/jaumeolivepetrus/whitecat-ide/src/boards/prerequisites.zip ./boards
+rm -f /Users/jaumeolivepetrus/whitecat-ide/src/boards/prerequisites.zip
+
 cp -f -r ./../fonts ./
 cp -f -r ./../lib ./
 cp -f -r ./../library/defs/libs.json ./library/defs
