@@ -133,7 +133,8 @@ Code.currentFile = {
 
 Code.settings = {
 	"language": "en",
-	"board": "N1ESP32"
+	"board": "N1ESP32",
+	"programmingModel": "blocks"
 };
 
 Code.currentStatus = {
@@ -1012,7 +1013,6 @@ Code.init = function() {
 		}
 	};
 
-	Code.workspace.type = 'blocks';
 	window.addEventListener('resize', onresize, false);
 
 	var toolbox = document.getElementById('toolbox');
@@ -2408,6 +2408,12 @@ Code.setup = function() {
 	Settings.load(Code.settings);
 	Blockly.Blocks.operators = {};
 
+	if (Code.settings.programmingModel == "blocks") {
+		Code.workspace.type = "blocks";
+	} else if (Code.settings.programmingModel == "lua") {
+		Code.workspace.type = "editor";
+	}
+
 	Blockly.Blocks.variables.HUE = "#ee7d16";
 	Blockly.Blocks.lists.HUE = "#cc5b22";
 	Blockly.Blocks.control.HUE = "#e1a91a";
@@ -2429,8 +2435,8 @@ Code.setup = function() {
 		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
 			Code.board.getMaps(Code.settings.board, function(maps) {
 				Code.status.maps = maps;
-				Code.buildToolBox(function() {
-					Code.init();
+				Code.buildToolBox(function() {				
+					Code.init();					
 					Code.renderContent();
 					Code.agent.socketConnect();		
 				});		

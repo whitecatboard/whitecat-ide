@@ -56,6 +56,10 @@ Settings.load = function(appSettings) {
 				if (settings.hasOwnProperty("board")) {
 					appSettings.board = settings.board;
 				}
+
+				if (settings.hasOwnProperty("programmingModel")) {
+					appSettings.programmingModel = settings.programmingModel;
+				}
 			} catch (error) {
 				Code.showError(MSG['error'], MSG['youHaveAnErrorInSettings'] + '<br><br>' + error);	
 			}
@@ -64,6 +68,11 @@ Settings.load = function(appSettings) {
 		appSettings.language = jQuery("#laguagePreferences").attr('value');
 		if (appSettings.language == "") {
 			appSettings.language = 'en';
+		}
+
+		appSettings.programmingModel = jQuery("#programmingModelPreferences").attr('value');
+		if (appSettings.programmingModel == "") {
+			appSettings.programmingModel = 'blocks';
 		}
 	}
 }
@@ -83,6 +92,7 @@ Settings.save = function(appSettings) {
 		}
 	} else {
 		jQuery("#laguagePreferences").attr('value',appSettings.language);
+		jQuery("#programmingModelPreferences").attr('value',appSettings.programmingModel);
 		jQuery("#preferencesForm").submit();
 	}
 }
