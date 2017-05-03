@@ -300,9 +300,15 @@ button {
 }
 
 .dir-entry {
-    margin: 0px 0px 0px 0px !important; 
 	list-style: none;
 	font-size: 15px;
+	margin-left: -15px;
+	
+}
+
+.dir-label {
+	margin-left: 10px;
+	vertical-align: text-bottom;
 }
 
 .dir-entry .icon {
@@ -318,12 +324,10 @@ button {
 }
 
 .dir-entry-d {
-	padding-left: 25px;
 	cursor: pointer;
 }
 
 .dir-entry-f {
-	padding-left: 25px;
 	cursor: pointer;
 }
 

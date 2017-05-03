@@ -65,6 +65,11 @@ var statusType = {
 
 Code.blockAbstraction = blockAbstraction.High;
 
+Code.storage = {};
+
+Code.storage.board = null;
+Code.storage.local = null;
+
 Code.defaultStatus = {
 	cpu: "ESP32",
 	connected: false,
@@ -175,18 +180,30 @@ Code.isRtl = function() {
 Code.getCurrentFullPath = function() {
 	var path;
 	
-	path = Code.currentFile.path;
-	if (path.slice(-1) != "/") {
-		path += "/";
+	if (typeof Code.currentFile.path == "undefined") {
+		Code.currentFile.path = "";		
 	}
 	
+	path = Code.currentFile.path;
+	
+	path = path.replace(/[\\\/]+/g, '/');
+	if (path.charAt(0) != "/") {
+		path = "/" + path;			
+	}
+
 	path += Code.currentFile.file;
+
+	path = path.replace(/[\\\/]+/g, '/');
 	
 	return path;
 }
 
 Code.getPathFor = function(folder, file) {
 	var path;
+	
+	if (typeof folder == "undefined") {
+		folder = "";
+	}
 	
 	if (folder == "") {
 		path = Code.currentFile.path;		
@@ -394,7 +411,7 @@ Code.renderContent = function() {
 		jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
 		jQuery("#content_blocks").css('visibility', 'hidden');
 
-		Code.listBoardDirectory(jQuery('#filesystem'), undefined, undefined, Code.loadFileFromBoard, undefined);
+		Code.listDirectories(jQuery('#filesystem'));
 		Code.updateStatus();
 	} else if (Code.selected == 'program') {
 		if (Code.workspace.type == 'blocks') {
@@ -1037,6 +1054,8 @@ Code.init = function() {
 
 	Code.workspace.blocks.wcInit();
 	Code.watcher = new watcher();
+	Code.storage.board = new Storage("board");
+	Code.storage.local = new Storage("local");
 
 	// Add to reserved word list: Local variables in execution environment (runJS)
 	// and the infinite loop detection function.
@@ -1372,61 +1391,13 @@ Code.run = function() {
 		});
 
 		// Show root files from board
-		folderSelected("/");
-		Code.listBoardDirectory(jQuery('#runFile'), "lua", folderSelected, fileSelected, undefined);
+		Code.listDirectories(jQuery('#runfile'),"lua",folderSelected, fileSelected);		
 	} else {
 		run(Code.getCurrentFullPath().replace(".xml",".lua"));
 	}
 }
 
-// File is loaded from computer
-Code.loadFileFromComputer = function(fileEntry) {
-	if (chrome.runtime.lastError) {
-		return;
-	}
-
-	fileEntry.file(function(file) {
-		Code.workspace.blocks.clear();
-
-		var reader = new FileReader();
-		reader.onload = function(e) {
-			var file = fileEntry.fullPath;
-			var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
-			
-			Code.currentFile.path = fileEntry.fullPath.replace(fileEntry.name, "");
-			Code.currentFile.file = fileEntry.name;
-			
-			if (fileExtension == 'xml') {
-				Code.workspace.type = "blocks";
-			} else if (extension == 'lua') {
-				Code.workspace.type = "editor";
-			} else {
-				return;
-			}
-
-			if (Code.workspace.type == 'blocks') {
-				var xml = Blockly.Xml.textToDom(e.target.result);
-
-				Code.workspace.blocks.clear();
-				Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);		
-				Blockly.resizeSvgContents(Code.workspace.blocks);
-			} else {
-				Code.workspace.editor.setValue(e.target.result, -1);
-			}
-			
-			Code.currentFile.from = fileFrom.Computer;
-			Code.tabRefresh();
-		};
-		reader.readAsText(file);
-		
-		Code.tabRefresh();
-	});
-
-	bootbox.hideAll();
-};
-
-// File is loaded from board
-Code.loadFileFromBoard = function(file) {
+Code.loadFile = function(storage) {
 	var file = Code.getCurrentFullPath();
 	var extension = /(?:\.([^.]+))?$/.exec(file)[1];
 
@@ -1437,20 +1408,11 @@ Code.loadFileFromBoard = function(file) {
 	} else {
 		return;
 	}
-
-	// Download file
-	Code.showProgress(MSG['downloadingFile'] + " " + file + " ...");
-	Code.agent.send({
-		command: "boardReadFile",
-		arguments: {
-			path: file
-		}
-	}, function(id, info) {
-		var fileContent = atob(info.content)
-
+	
+	function fileDownloaded(fileContent) {
 		BootstrapDialog.closeAll();
 		bootbox.hideAll();
-
+		
 		if (Code.workspace.type == 'blocks') {
 			var xml = Blockly.Xml.textToDom(fileContent);
 			Code.workspace.blocks.clear();
@@ -1459,11 +1421,47 @@ Code.loadFileFromBoard = function(file) {
 		} else {
 			Code.workspace.editor.setValue(fileContent, -1);
 		}
-		
+	
 		Code.currentFile.from = fileFrom.Board;
-		
-		Code.tabRefresh();
-	});
+	
+		Code.tabRefresh();		
+	}
+	
+	Code.showProgress(MSG['downloadingFile'] + " " + file + " ...");
+	if (storage == "board") {
+		Code.storage.board.load(file, function(fileContent) {
+			fileDownloaded(fileContent);
+		});
+	} else if (storage == "computer") {
+		Code.storage.local.load(file, function(fileContent) {
+			fileDownloaded(fileContent);
+		});
+	}
+}
+
+Code.saveFile = function(storage, folder, file, content) {
+	var fileName;
+	
+	if (typeof folder == "undefined") {
+		fileName = file;
+	} else {
+		fileName = Code.getPathFor(folder, file);	
+	}
+	
+	function fileSaved() {
+		Code.currentFile.path = folder;
+		Code.currentFile.file = file;
+		Code.hideProgress();
+		Code.tabRefresh();		
+	};
+	
+	Code.showProgress(MSG['sendingFile'] + " " + fileName + " ...");
+
+	if (storage == "board") {
+		Code.storage.board.save(fileName, content, function() {
+			fileSaved();
+		});
+	}
 }
 
 Code.load = function() {
@@ -1481,58 +1479,20 @@ Code.load = function() {
 	var container = document.getElementById('content_area');
 	var bBox = Code.getBBox_(container);
 
-	if (typeof require != "undefined") {
-		// Show a dialog for select a file from board, or allow to select a file from
-		// computer
-		bootbox.dialog({
-			title: MSG['loadBlockTitle'],
-			message: '<div id="loadFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div>',
-			buttons: {
-				success: {
-					label: MSG['loadFromDesktop'],
-					className: "btn-primary",
-					callback: function() {
-						chrome.fileSystem.chooseEntry({
-							type: 'openFile',
-							suggestedName: 'untitled.' + extension,
-							accepts: [{
-								description: extension + ' files (*.' + extension + ')',
-								extensions: [extension]
-							}],
-							acceptsAllTypes: false
-						}, Code.loadFileFromComputer);
-
-						return false;
-					}
-				},
-				danger: {
-					label: MSG['cancel'],
-					className: "btn-danger",
-					callback: function() {}
-				},
+	bootbox.dialog({
+		title: MSG['loadBlockTitle'],
+		message: '<div id="loadFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div>',
+		buttons: {
+			danger: {
+				label: MSG['cancel'],
+				className: "btn-danger",
+				callback: function() {}
 			},
-			closable: false
-		});		
-	} else {
-		// Show a dialog for select a file from board, or allow to select a file from
-		// computer
-		bootbox.dialog({
-			title: MSG['loadBlockTitle'],
-			message: '<div id="loadFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div>',
-			buttons: {
-				danger: {
-					label: MSG['cancel'],
-					className: "btn-danger",
-					callback: function() {}
-				},
-			},
-			closable: false
-		});			
-	}
+		},
+		closable: false
+	});		
 
-
-	// Show root files from board
-	Code.listBoardDirectory(jQuery('#loadFile'), extension, undefined, Code.loadFileFromBoard, undefined);
+	Code.listDirectories(jQuery('#loadFile'));
 };
 
 Code.stop = function() {
@@ -1586,154 +1546,46 @@ Code.save = function() {
 		return;
 	}
 
-	function saveToFile(fileEntry) {
-		if (chrome.runtime.lastError) {
-			return;
-		}
-
-		fileEntry.createWriter(function(fileWriter) {
-			var truncated = false;
-			var blob = new Blob([code]);
-
-			fileWriter.onwriteend = function(e) {
-				bootbox.hideAll();
-				if (!truncated) {
-					truncated = true;
-					// You need to explicitly set the file size to truncate
-					// any content that might have been there before
-					this.truncate(blob.size);
-					Code.tabRefresh();
-					return;
-				}
-			};
-
-			fileWriter.onerror = function(e) {};
-
-			fileWriter.write(blob, {
-				type: 'text/plain'
-			});
-		});
-	}
-
-	function saveToBoard(folder, file) {
-		Code.showProgress(MSG['sendingFile'] + " " + Code.getPathFor(folder, file) + " ...");
-		Code.agent.send({
-			command: "boardWriteFile",
-			arguments: {
-				path: Code.getPathFor(folder,file),
-				content: btoa(code)
-			}
-		}, function(id, info) {
-			Code.currentFile.path = folder;
-			Code.currentFile.file = file;
-			Code.hideProgress();
-			Code.tabRefresh();
-		});
-	}
-
 	function folderSelected(folder) {
-		folder = folder + '/';
-		
-		folder = folder.replace(/\/\//g, "/");
-			
 		jQuery("#selectedFolder").text(folder);
 		jQuery("#selectedFolder").data("selected", folder);
+		jQuery("#selectedFileName").val("");
 	}
 
-	function fileSelected(file) {
+	function fileSelected(folder, file) {
+		folderSelected(folder);
+		
 		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
 	}
 
 	var file = Code.getCurrentFullPath();
 	var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
 	if (typeof fileExtension != "undefined") {
-		Code.showProgress(MSG['sendingFile'] + " " + file + " ...");
-		Code.agent.send({
-			command: "boardWriteFile",
-			arguments: {
-				path: file,
-				content: btoa(code)
-			}
-		}, function(id, info) {
-			Code.hideProgress();
-			Code.tabRefresh();
-		});
+		Code.saveFile("board", undefined, file, code);		
 	} else {
 		file = Code.getPathFor("", "unnamed." + extension);
-		if (typeof require != "undefined") {
-			bootbox.dialog({
-				title: MSG['saveBlockTitle'],
-				message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-					MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="unnamed">' + '.' + extension,
-				buttons: {
-					main: {
-						label: MSG['saveToBoard'],
-						className: "btn-primary",
-						callback: function() {
-							var file = jQuery("#selectedFileName").val();
-							if (file != "") {
-								saveToBoard(jQuery("#selectedFolder").data("selected"), file + '.' + extension);
-							} else {
-								return false;
-							}
-						}
-					},
-					success: {
-						label: MSG['saveToDesktop'],
-						className: "btn-primary",
-						callback: function() {
-							// TO DO
-							chrome.fileSystem.chooseEntry({
-								type: 'saveFile',
-								suggestedName: 'unnamed.' + extension,
-								accepts: [{
-									description: extension + ' files (*.' + extension + ')',
-									extensions: [extension]
-								}],
-								acceptsAllTypes: false
-							}, saveToFile);
-
+		bootbox.dialog({
+			title: MSG['saveBlockTitle'],
+			message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
+				MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="unnamed">' + '.' + extension,
+			buttons: {
+				main: {
+					label: MSG['save'],
+					className: "btn-primary",
+					callback: function() {
+						var file = jQuery("#selectedFileName").val();
+						if (file != "") {
+							Code.saveFile("board", jQuery("#selectedFolder").data("selected"), file + '.' + extension, code);
+						} else {
 							return false;
 						}
-					},
-					danger: {
-						label: MSG['cancel'],
-						className: "btn-danger",
-						callback: function() {}
-					},
+					}
 				},
-				closable: false
-			});
-		} else {
-			bootbox.dialog({
-				title: MSG['saveBlockTitle'],
-				message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-					MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="unnamed">' + '.' + extension,
-				buttons: {
-					main: {
-						label: MSG['º'],
-						className: "btn-primary",
-						callback: function() {
-							var file = jQuery("#selectedFileName").val();
-							if (file != "") {
-								saveToBoard(jQuery("#selectedFolder").data("selected"), file + '.' + extension);
-							} else {
-								return false;
-							}
-						}
-					},
-					danger: {
-						label: MSG['cancel'],
-						className: "btn-danger",
-						callback: function() {}
-					},
-				},
-				closable: false
-			});			
-		}
+			},
+			closable: false
+		});
 
-		folderSelected("/");
-		Code.listBoardDirectory(jQuery('#saveFile'), extension, folderSelected, fileSelected, undefined);
+		Code.listDirectories(jQuery('#saveFile'), extension, folderSelected, fileSelected);
 	}
 };
 
@@ -1798,15 +1650,14 @@ Code.saveAs = function() {
 	}
 
 	function folderSelected(folder) {
-		if (folder != '/') {
-			folder = folder + '/';
-		}
-
 		jQuery("#selectedFolder").text(folder);
 		jQuery("#selectedFolder").data("selected", folder);
+		jQuery("#selectedFileName").val("");
 	}
 
-	function fileSelected(file) {
+	function fileSelected(folder, file) {
+		folderSelected(folder);
+		
 		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
 	}
 
@@ -1881,8 +1732,7 @@ Code.saveAs = function() {
 		});		
 	}
 
-	folderSelected("/");
-	Code.listBoardDirectory(jQuery('#saveFile'), extension, folderSelected, fileSelected, undefined);
+	Code.listDirectories(jQuery('#saveFile'), extension, folderSelected, fileSelected);
 };
 
 // Progress messages
@@ -2025,151 +1875,113 @@ Code.updateStatus = function() {
 	window.dispatchEvent(new Event('resize'));
 }
 
-Code.listBoardDirectory = function(container, extension, folderSelect, fileSelect, target) {
-	var html;
-	var path = "";
-	var root = false;
+Code.listDirectoriesUpdate = function(container, storage, path, entries) {
+	var html = '';
 
-	if (!Code.status.connected) {
-		html = '<span style="margin-left: 25px;" class="waitingForBoard"><i class="spinner icon icon-spinner3"></i> ' + MSG['waitingForBoard'] + '</span>';
-		container.html(html);
-		return;
-	}
+	html += '<ul class="dir-entry">';
 
-	if (typeof target != 'undefined') {
-		container = target;
-		path = Code.currentFile.path;
-	} else {
-		container.html('<div style="width: 20px;float: left;margin-left: 45px;"><i class="waiting"></i></div>');
-		root = true;
-	}
-
-	container.find(".waiting").addClass("spinner");
-	container.find(".waiting").addClass("icon");
-	container.find(".waiting").addClass("icon-spinner3");
-
-	Code.agent.send({
-		command: "boardGetDirContent",
-		arguments: {
-			path: path
-		}
-	}, function(id, entries) {
-		var html = '';
-
-		if (path == '/') path = '';
-
-		html += '<ul class="dir-entry list-unstyled">';
-
-		if (root) {
-			html += '<li class="dir-entry-d" data-expanded="true" data-path data-name data-type="d"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">Board</span>'
-			html += '<ul class="dir-entry list-unstyled">';
-		}
-
-		container.find("[data-path='" + path + "']").remove();
-
-		container.find(".waiting").removeClass("spinner");
-		container.find(".waiting").removeClass("icon");
-		container.find(".waiting").removeClass("icon-spinner3");
-
-		entries.forEach(function(entry) {
-			if (entry.type == 'f') {
-				if (typeof extension != "undefined") {
-					if (entry.name.match(new RegExp('^.*\.' + extension + '$'))) {
-						html = html + '<li class="dir-entry-' + entry.type + '" data-expanded="false" data-path="' + path + '" data-name="' + entry.name + '" data-type="' + entry.type + '"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">' + entry.name + '</span></li>'
-					}
-				} else {
-					html = html + '<li class="dir-entry-' + entry.type + '" data-expanded="false" data-path="' + path + '" data-name="' + entry.name + '" data-type="' + entry.type + '"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">' + entry.name + '</span></li>'
-				}
-			} else {
-				html = html + '<li class="dir-entry-' + entry.type + '" data-expanded="false" data-path="' + path + '" data-name="' + entry.name + '" data-type="' + entry.type + '"><div style="width: 20px;float: left;"><i class="waiting"></i></div><i class="status"></i><span class="entryName">' + entry.name + '</span></li>'
+	entries.forEach(function(entry) {
+		var icon = "icon-file-text2";
+		var entryPath = path;
+	
+		if (entry.type == "d") {
+			icon = "icon-folder2";
+		
+			if (path != "") {
+				entryPath += "/";
 			}
-		});
-
-		if (root) {
-			html += '</li>';
+		
+			entryPath += entry.name;
 		}
-
-		html += '</ul>';
-
-		container.append(html);
-		window.dispatchEvent(new Event('resize'));
-
-		container.find('.dir-entry-d, .dir-entry-f').unbind().bind('click', function(e) {
-			var target = jQuery(e.target);
-
-			if (target.prop("tagName") != 'LI') {
-				target = target.closest("li");
-			}
-
-			var entry = target.data('name');
-			var path = target.data('path');
-			var type = target.data('type');
-			var expanded = target.attr('data-expanded');
-
-			if ((typeof entry === "undefined") || (typeof path === "undefined")) {
-				e.stopPropagation();
-				return;
-			}
-
-			if (type == 'd') {
-				if (expanded == "true") {
-					target.attr('data-expanded', 'false');
-					target.find(".dir-entry").remove();
-
-					target.find(".status:first").addClass("icon-folder2");
-					target.find(".status:first").removeClass("icon-folder-open");
-
-					if (typeof folderSelect != 'undefined') {
-						folderSelect(path + '/' + entry);
-					}
-
-				} else {
-					target.attr('data-expanded', 'true');
-					Code.currentFile.path = path + '/' + entry;
-
-					if (typeof folderSelect != 'undefined') {
-						folderSelect(path + '/' + entry);
-					}
-
-					Code.listBoardDirectory(jQuery('#filesystem'), extension, folderSelect, fileSelect, target);
-				}
-			} else {
-				if (path == "") {
-					path = "/";
-				}
-				Code.currentFile.path = path;
-				Code.currentFile.file = entry;
-				if (typeof fileSelect != 'undefined') {
-					fileSelect(entry);
-				}
-			}
-
-			e.stopPropagation();
-		});
-
-		var expanded = container.attr('data-expanded');
-		if (expanded == "true") {
-			container.find(".status:first").removeClass("icon-folder2");
-			container.find(".status:first").addClass("icon-folder-open");
-		} else {
-			container.find(".status:first").addClass("icon-folder2");
-			container.find(".status:first").removeClass("icon-folder-open");
-		}
-
-		if (root) {
-			container.find(".status:first").removeClass("icon-folder2");
-			container.find(".status:first").addClass("icon-chip");
-
-			container = container.find(".dir-entry-d:first");
-		}
-
-		container.find(".status").closest(".dir-entry-d").find(".status").addClass("icon");
-		container.find(".dir-entry-d").find(".status").addClass("icon-folder2");
-
-		container.find(".dir-entry-f").find(".status").addClass("icon");
-		container.find(".dir-entry-f").find(".status").addClass("icon-file-text2");
+	
+		html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-type="'+entry.type+'" data-path="'+entryPath+'" data-name="'+entry.name+'" data-storage="'+storage+'"><span data-type="'+entry.type+'" class="icon '+icon+'"></span><span class="dir-label">'+entry.name+'</span></li>';
 	});
+
+	html += '</ul>';
+
+	container.append(html);
 }
+
+Code.listDirectories = function(container, extension, folderSelectedCallback, fileSelectedCallback) {
+	var html = '';
+	
+	html += '<ul class="dir-entry">';
+	
+	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="board"><span class="icon icon-chip"></span><span class="dir-label">Board</span></li>';
+	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="computer"><span class="icon icon-display"></span><span class="dir-label">Computer</span></li>';
+	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="cloud"><span class="icon icon-cloud"></span><span class="dir-label">Cloud</span></li>';
+	
+	html += '</ul>';
+
+	container.append(html);
+	window.dispatchEvent(new Event('resize'));
+
+	container.find('.dir-entry-d, .dir-entry-f').unbind().bind('click', function(e) {
+		var target = jQuery(e.target);
+		
+		if (target.prop("tagName") != 'LI') {
+			target = target.closest("li");
+		}
+		
+		var type = target.attr('data-type');
+		var storage = target.attr('data-storage');
+		var expanded = target.attr('data-expanded');
+		var path = target.attr('data-path');
+		var entry = target.attr('data-name');
+
+		path = path.replace(/[\\\/]+/g, '/');
+		if (path.charAt(0) != "/") {
+			path = "/" + path;			
+		}
+		
+		if (path.charAt(path.length - 1) != "/") {
+			path = path + "/";
+		}
+		
+		if ((type == 'r') || (type == 'd')) {
+			if (storage == "board") {
+				if (expanded == "true") {					
+					target.find("ul").empty();
+					target.attr("data-expanded", "false");
+				} else {
+					target.attr("data-expanded", "true");
+					Code.storage.board.listDirectories(path, function(entries) {
+						Code.listDirectoriesUpdate(target, storage, path, entries);
+					});
+				}
+			} else if (storage == "computer") {
+				if (expanded == "true") {					
+					target.find("ul").empty();
+					target.attr("data-expanded", "false");
+				} else {
+					target.attr("data-expanded", "true");
+					Code.storage.local.listDirectories(path, function(entries) {
+						Code.listDirectoriesUpdate(target, storage, path, entries);
+					});
+				}
+			} else if (storage == "cloud") {
+			}	
+			
+			jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
+			jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
+			
+			if (typeof folderSelectedCallback != "undefined") {
+				folderSelectedCallback(path);
+			}			
+		} else if (type == "f") {				
+			Code.currentFile.path = path;
+			Code.currentFile.file = entry;
+
+			if (typeof fileSelectedCallback != "undefined") {
+				fileSelectedCallback(path, entry);
+			} else {
+				Code.loadFile(storage);
+			}				
+		}
+
+		e.stopPropagation();
+	});
+};
 
 Code.tabRefresh = function() {
 	if ((Code.selected == 'program') && (Code.workspace.type == 'blocks')) {
@@ -2435,7 +2247,7 @@ Code.setup = function() {
 		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
 			Code.board.getMaps(Code.settings.board, function(maps) {
 				Code.status.maps = maps;
-				Code.buildToolBox(function() {				
+				Code.buildToolBox(function() {	
 					Code.init();					
 					Code.renderContent();
 					Code.agent.socketConnect();		
