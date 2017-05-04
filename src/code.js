@@ -33,6 +33,24 @@
  */
 'use strict';
 
+// Test if user's browser is Chrome
+function isChrome() {
+  var isChromium = window.chrome,
+    winNav = window.navigator,
+    vendorName = winNav.vendor,
+    isOpera = winNav.userAgent.indexOf("OPR") > -1,
+    isIEedge = winNav.userAgent.indexOf("Edge") > -1,
+    isIOSChrome = winNav.userAgent.match("CriOS");
+
+  if(isIOSChrome){
+    return true;
+  } else if(isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false) {
+    return true;
+  } else { 
+    return false;
+  }
+}
+
 // By default, enable developer mode
 Blockly.Lua.developerMode = true;
 
@@ -69,6 +87,7 @@ Code.storage = {};
 
 Code.storage.board = null;
 Code.storage.local = null;
+Code.storage.cloud = null;
 
 Code.defaultStatus = {
 	cpu: "ESP32",
@@ -124,16 +143,11 @@ Code.platforms = ["MacIntel", "Win32", "Linux x86_64"];
 
 Code.progressDialog = false;
 
-var fileFrom = {
-	Board: 0,
-	Computer: 1,
-	Cloud: 3
-};
-
 Code.currentFile = {
 	path: '/',
 	file: '',
-	from: fileFrom.Board
+	storage: StorageType.Computer,
+	changes: false
 };
 
 Code.settings = {
@@ -177,6 +191,21 @@ Code.isRtl = function() {
 	return Code.LANGUAGE_RTL.indexOf(Code.settings.language) != -1;
 };
 
+Code.defaultStorage = function() {
+	if (Code.status.connected) {
+		return StorageType.Board;
+	} else {
+		return StorageType.Computer;		
+	}
+};
+
+Code.setDefaultStorage = function() {
+	Code.currentFile.path = '/';
+	Code.currentFile.file = '';
+	Code.currentFile.storage = StorageType.Computer;
+	Code.currentFile.changes = Code.defaultStorage();
+};
+
 Code.getCurrentFullPath = function() {
 	var path;
 	
@@ -211,15 +240,26 @@ Code.getPathFor = function(folder, file) {
 		path = folder;
 	}
 	
-	if (path.slice(-1) != "/") {
-		path += "/";
+	if (typeof file == "undefined") {
+		file = "";
 	}
 	
 	if (file == "") {
-		path += Code.currentFile.file;	
-	} else {
-		path += file;
+		file = Code.currentFile.file;		
 	}
+
+	path = path.replace(/[\\\/]+/g, '/');
+	if (path.charAt(0) != "/") {
+		path = "/" + path;			
+	}
+	
+	if (path != "/") {
+		path += "/";
+	}
+	
+	path += file;
+
+	path = path.replace(/[\\\/]+/g, '/');
 		
 	return path;	
 }
@@ -401,8 +441,7 @@ Code.renderContent = function() {
 
 	Code.tabRefresh();
 	if (Code.selected == 'board') {
-		Code.currentFile.path = '';
-		Code.currentFile.file = '';
+		Code.setDefaultStorage();
 
 		jQuery("#content_editor").css('visibility', 'hidden');
 		jQuery("#content_block_editor").css('visibility', 'hidden');
@@ -1054,8 +1093,9 @@ Code.init = function() {
 
 	Code.workspace.blocks.wcInit();
 	Code.watcher = new watcher();
-	Code.storage.board = new Storage("board");
-	Code.storage.local = new Storage("local");
+	Code.storage.board = new Storage(StorageType.Board);
+	Code.storage.local = new Storage(StorageType.Computer);
+	Code.storage.cloud = new Storage(StorageType.Cloud);
 
 	// Add to reserved word list: Local variables in execution environment (runJS)
 	// and the infinite loop detection function.
@@ -1167,8 +1207,8 @@ Code.initLanguage = function() {
 	});
 
 	document.getElementById('developerMode').title = MSG['developerMode'];
-	document.getElementById('switchToBlocks').title = MSG['switchToCodev'];
-	document.getElementById('switchToCode').title = MSG['switchToCodev'];
+	document.getElementById('switchToBlocks').title = MSG['switchToCodeTooltip'];
+	document.getElementById('switchToCode').title = MSG['switchToBlocksTooltip'];
 	document.getElementById('loadButton').title = MSG['loadButtonTooltip'];
 	document.getElementById('saveButton').title = MSG['saveButtonTooltip'];
 	document.getElementById('saveAsButton').title = MSG['saveAsButtonTooltip'];
@@ -1260,8 +1300,7 @@ Code.discard = function() {
 				function(result) {
 					if (result) {
 						Code.workspace.blocks.clear();
-						Code.currentFile.path = "/";
-						Code.currentFile.file = "";
+						Code.setDefaultStorage();
 						Code.tabRefresh();
 					}
 				});
@@ -1271,8 +1310,7 @@ Code.discard = function() {
 			function(result) {
 				if (result) {
 					Code.workspace.editor.setValue("", -1);
-					Code.currentFile.path = "/";
-					Code.currentFile.file = "";
+					Code.setDefaultStorage();
 					Code.tabRefresh();
 				}
 			});
@@ -1345,6 +1383,10 @@ Code.run = function() {
 		});
 	}
 
+	function storageSelected(storage) {
+		jQuery("#selectedStorage").val(storage);		
+	}
+	
 	function fileSelected(file) {
 		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
 	}
@@ -1366,7 +1408,7 @@ Code.run = function() {
 		bootbox.dialog({
 			title: MSG['noTarget'],
 			message: '<div id="runFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-				MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="unnamed">.lua',
+				MSG['saveAs'] + '<span id="selectedFolder"></span><input type="hidden" id="selectedStorage" value=""><input type="text" id="selectedFileName" value="/unnamed">.lua',
 			buttons: {
 				main: {
 					label: MSG['run'],
@@ -1391,15 +1433,19 @@ Code.run = function() {
 		});
 
 		// Show root files from board
-		Code.listDirectories(jQuery('#runfile'),"lua",folderSelected, fileSelected);		
+		Code.listDirectories(jQuery('#runfile'),"lua", storageSelected, folderSelected, fileSelected);		
 	} else {
 		run(Code.getCurrentFullPath().replace(".xml",".lua"));
 	}
 }
 
-Code.loadFile = function(storage) {
-	var file = Code.getCurrentFullPath();
+Code.loadFile = function(storage, path, entry) {
+	var file = Code.getPathFor(path, entry);
 	var extension = /(?:\.([^.]+))?$/.exec(file)[1];
+	
+	if (storage == StorageType.Cloud) {
+		file = path;
+	}
 
 	if (extension == 'xml') {
 		Code.workspace.type = "blocks";
@@ -1422,18 +1468,31 @@ Code.loadFile = function(storage) {
 			Code.workspace.editor.setValue(fileContent, -1);
 		}
 	
-		Code.currentFile.from = fileFrom.Board;
-	
-		Code.tabRefresh();		
+		if (storage != StorageType.Cloud) {
+			Code.currentFile.path = path;			
+		} else {
+			Code.currentFile.path = "/";						
+		}
+		
+		Code.currentFile.file = entry;
+		Code.currentFile.storage = storage;
+		Code.currentFile.changes = false;
+		
+		Code.tabRefresh();	
+		Code.renderContent();	
 	}
 	
 	Code.showProgress(MSG['downloadingFile'] + " " + file + " ...");
-	if (storage == "board") {
+	if (storage == StorageType.Board) {
 		Code.storage.board.load(file, function(fileContent) {
 			fileDownloaded(fileContent);
 		});
-	} else if (storage == "computer") {
+	} else if (storage == StorageType.Computer) {
 		Code.storage.local.load(file, function(fileContent) {
+			fileDownloaded(fileContent);
+		});
+	} else if (storage == StorageType.Cloud) {
+		Code.storage.cloud.load(file, function(fileContent) {
 			fileDownloaded(fileContent);
 		});
 	}
@@ -1451,17 +1510,25 @@ Code.saveFile = function(storage, folder, file, content) {
 	function fileSaved() {
 		Code.currentFile.path = folder;
 		Code.currentFile.file = file;
+		Code.currentFile.storage = storage;
+		Code.currentFile.changes = false;
+		
 		Code.hideProgress();
 		Code.tabRefresh();		
 	};
 	
 	Code.showProgress(MSG['sendingFile'] + " " + fileName + " ...");
 
-	if (storage == "board") {
+	if (storage == StorageType.Board) {
 		Code.storage.board.save(fileName, content, function() {
 			fileSaved();
 		});
+	} else if (storage == StorageType.Computer) {
+		Code.storage.local.save(fileName, content, function() {
+			fileSaved();
+		});
 	}
+
 }
 
 Code.load = function() {
@@ -1546,6 +1613,20 @@ Code.save = function() {
 		return;
 	}
 
+	function storageSelected(storage) {
+		var icon = "";
+		
+		jQuery("#selectedStorage").val(storage);	
+		
+		if (storage == StorageType.Board) {
+			icon = '<span><span class="icon icon-chip" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
+		} else if (storage == StorageType.Computer) {
+			icon = '<span><span class="icon icon-display" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
+		}
+		
+		jQuery("#storageType").html(icon);			
+	}
+
 	function folderSelected(folder) {
 		jQuery("#selectedFolder").text(folder);
 		jQuery("#selectedFolder").data("selected", folder);
@@ -1561,13 +1642,14 @@ Code.save = function() {
 	var file = Code.getCurrentFullPath();
 	var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
 	if (typeof fileExtension != "undefined") {
-		Code.saveFile("board", undefined, file, code);		
+		Code.saveFile(Code.currentFile.storage, undefined, file, code);		
 	} else {
 		file = Code.getPathFor("", "unnamed." + extension);
 		bootbox.dialog({
 			title: MSG['saveBlockTitle'],
 			message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-				MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="unnamed">' + '.' + extension,
+					 MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' +
+					'<span id="selectedFolder"></span><input type="hidden" id="selectedStorage" value=""><input type="text" id="selectedFileName" value="/unnamed">' + '.' + extension,
 			buttons: {
 				main: {
 					label: MSG['save'],
@@ -1575,17 +1657,23 @@ Code.save = function() {
 					callback: function() {
 						var file = jQuery("#selectedFileName").val();
 						if (file != "") {
-							Code.saveFile("board", jQuery("#selectedFolder").data("selected"), file + '.' + extension, code);
+							Code.saveFile(jQuery("#selectedStorage").val(), jQuery("#selectedFolder").data("selected"), file + '.' + extension, code);
 						} else {
 							return false;
 						}
 					}
 				},
+				danger: {
+					label: MSG['cancel'],
+					className: "btn-danger",
+					callback: function() {}
+				},
 			},
 			closable: false
 		});
 
-		Code.listDirectories(jQuery('#saveFile'), extension, folderSelected, fileSelected);
+		storageSelected(Code.defaultStorage());
+		Code.listDirectories(jQuery('#saveFile'), extension, storageSelected, folderSelected, fileSelected);
 	}
 };
 
@@ -1604,49 +1692,18 @@ Code.saveAs = function() {
 		code = Code.workspace.editor.getValue();
 	}
 
-	function saveToFile(fileEntry) {
-		if (chrome.runtime.lastError) {
-			return;
+	function storageSelected(storage) {
+		var icon = "";
+		
+		jQuery("#selectedStorage").val(storage);	
+		
+		if (storage == StorageType.Board) {
+			icon = '<span><span class="icon icon-chip" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
+		} else if (storage == StorageType.Computer) {
+			icon = '<span><span class="icon icon-display" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
 		}
-
-		fileEntry.createWriter(function(fileWriter) {
-			var truncated = false;
-			var blob = new Blob([code]);
-
-			fileWriter.onwriteend = function(e) {
-				bootbox.hideAll();
-				if (!truncated) {
-					truncated = true;
-					// You need to explicitly set the file size to truncate
-					// any content that might have been there before
-					this.truncate(blob.size);
-					Code.tabRefresh();
-					return;
-				}
-			};
-
-			fileWriter.onerror = function(e) {};
-
-			fileWriter.write(blob, {
-				type: 'text/plain'
-			});
-		});
-	}
-
-	function saveToBoard(folder, file) {
-		Code.showProgress(MSG['sendingFile'] + " " + Code.getPathFor(folder, file) + " ...");
-		Code.agent.send({
-			command: "boardWriteFile",
-			arguments: {
-				path: Code.getPathFor(folder, file),
-				content: btoa(code)
-			}
-		}, function(id, info) {
-			Code.currentFile.path = folder;
-			Code.currentFile.file = file;
-			Code.hideProgress();
-			Code.tabRefresh();
-		});
+		
+		jQuery("#storageType").html(icon);			
 	}
 
 	function folderSelected(folder) {
@@ -1661,78 +1718,35 @@ Code.saveAs = function() {
 		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
 	}
 
-	if (typeof require != "undefined") {
-		bootbox.dialog({
-			title: MSG['saveBlockTitle'],
-			message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-				MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="">' + '.' + extension,
-			buttons: {
-				main: {
-					label: MSG['saveToBoard'],
-					className: "btn-primary",
-					callback: function() {
-						var file = jQuery("#selectedFileName").val();
-						if (file != "") {						
-							saveToBoard(jQuery("#selectedFolder").data("selected"), file + '.' + extension);
-						} else {
-							return false;
-						}
-					}
-				},
-				success: {
-					label: MSG['saveToDesktop'],
-					className: "btn-primary",
-					callback: function() {
-						chrome.fileSystem.chooseEntry({
-							type: 'saveFile',
-							suggestedName: 'unnamed.' + extension,
-							accepts: [{
-								description: extension + ' files (*.' + extension + ')',
-								extensions: [extension]
-							}],
-							acceptsAllTypes: false
-						}, saveToFile);
-
+	bootbox.dialog({
+		title: MSG['saveBlockTitle'],
+		message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
+			MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' + 
+		   '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="/">' + '.' + extension,
+		buttons: {
+			main: {
+				label: MSG['save'],
+				className: "btn-primary",
+				callback: function() {
+					var file = jQuery("#selectedFileName").val();
+					if (file != "") {						
+						saveToBoard(jQuery("#selectedFolder").data("selected"), file + '.' + extension);
+					} else {
 						return false;
 					}
-				},
-				danger: {
-					label: MSG['cancel'],
-					className: "btn-danger",
-					callback: function() {}
-				},
+				}
 			},
-			closable: false
-		});
-	} else {
-		bootbox.dialog({
-			title: MSG['saveBlockTitle'],
-			message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-				MSG['saveAs'] + '<span id="selectedFolder"></span><input type="text" id="selectedFileName" value="">' + '.' + extension,
-			buttons: {
-				main: {
-					label: MSG['saveToBoard'],
-					className: "btn-primary",
-					callback: function() {
-						var file = jQuery("#selectedFileName").val();
-						if (file != "") {						
-							saveToBoard(jQuery("#selectedFolder").data("selected"), file + '.' + extension);
-						} else {
-							return false;
-						}
-					}
-				},
-				danger: {
-					label: MSG['cancel'],
-					className: "btn-danger",
-					callback: function() {}
-				},
+			danger: {
+				label: MSG['cancel'],
+				className: "btn-danger",
+				callback: function() {}
 			},
-			closable: false
-		});		
-	}
+		},
+		closable: false
+	});
 
-	Code.listDirectories(jQuery('#saveFile'), extension, folderSelected, fileSelected);
+	storageSelected(Code.defaultStorage());
+	Code.listDirectories(jQuery('#saveFile'), extension, storageSelected, folderSelected, fileSelected);
 };
 
 // Progress messages
@@ -1887,11 +1901,21 @@ Code.listDirectoriesUpdate = function(container, storage, path, entries) {
 		if (entry.type == "d") {
 			icon = "icon-folder2";
 		
-			if (path != "") {
-				entryPath += "/";
-			}
+			if (storage == StorageType.Cloud) {
+				entryPath = entry.id;
+			} else {
+				if (path != "") {
+					entryPath += "/";
+				}
 		
-			entryPath += entry.name;
+				entryPath += entry.name;				
+			}
+		}
+		
+		if (entry.type == "f") {
+			if (storage == StorageType.Cloud) {
+				entryPath = entry.id;
+			}
 		}
 	
 		html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-type="'+entry.type+'" data-path="'+entryPath+'" data-name="'+entry.name+'" data-storage="'+storage+'"><span data-type="'+entry.type+'" class="icon '+icon+'"></span><span class="dir-label">'+entry.name+'</span></li>';
@@ -1902,14 +1926,17 @@ Code.listDirectoriesUpdate = function(container, storage, path, entries) {
 	container.append(html);
 }
 
-Code.listDirectories = function(container, extension, folderSelectedCallback, fileSelectedCallback) {
+Code.listDirectories = function(container, extension, storageSelectedCallback, folderSelectedCallback, fileSelectedCallback) {
 	var html = '';
 	
 	html += '<ul class="dir-entry">';
 	
-	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="board"><span class="icon icon-chip"></span><span class="dir-label">Board</span></li>';
-	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="computer"><span class="icon icon-display"></span><span class="dir-label">Computer</span></li>';
-	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="cloud"><span class="icon icon-cloud"></span><span class="dir-label">Cloud</span></li>';
+	if (Code.status.connected) {
+		html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="'+StorageType.Board+'"><span class="icon icon-chip"></span><span class="dir-label">Board</span></li>';
+	}
+	
+	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="'+StorageType.Computer+'"><span class="icon icon-display"></span><span class="dir-label">Computer</span></li>';
+	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="'+StorageType.Cloud+'"><span class="icon icon-cloud"></span><span class="dir-label">Cloud</span></li>';
 	
 	html += '</ul>';
 
@@ -1929,17 +1956,19 @@ Code.listDirectories = function(container, extension, folderSelectedCallback, fi
 		var path = target.attr('data-path');
 		var entry = target.attr('data-name');
 
-		path = path.replace(/[\\\/]+/g, '/');
-		if (path.charAt(0) != "/") {
-			path = "/" + path;			
-		}
+		if (storage != StorageType.Cloud) {
+			path = path.replace(/[\\\/]+/g, '/');
+			if (path.charAt(0) != "/") {
+				path = "/" + path;			
+			}
 		
-		if (path.charAt(path.length - 1) != "/") {
-			path = path + "/";
-		}
+			if (path.charAt(path.length - 1) != "/") {
+				path = path + "/";
+			}
+		} 
 		
 		if ((type == 'r') || (type == 'd')) {
-			if (storage == "board") {
+			if (storage == StorageType.Board) {
 				if (expanded == "true") {					
 					target.find("ul").empty();
 					target.attr("data-expanded", "false");
@@ -1949,7 +1978,7 @@ Code.listDirectories = function(container, extension, folderSelectedCallback, fi
 						Code.listDirectoriesUpdate(target, storage, path, entries);
 					});
 				}
-			} else if (storage == "computer") {
+			} else if (storage == StorageType.Computer) {
 				if (expanded == "true") {					
 					target.find("ul").empty();
 					target.attr("data-expanded", "false");
@@ -1959,24 +1988,44 @@ Code.listDirectories = function(container, extension, folderSelectedCallback, fi
 						Code.listDirectoriesUpdate(target, storage, path, entries);
 					});
 				}
-			} else if (storage == "cloud") {
+			} else if (storage == StorageType.Cloud) {
+				if (expanded == "true") {					
+					target.find("ul").empty();
+					target.attr("data-expanded", "false");
+				} else {
+					target.attr("data-expanded", "true");
+					Code.storage.cloud.listDirectories(path, function(entries) {
+						Code.listDirectoriesUpdate(target, storage, path, entries);
+					});
+				}
 			}	
 			
 			jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
 			jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
 			
 			if (typeof folderSelectedCallback != "undefined") {
-				folderSelectedCallback(path);
+				if (storage != StorageType.Cloud) {
+					folderSelectedCallback(path);
+				}
+			}			
+
+			if (typeof storageSelectedCallback != "undefined") {
+				storageSelectedCallback(storage);
 			}			
 		} else if (type == "f") {				
-			Code.currentFile.path = path;
-			Code.currentFile.file = entry;
-
 			if (typeof fileSelectedCallback != "undefined") {
-				fileSelectedCallback(path, entry);
+				if (storage != StorageType.Cloud) {
+					fileSelectedCallback(path, entry);
+				} else {
+					fileSelectedCallback(entry, entry);
+				}
 			} else {
-				Code.loadFile(storage);
+				Code.loadFile(storage, path, entry);
 			}				
+
+			if (typeof storageSelectedCallback != "undefined") {
+				storageSelectedCallback(storage);
+			}			
 		}
 
 		e.stopPropagation();
@@ -1998,7 +2047,8 @@ Code.tabRefresh = function() {
 	}
 
 	if (!Code.status.connected) {
-		jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
+		jQuery("#stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
+		//jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
 	} else {
 		jQuery("#stopButton, #runButton, #rebootButton, #content_board").removeClass("disabled");
 	}
@@ -2006,6 +2056,8 @@ Code.tabRefresh = function() {
 	if (Code.workspace.type == 'block_editor') {
 		jQuery("#saveButton").removeClass("disabled");
 	}
+
+	jQuery("#developerMode").addClass("disabled");
 
 	if (Code.selected == 'program') {
 		if (Code.getCurrentFullPath() != "/") {
@@ -2021,10 +2073,12 @@ Code.tabRefresh = function() {
 			
 			var icon = '';
 
-			if (Code.currentFile.from == fileFrom.Board) {
+			if (Code.currentFile.storage == StorageType.Board) {
 				icon = '<span><span class="icon icon-chip" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
-			} else if (Code.currentFile.from == fileFrom.Computer) {
+			} else if (Code.currentFile.storage == StorageType.Computer) {
 				icon = '<span><span class="icon icon-display" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
+			} else if (Code.currentFile.storage == StorageType.Cloud) {
+				icon = '<span><span class="icon icon-cloud" style="font-size: 14px;" aria-hidden="true"></span></span>&nbsp;';
 			}
 			
 			jQuery("#targetFile").html("|&nbsp;&nbsp;" + icon + file.replace(fileExtension, extension));
@@ -2069,47 +2123,75 @@ Code.blockEditor = function() {
 }
 
 Code.switchToCode = function() {
-	var blockCode = Blockly.Lua.workspaceToCode(Code.workspace.blocks).trim();
-
-	Code.workspace.type = "editor";
-	Code.workspace.prevType = Code.workspace.type;
-	Code.workspace.editor.setValue(blockCode, -1);
-	Code.workspace.editor.focus();
-	Code.renderContent();
+	function doSwitch() {
+		Code.setDefaultStorage();
+		Code.settings.programmingModel = "lua";
+		Settings.save(Code.settings);
+		
+		Code.workspace.blocks.clear();
+		
+		Code.workspace.type = "editor";
+		Code.workspace.prevType = Code.workspace.type;
+		Code.workspace.editor.setValue("", -1);
+		Code.workspace.editor.focus();
+		Code.renderContent();		
+	}
+	
+	bootbox.dialog({
+		title: MSG['information'],
+		message: MSG['switchToCodeWarning'],
+		buttons: {
+			success: {
+				label: MSG['yes'],
+				className: "btn-primary",
+				callback: function() {
+					doSwitch();
+				}
+			},
+			danger: {
+				label: MSG['no'],
+				className: "btn-danger",
+				callback: function() {}
+			},
+		},
+		closable: false
+	});		
 }
 
 Code.switchToBlocks = function() {
-	var blockCode = Blockly.Lua.workspaceToCode(Code.workspace.blocks).replace(/\r|\n|\s/g, "");
-	var luaCode = Code.workspace.editor.getValue().replace(/\r|\n|\s/g, "");
-
-	if (blockCode != luaCode) {
-		bootbox.dialog({
-			title: MSG['warning'],
-			message: MSG['switchToBlocksWarning'],
-			buttons: {
-				success: {
-					label: MSG['yes'],
-					className: "btn-primary",
-					callback: function() {
-						Code.workspace.type = "blocks";
-						Code.renderContent();
-						//Code.tabClick("program");
-					}
-				},
-				danger: {
-					label: MSG['no'],
-					className: "btn-danger",
-					callback: function() {}
-				},
-			},
-			closable: false
-		});
-	} else {
+	function doSwitch() {
+		Code.setDefaultStorage();
+		Code.settings.programmingModel = "blocks";
+		Settings.save(Code.settings);
+	
+		Code.workspace.blocks.clear();
+	
 		Code.workspace.type = "blocks";
 		Code.workspace.prevType = Code.workspace.type;
-		Code.renderContent();
-		//Code.tabClick("program");
+		Code.workspace.editor.setValue("", -1);
+		Code.workspace.editor.focus();
+		Code.renderContent();		
 	}
+
+	bootbox.dialog({
+		title: MSG['informatiom'],
+		message: MSG['switchToBlocksWarning'],
+		buttons: {
+			success: {
+				label: MSG['yes'],
+				className: "btn-primary",
+				callback: function() {
+					doSwitch();
+				}
+			},
+			danger: {
+				label: MSG['no'],
+				className: "btn-danger",
+				callback: function() {}
+			},
+		},
+		closable: false
+	});		
 }
 
 Code.openAgent = function() {

@@ -29,6 +29,12 @@
  * this software.
  */
 
+var StorageType = {
+	Board: 0,
+	Computer: 1,
+	Cloud: 3
+};
+
 function Storage(type) {
 	this.type = type;
 	this.isInit = false;
@@ -38,6 +44,8 @@ function Storage(type) {
 Storage.prototype.errorHandler = function(e) {
   var msg = '';
 
+  console.log(e);
+/*
   switch (e.code) {
     case FileError.QUOTA_EXCEEDED_ERR:
       msg = 'QUOTA_EXCEEDED_ERR';
@@ -60,6 +68,7 @@ Storage.prototype.errorHandler = function(e) {
   };
 
   console.log('Error: ' + msg);
+  */
 };
 
 Storage.prototype.init = function(callback) {
@@ -70,19 +79,27 @@ Storage.prototype.init = function(callback) {
 		return;
 	}
 	
-	if (thisInstance.type == "board") {
+	if (thisInstance.type == StorageType.Board) {
+		thisInstance.isInit = true;
+		callback();
+	}
+
+	if (thisInstance.type == StorageType.Cloud) {
 		thisInstance.isInit = true;
 		callback();
 	}
 	
-	if (thisInstance.type == "local") {
+	if (thisInstance.type == StorageType.Computer) {
 		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 	
-		window.requestFileSystem(window.PERSISTENT, 50*1024*1024, function(fs) {
-			thisInstance.fs = fs;
-			thisInstance.isInit = true;
-			callback();
-		}, thisInstance.errorHandler);
+		navigator.webkitPersistentStorage.requestQuota(5*1024*1024, function(grantedBytes) {
+			window.requestFileSystem(window.PERSISTENT, grantedBytes, function(fs) {
+				thisInstance.fs = fs;
+				thisInstance.isInit = true;
+				callback();
+			}, thisInstance.errorHandler);
+		}, function(e) {
+		});
 	}	
 }
 
@@ -129,6 +146,34 @@ Storage.prototype._boardListDirectories = function(path, callback) {
 	});
 }
 
+Storage.prototype._cloudListDirectories = function(path, callback) {
+	if (path == "/") path = "";
+
+	jQuery.ajax({
+		url: "https://ide.whitecatboard.org/?folder=" + path,
+		success: function(result) {
+			var entries = [];
+			
+			result = JSON.parse(result);
+			
+			for(var i=0;i < result.length;i++) {
+				var entry = result[i];
+				
+				entry.name = atob(entry.name);
+				
+				entries.push(entry);
+			}
+
+			callback(entries);
+			return;
+		},
+
+		error: function() {
+			callback([]);			
+		}
+	});				
+}
+
 Storage.prototype._localLoad = function(file, callback) {
 	var thisInstance = this;
 	
@@ -160,6 +205,42 @@ Storage.prototype._boardLoad = function(file, callback) {
 	});
 }
 
+Storage.prototype._cloudLoad = function(file, callback) {
+	jQuery.ajax({
+		url: "https://ide.whitecatboard.org/?file=" + file,
+		success: function(result) {
+			result = JSON.parse(result);
+			callback(atob(result.content));
+			return;
+		},
+
+		error: function() {
+			callback([]);			
+		}
+	});				
+}
+
+Storage.prototype._localSave = function(file, content, callback) {
+	var thisInstance = this;
+	
+    thisInstance.fs.root.getFile(file, {create: true}, function(fileEntry) {
+      // Create a FileWriter object for our FileEntry (log.txt).
+      fileEntry.createWriter(function(fileWriter) {
+        fileWriter.onwriteend = function(e) {
+			callback();
+        };
+
+        fileWriter.onerror = function(e) {
+        };
+
+        // Create a new Blob and write it to log.txt.
+        var bb = new Blob([content], {type: 'plain/text'});
+        fileWriter.write(bb);
+
+      }, thisInstance.errorHandler);
+    }, thisInstance.errorHandler);
+}
+
 Storage.prototype._boardSave = function(file, content, callback) {
 	Code.agent.send({
 		command: "boardWriteFile",
@@ -176,10 +257,12 @@ Storage.prototype.listDirectories = function(path, callback) {
 	var thisInstance = this;
 	
 	thisInstance.init(function() {
-		if (thisInstance.type == "board") {
+		if (thisInstance.type == StorageType.Board) {
 			return thisInstance._boardListDirectories(path, callback);
-		} else if (thisInstance.type == "local") {
+		} else if (thisInstance.type == StorageType.Computer) {
 			return thisInstance._localListDirectories(path, callback);
+		} else if (thisInstance.type == StorageType.Cloud) {
+			return thisInstance._cloudListDirectories(path, callback);
 		}
 	});
 }
@@ -188,10 +271,12 @@ Storage.prototype.load = function(file, callback) {
 	var thisInstance = this;
 	
 	thisInstance.init(function() {
-		if (thisInstance.type == "board") {
+		if (thisInstance.type == StorageType.Board) {
 			return thisInstance._boardLoad(file, callback);
-		} else if (thisInstance.type == "local") {
+		} else if (thisInstance.type == StorageType.Computer) {
 			return thisInstance._localLoad(file, callback);
+		} else if (thisInstance.type == StorageType.Cloud) {
+			return thisInstance._cloudLoad(file, callback);
 		}
 	});
 }
@@ -200,9 +285,10 @@ Storage.prototype.save = function(file, content, callback) {
 	var thisInstance = this;
 	
 	thisInstance.init(function() {
-		if (thisInstance.type == "board") {
+		if (thisInstance.type == StorageType.Board) {
 			return thisInstance._boardSave(file, content, callback);
-		} else if (thisInstance.type == "local") {
+		} else if (thisInstance.type == StorageType.Computer) {
+			return thisInstance._localSave(file, content, callback);
 		}
 	});
 }
