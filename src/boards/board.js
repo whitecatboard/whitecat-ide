@@ -4,7 +4,7 @@
  * Board definition functions
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  *
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  *
@@ -35,6 +35,8 @@ function board() {
 	// List of supported boards
 	thisInstance.list = [
 		{id: "N1ESP32", desc: "Whitecat N1 ESP32"},
+		{id: "ESP32THING", desc: "ESP32 Thing"},
+		{id: "ESP32COREBOARD", desc: "ESP32 Core Board"},
 	];
 }
 
@@ -96,7 +98,6 @@ board.prototype.get = function(id, callback) {
 				callback(result);
 				return;
 			},
-	
 			error: function() {
 				callback(JSON.parse("{}"));			
 			}

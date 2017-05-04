@@ -2305,15 +2305,15 @@ Code.setup = function() {
 		
 		Code.board.getMaps(Code.settings.board, function(maps) {
 			Code.status.maps = maps;
-		});
-		Code.status.connected = true;
-		Code.status.firmware = info.info.os + "-" + info.info.version.replace(" ", "-") + "-" + info.info.build;
 
+			Code.status.connected = true;
+			Code.status.firmware = info.info.os + "-" + info.info.version.replace(" ", "-") + "-" + info.info.build;
+			Code.renderContent();
+		});
+		
 		//if (info.newBuild) {
 		//	Code.newFirmware();
 		//}
-
-		Code.renderContent();
 	});
 
 	Code.agent.addListener("boardDetached", function(id, info) {
@@ -2325,9 +2325,8 @@ Code.setup = function() {
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 		Code.board.getMaps(Code.settings.board, function(maps) {
 			Code.status.maps = maps;
+			Code.renderContent();
 		});
-		Code.renderContent();
-
 	});
 	
 	Code.agent.addListener("boardUpgraded", function(id, info) {
