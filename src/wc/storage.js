@@ -115,7 +115,7 @@ Storage.prototype._localListDirectories = function(path, callback) {
 			callback(entries.sort());
         } else {
 			for(var i=0; i < results.length;i++) {
-				var entry = results[0];
+				var entry = results[i];
 				
 				entries.push({date: "", name: entry.name, size: "", type:(entry.isDirectory?"d":"f") });
 			}
@@ -150,11 +150,23 @@ Storage.prototype._cloudListDirectories = function(path, callback) {
 	if (path == "/") path = "";
 
 	jQuery.ajax({
-		url: "https://ide.whitecatboard.org/?folder=" + path,
+		url: "https://ide.whitecatboard.org",
+		data: {
+			listDirectories: "",
+			folder: path
+		},
+		type: "POST",
 		success: function(result) {
 			var entries = [];
 			
 			result = JSON.parse(result);
+			
+			if (!result.success) {
+				Code.showError(MSG['error'], MSG['youHaveAnError'] + '<br><br>' + result.result, function() {});
+				callback([]);
+			}
+			
+			result = result.result;
 			
 			for(var i=0;i < result.length;i++) {
 				var entry = result[i];
@@ -206,10 +218,41 @@ Storage.prototype._boardLoad = function(file, callback) {
 }
 
 Storage.prototype._cloudLoad = function(file, callback) {
+	//File contains parent folder and filename
+	var tmp = file.split("/");
+	var folder = "";
+	var fileName = "";
+	
+	for(var i = 0;i < tmp.length;i++) {
+		if (tmp[i] != "") {
+			if (folder == "") {
+				folder = tmp[i];
+			} else {
+				if (fileName == "") {
+					fileName = tmp[i];
+				}
+			}
+		}
+	}
+
 	jQuery.ajax({
-		url: "https://ide.whitecatboard.org/?file=" + file,
+		url: "https://ide.whitecatboard.org",
+		data: {
+			loadFile: "",
+			folder: folder,
+			name:  btoa(fileName)
+		},
+		type: "POST",
 		success: function(result) {
 			result = JSON.parse(result);
+			
+			if (!result.success) {
+				Code.showError(MSG['error'], MSG['youHaveAnError'] + '<br><br>' + result.result, function() {});
+				callback([]);
+			}
+			
+			result = result.result;
+			
 			callback(atob(result.content));
 			return;
 		},
@@ -253,6 +296,55 @@ Storage.prototype._boardSave = function(file, content, callback) {
 	});
 }
 
+Storage.prototype._cloudSave = function(file, content, callback) {
+	//File contains parent folder and filename
+	var tmp = file.split("/");
+	var folder = "";
+	var fileName = "";
+	
+	for(var i = 0;i < tmp.length;i++) {
+		if (tmp[i] != "") {
+			if (folder == "") {
+				folder = tmp[i];
+			} else {
+				if (fileName == "") {
+					fileName = tmp[i];
+				}
+			}
+		}
+	}
+		
+	jQuery.ajax({
+		url: "https://ide.whitecatboard.org",
+		data: {
+			saveFile: "",
+			folder: folder,
+			name:  btoa(fileName),
+			content: btoa(content)
+		},
+		type: "POST",
+		success: function(result) {
+			result = JSON.parse(result);
+
+			if (!result.success) {
+				Code.showError(MSG['error'], MSG['youHaveAnError'] + '<br><br>' + result.result, function() {});
+				callback([]);
+			}
+			
+			result = result.result;
+
+			callback();
+			return;
+		},
+
+		error: function() {
+			callback([]);			
+		}
+	});				
+	
+	callback();
+}
+
 Storage.prototype.listDirectories = function(path, callback) {
 	var thisInstance = this;
 	
@@ -289,6 +381,8 @@ Storage.prototype.save = function(file, content, callback) {
 			return thisInstance._boardSave(file, content, callback);
 		} else if (thisInstance.type == StorageType.Computer) {
 			return thisInstance._localSave(file, content, callback);
+		} else if (thisInstance.type == StorageType.Cloud) {
+			return thisInstance._cloudSave(file, content, callback);
 		}
 	});
 }
