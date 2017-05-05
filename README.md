@@ -4,6 +4,7 @@ Whitecat ecosystem can be programmed in two ways: using blocks or using the Lua 
 
 Our programming model comes from years of experience and research of the Whitecat team members, formed by engineers, educators and living lab designers. We want to share our knowledge with you, so that you can develop your IOT projects in a fast and agile way.
 
+The Whitecat IDE is available at: [https://ide.whitecatboard.org](https://ide.whitecatboard.org).
 
 # What's Lua RTOS?
 
