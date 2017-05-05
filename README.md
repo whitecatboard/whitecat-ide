@@ -29,6 +29,8 @@ The Lua RTOS compatible boards can be programmed using The Whitecat IDE, using b
 
 ![](http://git.whitecatboard.org/code-example.png)
 
+[Visit the wiki](https://github.com/whitecatboard/whitecat-ide/wiki) for more information about The Whitecat IDE.
+
 ---
 The Whitecat IDE is free for you, but funds are required for make it possible. Feel free to donate as little or as much as you wish. Every donation is very much appreciated.
 
