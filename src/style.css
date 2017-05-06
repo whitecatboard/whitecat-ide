@@ -480,3 +480,7 @@ Console {
 	color: red;
 	font-style: italic;
 }
+
+#targetFile > span > .icon {
+	font-size: 18px !important;
+}
