@@ -110,4 +110,7 @@ var MSG = {
   catNET: "Red",
   catMQTT: "MQTT",
   attachBoardForUseThisOption: "Por favor, conecta una placa antes de utilizar esta opción.",
+  pleaseUpgradeAgent: "Hay una nueva versión de The Whitecat Create Agent. Por favor, actualiza a la nueva versión.<br><br><a href=\"https://github.com/whitecatboard/whitecat-ide/wiki/Prerequisites\">Instrucciones para actualizar</a>.",
+  alert: "Atención",
+  connectABoard: "Conecta una placa",
 };

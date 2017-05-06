@@ -119,4 +119,7 @@ var MSG = {
   catNET: "Network",
   catMQTT: "MQTT",
   attachBoardForUseThisOption: "Please, attach a board for use this option.",
+  pleaseUpgradeAgent: "A new version of The Whitecat Create Agent is available. Please, upgrade it.<br><br><a href=\"https://github.com/whitecatboard/whitecat-ide/wiki/Prerequisites\">Upgrade instructions</a>.",
+  alert: "Alert",
+  connectABoard: "Connect a board",
 };

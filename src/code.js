@@ -1897,7 +1897,7 @@ Code.showAlert = function(text) {
 
 	BootstrapDialog.show({
 		message: text,
-		title: 'Alert',
+		title: MSG['alert'],
 		closable: true,
 	});
 }
@@ -2269,9 +2269,18 @@ Code.openAgent = function() {
 		    var path = require('path');
 			var os = require('os');
 			var exec = require('child_process').exec;
-
+			var fs = require('fs');
+			
 			var cwd = path.join(process.cwd(), "bin/");
-		    var app = path.join(cwd, os.platform() + "-whitecat-create-agent");  
+			fs.writeFileSync(
+				path.join(cwd, "whitecat-create-agent"),
+				fs.readFileSync(path.join(cwd,"platform",os.platform() + "-whitecat-create-agent")),
+				{
+					mode: 0o755
+				}
+			);
+
+		    var app = path.join(cwd, "whitecat-create-agent");  
 			require('child_process').spawn(app, {
 				cwd: cwd
 			});	
@@ -2316,11 +2325,17 @@ Code.setup = function() {
 		//}
 	});
 
+	Code.agent.addListener("attachIde", function(id, info) {
+		if (!info.hasOwnProperty("agent-version")) {
+			Code.showAlert(MSG['pleaseUpgradeAgent']);
+		}
+	});
+	
 	Code.agent.addListener("boardDetached", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
 
-		Code.showStatus(statusType.Alert,"Connect a board");
+		Code.showStatus(statusType.Alert,MSG['connectABoard']);
 		
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 		Code.board.getMaps(Code.settings.board, function(maps) {
