@@ -2366,6 +2366,10 @@ Code.setup = function() {
 
 		Code.showStatus(statusType.Progress,info.what);
 	});
+	
+	if (typeof ide_init === "function") {
+		ide_init();
+	}
 
 	Settings.load(Code.settings);
 	Blockly.Blocks.operators = {};
