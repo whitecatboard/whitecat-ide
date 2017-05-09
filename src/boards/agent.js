@@ -82,8 +82,6 @@ agent.prototype.socketConnect = function() {
 	var thisInstance = this;
 	var socket;
 	
-	Code.openAgent();
-	
 	// Create the websocket
     socket = new WebSocket("ws://localhost:8080", "echo-protocol");
 

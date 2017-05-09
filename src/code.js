@@ -2263,31 +2263,6 @@ Code.switchToBlocks = function() {
 	});		
 }
 
-Code.openAgent = function() {
-	if (typeof require != "undefined") {
-		if (typeof require('nw.gui') != "undefined") {
-		    var path = require('path');
-			var os = require('os');
-			var exec = require('child_process').exec;
-			var fs = require('fs');
-			
-			var cwd = path.join(process.cwd(), "bin/");
-			fs.writeFileSync(
-				path.join(cwd, "whitecat-create-agent"),
-				fs.readFileSync(path.join(cwd,"platform",os.platform() + "-whitecat-create-agent")),
-				{
-					mode: 0o755
-				}
-			);
-
-		    var app = path.join(cwd, "whitecat-create-agent");  
-			require('child_process').spawn(app, {
-				cwd: cwd
-			});	
-		}	
-	}
-}
-
 Code.setup = function() {	
 	Code.agent.addListener("boardPowerOnReset", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
