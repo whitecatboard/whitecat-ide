@@ -150,7 +150,7 @@ Storage.prototype._cloudListDirectories = function(path, callback) {
 	if (path == "/") path = "";
 
 	jQuery.ajax({
-		url: "https://ide.whitecatboard.org",
+		url: Code.server,
 		data: {
 			listDirectories: "",
 			folder: path
@@ -236,7 +236,7 @@ Storage.prototype._cloudLoad = function(file, callback) {
 	}
 
 	jQuery.ajax({
-		url: "https://ide.whitecatboard.org",
+		url: Code.server,
 		data: {
 			loadFile: "",
 			folder: folder,
@@ -315,7 +315,7 @@ Storage.prototype._cloudSave = function(file, content, callback) {
 	}
 		
 	jQuery.ajax({
-		url: "https://ide.whitecatboard.org",
+		url: Code.server,
 		data: {
 			saveFile: "",
 			folder: folder,

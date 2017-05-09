@@ -82,9 +82,17 @@ agent.prototype.socketConnect = function() {
 	var thisInstance = this;
 	var socket;
 	
+	// Extracted from https://www.websocket.org/js/echo.js
+	if (window.MozWebSocket) {
+		window.WebSocket = window.MozWebSocket;
+	} else if (!window.WebSocket) {
+		return;
+	}
+	 
 	// Create the websocket
-    socket = new WebSocket("ws://localhost:8080", "echo-protocol");
-
+    //socket = new WebSocket("wss://localhost:8081");
+	socket = new WebSocket("ws://localhost:8080");
+	
 	// Open callback
     socket.addEventListener("open", function(event) {
 		thisInstance.connected = true;
