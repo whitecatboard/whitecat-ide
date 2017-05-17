@@ -1432,7 +1432,6 @@ Code.showStatus = function(type, message) {
 			case statusType.Alert:
 				icon = "warning2";
 				break;
-				
 		}
 		
 		var html;
@@ -1451,6 +1450,35 @@ Code.showStatus = function(type, message) {
 		
 		Code.currentStatus.type = type;
 		Code.currentStatus.message = message;
+		
+		jQuery(".statusBar").removeClass("statusBarError").unbind("click");
+		
+		if (type == statusType.Alert) {
+			jQuery(".statusBar").addClass("statusBarError").bind('click', function(e) {
+				var url = "";
+				
+				if (message == "Can't connect to agent") {
+					url = "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--Can't-connect-to-agent";
+				}
+				
+				if (url == "") return;
+				
+				if (typeof require != "undefined") {
+					if (typeof require('nw.gui') != "undefined") {
+						var win = gui.Window.open(url, {
+						  focus: true,
+						  position: 'center',
+						  width: 1055,
+						  height: 700
+						});
+					} else {
+						window.open(url, '_blank');
+					}
+				} else {
+					window.open(url, '_blank');					
+				}
+			});
+		}
 	}
 }
 
@@ -2355,8 +2383,12 @@ Code.setup = function() {
 	Code.agent.addListener("boardUpdate", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
-
-		Code.showStatus(statusType.Progress,info.what);
+		
+		if (info.what == "Can't connect to agent") {
+			Code.showStatus(statusType.Alert,info.what);			
+		} else {
+			Code.showStatus(statusType.Progress,info.what);	
+		}
 	});
 	
 	if (typeof ide_init === "function") {

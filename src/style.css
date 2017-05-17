@@ -484,3 +484,8 @@ Console {
 #targetFile > span > .icon {
 	font-size: 18px !important;
 }
+
+.statusBarError {
+  cursor: hand !important;
+  cursor: pointer !important;
+}	  
