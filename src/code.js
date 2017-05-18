@@ -1466,7 +1466,7 @@ Code.showStatus = function(type, message) {
 				if (message == "Can't connect to agent") {
 					url = "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--Can't-connect-to-agent";
 				} else if (message == "No board attached") {
-					url = "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--No board attached";					
+					url = "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--No-board-attached";					
 				}
 				
 				if (url == "") return;
