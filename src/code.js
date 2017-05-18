@@ -1426,6 +1426,12 @@ Code.runtimeError = function(file, line, code, message) {
 }
 
 Code.showStatus = function(type, message) {
+	var messageTrans = message;
+	
+	if (typeof(MSG[message]) != "undefined") {
+		messageTrans = MSG[message];
+	}
+	
 	if ((Code.currentStatus.type != type) || (Code.currentStatus.mesage != message)) {
 		var icon = "";
 		switch (type) {
@@ -1437,12 +1443,12 @@ Code.showStatus = function(type, message) {
 		var html;
 		
 		if (icon) {
-			var html = '<i class="icon icon-'+icon+'"></i><span><span class="statusBarText">'+message+'</span></span>';			
+			var html = '<i class="icon icon-'+icon+'"></i><span><span class="statusBarText">'+messageTrans+'</span></span>';			
 		} else {
 			if (type == statusType.Progress) {
-				html = '<span class="statusBarText">'+message+' ...</span>';	
+				html = '<span class="statusBarText">'+messageTrans+' ...</span>';	
 			} else {
-				html = '<span class="statusBarText">'+message+'</span>';					
+				html = '<span class="statusBarText">'+messageTrans+'</span>';					
 			}
 		}
 	
@@ -1459,6 +1465,8 @@ Code.showStatus = function(type, message) {
 				
 				if (message == "Can't connect to agent") {
 					url = "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--Can't-connect-to-agent";
+				} else if (message == "No board attached") {
+					url = "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--No board attached";					
 				}
 				
 				if (url == "") return;
@@ -2340,8 +2348,6 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
 
-		Code.showStatus(statusType.Alert,MSG['connectABoard']);
-		
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 		Code.board.getMaps(Code.settings.board, function(maps) {
 			Code.status.maps = maps;
@@ -2385,7 +2391,9 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeStarts();
 		
 		if (info.what == "Can't connect to agent") {
-			Code.showStatus(statusType.Alert,info.what);			
+			Code.showStatus(statusType.Alert,info.what);	
+		} else if (info.what == "No board attached") {		
+			Code.showStatus(statusType.Alert,info.what);	
 		} else {
 			Code.showStatus(statusType.Progress,info.what);	
 		}
