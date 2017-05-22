@@ -42,6 +42,7 @@ function agent() {
 		"blockEnd",
 		"blockError",
 		"boardUpdate",
+		"boardConsoleOut"
 	];
 
 	// Board commands
@@ -69,16 +70,22 @@ function agent() {
 		thisInstance[thisInstance.boardCommands[i] + 'Listeners'] = [];
 	}
 	
-	// The web socket instance used by the IDE
-	thisInstance.socket = undefined;
-	
-	// Conected to the agent?
-	thisInstance.connected = false;
+	// Control socket
+	thisInstance.controlSocket = undefined;
+	thisInstance.controlSocketConnected = false;
+
+	// Console Up socket
+	thisInstance.consoleUpSocket = undefined;
+	thisInstance.consoleUpSocketConnected = false;
+
+	// Console Down socket
+	thisInstance.consoleDownSocket = undefined;
+	thisInstance.consoleDownSocketConnected = false;
 }
 
 // This try to stablish a connection to the agent, and install all the
 // required callbacks for monitor the websocket connection
-agent.prototype.socketConnect = function() {
+agent.prototype.controlSocketConnect = function() {
 	var thisInstance = this;
 	var socket;
 	
@@ -91,12 +98,12 @@ agent.prototype.socketConnect = function() {
 	 
 	// Create the websocket
     //socket = new WebSocket("wss://localhost:8081");
-	socket = new WebSocket("ws://localhost:8080");
+	socket = new WebSocket("ws://localhost:8080/control");
 	
 	// Open callback
     socket.addEventListener("open", function(event) {
-		thisInstance.connected = true;
-		thisInstance.socket = socket;
+		thisInstance.controlSocketConnected = true;
+		thisInstance.controlSocket = socket;
 		
 		// Get the board definition
 		Code.board.get(Code.settings.board, function(board) {
@@ -119,23 +126,106 @@ agent.prototype.socketConnect = function() {
 
 	// Socket is closed
     socket.addEventListener("close", function(event) {
-		thisInstance.socket = undefined;
+		thisInstance.controlSocket = undefined;
 
-		if (thisInstance.connected) {
+		if (thisInstance.controlSocketConnected) {
 			thisInstance.callListeners("boardDetached","")			
 		}
 
-		thisInstance.connected = false;
+		thisInstance.controlSocketConnected = false;
 
 		// Reeschelude the connection in a while
 		setTimeout(function() {
-			thisInstance.socketConnect();
+			thisInstance.controlSocketConnect();
 		}, 1000);
     });		
 	
 	// Socket is closed
     socket.addEventListener("error", function(event) {
-		Code.showStatus(statusType.Alert, "Can't connect to agent");
+		Status.show(statusType.Alert, "cannotConnectToAgent", "Can't connect to agent");
+	});
+}
+
+agent.prototype.consoleUpSocketConnect = function() {
+	var thisInstance = this;
+	var socket;
+	
+	// Extracted from https://www.websocket.org/js/echo.js
+	if (window.MozWebSocket) {
+		window.WebSocket = window.MozWebSocket;
+	} else if (!window.WebSocket) {
+		return;
+	}
+	 
+	// Create the websocket
+    //socket = new WebSocket("wss://localhost:8081");
+	socket = new WebSocket("ws://localhost:8080/up");
+	
+	// Open callback
+    socket.addEventListener("open", function(event) {
+		thisInstance.consoleUpSocketConnected = true;
+		thisInstance.consoleUpSocket = socket;
+    });
+
+	// Mesage callback
+    socket.addEventListener("message", function(event) {
+		Term.write(event.data);
+    });
+
+	// Socket is closed
+    socket.addEventListener("close", function(event) {
+		thisInstance.consoleUpSocket = undefined;
+		thisInstance.consoleUpSocketConnected = false;
+
+		// Reeschelude the connection in a while
+		setTimeout(function() {
+			thisInstance.consoleUpSocketConnect();
+		}, 1000);
+    });		
+	
+	// Socket is closed
+    socket.addEventListener("error", function(event) {
+	});
+}
+
+agent.prototype.consoleDownSocketConnect = function() {
+	var thisInstance = this;
+	var socket;
+	
+	// Extracted from https://www.websocket.org/js/echo.js
+	if (window.MozWebSocket) {
+		window.WebSocket = window.MozWebSocket;
+	} else if (!window.WebSocket) {
+		return;
+	}
+	 
+	// Create the websocket
+    //socket = new WebSocket("wss://localhost:8081");
+	socket = new WebSocket("ws://localhost:8080/down");
+	
+	// Open callback
+    socket.addEventListener("open", function(event) {
+		thisInstance.consoleDownSocketConnected = true;
+		thisInstance.consoleDownSocket = socket;
+    });
+
+	// Mesage callback
+    socket.addEventListener("message", function(event) {
+    });
+
+	// Socket is closed
+    socket.addEventListener("close", function(event) {
+		thisInstance.consoleDownSocket = undefined;
+		thisInstance.consoleDownSocketConnected = false;
+
+		// Reeschelude the connection in a while
+		setTimeout(function() {
+			thisInstance.consoleDownSocketConnect();
+		}, 1000);
+    });		
+	
+	// Socket is closed
+    socket.addEventListener("error", function(event) {
 	});
 }
 
@@ -182,12 +272,12 @@ agent.prototype.addListener = function(id, callback) {
 agent.prototype.send = function(command, callback) {
 	var thisInstance = this;
 
-	if (thisInstance.socket) {
+	if (thisInstance.controlSocket) {
 		// Install a listener for this command
 		thisInstance.addListener(command.command, callback);
 	
 		// Send command
-		thisInstance.socket.send(JSON.stringify(command));
+		thisInstance.controlSocket.send(JSON.stringify(command));
 	} else {
 		callback({});
 	}

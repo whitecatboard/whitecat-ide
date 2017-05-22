@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, VT100 terminal emulator
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -32,228 +32,181 @@ var Term = {};
 Term.port = null;
 Term.term = null;
 Term.div = null;
-Term.buffer = null;
-Term.cols = 80;
-Term.rows = 80;
+Term.cols = 78;
+Term.rows = 17;
+Term.offset = 0;
+Term.reverse = false;
 
 Term.x = 0;
 Term.y = 0;
 Term.ready = false
 Term.disables = 0;
+Term.visible = false;
 
-Term.resize = function(width, height) {
-	if (Term.buffer === null) return;
-	
-	// Compute how many cols / rows we can have in given width and height
-	var testElement = jQuery('<span class="boardConsoleTest">AA<br>AA</span>');	
-	
-	jQuery(".boardConsoleTest").remove();
-	jQuery("body").append(testElement);
-	
-	var cols = ((width  - 4) / (testElement.width()  / 2)).toFixed(0);
-	var rows = ((height - 4) / (testElement.height() / 2)).toFixed(0);
-	
-	if ((cols < 0) || (rows < 0)) return;
-
-	// New buffer
-	var index = 0;
-	Term.newBuffer = new Uint16Array(cols * rows);
-	
-	// Copy old buffer into new buffer
-	for(var y=0;y<Term.rows;y++) {
-		for(var x=0;x<Term.cols;x++) {
-			if ((x < cols) && (y < rows)) {
-				Term.newBuffer[y * cols + x] = Term.buffer[index];				
-			}
-			index++;
-		}
-	}
-	
-	// Update Term accoding to new size
-	Term.buffer = Term.newBuffer;
-	Term.cols = cols;
-	Term.rows = rows;
-}
+Term.scape = false;
+Term.scapePos = 0;
+Term.bracketed = false;
+Term.scapeSeq = '';
 
 Term.clear = function() {
-	var index = 0;
-	
-	for(var i = 0; i < Term.cols;i++) {
-		for(var j = 0; j < Term.rows;j++) {			
-			Term.buffer[index] = 0;
-			index++;
-		}	
-	}	
+	var html = "";
+	var style = "";
 	
 	Term.x = 0;
 	Term.y = 0;
-}
-
-Term.listener = function(info) {
-	if ((Term.port == null) || (Term.disables != 0)) return;
+	Term.offset = 0;
 	
-    if (info.connectionId == Term.port.connId && info.data) {
-		var str = Board.ab2str(info.data);
-		Board.runQueue.push(str);
-		Term.write(str);
+	for(var row = 0;row < Term.rows;row++) {
+		for(var col = 0;col < Term.cols;col++) {
+			style = "consoleCH";
+			
+			if (col == Term.cols - 1) {
+				if (style != "") {
+					style += " ";
+				}
+				
+				style += "consoleLB";
+			}
+			
+			html += '<span data-c="' + col + '" data-r="' + row + '" class="' + style + '"></span>';
+		}		
 	}
+	
+	Term.div.html(html);
+	Term.cursor();
 }
 
 Term.keyCodeMap = {
-	"8": String.fromCharCode(8),		  // BACKSPACE
-	"46": String.fromCharCode(8),         // BACKSPACE
-	"37": String.fromCharCode(27) + "[D", //LEFT
-	"38": String.fromCharCode(27) + "[A", //UP
-	"39": String.fromCharCode(27) + "[C", //RIGHT	
-	"40": String.fromCharCode(27) + "[B", //DOWN	
+	"8" : [String.fromCharCode(8), function() {
+	}], // BACKSPACE
+	"46": [String.fromCharCode(8), function() {
+	}], // BACKSPACE
+	"37": [String.fromCharCode(27) + "[D", function() {
+	}], //LEFT
+	"38": [String.fromCharCode(27) + "[A", function() {
+	}], //UP
+	"39": [String.fromCharCode(27) + "[C", function() {		
+	}], //RIGHT	
+	"40": [String.fromCharCode(27) + "[B", function() {
+	}] //DOWN	
 }
 
-Term.init = function() {
-	Term.buffer = new Uint16Array(Term.cols * Term.rows);
+Term.init = function() {	
 	Term.div = jQuery("#boardConsole");
 	
 	Term.clear();
 	
+	Term.div.focus(function(event) {
+		Term.div.css('border', 'solid 1px #4D90FE');
+	});
+
+	Term.div.focusout(function(event) {
+		Term.div.css('border', '1px solid #eee');
+	});
+	
 	Term.div.keypress(function(event) {
    		var charCode = (event.which)?event.which:event.keyCode;
 		var str = String.fromCharCode(charCode);
-		
-		chrome.serial.send(Term.port.connId, Board.str2ab(str), function(info) {
-		});			 		
+		Code.agent.consoleDownSocket.send(str);
 	});
 
 	Term.div.keydown(function(event) {
    		var charCode = event.keyCode;
 
-		if (typeof Term.keyCodeMap[charCode] != 'undefined') {
-			chrome.serial.send(Term.port.connId, Board.str2ab(Term.keyCodeMap[charCode]), function(info) {
-			});			
-
+		if (typeof Term.keyCodeMap[charCode]!= 'undefined') {
+			Code.agent.consoleDownSocket.send(Term.keyCodeMap[charCode][0]);
+			Term.keyCodeMap[charCode][1]();
 			event.preventDefault();
 			return false;
 		}
-	});
-	
-	var html = '<span class="waitingForBoard"><i class="spinner icon icon-spinner3"></i> ' + MSG['waitingForBoard'] + '</span>';	
-	
-	Term.div.html(html);	
+	});	
 }
 
 Term.scroll = function() {
-	var index = 0;
-	
-	Term.newBuffer = new Uint16Array(Term.cols * Term.rows);
-	
-	// Copy old buffer into new buffer
-	for(var y=0;y<Term.rows;y++) {
-		for(var x=0;x<Term.cols;x++) {
-			if (y > 0) {
-				Term.newBuffer[(y - 1) * Term.cols + x] = Term.buffer[index];				
+	var html = "";
+	var style = "";
+		
+	for(var col = 0;col < Term.cols;col++) {
+		style = "consoleCH";
+		
+		if (col == Term.cols - 1) {
+			if (style != "") {
+				style += " ";
 			}
-			index++;
+			
+			style += "consoleLB";
 		}
+		
+		html += '<span data-c="' + col + '" data-r="' + (Term.rows + Term.offset) + '" class="' + style + '"></span>';
 	}
 	
-	Term.buffer = Term.newBuffer;
+	Term.offset++;
+	Term.div.find('[data-r="' + (Term.offset - 1) + '"]').remove();
+	Term.div.append(html);	
 }
 
-Term.enable = function() {
-	Term.disables--;
-	if (Term.disables < 0) {
-		Term.disables = 0;
+Term.cursor = function() {
+	var c = "";
+	
+	Term.div.find(".blink").removeClass("blink");
+	
+	var el = Term.div.find('[data-c="' + Term.x + '"][data-r="' + (Term.y + Term.offset) + '"]');
+	
+	c = el.attr("data-char");
+	if ((typeof c == "undefined") || (c == "")) {
+		c = "&nbsp";
 	}
 	
-	chrome.serial.onReceive.removeListener(Term.listener);		
-
-	if (Term.disables == 0) {
-		chrome.serial.onReceive.addListener(Term.listener);			
-
-		if (!Term.ready) {
-			if (Term.port !== null) {
-				Term.ready = true;
-				chrome.serial.send(Term.port.connId, Board.str2ab('\ros.clear()\r'), function(info) {
-				});						
-			}
-		}
-	}	
+	Term.div.find('[data-c="' + Term.x + '"][data-r="' + (Term.y + Term.offset) + '"]').addClass("blink").html(c);
 }
 
-Term.disable = function() {
-	Term.disables++;
+Term.update = function(c) {
+	c = String.fromCharCode(c);
 	
-	chrome.serial.onReceive.removeListener(Term.listener);		
-}
-
-Term.connect = function(port) {
-	if (port !== Term.port) {
-		Term.port = port;
-		chrome.serial.onReceive.removeListener(Term.listener);		
-		chrome.serial.onReceive.addListener(Term.listener);	
+	if (c == " ") {
+		c = "&nbsp;";
 	}
-}
 
-Term.disconnect = function() {
-	Term.ready = false;
-	Term.port = null;
-	Term.clear();
-	Term.refresh();
-	chrome.serial.onReceive.removeListener(Term.listener);		
+	var el = Term.div.find('[data-c="' + Term.x + '"][data-r="' + (Term.y + Term.offset) + '"]');
+	
+	el.html(c);
+	
+	if (Term.reverse) {
+		el.addClass("reverse");
+	}
+	
+	el.attr("data-char", c);	
 }
 
 Term.ansiCodes = {
 	"[K": function() {
 		// Erases from the current cursor position to the end of the current line
-		var index = Term.y * Term.cols + Term.x;
-		var num = Term.cols - Term.x;
-		
-		for(var i = 0;i < num;i++) {
-			Term.buffer[index++] = 0;
-		}		
+		Term.div.find('[data-r="' + Term.y + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + Term.y + '"]:gt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[0K": function() {
 		// Erases from the current cursor position to the end of the current line
-		var index = Term.y * Term.cols + Term.x;
-		var num = Term.cols - Term.x;
-		
-		for(var i = 0;i < num;i++) {
-			Term.buffer[index++] = 0;
-		}		
+		Term.div.find('[data-r="' + Term.y + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + Term.y + '"]:gt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[1K": function() {
 		// Erases from the current cursor position to the start of the current line
-		var index = Term.y * Term.cols;
-		var num = Term.x;
-		
-		for(var i = 0;i < num;i++) {
-			Term.buffer[index++] = " ".charCodeAt();
-		}		
+		Term.div.find('[data-r="' + Term.y + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + Term.y + '"]:lt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[2K": function() {
 		// Erases the entire current line
-		var index = Term.y * Term.cols;
-		var num = Term.cols;
-		
-		for(var i = 0;i <= num;i++) {
-			Term.buffer[index++] = " ".charCodeAt();
-		}		
+		Term.div.find('[data-r="' + Term.y + '"]').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[J": function() {
 		// Erases the screen from the current line down to the bottom of the screen
-		var index = Term.y * Term.cols;
-		var num = Term.rows - Term.y;
-		
-		for(var i = 0;i <= num;i++) {
-			Term.buffer[index++] = " ".charCodeAt();
-		}		
+		Term.div.find('[data-r="' + i + '"]:eq').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + i + '"]:gt').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[1J": function() {
 		// Erases the screen from the current line up to the top of the screen
-		var index = 0;
-		var num = Term.y * Term.cols;
-		
-		for(var i = 0;i <= num;i++) {
-			Term.buffer[index++] = " ".charCodeAt();
-		}		
+		Term.div.find('[data-r="' + i + '"]:eq').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + i + '"]:lt').empty().attr("data-char","").removeClass("reverse");
 	},	
 	"[2J": function() {
 		// Erases the screen with the background colour and moves the cursor to home
@@ -264,6 +217,8 @@ Term.ansiCodes = {
 		
 		// Moves the cursor forward by COUNT columns; the default count is 1
 		Term.x += n;
+		
+		Term.cursor();
 	},	
 	"[xH": function(n, m) {
 		if ((n === null) && (m === null)) {
@@ -282,6 +237,8 @@ Term.ansiCodes = {
 		// Sets the cursor position where subsequent text will begin
 		Term.y = n - 1;
 		Term.x = m - 1;
+		
+		Term.cursor();
 	},
 	"[s": function() {
 		// Save current cursor position
@@ -294,63 +251,17 @@ Term.ansiCodes = {
 		Term.y = Term.ySaved;
 	},	
 	"[6n": function() {
-		// Requests a Report Cursor Position response from the device
-		chrome.serial.send(Term.port.connId, Board.str2ab(String.fromCharCode(27) + "[" + (Term.y + 1) + ";" + (Term.x + 1)), function(info) {
-		});			 		
+		Code.agent.consoleDownSocket.send(String.fromCharCode(27) + "[" + (Term.y + 1) + ";" + (Term.x + 1));
+	},	
+	"[0m": function() {
+		// Normal characters
+		Term.reverse = false;
+	},	
+	"[7m": function() {
+		// Reverse video characters
+		Term.reverse = true;
 	},	
 }
-
-Term.refresh = function() {
-	var index = 0;
-	var html = '';
-	var c = '';
-	
-	if (!Term.ready) {
-		var html = '<span class="waitingForBoard"><i class="spinner icon icon-spinner3"></i> ' + MSG['waitingForBoard'] + '</span>';	
-		
-		Term.div.html(html);
-		return;	
-	}
-	
-	for(var y = 0; y < Term.rows;y++) {
-		if (y > 0) {
-			html +=  '<br>';
-		}
-		for(var x = 0; x < Term.cols;x++) {	
-			c = Term.buffer[index];
-						
-			if ((x == Term.x) && (y == Term.y)) {
-				if (c == 0) {
-					c = '<span class="blink">&nbsp;</span>';					
-				} else {					
-					c = '<span class="blink">' + String.fromCharCode(c) + '</span>';
-				}
-			} else {
-				if (c == 0) {
-					index++;
-					continue;
-				}
-				
-				c = String.fromCharCode(c);
-			}
-
-			if (c == ' ') {
-				html += '<span style="'+Term.style+'">&nbsp;</span>';
-			} else {
-				html += '<span style="'+Term.style+'">'+c+'</span>';
-			}
-			
-			index++;
-		}	
-	}
-
-	Term.div.html(html);
-}
-
-Term.scape = false;
-Term.scapePos = 0;
-Term.bracketed = false;
-Term.scapeSeq = '';
 
 Term.write = function(text) {
 	var c = '';
@@ -383,11 +294,19 @@ Term.write = function(text) {
 				continue;
 			}
 			
-			if (Term.x < Term.cols) {
-				Term.buffer[Term.y * Term.cols + Term.x] = c.charCodeAt();					
+			if (Term.x >= Term.cols) {
+				Term.x = 0;
+				Term.y++;
+				
+				if (Term.y > Term.rows - 1) {
+					Term.y--;
+					Term.scroll();
+				}	
 			}
-			
+
+			Term.update(c.charCodeAt());			
 			Term.x++;	
+			Term.cursor();
 		} else {
 			Term.scapePos++;
 			if ((Term.scapePos == 1) && (c == '[')) {
@@ -464,7 +383,20 @@ Term.write = function(text) {
 				}						
 			}
 		}				
+	}	
+}
+
+Term.show = function() {
+	var term = Term.div;
+	
+	if (!Term.visible) {
+		term.show();	
+		term.focus();	
+	} else {
+		term.hide();
 	}
 	
-	Term.refresh();	
+	Term.visible = !Term.visible;
+
+	Code.renderContent();
 }

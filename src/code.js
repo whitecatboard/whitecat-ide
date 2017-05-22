@@ -76,13 +76,6 @@ var blockAbstraction = {
 	High: 1
 };
 
-var statusType = {
-	Alert: 0,
-	Info: 1,
-	Nothing: 3,
-	Progress: 4
-};
-
 Code.blockAbstraction = blockAbstraction.High;
 
 Code.storage = {};
@@ -158,11 +151,6 @@ Code.settings = {
 	"board": "N1ESP32",
 	"programmingModel": "blocks"
 };
-
-Code.currentStatus = {
-	type: statusType.Nothing,
-	message: ""
-}
 
 /**
  * Lookup for names of supported languages.  Keys should be in ISO 639 format.
@@ -1133,7 +1121,7 @@ Code.updateToolBox = function() {
  */
 Code.init = function() {
 	Code.initLanguage();
-
+	
 	var rtl = Code.isRtl();
 	var container = document.getElementById('content_area');
 	var onresize = function(e) {
@@ -1170,7 +1158,13 @@ Code.init = function() {
 			el.style.top = (bBox.y - 38) + 'px';
 			el.style.left = (bBox.width - bBox.x - bBox2.width - 10) + 'px';
 			el.style.visibility = 'visible';
-		}
+			
+			var el = document.getElementById('boardConsole');
+			var bBoxEl = Code.getBBox_(el);
+
+			el.style.top = 35 + 'px';
+			el.style.left = (bBox.width - bBoxEl.width - 20) + 'px';
+		}		
 	};
 
 	window.addEventListener('resize', onresize, false);
@@ -1205,7 +1199,7 @@ Code.init = function() {
 	// and the infinite loop detection function.
 
 	Code.loadBlocks('');
-	
+		
 	onresize();
 	Blockly.svgResize(Code.workspace.blocks);
 
@@ -1425,74 +1419,7 @@ Code.runtimeError = function(file, line, code, message) {
 	Code.showError(MSG['runtimeError'], MSG['youHaveAnError'] + '<br><br>' + message, function() {});
 }
 
-Code.showStatus = function(type, message) {
-	var messageTrans = message;
-	
-	if (typeof(MSG[message]) != "undefined") {
-		messageTrans = MSG[message];
-	}
-	
-	if ((Code.currentStatus.type != type) || (Code.currentStatus.mesage != message)) {
-		var icon = "";
-		switch (type) {
-			case statusType.Alert:
-				icon = "warning2";
-				break;
-		}
-		
-		var html;
-		
-		if (icon) {
-			var html = '<i class="icon icon-'+icon+'"></i><span><span class="statusBarText">'+messageTrans+'</span></span>';			
-		} else {
-			if (type == statusType.Progress) {
-				html = '<span class="statusBarText">'+messageTrans+' ...</span>';	
-			} else {
-				html = '<span class="statusBarText">'+messageTrans+'</span>';					
-			}
-		}
-	
-		jQuery(".statusBar").html(html).show();		
-		
-		Code.currentStatus.type = type;
-		Code.currentStatus.message = message;
-		
-		jQuery(".statusBar").removeClass("statusBarError").unbind("click");
-		
-		if (type == statusType.Alert) {
-			jQuery(".statusBar").addClass("statusBarError").bind('click', function(e) {
-				var url = "";
-				
-				if (message == "Can't connect to agent") {
-					url = "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--Can't-connect-to-agent";
-				} else if (message == "No board attached") {
-					url = "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--No-board-attached";					
-				}
-				
-				if (url == "") return;
-				
-				if (typeof require != "undefined") {
-					if (typeof require('nw.gui') != "undefined") {
-						var win = gui.Window.open(url, {
-						  focus: true,
-						  position: 'center',
-						  width: 1055,
-						  height: 700
-						});
-					} else {
-						window.open(url, '_blank');
-					}
-				} else {
-					window.open(url, '_blank');					
-				}
-			});
-		}
-	}
-}
 
-Code.hideStatus = function() {
-	jQuery(".statusBar").hide();	
-}
 
 Code.run = function() {
 	var code = "";
@@ -2317,13 +2244,13 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
 
-		Code.hideStatus();
+		Status.hide();
 		
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 		Code.status = info.info;
 		Code.settings.board = info.info.board;
 		
-		Code.showStatus(statusType.Info,Code.board.getDesc(Code.settings.board));
+		Status.show(statusType.Info, "boardAttached", Code.board.getDesc(Code.settings.board));
 		
 		Code.board.getMaps(Code.settings.board, function(maps) {
 			Code.status.maps = maps;
@@ -2338,6 +2265,10 @@ Code.setup = function() {
 		//}
 	});
 
+	Code.agent.addListener("boardConsoleOut", function(id, info) {
+		Term.write(atob(info.content));
+	});
+	
 	Code.agent.addListener("attachIde", function(id, info) {
 		if (!info.hasOwnProperty("agent-version")) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
@@ -2347,6 +2278,8 @@ Code.setup = function() {
 	Code.agent.addListener("boardDetached", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
+
+		Status.show(statusType.Alert, "connectABoard", "connectABoard");
 
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 		Code.board.getMaps(Code.settings.board, function(maps) {
@@ -2391,11 +2324,11 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeStarts();
 		
 		if (info.what == "Can't connect to agent") {
-			Code.showStatus(statusType.Alert,info.what);	
+			Status.show(statusType.Alert, "cannotConnectToAgent", info.what);	
 		} else if (info.what == "No board attached") {		
-			Code.showStatus(statusType.Alert,info.what);	
+			Status.show(statusType.Alert, "noBoardAttached", info.what);	
 		} else {
-			Code.showStatus(statusType.Progress,info.what);	
+			Status.show(statusType.Progress, "", info.what);	
 		}
 	});
 	
@@ -2434,9 +2367,12 @@ Code.setup = function() {
 			Code.board.getMaps(Code.settings.board, function(maps) {
 				Code.status.maps = maps;
 				Code.buildToolBox(function() {	
-					Code.init();					
+					Code.init();
+					Term.init();
 					Code.renderContent();
-					Code.agent.socketConnect();		
+					Code.agent.controlSocketConnect();		
+					Code.agent.consoleUpSocketConnect();		
+					Code.agent.consoleDownSocketConnect();		
 				});		
 			});
 		});

@@ -451,14 +451,6 @@ body.modal-open .modal .modal-dialog {
 /*	min-height: 38px; */
 }
 
-Console {
-    font-family: monospace  !important;
-    font-size: 12px  !important;
-    background: none  !important;
-	padding: 2px  !important;
-	outline-width: thin  !important;
-}
-
 .boardConsoleTest {
     font-family: monospace !important;
     font-size: 12px !important;
@@ -469,6 +461,11 @@ Console {
 
 .blink {
 	background-color: #666;
+}
+
+.reverse {
+	background-color: black;
+	color: white;
 }
 
 
@@ -485,7 +482,33 @@ Console {
 	font-size: 18px !important;
 }
 
-.statusBarError {
+.statusBarClick {
   cursor: hand !important;
   cursor: pointer !important;
 }	  
+
+.boardConsole {
+	position: absolute;
+    background: #fff;
+    margin-left: 20px;
+    min-width: 600px;
+    min-height: 300px;
+	border: 1px solid #eee;
+	padding: 2px  !important;
+	z-index: 1049;
+	display: none;
+}
+
+.boardConsole:focus {
+	outline-width: 0px;
+}
+
+.consoleLB::after {
+    content: "\A";
+    white-space: pre;
+}
+
+.consoleCH {
+    font-family: monospace  !important;
+    font-size: 12px  !important;
+}
