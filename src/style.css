@@ -499,6 +499,14 @@ body.modal-open .modal .modal-dialog {
 	display: none;
 }
 
+.noselect {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .boardConsole:focus {
 	outline-width: 0px;
 }

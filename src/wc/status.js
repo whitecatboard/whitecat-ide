@@ -83,9 +83,9 @@ Status.show = function(type, tag, message) {
 
 		// Put message
 		if (type == statusType.Progress) {
-			html = '<span class="statusBarText">'+messageTrans+' ...</span>';	
+			html = '<span class="statusBarText noselect">'+messageTrans+' ...</span>';	
 		} else {
-			html = '<span class="statusBarText">'+messageTrans+'</span>';	
+			html = '<span class="statusBarText noselect">'+messageTrans+'</span>';	
 			if (tag == "boardAttached") {
 				html += '<span class="icon icon-arrow-down5" style="margin-right: 2px;vertical-align: text-bottom;"></span>';	
 			}				

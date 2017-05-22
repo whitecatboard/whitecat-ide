@@ -11,6 +11,7 @@ java -jar ./../yuicompressor-2.4.8.jar core/wc/block.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/settings.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/watcher.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/storage.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/status.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar lua_compressed.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar boards/board.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar boards/agent.js >> wc.js

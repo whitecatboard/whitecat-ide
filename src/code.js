@@ -1163,7 +1163,7 @@ Code.init = function() {
 			var bBoxEl = Code.getBBox_(el);
 
 			el.style.top = 35 + 'px';
-			el.style.left = (bBox.width - bBoxEl.width - 20) + 'px';
+			el.style.left = (bBox.width - bBoxEl.width - 22) + 'px';
 		}		
 	};
 
