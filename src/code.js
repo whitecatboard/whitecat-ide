@@ -2281,8 +2281,10 @@ Code.setup = function() {
 			Code.renderContent();
 		});
 		
-		if (info.newBuild) {
-			Code.newFirmware();
+		if (Code.agent.version > "1.2") {
+			if (info.newBuild) {
+				Code.newFirmware();
+			}
 		}
 	});
 
@@ -2350,6 +2352,10 @@ Code.setup = function() {
 	Code.agent.addListener("boardUpdate", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
+		
+		if (Code.agent.version > "1.2") {
+			info.what = atob(info.what);
+		}
 		
 		if (info.what == "Can't connect to agent") {
 			Status.show(statusType.Alert, "cannotConnectToAgent", info.what);	
