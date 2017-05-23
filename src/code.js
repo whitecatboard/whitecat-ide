@@ -2281,9 +2281,9 @@ Code.setup = function() {
 			Code.renderContent();
 		});
 		
-		//if (info.newBuild) {
-		//	Code.newFirmware();
-		//}
+		if (info.newBuild) {
+			Code.newFirmware();
+		}
 	});
 
 	Code.agent.addListener("boardConsoleOut", function(id, info) {
