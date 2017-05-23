@@ -181,32 +181,32 @@ Term.update = function(c) {
 Term.ansiCodes = {
 	"[K": function() {
 		// Erases from the current cursor position to the end of the current line
-		Term.div.find('[data-r="' + Term.y + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
-		Term.div.find('[data-r="' + Term.y + '"]:gt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (Term.y + Term.offset) + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (Term.y + Term.offset) + '"]:gt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[0K": function() {
 		// Erases from the current cursor position to the end of the current line
-		Term.div.find('[data-r="' + Term.y + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
-		Term.div.find('[data-r="' + Term.y + '"]:gt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (Term.y + Term.offset) + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (Term.y + Term.offset) + '"]:gt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[1K": function() {
 		// Erases from the current cursor position to the start of the current line
-		Term.div.find('[data-r="' + Term.y + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
-		Term.div.find('[data-r="' + Term.y + '"]:lt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (Term.y + Term.offset) + '"]:eq(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (Term.y + Term.offset) + '"]:lt(' + Term.x + ')').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[2K": function() {
 		// Erases the entire current line
-		Term.div.find('[data-r="' + Term.y + '"]').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (Term.y + Term.offset) + '"]').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[J": function() {
 		// Erases the screen from the current line down to the bottom of the screen
-		Term.div.find('[data-r="' + i + '"]:eq').empty().attr("data-char","").removeClass("reverse");
-		Term.div.find('[data-r="' + i + '"]:gt').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (i + Term.offset) + '"]:eq').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (i + Term.offset) + '"]:gt').empty().attr("data-char","").removeClass("reverse");
 	},
 	"[1J": function() {
 		// Erases the screen from the current line up to the top of the screen
-		Term.div.find('[data-r="' + i + '"]:eq').empty().attr("data-char","").removeClass("reverse");
-		Term.div.find('[data-r="' + i + '"]:lt').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (i + Term.offset) + '"]:eq').empty().attr("data-char","").removeClass("reverse");
+		Term.div.find('[data-r="' + (i + Term.offset) + '"]:lt').empty().attr("data-char","").removeClass("reverse");
 	},	
 	"[2J": function() {
 		// Erases the screen with the background colour and moves the cursor to home
@@ -217,6 +217,9 @@ Term.ansiCodes = {
 		
 		// Moves the cursor forward by COUNT columns; the default count is 1
 		Term.x += n;
+		if (Term.x >= Term.cols) {
+			Term.x = Term.cols - 1;
+		}
 		
 		Term.cursor();
 	},	
@@ -303,7 +306,7 @@ Term.write = function(text) {
 					Term.scroll();
 				}	
 			}
-
+		
 			Term.update(c.charCodeAt());			
 			Term.x++;	
 			Term.cursor();
