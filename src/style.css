@@ -227,14 +227,6 @@ button {
 	color: #008000;
 }
 
-#content_board {
-	border: 1px solid #ccc;
-}
-
-#content_console {
-	border: 1px solid #ccc;
-}
-
 #content_block_editor_editor {
 	position: absolute !important; 
 	border: 1px solid #ccc;
@@ -490,7 +482,6 @@ body.modal-open .modal .modal-dialog {
 .boardConsole {
 	position: absolute;
     background: #fff;
-    margin-left: 20px;
     min-width: 600px;
     min-height: 300px;
 	border: 1px solid #eee;

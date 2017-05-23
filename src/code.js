@@ -463,7 +463,7 @@ Code.getBBox_ = function(element) {
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['board', 'program'];
+Code.TABS_ = ['program'];
 
 Code.selected = 'program';
 
@@ -565,7 +565,7 @@ Code.renderContent = function() {
 
 			if (Code.workspace.blocks) {
 				Code.workspace.blocks.setVisible(false);
-			}
+			}			
 		} else if (Code.workspace.type == 'block_editor') {
 			jQuery("#content_blocks").css('visibility', 'hidden');
 			jQuery("#content_editor").css('visibility', 'hidden');
@@ -1138,6 +1138,8 @@ Code.init = function() {
 				}
 			}
 			
+			var el_tab = el;
+			
 			el.style.top = bBox.y + 'px';
 			el.style.left = bBox.x + 'px';
 			
@@ -1160,10 +1162,10 @@ Code.init = function() {
 			el.style.visibility = 'visible';
 			
 			var el = document.getElementById('boardConsole');
-			var bBoxEl = Code.getBBox_(el);
+			//var bBoxEl = Code.getBBox_(el);
 
-			el.style.top = 35 + 'px';
-			el.style.left = (bBox.width - bBoxEl.width - 22) + 'px';
+			el.style.top = el_tab.style.top;
+			el.style.left = (parseInt(el_tab.style.width.replace("px","")) - 600) + 'px';
 		}		
 	};
 
@@ -1381,12 +1383,6 @@ Code.initLanguage = function() {
 	for (var i = 0, listVar; listVar = listVars[i]; i++) {
 		listVar.textContent = MSG['listVariable'];
 	}
-
-	jQuery("#content_board").find(".caption-subject").each(function(index, value) {
-		var value = jQuery(value);
-
-		value.text(MSG[value.text()]);
-	});
 };
 
 Code.discard = function() {
@@ -2112,10 +2108,10 @@ Code.tabRefresh = function() {
 	}
 
 	if (!Code.status.connected) {
-		jQuery("#stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
-		//jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #tab_board, #rebootButton, #content_board").addClass("disabled");
+		jQuery("#stopButton, #runButton, #tab_board, #rebootButton").addClass("disabled");
+		//jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #tab_board, #rebootButton").addClass("disabled");
 	} else {
-		jQuery("#stopButton, #runButton, #rebootButton, #content_board").removeClass("disabled");
+		jQuery("#stopButton, #runButton, #rebootButton").removeClass("disabled");
 	}
 	
 	if (Code.workspace.type == 'block_editor') {
