@@ -119,7 +119,8 @@ var MSG = {
   catNET: "Network",
   catMQTT: "MQTT",
   attachBoardForUseThisOption: "Please, attach a board for use this option.",
-  pleaseUpgradeAgent: "A new version of The Whitecat Create Agent is available. Please, upgrade it.<br><br><a href=\"https://github.com/whitecatboard/whitecat-ide/wiki/Prerequisites\">Upgrade instructions</a>.",
   alert: "Alert",
   connectABoard: "Connect a board",
+  pleaseUpgradeAgent: "A new version of The Whitecat Create Agent is available. Please, upgrade it. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Open upgrade instructions ...</button>",
+  thisFuntionRequiresUpdateAgent: "This function requires to update The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Open upgrade instructions ...</button>"
 };

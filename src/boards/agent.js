@@ -60,6 +60,8 @@ function agent() {
 		"boardRunCommand",
 	];
 	
+	thisInstance.version = "";
+	
 	// Create a listener array for each board envent
 	for(var i = 0;i < thisInstance.boardEvents.length;i++) {
 		thisInstance[thisInstance.boardEvents[i] + 'Listeners'] = [];
@@ -97,8 +99,7 @@ agent.prototype.controlSocketConnect = function() {
 	}
 	 
 	// Create the websocket
-    //socket = new WebSocket("wss://localhost:8081");
-	socket = new WebSocket("ws://localhost:8080/control");
+	socket = new WebSocket("ws://localhost:8080");
 	
 	// Open callback
     socket.addEventListener("open", function(event) {

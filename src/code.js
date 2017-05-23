@@ -1860,7 +1860,32 @@ Code.showAlert = function(text) {
 		message: text,
 		title: MSG['alert'],
 		closable: true,
+		onshow: function(dialogRef) {
+			setTimeout(function() {
+				jQuery(".btn-alert-instructions").unbind("click").bind("click", function(e) {
+					dialogRef.close();
+					
+					var target = jQuery(e.target);
+					
+					if (typeof require != "undefined") {
+						if (typeof require('nw.gui') != "undefined") {
+							var win = gui.Window.open(target.data("url"), {
+							  focus: true,
+							  position: 'center',
+							  width: 1055,
+							  height: 700
+							});
+						} else {
+							window.open(target.data("url"), '_blank');
+						}						
+					} else {
+						window.open(target.data("url"), '_blank');
+					}
+				});
+			}, 500);
+		}
 	});
+
 }
 
 Code.showError = function(title, err, callback) {
@@ -2268,6 +2293,13 @@ Code.setup = function() {
 	Code.agent.addListener("attachIde", function(id, info) {
 		if (!info.hasOwnProperty("agent-version")) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
+		} else {
+			Code.agent.version = info["agent-version"];
+			
+			if (Code.agent.version > "1.2") {
+				Code.agent.consoleUpSocketConnect();		
+				Code.agent.consoleDownSocketConnect();						
+			}
 		}
 	});
 	
@@ -2367,8 +2399,6 @@ Code.setup = function() {
 					Term.init();
 					Code.renderContent();
 					Code.agent.controlSocketConnect();		
-					Code.agent.consoleUpSocketConnect();		
-					Code.agent.consoleDownSocketConnect();		
 				});		
 			});
 		});

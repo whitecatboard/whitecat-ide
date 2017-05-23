@@ -113,4 +113,6 @@ var MSG = {
   pleaseUpgradeAgent: "Hay una nueva versión de The Whitecat Create Agent. Por favor, actualiza a la nueva versión.<br><br><a href=\"https://github.com/whitecatboard/whitecat-ide/wiki/Prerequisites\">Instrucciones para actualizar</a>.",
   alert: "Atención",
   connectABoard: "Conecta una placa",
+  pleaseUpgradeAgent: "Hay una nueva versión de The Whitecat Create Agent. Por favor, actualiza a la nueva versión. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Abrir las instrucciones para actualizar ...</button>",
+  thisFuntionRequiresUpdateAgent: "Esta función requiere una nueva versión de The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Abrir las instrucciones para actualizar ...</button>"
 };

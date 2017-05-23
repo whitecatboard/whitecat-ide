@@ -115,11 +115,15 @@ Status.show = function(type, tag, message) {
 						window.open(Status.alertAction[tag].url, '_blank');					
 					}	
 				}				
-			});
+			});			
 		} else if (type == statusType.Info) {
 			if (tag == "boardAttached") {
 				jQuery(".statusBar").addClass("statusBarClick").bind('click', function(e) {
-					Term.show();
+					if (Code.agent.version > "1.2") {
+						Term.show();
+					} else {
+						Code.showAlert(MSG['thisFuntionRequiresUpdateAgent']);
+					}
 				});
 			}
 		}
