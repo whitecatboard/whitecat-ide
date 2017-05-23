@@ -42,7 +42,8 @@ function agent() {
 		"blockEnd",
 		"blockError",
 		"boardUpdate",
-		"boardConsoleOut"
+		"boardConsoleOut",
+		"boardRuntimeError"
 	];
 
 	// Board commands

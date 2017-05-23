@@ -2335,7 +2335,7 @@ Code.setup = function() {
 
 		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).removeStart();
 	});
-
+	
 	Code.agent.addListener("blockError", function(id, info) {
 		Blockly.mainWorkspace.removeStarts();
 		Blockly.mainWorkspace.removeErrors();
@@ -2358,6 +2358,12 @@ Code.setup = function() {
 		} else {
 			Status.show(statusType.Progress, "", info.what);	
 		}
+	});
+	
+	Code.agent.addListener("boardRuntimeError", function(id, info) {
+		info.message = atob(info.message);
+		
+		Code.runtimeError(info.where, info.line, info.exception, info.message);
 	});
 	
 	if (typeof ide_init === "function") {
