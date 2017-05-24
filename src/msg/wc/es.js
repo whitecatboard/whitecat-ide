@@ -110,9 +110,20 @@ var MSG = {
   catNET: "Red",
   catMQTT: "MQTT",
   attachBoardForUseThisOption: "Por favor, conecta una placa antes de utilizar esta opción.",
-  pleaseUpgradeAgent: "Hay una nueva versión de The Whitecat Create Agent. Por favor, actualiza a la nueva versión.<br><br><a href=\"https://github.com/whitecatboard/whitecat-ide/wiki/Prerequisites\">Instrucciones para actualizar</a>.",
   alert: "Atención",
-  connectABoard: "Conecta una placa",
   pleaseUpgradeAgent: "Hay una nueva versión de The Whitecat Create Agent. Por favor, actualiza a la nueva versión. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Abrir las instrucciones para actualizar ...</button>",
-  thisFuntionRequiresUpdateAgent: "Esta función requiere una nueva versión de The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Abrir las instrucciones para actualizar ...</button>"
+  thisFuntionRequiresUpdateAgent: "Esta función requiere una nueva versión de The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Abrir las instrucciones para actualizar ...</button>",
+  connectABoard: "Conecta una placa",
+  downloadingPrerequisites: "Descargando prerrequisitos",
+  uploadingFramework: "Subiendo prerrequisitos",
+  downloadingEsptool: "Descargando esptool",
+  unpackingEsptool: "Desempaquetando esptool",
+  downloadingFirmware: "Descargando firmware",
+  unpackingFirmware: "Desempaquetando firmware",
+  noBoardAttached: "Ninguna placa conectada",
+  scanningBoards: "Buscando placas",
+  pythonNotFound: "No se ha encontrado python",
+  resetingBoard: "Reiniciando placa",
+  stoppingProgram: "Parando el programa",
+  cannotConnectToAgent: "No se puede conectar con el agente"  
 };

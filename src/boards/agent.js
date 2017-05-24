@@ -144,7 +144,7 @@ agent.prototype.controlSocketConnect = function() {
 	
 	// Socket is closed
     socket.addEventListener("error", function(event) {
-		Status.show(statusType.Alert, "cannotConnectToAgent", "Can't connect to agent");
+		Status.show("Can't connect to agent");
 	});
 }
 

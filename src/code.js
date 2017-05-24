@@ -2271,7 +2271,7 @@ Code.setup = function() {
 		Code.status = info.info;
 		Code.settings.board = info.info.board;
 		
-		Status.show(statusType.Info, "boardAttached", Code.board.getDesc(Code.settings.board));
+		Status.show(Code.board.getDesc(Code.settings.board));
 		
 		Code.board.getMaps(Code.settings.board, function(maps) {
 			Code.status.maps = maps;
@@ -2309,7 +2309,7 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
 
-		Status.show(statusType.Alert, "connectABoard", "connectABoard");
+		Status.show("Connect a board");
 
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 		Code.board.getMaps(Code.settings.board, function(maps) {
@@ -2357,13 +2357,7 @@ Code.setup = function() {
 			info.what = atob(info.what);
 		}
 		
-		if (info.what == "Can't connect to agent") {
-			Status.show(statusType.Alert, "cannotConnectToAgent", info.what);	
-		} else if (info.what == "No board attached") {		
-			Status.show(statusType.Alert, "noBoardAttached", info.what);	
-		} else {
-			Status.show(statusType.Progress, "", info.what);	
-		}
+		Status.show(info.what);	
 	});
 	
 	Code.agent.addListener("boardRuntimeError", function(id, info) {

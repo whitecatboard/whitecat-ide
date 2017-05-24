@@ -112,7 +112,19 @@ var MSG = {
   catMQTT: "MQTT",
   attachBoardForUseThisOption: "Si us plau, conecta una placa abans d'utilizar aquesta opció.",
   alert: "Atenció",
-  connectABoard: "Connecta una placa",
   pleaseUpgradeAgent: "Hi ha una nova versió de The Whitecat Create Agent. Si us plau, actualitza a la l'última versió. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Obrir les instruccions per actualitzar ...</button>",
-  thisFuntionRequiresUpdateAgent: "Aquesta funció requereix una nova versió de The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Obrir les instruccions per actualitzar ...</button>"
+  thisFuntionRequiresUpdateAgent: "Aquesta funció requereix una nova versió de The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Obrir les instruccions per actualitzar ...</button>",
+  connectABoard: "Connecta una placa",
+  downloadingPrerequisites: "Descarregant prerequisits",
+  uploadingFramework: "Pujant prerequisits",
+  downloadingEsptool: "Descarregant esptool",
+  unpackingEsptool: "Desempaquetant esptool",
+  downloadingFirmware: "Decarregant firmware",
+  unpackingFirmware: "Desempaquetant firmware",
+  noBoardAttached: "Cap placa connectada",
+  scanningBoards: "Buscant plaques",
+  pythonNotFound: "No s'ha trobat python",
+  resetingBoard: "Reiniciant placa",
+  stoppingProgram: "Aturant el programa",
+  cannotConnectToAgent: "No es pot connectar a l'agent"  
 };

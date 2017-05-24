@@ -38,22 +38,46 @@ var statusType = {
 
 var Status = {};
 
+Status.messages = [];
+
+Status.messages["Downloading prerequisites"] = {tag: "downloadingPrerequisites", type: statusType.Progress};
+Status.messages["Uploading framework"] = {tag: "uploadingFramework", type: statusType.Progress};
+Status.messages["Downloading esptool"] = {tag: "downloadingEsptool", type: statusType.Progress};
+Status.messages["Unpacking esptool"] = {tag: "unpackingEsptool", type: statusType.Progress};
+Status.messages["Downloading firmware"] = {tag: "downloadingFirmware", type: statusType.Progress};
+Status.messages["Unpacking firmware"] = {tag: "unpackingFirmware", type: statusType.Progress};
+Status.messages["No board attached"] = {tag: "noBoardAttached", type: statusType.Alert, page: "whitecat-ide/Errors:--No-board-attached"};
+Status.messages["Scanning boards"] = {tag: "scanningBoards", type: statusType.Progress};
+Status.messages["Python not found"] = {tag: "pythonNotFound", type: statusType.Alert};
+Status.messages["Reseting board"] = {tag: "resetingBoard", type: statusType.Progress};
+Status.messages["Stopping program"] = {tag: "stoppingProgram", type: statusType.Progress};
+Status.messages["Can't connect to agent"] = {tag: "cannotConnectToAgent", type: statusType.Alert, page: "whitecat-ide/Errors:--Can't-connect-to-agent"};
+Status.messages["Connect a board"] = {tag: "connectABoard", type: statusType.Alert};
+Status.messages["Whitecat N1 ESP32"] = {tag: "boardAttached", type: statusType.Info};
+Status.messages["ESP32 Thing"] = {tag: "boardAttached", type: statusType.Info};
+Status.messages["ESP32 Core Board"] = {tag: "boardAttached", type: statusType.Info};
+
 Status.current = {
 	type: statusType.Nothing,
 	message: ""
 }
 
-Status.alertAction = {
-	cannotConnectToAgent: {
-		url: "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--Can't-connect-to-agent"
-	},
+Status.show = function(message) {
+	var messageMap = Status.messages[message];
+	var type = statusType.Info;
+	var tag = "";
+	var url = undefined;
 	
-	noBoardAttached: {
-		url: "https://whitecatboard.org/git/wiki/whitecat-ide/Errors:--No-board-attached"
+	// Get the status type, tag, and url from the message map
+	if (typeof messageMap != "undefined") {
+		type = messageMap.type;
+		tag = messageMap.tag;
+		
+		if (typeof messageMap.page != "undefined") {
+			url = "https://whitecatboard.org/git/wiki/" + messageMap.page;			
+		}
 	}
-}
-
-Status.show = function(type, tag, message) {
+	
 	// Show the status only is a new status
 	if ((Status.current.type != type) || (Status.current.message != message)) {
 		// Remove all additional styles
@@ -66,8 +90,12 @@ Status.show = function(type, tag, message) {
 		// Translate message
 		var messageTrans = message;
 	
-		if (typeof(MSG[message]) != "undefined") {
-			messageTrans = MSG[message];
+		if (typeof(MSG[tag]) != "undefined") {
+			messageTrans = MSG[tag];
+		}
+		
+		if (type == statusType.Progress) {
+			messageTrans = messageTrans + " ...";
 		}
 
 		// Each status type can have it's own icon
@@ -83,7 +111,7 @@ Status.show = function(type, tag, message) {
 
 		// Put message
 		if (type == statusType.Progress) {
-			html = '<span class="statusBarText noselect">'+messageTrans+' ...</span>';	
+			html = '<span class="statusBarText noselect">'+messageTrans+'</span>';	
 		} else {
 			html = '<span class="statusBarText noselect">'+messageTrans+'</span>';	
 			if (tag == "boardAttached") {
@@ -99,20 +127,20 @@ Status.show = function(type, tag, message) {
 		if (type == statusType.Alert) {
 			// Alerts are bind to an url that contains information about it
 			jQuery(".statusBar").addClass("statusBarClick").bind('click', function(e) {
-				if (typeof Status.alertAction[tag] != "undefined") {
+				if (typeof url != "undefined") {
 					if (typeof require != "undefined") {
 						if (typeof require('nw.gui') != "undefined") {
-							var win = gui.Window.open(Status.alertAction[tag].url, {
+							var win = gui.Window.open(url, {
 							  focus: true,
 							  position: 'center',
 							  width: 1055,
 							  height: 700
 							});
 						} else {
-							window.open(Status.alertAction[tag].url, '_blank');
+							window.open(url, '_blank');
 						}
 					} else {
-						window.open(Status.alertAction[tag].url, '_blank');					
+						window.open(url, '_blank');					
 					}	
 				}				
 			});			
