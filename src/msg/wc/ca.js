@@ -127,5 +127,6 @@ var MSG = {
   resetingBoard: "Reiniciant placa",
   stoppingProgram: "Aturant el programa",
   cannotConnectToAgent: "No es pot connectar a l'agent",
-  corruptedFirmware: "Firmware corrupte"
+  corruptedFirmware: "Firmware corrupte",
+  flashError: "Error a la flash"
 };

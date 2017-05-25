@@ -54,6 +54,7 @@ Status.messages["Stopping program"] = {tag: "stoppingProgram", type: statusType.
 Status.messages["Can't connect to agent"] = {tag: "cannotConnectToAgent", type: statusType.Alert, page: "whitecat-ide/Errors:--Can't-connect-to-agent"};
 Status.messages["Connect a board"] = {tag: "connectABoard", type: statusType.Alert};
 Status.messages["Corrupted firmware"] = {tag: "corruptedFirmware", type: statusType.Alert};
+Status.messages["Flash error"] = {tag: "flashError", type: statusType.Alert};
 
 Status.messages["Whitecat N1 ESP32"] = {tag: "boardAttached", type: statusType.Info};
 Status.messages["ESP32 Thing"] = {tag: "boardAttached", type: statusType.Info};
