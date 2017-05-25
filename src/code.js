@@ -80,6 +80,8 @@ Code.blockAbstraction = blockAbstraction.High;
 
 Code.storage = {};
 
+Code.minAgentVersion = "1.3";
+
 Code.storage.board = null;
 Code.storage.local = null;
 Code.storage.cloud = null;
@@ -2281,8 +2283,12 @@ Code.setup = function() {
 			Code.renderContent();
 		});
 		
+		if (Code.agent.version != Code.minAgentVersion) {
+			Code.showAlert(MSG['pleaseUpgradeAgent']);
+		}
+		
 		if (Code.agent.version > "1.2") {
-			if (info.newBuild) {
+			if (info.build) {
 				Code.newFirmware();
 			}
 		}
