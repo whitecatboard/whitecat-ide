@@ -125,5 +125,6 @@ var MSG = {
   pythonNotFound: "No se ha encontrado python",
   resetingBoard: "Reiniciando placa",
   stoppingProgram: "Parando el programa",
-  cannotConnectToAgent: "No se puede conectar con el agente"  
+  cannotConnectToAgent: "No se puede conectar con el agente",
+  corruptedFirmware: "Firmware corrupto"
 };

@@ -33,7 +33,7 @@ Term.port = null;
 Term.term = null;
 Term.div = null;
 Term.cols = 78;
-Term.rows = 17;
+Term.rows = 18;
 Term.offset = 0;
 Term.reverse = false;
 

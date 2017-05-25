@@ -53,6 +53,8 @@ Status.messages["Reseting board"] = {tag: "resetingBoard", type: statusType.Prog
 Status.messages["Stopping program"] = {tag: "stoppingProgram", type: statusType.Progress};
 Status.messages["Can't connect to agent"] = {tag: "cannotConnectToAgent", type: statusType.Alert, page: "whitecat-ide/Errors:--Can't-connect-to-agent"};
 Status.messages["Connect a board"] = {tag: "connectABoard", type: statusType.Alert};
+Status.messages["Corrupted firmware"] = {tag: "corruptedFirmware", type: statusType.Alert};
+
 Status.messages["Whitecat N1 ESP32"] = {tag: "boardAttached", type: statusType.Info};
 Status.messages["ESP32 Thing"] = {tag: "boardAttached", type: statusType.Info};
 Status.messages["ESP32 Core Board"] = {tag: "boardAttached", type: statusType.Info};
@@ -156,7 +158,7 @@ Status.show = function(message) {
 			}
 		}
 		
-		jQuery(".statusBar").html(html).show();			
+		jQuery(".statusBar").html(html).show();	
 	}
 }
 

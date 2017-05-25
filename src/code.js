@@ -2287,7 +2287,7 @@ Code.setup = function() {
 			}
 		}
 	});
-
+	
 	Code.agent.addListener("boardConsoleOut", function(id, info) {
 		Term.write(atob(info.content));
 	});
@@ -2357,7 +2357,7 @@ Code.setup = function() {
 			info.what = atob(info.what);
 		}
 		
-		Status.show(info.what);	
+		Status.show(info.what);			
 	});
 	
 	Code.agent.addListener("boardRuntimeError", function(id, info) {
