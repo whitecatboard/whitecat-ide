@@ -2288,7 +2288,7 @@ Code.setup = function() {
 		}
 		
 		if (Code.agent.version > "1.2") {
-			if (info.build) {
+			if (info.newBuild) {
 				Code.newFirmware();
 			}
 		}
