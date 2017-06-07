@@ -216,7 +216,7 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	var adcSelect = "";
 
 	for (var key in Code.status.maps.analogPins) {
-		adc.push([Code.status.maps.digitalPins[key][1] + ' - ' + Code.status.maps.analogPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+		adc.push([Code.status.maps.analogPins[key][1] + ' - ' + Code.status.maps.analogPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 	}
 
 	var adcSelect = '<select id="adc" name="adc">';

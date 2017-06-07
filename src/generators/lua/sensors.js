@@ -41,7 +41,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 	if (block.interface == 'GPIO') {
 		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
 	} else if (block.interface == 'ADC') {
-		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin] + ', 12';
+		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
 	}
 
 	if (codeSection["require"].indexOf('require("block")') == -1) {
@@ -60,7 +60,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 	tryCode += Blockly.Lua.indent(1,'value = _'+block.name+'_'+block.sid+':read("'+magnitude+'")') + "\n";
 
 	getCode += Blockly.Lua.indent(1, 'local value\n') + "\n";
-	getCode += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(block,tryCode)) + "\n\n";
+	getCode += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(1, block,tryCode)) + "\n\n";
 	
 	getCode += Blockly.Lua.indent(1, 'return value\n');
 	getCode += Blockly.Lua.indent(0, 'end\n');
@@ -80,7 +80,7 @@ Blockly.Lua['sensor_set'] = function(block) {
 	if (block.interface == 'GPIO') {
 		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
 	} else if (block.interface == 'ADC') {
-		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin] + ', 12';
+		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
 	}
 
 	if (codeSection["require"].indexOf('require("block")') == -1) {
@@ -94,7 +94,7 @@ Blockly.Lua['sensor_set'] = function(block) {
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 	tryCode += Blockly.Lua.indent(1,'_'+block.name+'_'+block.sid+':set("'+property+'", '+value+')') + "\n";
 
-	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(block,tryCode)) + "\n";
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block,tryCode)) + "\n";
 	
 	return code;	
 };

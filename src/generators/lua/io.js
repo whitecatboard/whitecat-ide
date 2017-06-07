@@ -86,7 +86,7 @@ Blockly.Lua['getdigitalpin'] = function(block) {
 
 Blockly.Lua['getanalogpin'] = function(block) {
 	var pin = block.getFieldValue('PIN');
-	var adcName = Code.status.maps.analogPinsChannel[pin];
+	var adcName = Code.status.maps.analogPinsChannel[pin][0];
 	var format = block.getFieldValue('FORMAT');
 	var code = '';
 		

@@ -807,6 +807,9 @@ Code.buildToolBox = function(callback) {
 		'</shadow>' +
 		'</value>' +
 		'</block>' +
+	    '<block type="text_print">' +
+	    '</value>' +
+	    '</block>' +
 		'<block type="text"></block>' +
 		'<block type="text_pack"></block>' +
 		'<block type="text_unpack"></block>' +

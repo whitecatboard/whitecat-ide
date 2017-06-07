@@ -28,11 +28,11 @@
 		"35": ["GPIO35", "P4"]	 	
 	},
 	"analogPinsChannel": {
-		"32": "ADC_CH4",
-		"33": "ADC_CH5",
-		"34": "ADC_CH6",
-		"34": "ADC_CH7" 	
-	},
+		"32": ["ADC_CH4", "GPIO32" ],	 	
+		"33": ["ADC_CH5", "GPIO33" ],	 	
+		"34": ["ADC_CH6", "GPIO34" ],	 	
+		"35": ["ADC_CH7", "GPIO35" ]
+	},		
 	"pwmPins": {
 		"32": ["GPIO32", "P1"  ],
 		"33": ["GPIO33", "P2"  ],
