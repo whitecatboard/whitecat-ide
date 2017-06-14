@@ -1312,8 +1312,8 @@ Code.initLanguage = function() {
 	});
 
 	document.getElementById('developerMode').title = MSG['developerMode'];
-	document.getElementById('switchToBlocks').title = MSG['switchToCodeTooltip'];
-	document.getElementById('switchToCode').title = MSG['switchToBlocksTooltip'];
+	document.getElementById('switchToBlocks').title = MSG['switchToBlocksTooltip'];
+	document.getElementById('switchToCode').title = MSG['switchToCodeTooltip'];
 	document.getElementById('loadButton').title = MSG['loadButtonTooltip'];
 	document.getElementById('saveButton').title = MSG['saveButtonTooltip'];
 	document.getElementById('saveAsButton').title = MSG['saveAsButtonTooltip'];
