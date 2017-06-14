@@ -17,6 +17,39 @@ do
 		
 		prev_mod = true
 	end
+	
+	function __m_pin_map(name)
+		local unit
+		local sv
+		local signal
+		local pin
+		
+		io.write("\""..name.."\":[")
+		
+		if (_G[name] ~= nil) then
+			if (_G[name].pins ~= nil) then
+				for unit,sv in pairs(_G[name].pins(true)) do
+					io.write("{\""..sv.id.."\":{")
+					for signal,pin in pairs(sv) do
+						if (signal ~= "id") then
+							io.write("\""..signal.."\":\""..pin.."\",")
+						end
+					end 
+					io.write("},},")
+				end
+			end
+		end
+		
+		io.write("],")
+	end
+	
+	function __m_pin_maps()
+		io.write("\"pinMap\":{")
+		__m_pin_map("spi")
+		__m_pin_map("i2c")
+		__m_pin_map("uart")
+		io.write("},")
+	end
 
 	function __cpu()
 	    local curr_os, curr_ver, curr_build, curr_commit = os.version();
@@ -51,7 +84,7 @@ do
 	    __m_ena("net",net)
 		io.write("},")
 	end
-	
+
 	function __sensors()
 	    io.write("\"sensors\": ")
 		io.write("[")
@@ -89,6 +122,7 @@ do
 	
     io.write("{");
     __mods()
+	__m_pin_maps()
     __cpu()
     __sensors()
     io.write("}")
