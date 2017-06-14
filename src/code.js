@@ -205,12 +205,7 @@ Code.renderStorage  = function(storage, file, target) {
 		// We only render the file name, without path
 		var tmp = file.split("/");
 	
-		file = "";
-		for(var i = 0;i < tmp.length;i++) {
-			if (tmp[i] != "") {
-				file = tmp[i];
-			}
-		}
+		file = tmp[tmp.length - 1];
 	} else {
 		//We only render the file path
 		var tmp = file.split("/");
@@ -262,17 +257,21 @@ Code.setCurrentStorage = function(storage, path, file) {
 		var folder = "";
 		var fileName = "";
 	
-		for(var i = 0;i < tmp.length;i++) {
+		// Folder part
+		for(var i = 0;i < tmp.length - 1;i++) {
 			if (tmp[i] != "") {
-				if (folder == "") {
-					folder = tmp[i];
-				} else {
-					if (fileName == "") {
-						fileName = tmp[i];
-					}
-				}
-			}
-		}	
+				folder = folder + "/" + tmp[i];
+			} 
+		}
+		
+		if (folder == "") {
+			folder = "/";
+		} else {
+			folder = folder + "/";
+		}
+		
+		// File part
+		fileName = tmp[tmp.length - 1];
 		
 		path = folder;
 		file = fileName;			
