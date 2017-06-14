@@ -132,8 +132,16 @@ board.prototype.getMaps = function(id, callback) {
 			maps["pwmPinsChannel"] = board.pwmPinsChannel;
 		}
 
-		if (board.hasOwnProperty("i2cModules")) {
-			maps["i2cModules"] = board.i2cModules;
+		if (board.hasOwnProperty("i2cUnits")) {
+			maps["i2cUnits"] = board.i2cUnits;
+		}
+
+		if (board.hasOwnProperty("spiUnits")) {
+			maps["spiUnits"] = board.spiUnits;
+		}
+
+		if (board.hasOwnProperty("uartUnits")) {
+			maps["uartUnits"] = board.uartUnits;
 		}
 		
 		callback(maps);		

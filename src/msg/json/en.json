@@ -582,5 +582,9 @@
 	
 	"WARNING_ONLY_ONE_INSTANCE_ALLOWED": "Warning: only one instance of this block is allowed.",
 	"WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK": "Warning: events can only be processed in one event block.",
-	"WARNING_NOT_IN_HAT_BLOCK": "Warning: this block may only be used within a hat block."
+	"WARNING_NOT_IN_HAT_BLOCK": "Warning: this block may only be used within a hat block.",
+
+	"SENSOR_I2C": "Sensor is on I2C bus",
+	"SENSOR_UART": "Sensor is on UART",
+	"SENSOR_SPI": "Sensor is on SPI bus"
 }

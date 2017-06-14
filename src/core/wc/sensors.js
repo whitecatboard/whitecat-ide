@@ -167,6 +167,15 @@ Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin) {
 	} else if (interf == "ADC") {
 		setup['interface'] = "ADC";
 		setup.pin = pin;
+	} else if (interf == "I2C") {
+		setup['interface'] = "I2C";
+		setup.pin = pin;
+	} else if (interf == "UART") {
+		setup['interface'] = "UART";
+		setup.pin = pin;
+	} else if (interf == "SPI") {
+		setup['interface'] = "SPI";
+		setup.pin = pin;
 	}
 
 	return setup;
@@ -221,10 +230,37 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 
 	var adcSelect = '<select id="adc" name="adc">';
 	adc.forEach(function(item, index) {
-		adcSelect += '<option value="' + item[1] + '">' + item[0] + '</option>';
+		adcSelect += '<option '+((edit && (item[1] == block.pin))?"selected":"")+' value="' + item[1] + '">' + item[0] + '</option>';
 	})
 	adcSelect += "</select>";
 
+	// Build i2c selection
+	var i2c = [];
+	var i2cSelect = "";
+
+	for (var key in Code.status.maps.i2cUnits) {
+		i2c.push([Code.status.maps.i2cUnits[key][0], key]);
+	}
+	
+	var i2cSelect = '<select id="i2c" name="i2c">';
+	i2c.forEach(function(item, index) {
+		i2cSelect += '<option '+((edit && (item[1] == block.pin))?"selected":"")+' value="' + item[1] + '">' + item[0] + '</option>';
+	})
+	i2cSelect += "</select>";
+	
+	// Build uart selection
+	var uart = [];
+	var uartSelect = "";
+
+	for (var key in Code.status.maps.uartUnits) {
+		uart.push([Code.status.maps.uartUnits[key][0], key]);
+	}
+	
+	var uartSelect = '<select id="uart" name="uart">';
+	uart.forEach(function(item, index) {
+		uartSelect += '<option '+((edit && (item[1] == block.pin))?"selected":"")+' value="' + item[1] + '">' + item[0] + '</option>';
+	})
+	uartSelect += "</select>";
 
 	dialogForm = '<form id="sensor_form">';
 	dialogForm += '<label for="id">' + Blockly.Msg.SENSOR + ':&nbsp;&nbsp;</label>' + sensorSelect;
@@ -260,6 +296,27 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 		dialogForm += '<label for="adc">' + Blockly.Msg.SENSOR_ANALOG_PIN + ':&nbsp;&nbsp;</label>' + adcSelect;
 		dialogForm += '</div>';
 	}
+
+	if (edit && (block['interface'] == "I2C")) {
+		dialogForm += '<div>';
+		dialogForm += '<label for="i2c">' + Blockly.Msg.SENSOR_I2C + ':&nbsp;&nbsp;</label>' + i2cSelect;
+		dialogForm += '</div>';
+	} else {
+		dialogForm += '<div class="sensor_interface" id="I2C_sensor" style="display: none;">';
+		dialogForm += '<label for="i2c">' + Blockly.Msg.SENSOR_I2C + ':&nbsp;&nbsp;</label>' + i2cSelect;
+		dialogForm += '</div>';
+	}
+
+	if (edit && (block['interface'] == "UART")) {
+		dialogForm += '<div>';
+		dialogForm += '<label for="uart">' + Blockly.Msg.SENSOR_UART + ':&nbsp;&nbsp;</label>' + uartSelect;
+		dialogForm += '</div>';
+	} else {
+		dialogForm += '<div class="sensor_interface" id="UART_sensor" style="display: none;">';
+		dialogForm += '<label for="uart">' + Blockly.Msg.SENSOR_UART + ':&nbsp;&nbsp;</label>' + uartSelect;
+		dialogForm += '</div>';
+	}
+
 	dialogForm += '</form>';
 
 	bootbox.dialog({

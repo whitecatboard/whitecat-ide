@@ -42,8 +42,12 @@ Blockly.Lua['sensor_read'] = function(block) {
 		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
 	} else if (block.interface == 'ADC') {
 		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
+	} else if (block.interface == 'I2C') {
+		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0] + ', 400, 0x76';
+	} else if (block.interface == 'UART') {
+		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
 	}
-
+		
 	if (codeSection["require"].indexOf('require("block")') == -1) {
 		codeSection["require"].push('require("block")');
 	}
@@ -55,7 +59,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(1,'if (_'+block.name+'_'+block.sid+' == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_'+block.name+'_'+block.sid+' = sensor.setup("'+block.sid+'", '+int+')') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_'+block.name+'_'+block.sid+' = sensor.attach("'+block.sid+'", '+int+')') + "\n";
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 	tryCode += Blockly.Lua.indent(1,'value = _'+block.name+'_'+block.sid+':read("'+magnitude+'")') + "\n";
 
@@ -81,6 +85,10 @@ Blockly.Lua['sensor_set'] = function(block) {
 		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
 	} else if (block.interface == 'ADC') {
 		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
+	} else if (block.interface == 'I2C') {
+		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0] + ', 400, 0x76';
+	} else if (block.interface == 'UART') {
+		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
 	}
 
 	if (codeSection["require"].indexOf('require("block")') == -1) {
@@ -90,7 +98,7 @@ Blockly.Lua['sensor_set'] = function(block) {
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+block.sid+'"') + "\n\n";
 	tryCode += Blockly.Lua.indent(1,'if (_'+block.name+'_'+block.sid+' == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_'+block.name+'_'+block.sid+' = sensor.setup("'+block.sid+'", '+int+')') + "\n";
+	tryCode += Blockly.Lua.indent(2,'_'+block.name+'_'+block.sid+' = sensor.attach("'+block.sid+'", '+int+')') + "\n";
 	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
 	tryCode += Blockly.Lua.indent(1,'_'+block.name+'_'+block.sid+':set("'+property+'", '+value+')') + "\n";
 

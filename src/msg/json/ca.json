@@ -515,5 +515,9 @@
 
 	"WARNING_ONLY_ONE_INSTANCE_ALLOWED": "Atenció: només es permet una instància d'aquest bloc.",
 	"WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK": "Atenció: els events només es poden processar dins d'un únic bloc d'esdeveniment.",
-	"WARNING_NOT_IN_HAT_BLOCK": "Atenció: aquest bloc només es pot utilitzar dins d'un bloc hat."
+	"WARNING_NOT_IN_HAT_BLOCK": "Atenció: aquest bloc només es pot utilitzar dins d'un bloc hat.",
+	
+	"SENSOR_I2C": "El sensor està al bus I2C",
+	"SENSOR_UART": "El sensor està a l'UART",
+	"SENSOR_SPI": "El sensor està al bus SPI"
 }
