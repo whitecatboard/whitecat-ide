@@ -43,7 +43,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 	} else if (block.interface == 'ADC') {
 		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
 	} else if (block.interface == 'I2C') {
-		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0] + ', 400, 0x76';
+		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
 	} else if (block.interface == 'UART') {
 		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
 	}
@@ -86,7 +86,7 @@ Blockly.Lua['sensor_set'] = function(block) {
 	} else if (block.interface == 'ADC') {
 		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
 	} else if (block.interface == 'I2C') {
-		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0] + ', 400, 0x76';
+		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
 	} else if (block.interface == 'UART') {
 		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
 	}

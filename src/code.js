@@ -81,6 +81,7 @@ Code.blockAbstraction = blockAbstraction.High;
 Code.storage = {};
 
 Code.minAgentVersion = "1.3";
+Code.checkNewVersion = true;
 
 Code.storage.board = null;
 Code.storage.local = null;
@@ -1919,6 +1920,8 @@ Code.showError = function(title, err, callback) {
 }
 
 Code.newFirmware = function() {
+	if (!Code.checkNewVersion) return;
+	
 	bootbox.dialog({
 		message: MSG['newFirmware'],
 		buttons: {
@@ -1938,7 +1941,9 @@ Code.newFirmware = function() {
 			danger: {
 				label: MSG['notNow'],
 				className: "btn-danger",
-				callback: function() {}
+				callback: function() {
+					Code.checkNewVersion = false;
+				}
 			},
 		},
 		closable: false
