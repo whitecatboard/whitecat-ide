@@ -3,7 +3,7 @@
  * Board. Blocky Environment, Board. board definition
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.$
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  *
@@ -82,6 +82,7 @@ Code.storage = {};
 
 Code.minAgentVersion = "1.3";
 Code.checkNewVersion = true;
+Code.showCode = false;
 
 Code.storage.board = null;
 Code.storage.local = null;
@@ -901,20 +902,21 @@ Code.buildToolBox = function(callback) {
 		xml += '</category>';
 	}
 
-	if (false && (Code.status.modules.i2c || Code.status.modules.lora)) {
+	if ((Code.status.modules.i2c)) {
 		xml += '<category id="catComm" colour="20">';
 
 		if (Code.status.modules.i2c) {
 			xml += '' +
 				'<category id="catI2C">' +
-				'<block type="configurei2c">' +
+				'<block type="i2csetspeed">' + 
 				'<value name="SPEED">' +
 				'<shadow type="math_number">' +
 				'<field name="NUM">1000</field>' +
 				'</shadow>' +
 				'</value>' +
-				'</block>' +
-				'<block type="i2cstartcondition"></block>' +
+			    '</block>' +
+				'<block type="i2cstartcondition">' + 
+			    '</block>' +
 				'<block type="i2cstopcondition"></block>' +
 				'<block type="i2caddress">' +
 				'<value name="ADDRESS">' +
@@ -931,101 +933,6 @@ Code.buildToolBox = function(callback) {
 				'</shadow>' +
 				'</value>' +
 				'</block>' +
-				'</category>';
-		}
-
-		if (Code.status.modules.lora) {
-			xml += '' +
-				'<category id="catLora">' +
-				'<category id="catLoraOTAA">' +
-				'<block type="lora_configure">' +
-				'</block>' +
-				'<block type="lora_set_deveui">' +
-				'<value name="DEVEUI">' +
-				'<shadow type="text">' +
-				'<field name="TEXT"></field>' +
-				'</shadow>' +
-				'</value>' +
-				'</block>' +
-				'<block type="lora_set_appeui">' +
-				'<value name="APPEUI">' +
-				'<shadow type="text">' +
-				'<field name="TEXT"></field>' +
-				'</shadow>' +
-				'</value>' +
-				'</block>' +
-				'<block type="lora_set_appkey">' +
-				'<value name="APPKEY">' +
-				'<shadow type="text">' +
-				'<field name="TEXT"></field>' +
-				'</shadow>' +
-				'</value>' +
-				'</block>' +
-				'<block type="lora_set_adr"></block>' +
-				'<block type="lora_set_dr"></block>' +
-				'<block type="lora_set_retx"></block>' +
-				'<block type="lora_join"></block>' +
-				'<block type="lora_tx">' +
-				'<value name="PORT">' +
-				'<shadow type="math_number">' +
-				'<field name="NUM">1</field>' +
-				'</shadow>' +
-				'</value>' +
-				'<value name="PAYLOAD">' +
-				'<shadow type="text">' +
-				'<field name="TEXT"></field>' +
-				'</shadow>' +
-				'</value>' +
-				'</block>' +
-				'<block type="lora_get_port"></block>' +
-				'<block type="lora_get_payload"></block>' +
-				'<block type="text_pack"></block>' +
-				'<block type="text_unpack"></block>' +
-				'</category>' +
-				'<category id="catLoraABP">' +
-				'<block type="lora_configure">' +
-				'</block>' +
-				'<block type="lora_set_devaddr">' +
-				'<value name="DEVADDR">' +
-				'<shadow type="text">' +
-				'<field name="TEXT"></field>' +
-				'</shadow>' +
-				'</value>' +
-				'</block>' +
-				'<block type="lora_set_nwkskey">' +
-				'<value name="NWKSKEY">' +
-				'<shadow type="text">' +
-				'<field name="TEXT"></field>' +
-				'</shadow>' +
-				'</value>' +
-				'</block>' +
-				'<block type="lora_set_appskey">' +
-				'<value name="APPSKEY">' +
-				'<shadow type="text">' +
-				'<field name="TEXT"></field>' +
-				'</shadow>' +
-				'</value>' +
-				'</block>' +
-				'<block type="lora_set_adr"></block>' +
-				'<block type="lora_set_dr"></block>' +
-				'<block type="lora_set_retx"></block>' +
-				'<block type="lora_tx">' +
-				'<value name="PORT">' +
-				'<shadow type="math_number">' +
-				'<field name="NUM">1</field>' +
-				'</shadow>' +
-				'</value>' +
-				'<value name="PAYLOAD">' +
-				'<shadow type="text">' +
-				'<field name="TEXT"></field>' +
-				'</shadow>' +
-				'</value>' +
-				'</block>' +
-				'<block type="lora_get_port"></block>' +
-				'<block type="lora_get_payload"></block>' +
-				'<block type="text_pack"></block>' +
-				'<block type="text_unpack"></block>' +
-				'</category>' +
 				'</category>';
 		}
 
@@ -1088,7 +995,8 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catControl").attr("colour", Blockly.Blocks.control.HUE);
 		jQuery("#catEvents").attr("colour", Blockly.Blocks.events.HUE);
 		jQuery("#catSensor").attr("colour", Blockly.Blocks.sensor.HUE);
-		jQuery("#catComm").attr("colour", Blockly.Blocks.i2c.HUE);
+		jQuery("#catComm").attr("colour", Blockly.Blocks.io.HUE);
+		jQuery("#catI2c").attr("colour", Blockly.Blocks.io.HUE);
 		//jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);	
 		//jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
@@ -1244,7 +1152,13 @@ Code.init = function() {
 		});
 	
 	if (jQuery("#blockEditorButton").length > 0) {
+		jQuery("#developerMode, #blockEditorButton").removeClass("disabled");
 		Code.bindClick('blockEditorButton', Code.blockEditor);	
+	}
+
+	if (jQuery("#previewButton").length > 0) {
+		jQuery("#previewButton").removeClass("disabled");
+		Code.bindClick('previewButton', Code.previewCode);	
 	}
 
 	Code.bindClick('switchToCode', Code.switchToCode);
@@ -1319,7 +1233,6 @@ Code.initLanguage = function() {
 	document.getElementById('saveAsButton').title = MSG['saveAsButtonTooltip'];
 	document.getElementById('rebootButton').title = MSG['rebootButtonTooltip'];
 	document.getElementById('stopButton').title = MSG['stopButtonTooltip'];
-
 	document.getElementById('runButton').title = MSG['runTooltip'];
 	document.getElementById('trashButton').title = MSG['trashTooltip'];
 
@@ -1337,11 +1250,11 @@ Code.initLanguage = function() {
 
 	//categories.push('catActuators');
 
-	//if (Code.status.modules.i2c || Code.status.modules.lora) {
-	//	categories.push('catComm');
-	//}
+	if (Code.status.modules.i2c) {
+		categories.push('catComm');
+	}
 
-	//if (Code.status.modules.i2c) categories.push('catI2C');
+	if (Code.status.modules.i2c) categories.push('catI2C');
 	if (Code.status.modules.lora) categories.push('catLora');
 	//if (Code.status.modules.lora) categories.push('catLoraOTAA');
 	//if (Code.status.modules.lora) categories.push('catLoraABP');
@@ -2151,27 +2064,22 @@ Code.tabRefresh = function() {
 	if (Code.workspace.type == 'block_editor') {
 		jQuery("#saveButton").removeClass("disabled");
 	}
-
-	jQuery("#developerMode").addClass("disabled");
 }
 
 Code.developerMode = function() {
-	var on = true;
-	
 	if (jQuery("#developerMode").hasClass("on")) {
 		jQuery("#developerMode").removeClass("on");
-		jQuery("#developerMode").find(".icon").addClass("off");
-		
-		on = false;
+		jQuery("#developerMode").find(".icon").addClass("off");	
+		Blockly.Lua.developerMode = false;	
 	} else {
 		jQuery("#developerMode").addClass("on");
 		jQuery("#developerMode").find(".icon").removeClass("off");
-	}
-	
-	Blockly.Lua.developerMode = on;
-	if (Code.workspace.type == "editor") {
-		Code.switchToCode();
-	}
+		Blockly.Lua.developerMode = true;
+	}	
+
+	Code.workspace.editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace.blocks), -1);
+	Code.workspace.editor.focus();
+	Code.renderContent();						
 }
 
 Code.blockEditor = function() {
@@ -2184,6 +2092,24 @@ Code.blockEditor = function() {
 	}
 	
 	Code.renderContent();
+}
+
+Code.previewCode = function() {
+	Code.showCode =  !Code.showCode;
+	
+	if (Code.showCode) {
+		Code.workspace.type = "editor";
+		Code.workspace.prevType = Code.workspace.type;
+		Code.workspace.editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace.blocks), -1);
+		Code.workspace.editor.focus();
+		Code.renderContent();			
+	} else {
+		Code.workspace.type = "blocks";
+		Code.workspace.prevType = Code.workspace.type;
+		Code.workspace.editor.setValue("", -1);
+		Code.workspace.editor.focus();
+		Code.renderContent();						
+	}
 }
 
 Code.switchToCode = function() {
@@ -2398,6 +2324,7 @@ Code.setup = function() {
 	Blockly.Blocks.events.HUE = "#c88330";
 	Blockly.Blocks.sensor.HUE = "#2ca5e2";
 	Blockly.Blocks.operators.HUE = "#5cb712";
+	Blockly.Blocks.i2c.HUE = Blockly.Blocks.io.HUE;
 	//Blockly.Blocks.actuators.HUE = "#4a6cd4";
 
 	Blockly.Blocks['try'].HUE = Blockly.Blocks.control.HUE;

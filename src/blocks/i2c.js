@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, i2c block definition
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -37,162 +37,154 @@ goog.require('Blockly.Blocks');
  * Common HSV hue for all blocks in this category.
  */
 Blockly.Blocks.i2c.HUE = 20;
-  
-Blockly.Blocks['configurei2c'] = {
-  init: function() {
-      var modules = [];
-  	  var pins = [];
-	
-  	  for(var key in Code.status.maps.i2cModules) {
-  		modules.push([key, key]);
-  	  }  
-	
-  	  for(var key in Code.status.maps.digitalPins) {
-  		pins.push([key + ' - ' + Code.status.maps.digitalPins[key].replace(/pio\.P/i,'').replace(/_/i,''),key]);
-  	  }  
 
-      this.appendDummyInput()
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField(Blockly.Msg.configurei2c)
-          .appendField(new Blockly.FieldDropdown(modules), "MODULE");
-      this.appendDummyInput()
-          .appendField(' ' + Blockly.Msg.i2cSDA + ' ')
-          .appendField(new Blockly.FieldDropdown(pins), "SDA");
-      this.appendDummyInput()
-          .appendField(' ' + Blockly.Msg.i2cSCL + ' ')
-          .appendField(new Blockly.FieldDropdown(pins), "SCL");
-      this.appendDummyInput()
-          .appendField(' ' + Blockly.Msg.i2cSpeed + ' ');
-	  this.appendValueInput("SPEED")
-  	  	   .setCheck('Number');
-      this.appendDummyInput()
-          .appendField(' ' + Blockly.Msg.Khz);
-      this.setInputsInline(true);
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(Blockly.Blocks.i2c.HUE);
-      this.setTooltip('');
-      this.setHelpUrl('http://www.example.com/');
-  }
+Blockly.Blocks['i2csetspeed'] = {
+	init: function() {
+		var modules = [];
+
+		for (var key in Code.status.maps.i2cUnits) {
+			modules.push([Code.status.maps.i2cUnits[key][0], key]);
+		}
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.i2cSetSpeedFor)
+			.appendField(new Blockly.FieldDropdown(modules), "MODULE");
+
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.i2cSpeed);
+		this.appendValueInput("SPEED")
+			.setCheck('Number');
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.hz);
+
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.i2c.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	}
 };
 
 Blockly.Blocks['i2cstartcondition'] = {
-  init: function() {
-      var modules = [];
-	
-  	  for(var key in Code.status.maps.i2cModules) {
-  		modules.push([key, key]);
-  	  }  
-	
-      this.appendDummyInput()
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField(Blockly.Msg.i2cStartConditionFor)
-          .appendField(new Blockly.FieldDropdown(modules), "MODULE");
-	  this.setInputsInline(true);
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(Blockly.Blocks.i2c.HUE);
-      this.setTooltip('');
-      this.setHelpUrl('http://www.example.com/');
-  }
+	init: function() {
+		var modules = [];
+
+		for (var key in Code.status.maps.i2cUnits) {
+			modules.push([Code.status.maps.i2cUnits[key][0], key]);
+		}
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.i2cStartConditionFor)
+			.appendField(new Blockly.FieldDropdown(modules), "MODULE");
+
+			this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.i2c.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	}
 };
 
 Blockly.Blocks['i2cstopcondition'] = {
-  init: function() {
-      var modules = [];
-	
-  	  for(var key in Code.status.maps.i2cModules) {
-  		modules.push([key, key]);
-  	  }  
-	
-      this.appendDummyInput()
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField(Blockly.Msg.i2cStopConditionFor)
-          .appendField(new Blockly.FieldDropdown(modules), "MODULE");
-	  this.setInputsInline(true);
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(Blockly.Blocks.i2c.HUE);
-      this.setTooltip('');
-      this.setHelpUrl('http://www.example.com/');
-  }
+	init: function() {
+		var modules = [];
+
+		for (var key in Code.status.maps.i2cUnits) {
+			modules.push([Code.status.maps.i2cUnits[key][0], key]);
+		}
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.i2cStopConditionFor)
+			.appendField(new Blockly.FieldDropdown(modules), "MODULE");
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.i2c.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	}
 };
 
 Blockly.Blocks['i2caddress'] = {
-  init: function() {
-      var modules = [];
-	
-  	  for(var key in Code.status.maps.i2cModules) {
-  		modules.push([key, key]);
-  	  }  
-	
-      this.appendDummyInput()
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField(Blockly.Msg.i2cAddress)
-          .appendField(new Blockly.FieldDropdown(modules), "MODULE")
-          .appendField(' ');
+	init: function() {
+		var modules = [];
 
-	  this.appendValueInput("ADDRESS")
-  	  	   .setCheck('Number');
-  
-      this.appendDummyInput()
-          .appendField(' ' + Blockly.Msg.for + ' ')
-          .appendField(new Blockly.FieldDropdown([[Blockly.Msg.read,'read'],[Blockly.Msg.write,'write']]), "DIRECTION");
+		for (var key in Code.status.maps.i2cUnits) {
+			modules.push([Code.status.maps.i2cUnits[key][0], key]);
+		}
 
-	  	this.setOutput(true, null);
-	      this.setInputsInline(true);
-	      this.setPreviousStatement(false, null);
-	      this.setNextStatement(false, null);
-	      this.setColour(Blockly.Blocks.i2c.HUE);
-	      this.setTooltip('');
-	      this.setHelpUrl('http://www.example.com/');
-  }
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.i2cAddress)
+			.appendField(new Blockly.FieldDropdown(modules), "MODULE");
+
+		this.appendValueInput("ADDRESS")
+			.setCheck('Number');
+
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.for)
+			.appendField(new Blockly.FieldDropdown([
+				[Blockly.Msg.read, 'read'],
+				[Blockly.Msg.write, 'write']
+			]), "DIRECTION");
+
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.i2c.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	}
 };
 
 Blockly.Blocks['i2cread'] = {
-  init: function() {
-      var modules = [];
-	
-  	  for(var key in Code.status.maps.i2cModules) {
-  		modules.push([key, key]);
-  	  }  
-	
-      this.appendDummyInput()
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField(Blockly.Msg.i2cReadFrom)
-          .appendField(new Blockly.FieldDropdown(modules), "MODULE");
-	  	this.setOutput(true, null);
-	      this.setInputsInline(true);
-	      this.setPreviousStatement(false, null);
-	      this.setNextStatement(false, null);
-	      this.setColour(Blockly.Blocks.i2c.HUE);
-	      this.setTooltip('');
-	      this.setHelpUrl('http://www.example.com/');
-  }
+	init: function() {
+		var modules = [];
+
+		for (var key in Code.status.maps.i2cUnits) {
+			modules.push([Code.status.maps.i2cUnits[key][0], key]);
+		}
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.i2cReadFrom)
+			.appendField(new Blockly.FieldDropdown(modules), "MODULE");
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.i2c.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	}
 };
 
 Blockly.Blocks['i2cwrite'] = {
-  init: function() {
-      var modules = [];
-	
-  	  for(var key in Code.status.maps.i2cModules) {
-  		modules.push([key, key]);
-  	  }  
-	
-      this.appendDummyInput()
-          .setAlign(Blockly.ALIGN_RIGHT)
-          .appendField(Blockly.Msg.i2cWriteTo)
-          .appendField(new Blockly.FieldDropdown(modules), "MODULE")
-		  .appendField(' ' + MSG['value'] + ' ');
+	init: function() {
+		var modules = [];
 
-  this.appendValueInput("VALUE")
- 	  	   .setCheck('Number');
-	  	this.setOutput(true, null);
-	      this.setInputsInline(true);
-	      this.setPreviousStatement(false, null);
-	      this.setNextStatement(false, null);
-	      this.setColour(Blockly.Blocks.i2c.HUE);
-	      this.setTooltip('');
-	      this.setHelpUrl('http://www.example.com/');
-  }
+		for (var key in Code.status.maps.i2cUnits) {
+			modules.push([Code.status.maps.i2cUnits[key][0], key]);
+		}
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.i2cWriteTo)
+			.appendField(new Blockly.FieldDropdown(modules), "MODULE");
+
+		this.appendValueInput("VALUE")
+			.setCheck('Number');
+
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.i2c.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	}
 };

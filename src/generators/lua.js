@@ -193,29 +193,51 @@ Blockly.Lua.scrub_ = function(block, code) {
   return commentCode + code + nextCode;
 };
 
-Blockly.Lua.tryBlock = function(indent, block, code) {
-	if (!Blockly.Lua.developerMode) {
-		return Blockly.Lua.indent(indent,code);
-	}
-	
+Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	var tryCode = '';
-	
-	tryCode += Blockly.Lua.indent(0,'try(') + '\n';
-	tryCode += Blockly.Lua.indent(1,'function()') + "\n";
-	
-	if (code != "") {
-		tryCode += Blockly.Lua.indent(2,code);
+
+	if (typeof comment == "undefined") {
+		comment = "";
 	}
 	
-	tryCode += Blockly.Lua.indent(1,'end,') + "\n";
-	tryCode += Blockly.Lua.indent(1,'function(where, line, err, message)') + "\n";
-	tryCode += Blockly.Lua.indent(2,'wcBlock.blockError("' + block.id + '", err, message)') + "\n";
-	tryCode += Blockly.Lua.indent(1,'end') + "\n";
-	tryCode += Blockly.Lua.indent(0,')');
+	if (comment != "") {
+		tryCode += "-- begin: " + comment + "\n";
+	}
+
+	if (!Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(indent,code);
+	} else {
+		tryCode += Blockly.Lua.indent(0,'try(') + '\n';
+		tryCode += Blockly.Lua.indent(1,'function()') + "\n";
 	
-	tryCode = Blockly.Lua.indent(indent, tryCode);
+		if (code != "") {
+			tryCode += Blockly.Lua.indent(2,code);
+		}
 	
-	return tryCode + "\n";	
+		tryCode += Blockly.Lua.indent(1,'end,') + "\n";
+		tryCode += Blockly.Lua.indent(1,'function(where, line, err, message)') + "\n";
+		tryCode += Blockly.Lua.indent(2,'wcBlock.blockError("' + block.id + '", err, message)') + "\n";
+		tryCode += Blockly.Lua.indent(1,'end') + "\n";
+		tryCode += Blockly.Lua.indent(0,')');
+	
+		tryCode = Blockly.Lua.indent(indent, tryCode) + "\n";	
+	}
+		
+	if (comment != "") {
+		tryCode += "-- end: " + comment + "\n";
+	}
+	
+	if (block.nextConnection) {
+		tryCode += '\n';
+	}
+	
+	return tryCode;	
+}
+
+Blockly.Lua.require = function(lib) {
+	if (codeSection["require"].indexOf('require("'+lib+'")') == -1) {
+		codeSection["require"].push('require("'+lib+'")');
+	}
 }
 
 Blockly.Lua.indent = function(n, code) {
