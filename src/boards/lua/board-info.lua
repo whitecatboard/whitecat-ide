@@ -50,6 +50,19 @@ do
 		__m_pin_map("uart")
 		io.write("},")
 	end
+	
+	function __m_exceptions(name)
+		io.write("\""..name.."\": ")
+		io.write("[")
+		if (_G[name] ~= nil) then
+			if (_G[name].error ~= nil) then
+				for key in pairs(_G[name].error) do
+					io.write("\""..key.."\",")
+				end
+			end
+		end
+		io.write("],")
+	end
 
 	function __cpu()
 	    local curr_os, curr_ver, curr_build, curr_commit = os.version();
@@ -82,6 +95,28 @@ do
 	    __m_ena("servo",servo)
 	    __m_ena("sdisplay",sdisplay)
 	    __m_ena("net",net)
+		io.write("},")
+
+	    io.write("\"exceptions\": ")
+		io.write("{")
+	    __m_exceptions("thread")
+	    __m_exceptions("nvs")
+	    __m_exceptions("pack")
+	    __m_exceptions("adc")
+	    __m_exceptions("i2c")
+	    __m_exceptions("pio")
+	    __m_exceptions("pwm")
+	    __m_exceptions("tft")
+	    __m_exceptions("spi")
+	    __m_exceptions("tmr")
+	    __m_exceptions("uart")
+	    __m_exceptions("net")
+	    __m_exceptions("lora")
+	    __m_exceptions("mqtt")
+	    __m_exceptions("sensor")
+	    __m_exceptions("servo")
+	    __m_exceptions("sdisplay")
+	    __m_exceptions("net")
 		io.write("},")
 	end
 
