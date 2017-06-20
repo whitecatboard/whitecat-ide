@@ -12,7 +12,7 @@
 		"12":  ["GPIO12", true, true , "P8"  ],
 		"13":  ["GPIO13", true, true , "P9"  ],
 		"15":  ["GPIO15", true, true , "P10" ],
-		"12":  ["GPIO2" , true, true , "P11" ],
+		"2":   ["GPIO2" , true, true , "P11" ],
 		"4" :  ["GPIO4" , true, true , "DI0" ],
 		"16":  ["GPIO16", true, true , "DI1" ],
 		"17":  ["GPIO17", true, true , "DI2" ],
