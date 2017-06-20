@@ -154,12 +154,14 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	}
 
 	code += "function _code()\n";
+	code += "local previous = wcBlock.developerMode\n";
 	code += "wcBlock.developerMode = false\n";
 	if (goog.isArray(line)) {
 		code += "print(" + line[0] + ")\n";
 	} else {
 		code += "print(" + line + ")\n";
 	}
+	code += "wcBlock.developerMode = previous\n";
 	code += "end";
 
 	return code;
@@ -187,12 +189,16 @@ Blockly.Generator.prototype.blockCode = function(block) {
 	}
 
 	code += "function _code()\n";
+	code += "thread.start(function()\n";
+	code += "local previous = wcBlock.developerMode\n";
 	code += "wcBlock.developerMode = false\n";
 	if (goog.isArray(line)) {
 		code += line[0] + "\n";
 	} else {
 		code += line + "\n";
 	}
+	code += "wcBlock.developerMode = previous\n";
+	code += "end)\n";
 	code += "end";
 
 	return code;

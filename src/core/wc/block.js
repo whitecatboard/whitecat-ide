@@ -4,7 +4,6 @@ Blockly.Block.prototype.updateBoardAtFieldChange = function(field) {
 	var thisInstance = this;
 	
 	if (!thisInstance.isInFlyout) {
-		thisInstance.currentTimeout = null;
 		Code.workspace.blocks.addChangeListener(function(e) {
 			if ((e.type == Blockly.Events.CHANGE)) {
 				if (e.blockId != thisInstance.id) {
@@ -20,15 +19,15 @@ Blockly.Block.prototype.updateBoardAtFieldChange = function(field) {
 				}
 
 				if (e.name == field) {
-					if (thisInstance.currentTimeout) {
-						clearTimeout(thisInstance.currentTimeout);
+					if (thisInstance.fieldTimeout) {
+						clearTimeout(thisInstance.fieldTimeout);
 					}
 
-					thisInstance.currentTimeout = setTimeout(function() {
+					thisInstance.fieldTimeout = setTimeout(function() {
 						thisInstance.value = e.newValue;
 
 						var code = Blockly.Lua.blockCode(thisInstance);
-
+						console.log(code);
 						thisInstance.removeError();
 						thisInstance.removeStart();
 						
@@ -40,7 +39,7 @@ Blockly.Block.prototype.updateBoardAtFieldChange = function(field) {
 						}, function(id, info) {});
 
 						thisInstance.value = -1;
-					}, 250);
+					}, 500);
 				}
 			}
 		});
@@ -51,7 +50,6 @@ Blockly.Block.prototype.updateBoardAtBlockCreate = function() {
 	var thisInstance = this;
 	
 	if (!thisInstance.isInFlyout) {
-		thisInstance.currentTimeout = null;
 		Code.workspace.blocks.addChangeListener(function(e) {
 			if ((e.type == Blockly.Events.CREATE)) {
 				if (e.blockId != thisInstance.id) {
@@ -67,11 +65,11 @@ Blockly.Block.prototype.updateBoardAtBlockCreate = function() {
 				}
 
 //				if (e.name == field) {
-					if (thisInstance.currentTimeout) {
-						clearTimeout(thisInstance.currentTimeout);
+					if (thisInstance.createTimeout) {
+						clearTimeout(thisInstance.createTimeout);
 					}
 
-					thisInstance.currentTimeout = setTimeout(function() {
+					thisInstance.createTimeout = setTimeout(function() {
 //						thisInstance.value = e.newValue;
 
 						var code = Blockly.Lua.blockCode(thisInstance);

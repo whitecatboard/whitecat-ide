@@ -171,15 +171,25 @@ Blockly.Lua.io.helper = {
 	
 	
 	attachPwm: function(block) {
-	    var frequency = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE) || '\'\'';
+	    var freq = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE) || '\'\'';
 	    var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE) || '\'\'';	
 		var code = '';
 
 		if (!Blockly.Lua.io.helper.hasAncestorsPwm(block)) {
 			code += Blockly.Lua.indent(0,'if ('+Blockly.Lua.io.helper.instancePwm(block)+' == nil) then') + "\n";
-			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ' = pwm.attach(pio.'+Blockly.Lua.io.helper.nameDigital(block)+', '+frequency+', ' + duty + ' * 0.01)') + "\n";	
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ' = pwm.attach(pio.'+Blockly.Lua.io.helper.nameDigital(block)+', '+freq+', ' + duty + ' * 0.01)') + "\n";	
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':start()') + "\n";	
+			code += Blockly.Lua.indent(0,'else') + "\n";				
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':stop()') + "\n";	
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':setfreq('+freq+')') + "\n";	
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':setduty('+duty+' * 0.01)') + "\n";	
 			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':start()') + "\n";	
 			code += Blockly.Lua.indent(0,'end') + "\n";				
+		} else {
+			code += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':stop()') + "\n";	
+			code += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':setfreq('+freq+')') + "\n";	
+			code += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':setduty('+duty+' * 0.01)') + "\n";	
+			code += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':start()') + "\n";	
 		}
 
 		return code;
@@ -265,16 +275,15 @@ Blockly.Lua['getanalogpin'] = function(block) {
 };
 
 Blockly.Lua['setpwmpin'] = function(block) {
-    var frequency = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE) || '\'\'';
+    var freq = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE) || '\'\'';
     var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE) || '\'\'';	
 	var tryCode = '', code = '';
 	
 	Blockly.Lua.require("block");
 
 	tryCode += Blockly.Lua.io.helper.attachPwm(block);
-	tryCode += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':setduty('+duty+' * 0.01)') + "\n";	
 
-	code += Blockly.Lua.tryBlock(0, block, tryCode, 'set pwm pin ' + Blockly.Lua.io.helper.namePwm(block) + ' to freq ' + frequency + ' hz, duty ' + duty + '%');
+	code += Blockly.Lua.tryBlock(0, block, tryCode, 'set pwm pin ' + Blockly.Lua.io.helper.namePwm(block) + ' to freq ' + freq + ' hz, duty ' + duty + '%');
 	
 	return code;
 };
