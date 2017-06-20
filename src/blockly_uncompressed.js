@@ -92,6 +92,7 @@ goog.addDependency("../../../" + dir + "/core/xml.js", ['Blockly.Xml'], ['goog.a
 goog.addDependency("../../../" + dir + "/core/zoom_controls.js", ['Blockly.ZoomControls'], ['Blockly.Touch', 'goog.dom']);
 goog.addDependency("../../../" + dir + "/core/wc/block.js", [], []);
 goog.addDependency("../../../" + dir + "/core/wc/field_event.js", ['Blockly.wc.FieldEvent'], ['Blockly.FieldDropdown', 'Blockly.Msg', 'Blockly.Events', 'goog.asserts', 'goog.string']);
+goog.addDependency("../../../" + dir + "/core/wc/field_exception.js", ['Blockly.wc.FieldException'], ['Blockly.FieldDropdown', 'Blockly.Msg', 'Blockly.Events', 'goog.asserts', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/lora.js", ['Blockly.Lora'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/mqtt.js", ['Blockly.MQTT'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/sensors.js", ['Blockly.Sensors'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string', 'Blockly.Blocks.io.helper']);
@@ -1664,6 +1665,7 @@ goog.require('Blockly.constants');
 goog.require('Blockly.inject');
 goog.require('Blockly.utils');
 goog.require('Blockly.wc.FieldEvent');
+goog.require('Blockly.wc.FieldException');
 
 delete this.BLOCKLY_DIR;
 delete this.BLOCKLY_BOOT;

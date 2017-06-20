@@ -39,6 +39,7 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.i2c.HUE = 20;
 
 Blockly.Blocks['i2csetspeed'] = {
+	module: "i2c",
 	init: function() {
 		var modules = [];
 
@@ -68,6 +69,7 @@ Blockly.Blocks['i2csetspeed'] = {
 };
 
 Blockly.Blocks['i2cstartcondition'] = {
+	module: "i2c",
 	init: function() {
 		var modules = [];
 
@@ -90,6 +92,7 @@ Blockly.Blocks['i2cstartcondition'] = {
 };
 
 Blockly.Blocks['i2cstopcondition'] = {
+	module: "i2c",
 	init: function() {
 		var modules = [];
 
@@ -111,6 +114,7 @@ Blockly.Blocks['i2cstopcondition'] = {
 };
 
 Blockly.Blocks['i2caddress'] = {
+	module: "i2c",
 	init: function() {
 		var modules = [];
 
@@ -143,6 +147,7 @@ Blockly.Blocks['i2caddress'] = {
 };
 
 Blockly.Blocks['i2cread'] = {
+	module: "i2c",
 	init: function() {
 		var modules = [];
 
@@ -165,6 +170,7 @@ Blockly.Blocks['i2cread'] = {
 };
 
 Blockly.Blocks['i2cwrite'] = {
+	module: "i2c",
 	init: function() {
 		var modules = [];
 

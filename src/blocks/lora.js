@@ -35,6 +35,7 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.lora.HUE = 20;
 
 Blockly.Blocks['lora_configure'] = {
+	module: "lora",
 	init: function() {
 		var bands = [];
 
@@ -58,6 +59,7 @@ Blockly.Blocks['lora_configure'] = {
 };
 
 Blockly.Blocks['lora_set_deveui'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -75,6 +77,7 @@ Blockly.Blocks['lora_set_deveui'] = {
 };
 
 Blockly.Blocks['lora_set_appeui'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -92,6 +95,7 @@ Blockly.Blocks['lora_set_appeui'] = {
 };
 
 Blockly.Blocks['lora_set_devaddr'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -109,6 +113,7 @@ Blockly.Blocks['lora_set_devaddr'] = {
 };
 
 Blockly.Blocks['lora_set_nwkskey'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -126,6 +131,7 @@ Blockly.Blocks['lora_set_nwkskey'] = {
 };
 
 Blockly.Blocks['lora_set_appskey'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -143,6 +149,7 @@ Blockly.Blocks['lora_set_appskey'] = {
 };
 
 Blockly.Blocks['lora_set_appkey'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -160,6 +167,7 @@ Blockly.Blocks['lora_set_appkey'] = {
 };
 
 Blockly.Blocks['lora_set_adr'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -181,6 +189,7 @@ Blockly.Blocks['lora_set_adr'] = {
 };
 
 Blockly.Blocks['lora_set_dr'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -208,6 +217,7 @@ Blockly.Blocks['lora_set_dr'] = {
 };
 
 Blockly.Blocks['lora_set_retx'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -235,6 +245,7 @@ Blockly.Blocks['lora_set_retx'] = {
 };
 
 Blockly.Blocks['lora_join'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -306,6 +317,7 @@ Blockly.Blocks['lora_join'] = {
 };
 
 Blockly.Blocks['lora_tx'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -341,6 +353,7 @@ Blockly.Blocks['lora_tx'] = {
 };
 
 Blockly.Blocks['lora_get_port'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -357,6 +370,7 @@ Blockly.Blocks['lora_get_port'] = {
 };
 
 Blockly.Blocks['lora_get_payload'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
@@ -373,6 +387,7 @@ Blockly.Blocks['lora_get_payload'] = {
 };
 
 Blockly.Blocks['when_i_receive_a_lora_frame'] = {
+	module: "lora",
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME);

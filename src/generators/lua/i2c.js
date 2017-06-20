@@ -50,11 +50,13 @@ Blockly.Lua.i2c.helper = {
 
 		while (previous) {
 			previous = previous.targetBlock();
-			if (Blockly.Lua.i2c.helper.isI2c(previous)) {
-				return true;
-			}
+			if (previous) {
+				if (Blockly.Lua.i2c.helper.isI2c(previous)) {
+					return true;
+				}
 			
-			previous = previous.previousConnection;
+				previous = previous.previousConnection;				
+			}
 		}
 		
 		return false;

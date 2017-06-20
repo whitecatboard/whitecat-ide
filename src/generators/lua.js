@@ -228,7 +228,9 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	}
 	
 	if (block.nextConnection) {
-		tryCode += '\n';
+		if (block.nextConnection.targetBlock()) {
+			tryCode += '\n';
+		}
 	}
 	
 	return tryCode;	

@@ -585,5 +585,7 @@
 
 	"SENSOR_I2C": "Sensor is on I2C bus",
 	"SENSOR_UART": "Sensor is on UART",
-	"SENSOR_SPI": "Sensor is on SPI bus"
+	"SENSOR_SPI": "Sensor is on SPI bus",
+
+	"any": "any"
 }

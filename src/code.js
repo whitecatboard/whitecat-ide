@@ -635,8 +635,7 @@ Code.buildToolBox = function(callback) {
 		'</category>' +
 		'<category id="catExceptions">' +
 		'<block type="exception_try"></block>' +
-		//		'<block type="exception_catch_error"></block>' +
-		'<block type="exception_catch_other_error"></block>' +
+		'<block type="exception_catch_error"></block>' +
 		'<block type="exception_raise_again"></block>' +
 		'</category>' +
 		'<category id="catDelays">' +

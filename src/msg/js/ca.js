@@ -545,6 +545,7 @@ Blockly.Msg.WIFI_STOP = "aturar Wi-Fi";
 Blockly.Msg.WIFI_TYPE = "Tipus";
 Blockly.Msg.WITH = "amb";
 Blockly.Msg.YES = "Si";
+Blockly.Msg.any = "qualsevol";
 Blockly.Msg.any_edge = "qualsevol flanc";
 Blockly.Msg.configureLora = "configura LoRa utilitzant la banda dels ";
 Blockly.Msg.configureanalogpin = "configurar pin analògic";
