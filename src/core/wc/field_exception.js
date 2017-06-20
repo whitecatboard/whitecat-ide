@@ -115,6 +115,34 @@ Blockly.wc.FieldException.prototype.setValue = function(newValue) {
  * @return {!Array.<string>} Array of event names.
  * @this {!Blockly.wc.FieldException}
  */
+Blockly.wc.FieldException.find = function(statement, exceptionList) {
+	while (statement) {
+		statement = statement.targetBlock();
+		if (statement) {
+			if (typeof statement.module != "undefined") {
+				if (typeof Code.status.exceptions[statement.module] != "undefined") {
+					for (var i = 0; i < Code.status.exceptions[statement.module].length; i++) {
+						var exceptionName = statement.module + ".error." + Code.status.exceptions[statement.module][i];
+						
+						if (exceptionList.indexOf(exceptionName) == -1) {
+							exceptionList.push(exceptionName);
+						}										
+					}			
+				}	
+			}
+			
+			var connections = statement.getConnections_();
+			for (var i = 0; i < connections.length; i++) {
+				if (connections[i].type == 1) {
+					Blockly.wc.FieldException.find(connections[i], exceptionList);
+				}
+			}
+			
+			statement = statement.nextConnection;
+		}
+	}
+};
+
 Blockly.wc.FieldException.dropdownCreate = function() {
 	var exceptionList = [];
 
@@ -124,26 +152,9 @@ Blockly.wc.FieldException.dropdownCreate = function() {
 			previous = previous.targetBlock();
 			if (previous) {
 				if (previous.type == "exception_try") {
-					var statement = previous.inputList[0].connection
+					var statement = previous.inputList[0].connection;
 					
-					while (statement) {
-						statement = statement.targetBlock();
-						if (statement) {
-							if (typeof statement.module != "undefined") {
-								if (typeof Code.status.exceptions[statement.module] != "undefined") {
-									for (var i = 0; i < Code.status.exceptions[statement.module].length; i++) {
-										var exceptionName = statement.module + ".error." + Code.status.exceptions[statement.module][i];
-										
-										if (exceptionList.indexOf(exceptionName) == -1) {
-											exceptionList.push(exceptionName);
-										}										
-									}			
-								}	
-							}
-							
-							statement = statement.nextConnection;
-						}
-					}
+					Blockly.wc.FieldException.find(statement, exceptionList);					
 				}
 			}
 		}
