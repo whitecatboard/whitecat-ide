@@ -29,165 +29,282 @@
 'use strict';
 
 goog.provide('Blockly.Lua.io');
+goog.provide('Blockly.Lua.io.helper');
 
 goog.require('Blockly.Lua');
 
-Blockly.Lua['setdigitalpin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var pioName = Code.status.maps.digitalPins[pin][0];
-	var value = block.getFieldValue('VALUE');
-	var code = '';
+Blockly.Lua.io.helper = {
+	isDigital: function(block, test, output) {
+		if (output) {
+			return (
+				((test.type == 'setdigitalpin') && (block.getFieldValue('PIN') == test.getFieldValue('PIN')))
+			);			
+		} else {
+			return (
+				((test.type == 'getdigitalpin') && (block.getFieldValue('PIN') == test.getFieldValue('PIN')))
+			);						
+		}
+	},
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
-	
-	code += Blockly.Lua.indent(0,'-- configure digital pin '+pioName+' as output, if needed') + "\n";
-	code += Blockly.Lua.indent(0,'if ((_pio'+pioName+' == nil) or (not(_pio'+pioName+' == pio.OUTPUT))) then') + "\n";
-	code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.OUTPUT, pio.'+pioName+')') + "\n";
-	code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.NOPULL, pio.'+pioName+')') + "\n";
-	code += Blockly.Lua.indent(0,'end') + "\n\n";
+	hasAncestorsDigital: function(block, output) {
+		var previous = block.previousConnection;
+
+		while (previous) {
+			previous = previous.targetBlock();
+			if (previous) {
+				if (Blockly.Lua.io.helper.isDigital(block, previous, output)) {
+					return true;
+				}
+			
+				previous = previous.previousConnection;				
+			}
+		}
 		
-	code += Blockly.Lua.indent(0,'-- set digital pin ' + pioName + ' to ' + value) + "\n";
-	code += Blockly.Lua.indent(0,'pio.pin.setval('+value+', pio.'+pioName+')') + "\n";
+		return false;
+	},
+	
+	nameDigital: function(block) {
+		return Code.status.maps.digitalPins[block.getFieldValue('PIN')][0];
+
+	},
+	
+	instanceDigital: function(block) {
+		return "_pio" + Blockly.Lua.io.helper.nameDigital(block);
+	},
+
+	attachDigital: function(block, output) {
+		var code = '';
+
+		if (!Blockly.Lua.io.helper.hasAncestorsDigital(block, output)) {
+			code += Blockly.Lua.indent(0,'if (('+Blockly.Lua.io.helper.instanceDigital(block)+' == nil) or ('+Blockly.Lua.io.helper.instanceDigital(block)+' == ' + (output?"pio.INPUT":"pio.OUTPUT")+')) then') + "\n";
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instanceDigital(block) + " = ") + (output?"pio.OUTPUT":"pio.INPUT") + "\n";
+			
+			if (output) {
+				code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.OUTPUT, pio.'+Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+				code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.NOPULL, pio.'+Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+				code += Blockly.Lua.indent(0,'end') + "\n\n";
+			} else {
+				code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.INPUT, pio.'+Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+				code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.PULLUP, pio.'+Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+				code += Blockly.Lua.indent(0,'end') + "\n\n";				
+			}
+		}
+
+		return code;
+	},
+	
+	isAnalog: function(block, test) {
+		return (
+			((test.type == 'getanalogpin') && (block.getFieldValue('PIN') == test.getFieldValue('PIN')))
+		);			
+	},
+	
+	hasAncestorsAnalog: function(block) {
+		var previous = block.previousConnection;
+
+		while (previous) {
+			previous = previous.targetBlock();
+			if (previous) {
+				if (Blockly.Lua.io.helper.isAnalog(block, previous)) {
+					return true;
+				}
+			
+				previous = previous.previousConnection;				
+			}
+		}
+		
+		return false;
+	},
+
+	nameAnalog: function(block) {
+		return Code.status.maps.analogPinsChannel[block.getFieldValue('PIN')][0];
+
+	},
+	
+	instanceAnalog: function(block) {
+		return "_adc" + Blockly.Lua.io.helper.nameAnalog(block);
+	},
+	
+	attachAnalog: function(block) {
+		var code = '';
+
+		if (!Blockly.Lua.io.helper.hasAncestorsAnalog(block)) {
+			code += Blockly.Lua.indent(0,'if ('+Blockly.Lua.io.helper.instanceAnalog(block)+' == nil) then') + "\n";
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instanceAnalog(block) + ' = adc.setup(adc.ADC1, adc.'+Blockly.Lua.io.helper.nameAnalog(block)+', 12)') + "\n";			
+			code += Blockly.Lua.indent(0,'end') + "\n";				
+		}
+
+		return code;
+	},
+
+	isPwm: function(block, test) {
+		return (
+			((test.type == 'setpwmpin') && (block.getFieldValue('PIN') == test.getFieldValue('PIN')))
+		);			
+	},
+	
+	hasAncestorsPwm: function(block) {
+		var previous = block.previousConnection;
+
+		while (previous) {
+			previous = previous.targetBlock();
+			if (previous) {
+				if (Blockly.Lua.io.helper.isPwm(block, previous)) {
+					return true;
+				}
+			
+				previous = previous.previousConnection;				
+			}
+		}
+		
+		return false;
+	},
+
+	namePwm: function(block) {
+		return Code.status.maps.digitalPins[block.getFieldValue('PIN')][0];
+
+	},
+	
+	instancePwm: function(block) {
+		return "_pwm" + Blockly.Lua.io.helper.namePwm(block);
+	},
+	
+	
+	attachPwm: function(block) {
+	    var frequency = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE) || '\'\'';
+	    var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE) || '\'\'';	
+		var code = '';
+
+		if (!Blockly.Lua.io.helper.hasAncestorsPwm(block)) {
+			code += Blockly.Lua.indent(0,'if ('+Blockly.Lua.io.helper.instancePwm(block)+' == nil) then') + "\n";
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ' = pwm.attach(pio.'+Blockly.Lua.io.helper.nameDigital(block)+', '+frequency+', ' + duty + ' * 0.01)') + "\n";	
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':start()') + "\n";	
+			code += Blockly.Lua.indent(0,'end') + "\n";				
+		}
+
+		return code;
+	},
+};
+
+Blockly.Lua['setdigitalpin'] = function(block) {
+	var value = block.getFieldValue('VALUE');
+	var tryCode = '', code = '';
+	
+	Blockly.Lua.require("block");
+
+	tryCode += Blockly.Lua.io.helper.attachDigital(block, true);
+	tryCode += Blockly.Lua.indent(0,'pio.pin.setval('+value+', pio.'+Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+
+
+	code += Blockly.Lua.tryBlock(0, block, tryCode, 'set digital pin ' + Blockly.Lua.io.helper.nameDigital(block) + ' to ' + value);
 	
 	return code;
 };
 
 Blockly.Lua['getdigitalpin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var pioName = Code.status.maps.digitalPins[pin][0];
-	var code = '';
-		
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
+	var tryCode = '', getCode = '', code = '';
+
+	Blockly.Lua.require("block");
+
+	var tryCode = '';
+	tryCode += Blockly.Lua.io.helper.attachDigital(block, false);
+	tryCode += Blockly.Lua.indent(0, 'val = pio.pin.getval(pio.'+Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+
+	getCode += Blockly.Lua.indent(0, "function _getDigitalPin" + Blockly.Lua.io.helper.nameDigital(block) + "()") + "\n";
+	getCode += Blockly.Lua.indent(1, "local val") + "\n\n";
+
+	getCode += Blockly.Lua.indent(1, Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
+
+	getCode += Blockly.Lua.indent(1, "return val") + "\n";
+	getCode += Blockly.Lua.indent(0, "end") + "\n";
+
+	codeSection["functions"].push(getCode);
+
+	code += Blockly.Lua.indent(0, "_getDigitalPin" + Blockly.Lua.io.helper.nameDigital(block) + "()") + "\n";
+
+	if (block.nextConnection) {
+		code += '\n';
 	}
 
-	// Generate code for get digital value
-	// This code goes to the declaration section
-	var getCode = '';
-	getCode += Blockly.Lua.indent(0, '-- configure ' + pioName + ' as digital input and get value') + "\n";
-	getCode += Blockly.Lua.indent(0, 'function _getDigitalPin' + pioName + '()') + "\n";
-	
-	getCode += Blockly.Lua.indent(1,'-- configure digital pin '+pioName+' as input, if needed') + "\n";
-	getCode += Blockly.Lua.indent(1,'if ((_pio'+pioName+' == nil) or (not(_pio'+pioName+' == pio.INPUT))) then') + "\n";
-	getCode += Blockly.Lua.indent(2, 'pio.pin.setdir(pio.INPUT, pio.'+pioName+')') + "\n";
-	getCode += Blockly.Lua.indent(2, 'pio.pin.setpull(pio.PULLUP, pio.'+pioName+')') + "\n";
-	getCode += Blockly.Lua.indent(1, 'end') + "\n\n";
-	
-	getCode += Blockly.Lua.indent(1, '-- get pin value and return') + "\n";
-	getCode += Blockly.Lua.indent(1, 'return pio.pin.getval(pio.'+pioName+')\n');
-	getCode += Blockly.Lua.indent(0, 'end\n');
-			
-	codeSection["functions"].push(getCode);
-	
-	return ['_getDigitalPin' + pioName + '()', Blockly.Lua.ORDER_HIGH];	
+	return [code, Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['getanalogpin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var adcName = Code.status.maps.analogPinsChannel[pin][0];
 	var format = block.getFieldValue('FORMAT');
-	var code = '';
-		
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	var tryCode = '', getCode = '', code = '';
 
-	// Generate code for get analog value
-	// This code goes to the declaration section
-	var getCode = '';
-	getCode += Blockly.Lua.indent(0, '-- configure ' + adcName + ' as analog input and get value') + "\n";
-	getCode += Blockly.Lua.indent(0, 'function _getAnalogPin' + adcName + '()') + "\n";
-	
+	Blockly.Lua.require("block");
+
 	var tryCode = '';
-	tryCode += Blockly.Lua.indent(0, 'if (_adc'+adcName+' == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(1, '_adc'+adcName+' = adc.setup(adc.ADC1, adc.'+adcName+', 12)') + "\n";
-	tryCode += Blockly.Lua.indent(0, 'end') + "\n\n";
-	tryCode += Blockly.Lua.indent(0, 'raw, mvolts = _adc'+adcName+':read()') + "\n";
+	tryCode += Blockly.Lua.io.helper.attachAnalog(block, false);
+	
+	getCode += Blockly.Lua.indent(0, "function _getAnalogPin" + Blockly.Lua.io.helper.nameAnalog(block) + "()") + "\n";
+	getCode += Blockly.Lua.indent(1, "local raw = nil") + "\n";
+	getCode += Blockly.Lua.indent(1, "local mvolts = nil") + "\n\n";
 
-	getCode += Blockly.Lua.indent(1, 'local raw = nil') + "\n";
-	getCode += Blockly.Lua.indent(1, 'local mvolts = nil') + "\n\n";
-	getCode += Blockly.Lua.tryBlock(1, block, tryCode) + "\n";
-	
+	getCode += Blockly.Lua.indent(1, Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
+
+	getCode += Blockly.Lua.indent(1, 'raw, mvolts = '+Blockly.Lua.io.helper.instanceAnalog(block)+':read()') + "\n";
 	if (format == 'mvolts') {
-		getCode += Blockly.Lua.indent(1, 'return mvolts\n');
+		getCode += Blockly.Lua.indent(1, 'val = mvolts') + "\n\n";
 	} else {
-		getCode += Blockly.Lua.indent(1, 'return raw\n');		
+		getCode += Blockly.Lua.indent(1, 'val = raw') + "\n\n";		
 	}
-	
-	getCode += Blockly.Lua.indent(0, 'end\n');
-			
+	getCode += Blockly.Lua.indent(1, "return val") + "\n";
+	getCode += Blockly.Lua.indent(0, "end") + "\n";
+
 	codeSection["functions"].push(getCode);
-	
-	return ['_getAnalogPin' + adcName + '()', Blockly.Lua.ORDER_HIGH];	
+
+	code += Blockly.Lua.indent(0, "_getAnalogPin" + Blockly.Lua.io.helper.nameAnalog(block) + "()") + "\n";
+
+	if (block.nextConnection) {
+		code += '\n';
+	}
+
+	return [code, Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['setpwmpin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
     var frequency = Blockly.Lua.valueToCode(block, 'FREQUENCY', Blockly.Lua.ORDER_NONE) || '\'\'';
     var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE) || '\'\'';	
-	var pioName = Code.status.maps.digitalPins[pin][0];
-	var code = '';
+	var tryCode = '', code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.require("block");
 
-	if (frequency == "") {
-		frequency = "0";
-	}
-	
-	if (duty == "") {
-		duty = "0";
-	}
-	
-	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(0,'if (_pwm'+pioName+' == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(1,'_pwm'+pioName+' = pwm.attach(pio.'+pioName+', '+frequency+', '+duty * 0.01 +')') + "\n";
-	tryCode += Blockly.Lua.indent(1,'_pwm'+pioName+':start()') + "\n";
-	tryCode += Blockly.Lua.indent(0,'else') + "\n";
-	tryCode += Blockly.Lua.indent(1,'_pwm'+pioName+':setduty('+duty * 0.01 +')') + "\n";
-	tryCode += Blockly.Lua.indent(0,'end') + "\n";
+	tryCode += Blockly.Lua.io.helper.attachPwm(block);
+	tryCode += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':setduty('+duty+' * 0.01)') + "\n";	
 
-	code += Blockly.Lua.indent(0,'-- set pwm pin ' + pioName + ' to freq ' + frequency + ' hz, duty ' + duty + '%') + "\n";
-	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
+	code += Blockly.Lua.tryBlock(0, block, tryCode, 'set pwm pin ' + Blockly.Lua.io.helper.namePwm(block) + ' to freq ' + frequency + ' hz, duty ' + duty + '%');
 	
 	return code;
 };
 
 Blockly.Lua['when_digital_pin'] = function(block) {
-	var pin = block.getFieldValue('PIN');
-	var pioName = Code.status.maps.digitalPins[pin][0];
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var when = block.getFieldValue('WHEN');
-	var code = '';
+	var tryCode = '', code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
-	
-	code += Blockly.Lua.indent(0,'-- configure digital pin '+pioName+' as input, if needed') + "\n";
-	code += Blockly.Lua.indent(0,'if ((_pio'+pioName+' == nil) or (not(_pio'+pioName+' == pio.INPUT))) then') + "\n";
-	code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.INPUT, pio.'+pioName+')') + "\n";
-	code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.PULLUP, pio.'+pioName+')') + "\n";
-	code += Blockly.Lua.indent(0,'end') + "\n\n";
+	Blockly.Lua.require("block");
 
-	code += Blockly.Lua.indent(0,'pio.pin.interrupt(pio.'+pioName+', function()') + "\n";
+	tryCode += Blockly.Lua.io.helper.attachDigital(block, false);
+	tryCode += Blockly.Lua.indent(0,'pio.pin.interrupt(pio.'+Blockly.Lua.io.helper.nameDigital(block)+', function()') + "\n";
 
 	if (Blockly.Lua.developerMode) {
-		code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n\n";
+		tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
 	}
-	
+
 	if (statement != "") {
-		code += Blockly.Lua.indent(1, statement);
+		tryCode += Blockly.Lua.indent(1, statement);
 	}
 
 	if (Blockly.Lua.developerMode) {
-		code += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n\n";
+		tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
 	}
+
+	tryCode += Blockly.Lua.indent(0,'end, pio.pin.'+when+')') + "\n";
+
+
+	code += Blockly.Lua.tryBlock(0, block, tryCode);
 	
-	code += Blockly.Lua.indent(0,'end, pio.pin.'+when+')') + "\n\n";
-		
 	return code;
 };
