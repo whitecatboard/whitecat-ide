@@ -193,6 +193,23 @@ Blockly.Lua.scrub_ = function(block, code) {
   return commentCode + code + nextCode;
 };
 
+Blockly.Lua.inTryBlock = function(block) {
+	var previous = block.previousConnection;
+
+	while (previous) {
+		previous = previous.targetBlock();
+		if (previous) {
+			if (previous.type == "exception_try") {
+				return true;
+			}
+		
+			previous = previous.previousConnection;				
+		}
+	}	
+	
+	return false;
+}
+
 Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	var tryCode = '';
 
@@ -204,7 +221,7 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 		tryCode += "-- begin: " + comment + "\n";
 	}
 
-	if (!Blockly.Lua.developerMode) {
+	if (!Blockly.Lua.developerMode || Blockly.Lua.inTryBlock(block)) {
 		tryCode += Blockly.Lua.indent(indent,code);
 	} else {
 		tryCode += Blockly.Lua.indent(0,'try(') + '\n';
