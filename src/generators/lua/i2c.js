@@ -34,15 +34,15 @@ goog.provide('Blockly.Lua.i2c.helper');
 goog.require('Blockly.Lua');
 
 Blockly.Lua.i2c.helper = {
-	isI2c: function(block) {
-		return (
-			(block.type == 'i2csetspeed') ||
-			(block.type == 'i2cstartcondition') ||
-			(block.type == 'i2cstopcondition') ||
-			(block.type == 'i2caddress') ||
-			(block.type == 'i2cread') ||
-			(block.type == 'i2cwrite')
-		);
+	isI2c: function(block, test) {
+		return ((
+			(test.type == 'i2csetspeed') ||
+			(test.type == 'i2cstartcondition') ||
+			(test.type == 'i2cstopcondition') ||
+			(test.type == 'i2caddress') ||
+			(test.type == 'i2cread') ||
+			(test.type == 'i2cwrite')
+		) && (block.getFieldValue('MODULE') == test.getFieldValue('MODULE')));
 	},
 	
 	hasAncestors: function(block) {
@@ -51,7 +51,7 @@ Blockly.Lua.i2c.helper = {
 		while (previous) {
 			previous = previous.targetBlock();
 			if (previous) {
-				if (Blockly.Lua.i2c.helper.isI2c(previous)) {
+				if (Blockly.Lua.i2c.helper.isI2c(block, previous)) {
 					return true;
 				}
 			
