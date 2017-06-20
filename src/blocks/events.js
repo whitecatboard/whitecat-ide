@@ -38,6 +38,7 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.events.HUE = 290;
 
 Blockly.Blocks['when_board_starts'] = {
+	module: "event",
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_WHEN_BOARD_STARTS);
@@ -63,17 +64,17 @@ Blockly.Blocks['when_board_starts'] = {
 				instances++;
 			}
 		}
-		
+
 		if (instances > 1) {
 			this.setWarningText(Blockly.Msg.WARNING_ONLY_ONE_INSTANCE_ALLOWED);
 			if (!this.isInFlyout && !this.getInheritedDisabled()) {
 				this.setDisabled(true);
-			}			
+			}
 		} else {
 			this.setWarningText(null);
 			if (!this.isInFlyout) {
 				this.setDisabled(false);
-			}			
+			}
 		}
 	},
 	section: function() {
@@ -82,6 +83,7 @@ Blockly.Blocks['when_board_starts'] = {
 };
 
 Blockly.Blocks['when_i_receive'] = {
+	module: "event",
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE)
@@ -113,12 +115,12 @@ Blockly.Blocks['when_i_receive'] = {
 			this.setWarningText(Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);
 			if (!this.isInFlyout && !this.getInheritedDisabled()) {
 				this.setDisabled(true);
-			}			
+			}
 		} else {
 			this.setWarningText(null);
 			if (!this.isInFlyout) {
 				this.setDisabled(false);
-			}			
+			}
 		}
 	},
 	section: function() {
@@ -127,6 +129,7 @@ Blockly.Blocks['when_i_receive'] = {
 };
 
 Blockly.Blocks['broadcast'] = {
+	module: "event",
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_BROADCAST)
@@ -168,6 +171,7 @@ Blockly.Blocks['broadcast'] = {
 };
 
 Blockly.Blocks['broadcast_and_wait'] = {
+	module: "event",
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_BROADCAST)
@@ -210,6 +214,7 @@ Blockly.Blocks['broadcast_and_wait'] = {
 };
 
 Blockly.Blocks['event_is_being_processed'] = {
+	module: "event",
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_IS_BEING_PROCESSED_P)

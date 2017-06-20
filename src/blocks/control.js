@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, control block definition
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -36,36 +36,42 @@ goog.require('Blockly.Blocks');
  * Common HSV hue for all blocks in this category.
  */
 Blockly.Blocks.control.HUE = 290;
-  
+
 Blockly.Blocks['wait_for'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(Blockly.Msg.wait_for)
-        .appendField(new Blockly.FieldTextInput("1"), "time")
-        .appendField(new Blockly.FieldDropdown([[Blockly.Msg.microseconds, "microseconds"], [Blockly.Msg.milliseconds, "milliseconds"], [Blockly.Msg.seconds, "seconds"]]), "units");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(Blockly.Blocks.control.HUE);
-    this.setTooltip('');
-    this.setHelpUrl('http://www.example.com/');
-  }
+	module: "tmr",
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.wait_for)
+			.appendField(new Blockly.FieldTextInput("1"), "time")
+			.appendField(new Blockly.FieldDropdown([
+				[Blockly.Msg.microseconds, "microseconds"],
+				[Blockly.Msg.milliseconds, "milliseconds"],
+				[Blockly.Msg.seconds, "seconds"]
+			]), "units");
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.control.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	}
 };
 
 Blockly.Blocks['cpu_sleep'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(Blockly.Msg.CPU_SLEEP);
+	module: "os",
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.CPU_SLEEP);
 
-	this.appendValueInput("SECONDS")
-	    .setCheck('Number');
+		this.appendValueInput("SECONDS")
+			.setCheck('Number');
 
-    this.appendDummyInput()
-        .appendField(Blockly.Msg.seconds);
-        
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(Blockly.Blocks.control.HUE);
-    this.setTooltip('');
-    this.setHelpUrl('http://www.example.com/');
-  }
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.seconds);
+
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.control.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	}
 };

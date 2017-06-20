@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, io block definition
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -45,9 +45,9 @@ Blockly.Blocks.io.helper = {
 
 		for (var key in Code.status.maps.digitalPins) {
 			pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
-		}	
-	
-		return pins;		
+		}
+
+		return pins;
 	},
 
 	getInputDigitalPins: function() {
@@ -57,11 +57,11 @@ Blockly.Blocks.io.helper = {
 			if (Code.status.maps.digitalPins[key][1]) {
 				pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 			}
-		}	
-	
-		return pins;		
+		}
+
+		return pins;
 	},
-	
+
 	getOutputDigitalPins: function() {
 		var pins = [];
 
@@ -69,9 +69,9 @@ Blockly.Blocks.io.helper = {
 			if (Code.status.maps.digitalPins[key][2]) {
 				pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 			}
-		}	
-	
-		return pins;		
+		}
+
+		return pins;
 	},
 
 	getInputOutputDigitalPins: function() {
@@ -81,9 +81,9 @@ Blockly.Blocks.io.helper = {
 			if (Code.status.maps.digitalPins[key][1] && Code.status.maps.digitalPins[key][2]) {
 				pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 			}
-		}	
-	
-		return pins;		
+		}
+
+		return pins;
 	},
 
 	getAnalogPins: function() {
@@ -93,7 +93,7 @@ Blockly.Blocks.io.helper = {
 			pins.push([Code.status.maps.analogPins[key][1] + ' - ' + Code.status.maps.analogPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 		}
 
-		return pins;		
+		return pins;
 	},
 
 	getPwmPins: function() {
@@ -103,11 +103,12 @@ Blockly.Blocks.io.helper = {
 			pins.push([Code.status.maps.pwmPins[key][1] + ' - ' + Code.status.maps.pwmPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 		}
 
-		return pins;		
+		return pins;
 	},
 };
 
 Blockly.Blocks['setpwmpin'] = {
+	module: "pwm",
 	init: function() {
 		var pins = Blockly.Blocks.io.helper.getPwmPins();
 
@@ -141,6 +142,7 @@ Blockly.Blocks['setpwmpin'] = {
 };
 
 Blockly.Blocks['setdigitalpin'] = {
+	module: "pio",
 	init: function() {
 		var thisInstance = this;
 		var pins = Blockly.Blocks.io.helper.getOutputDigitalPins();
@@ -149,14 +151,14 @@ Blockly.Blocks['setdigitalpin'] = {
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(Blockly.Msg.setdigitalpin)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
-			
+
 		this.appendDummyInput()
 			.appendField(' ' + Blockly.Msg.TO + ' ')
 			.appendField(new Blockly.FieldDropdown([
 				[Blockly.Msg.HIGH, "1"],
 				[Blockly.Msg.LOW, "0"]
 			]), "VALUE");
-			
+
 		this.setInputsInline(true);
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
@@ -170,6 +172,7 @@ Blockly.Blocks['setdigitalpin'] = {
 };
 
 Blockly.Blocks['getdigitalpin'] = {
+	module: "pio",
 	init: function() {
 		var pins = Blockly.Blocks.io.helper.getInputDigitalPins();
 
@@ -190,6 +193,7 @@ Blockly.Blocks['getdigitalpin'] = {
 };
 
 Blockly.Blocks['getanalogpin'] = {
+	module: "adc",
 	init: function() {
 		var pins = Blockly.Blocks.io.helper.getAnalogPins();
 
@@ -198,7 +202,10 @@ Blockly.Blocks['getanalogpin'] = {
 			.appendField(Blockly.Msg.getanalogpin)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN")
 			.appendField(Blockly.Msg.IN)
-			.appendField(new Blockly.FieldDropdown([["mvolts", "mvolts"],["raw", "raw"]]), "FORMAT");
+			.appendField(new Blockly.FieldDropdown([
+				["mvolts", "mvolts"],
+				["raw", "raw"]
+			]), "FORMAT");
 		this.setOutput(true, null);
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
@@ -212,6 +219,7 @@ Blockly.Blocks['getanalogpin'] = {
 };
 
 Blockly.Blocks['when_digital_pin'] = {
+	module: "pio",
 	init: function() {
 		var pins = Blockly.Blocks.io.helper.getInputDigitalPins();
 
@@ -222,16 +230,16 @@ Blockly.Blocks['when_digital_pin'] = {
 			.appendField(Blockly.Msg.EVENT_WHEN_DIGITAL_CHANGES)
 			.appendField(new Blockly.FieldDropdown(
 				[
-					[Blockly.Msg["positive_edge"],"IntrPosEdge"],
-					[Blockly.Msg["negative_edge"],"IntrNegEdge"],
-					[Blockly.Msg["any_edge"],"IntrAnyEdge"],
-					[Blockly.Msg["low_level"],"IntrLowLevel"],
-					[Blockly.Msg["high_level"],"IntrHighLevel"],
+					[Blockly.Msg["positive_edge"], "IntrPosEdge"],
+					[Blockly.Msg["negative_edge"], "IntrNegEdge"],
+					[Blockly.Msg["any_edge"], "IntrAnyEdge"],
+					[Blockly.Msg["low_level"], "IntrLowLevel"],
+					[Blockly.Msg["high_level"], "IntrHighLevel"],
 				]), "WHEN");
 
 		this.appendStatementInput('DO')
 			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
-				
+
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -256,12 +264,12 @@ Blockly.Blocks['when_digital_pin'] = {
 			this.setWarningText(Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);
 			if (!this.isInFlyout && !this.getInheritedDisabled()) {
 				this.setDisabled(true);
-			}			
+			}
 		} else {
 			this.setWarningText(null);
 			if (!this.isInFlyout) {
 				this.setDisabled(false);
-			}			
+			}
 		}
 	},
 };

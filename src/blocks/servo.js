@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, servo block definition
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -37,6 +37,7 @@ goog.require('Blockly.Blocks.io.helper');
 Blockly.Blocks.actuators.HUE = 260;
 
 Blockly.Blocks['servo_move'] = {
+	module: "servo",
 	init: function() {
 		var thisInstance = this;
 		

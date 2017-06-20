@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, sensor blocks
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -35,9 +35,10 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.sensor.HUE = 290;
 
 Blockly.Blocks['sensor_attach'] = {
+	module: "sensor",
 	createSensorIfNeeded: function(instance) {
 		if (typeof instance.workspace.sensors == "undefined") return -1;
-		
+
 		// Get index for sensor
 		var index = instance.workspace.sensorIndexOf(instance.name);
 
@@ -67,7 +68,7 @@ Blockly.Blocks['sensor_attach'] = {
 
 		this.setTooltip(Blockly.Msg.SENSOR_ATTACH_TOOLTIP);
 	},
-	
+
 	mutationToDom: function() {
 		var container = document.createElement('mutation');
 
@@ -84,7 +85,7 @@ Blockly.Blocks['sensor_attach'] = {
 		this.pin = xmlElement.getAttribute('pin');
 		this.sid = xmlElement.getAttribute("sid");
 		this.name = xmlElement.getAttribute("name");
-		
+
 		this.updateShape_();
 	},
 
@@ -118,6 +119,7 @@ Blockly.Blocks['sensor_attach'] = {
 };
 
 Blockly.Blocks['sensor_read'] = {
+	module: "sensor",
 	createSensorIfNeeded: Blockly.Blocks['sensor_attach'].createSensorIfNeeded,
 
 	init: function() {
@@ -152,11 +154,12 @@ Blockly.Blocks['sensor_read'] = {
 	},
 
 	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,
-	
+
 	hasWatcher: true,
 };
 
 Blockly.Blocks['sensor_set'] = {
+	module: "sensor",
 	createSensorIfNeeded: Blockly.Blocks['sensor_attach'].createSensorIfNeeded,
 
 	/**

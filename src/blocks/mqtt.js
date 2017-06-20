@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, MQTT blocks
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -35,23 +35,28 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.MQTT.HUE = 20;
 
 Blockly.Blocks['mqtt_publish'] = {
+	module: "mqtt",
 	init: function() {
-	    this.appendDummyInput()
-	        .appendField(Blockly.Msg.MQTT_PUBLISH);
-	    this.appendValueInput("PAYLOAD")
-	        .setCheck(null);
-	    this.appendValueInput("TOPIC")
-	        .setCheck(null)
-	        .appendField(Blockly.Msg.MQTT_TO_TOPIC);
-	    this.appendDummyInput()
-	        .appendField(Blockly.Msg.MQTT_QOS)
-	        .appendField(new Blockly.FieldDropdown([["QOS0","0"], ["QOS1","1"], ["QOS2","2"]]), "QOS");
-	    this.setInputsInline(true);
-	    this.setPreviousStatement(true, null);
-	    this.setNextStatement(true, null);
-	    this.setColour(Blockly.Blocks.MQTT.HUE);
-	    this.setTooltip('');
-	    this.setHelpUrl('');
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.MQTT_PUBLISH);
+		this.appendValueInput("PAYLOAD")
+			.setCheck(null);
+		this.appendValueInput("TOPIC")
+			.setCheck(null)
+			.appendField(Blockly.Msg.MQTT_TO_TOPIC);
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.MQTT_QOS)
+			.appendField(new Blockly.FieldDropdown([
+				["QOS0", "0"],
+				["QOS1", "1"],
+				["QOS2", "2"]
+			]), "QOS");
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.MQTT.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
 	},
 
 	mutationToDom: function() {
@@ -95,26 +100,31 @@ Blockly.Blocks['mqtt_publish'] = {
 };
 
 Blockly.Blocks['mqtt_subscribe'] = {
+	module: "mqtt",
 	init: function() {
-	   this.appendDummyInput()
-	        .appendField(Blockly.Msg.MQTT_SUBSCRIBE);
-	    this.appendValueInput("TOPIC")
-	        .setCheck(null);
-	    this.appendDummyInput()
-	        .appendField(Blockly.Msg.MQTT_QOS)
-	        .appendField(new Blockly.FieldDropdown([["QOS0","0"], ["QOS1","1"], ["QOS2","2"]]), "QOS");
-	    this.appendStatementInput("DO")
-	        .setCheck(null);
-	    this.setInputsInline(true);
-	    this.setPreviousStatement(true, null);
-	    this.setNextStatement(true, null);
-	    this.setColour(230);
-	    this.setTooltip('');
-	    this.setHelpUrl('');
-	    this.setPreviousStatement(false, null);
-	    this.setNextStatement(false, null);
-	    this.setColour(Blockly.Blocks.MQTT.HUE);
-	    this.setTooltip('');
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.MQTT_SUBSCRIBE);
+		this.appendValueInput("TOPIC")
+			.setCheck(null);
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.MQTT_QOS)
+			.appendField(new Blockly.FieldDropdown([
+				["QOS0", "0"],
+				["QOS1", "1"],
+				["QOS2", "2"]
+			]), "QOS");
+		this.appendStatementInput("DO")
+			.setCheck(null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(230);
+		this.setTooltip('');
+		this.setHelpUrl('');
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.MQTT.HUE);
+		this.setTooltip('');
 		this.setHelpUrl('http://www.example.com/');
 	},
 	onchange: function(e) {
@@ -134,17 +144,17 @@ Blockly.Blocks['mqtt_subscribe'] = {
 			this.setWarningText(Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);
 			if (!this.isInFlyout && !this.getInheritedDisabled()) {
 				this.setDisabled(true);
-			}			
+			}
 		} else {
 			this.setWarningText(null);
 			if (!this.isInFlyout) {
 				this.setDisabled(false);
-			}			
+			}
 		}
 	},
-    section: function() {
+	section: function() {
 		return 'default';
-    },
+	},
 
 	configureMQTT: Blockly.Blocks['mqtt_publish'].configureMQTT,
 	mutationToDom: Blockly.Blocks['mqtt_publish'].mutationToDom,
@@ -153,10 +163,11 @@ Blockly.Blocks['mqtt_subscribe'] = {
 };
 
 Blockly.Blocks['mqtt_get_len'] = {
+	module: "mqtt",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
-		.appendField(Blockly.Msg.MQTT_GET_LEN);
+			.appendField(Blockly.Msg.MQTT_GET_LEN);
 
 		this.setOutput(true, null);
 		this.setInputsInline(true);
@@ -169,6 +180,7 @@ Blockly.Blocks['mqtt_get_len'] = {
 };
 
 Blockly.Blocks['mqtt_get_payload'] = {
+	module: "mqtt",
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)

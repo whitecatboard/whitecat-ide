@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, Wi-Fi blocks
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -35,6 +35,7 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.Wifi.HUE = 20;
 
 Blockly.Blocks['wifi_start'] = {
+	module: "net.wf",
 	init: function() {
 	    this.appendDummyInput()
 	        .appendField(Blockly.Msg.WIFI_START);
@@ -78,6 +79,7 @@ Blockly.Blocks['wifi_start'] = {
 };
 
 Blockly.Blocks['wifi_stop'] = {
+	module: "net.wf",
 	init: function() {
 	    this.appendDummyInput()
 	        .appendField(Blockly.Msg.WIFI_STOP);
