@@ -356,9 +356,7 @@ Blockly.Blocks['when_i_receive_a_lora_frame'] = {
 	module: "lora",
 	init: function() {
 		this.appendDummyInput()
-			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME)
-			.appendField(Blockly.Msg.PROCEDURES_BEFORE_PARAMS + " port, payload");
-
+		.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME + ' ' + Blockly.Msg.PROCEDURES_BEFORE_PARAMS + " port, payload");
 
 		this.appendStatementInput('DO')
 			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);

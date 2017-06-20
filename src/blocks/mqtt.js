@@ -112,7 +112,9 @@ Blockly.Blocks['mqtt_subscribe'] = {
 				["QOS0", "0"],
 				["QOS1", "1"],
 				["QOS2", "2"]
-			]), "QOS");
+			]), "QOS")
+			.appendField(Blockly.Msg.PROCEDURES_BEFORE_PARAMS + " length, payload");
+
 		this.appendStatementInput("DO")
 			.setCheck(null);
 		this.setInputsInline(true);
@@ -160,38 +162,33 @@ Blockly.Blocks['mqtt_subscribe'] = {
 	mutationToDom: Blockly.Blocks['mqtt_publish'].mutationToDom,
 	domToMutation: Blockly.Blocks['mqtt_publish'].domToMutation,
 	updateShape_: Blockly.Blocks['mqtt_publish'].updateShape_,
-};
+	customContextMenu: function(options) {
+		if (!this.isCollapsed()) {
+			// Optin for create port getter
+			var option = {
+				enabled: true
+			};
+			var name = "length";
+			option.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
+			var xmlField = goog.dom.createDom('field', null, name);
+			xmlField.setAttribute('name', 'VAR');
+			var xmlBlock = goog.dom.createDom('block', null, xmlField);
+			xmlBlock.setAttribute('type', 'variables_get');
+			option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+			options.push(option);
 
-Blockly.Blocks['mqtt_get_len'] = {
-	module: "mqtt",
-	init: function() {
-		this.appendDummyInput()
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.MQTT_GET_LEN);
-
-		this.setOutput(true, null);
-		this.setInputsInline(true);
-		this.setPreviousStatement(false, null);
-		this.setNextStatement(false, null);
-		this.setColour(Blockly.Blocks.MQTT.HUE);
-		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
-	}
-};
-
-Blockly.Blocks['mqtt_get_payload'] = {
-	module: "mqtt",
-	init: function() {
-		this.appendDummyInput()
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.MQTT_GET_PAYLOAD);
-
-		this.setOutput(true, null);
-		this.setInputsInline(true);
-		this.setPreviousStatement(false, null);
-		this.setNextStatement(false, null);
-		this.setColour(Blockly.Blocks.MQTT.HUE);
-		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
-	}
+			// Optin for create payload getter
+			var option = {
+				enabled: true
+			};
+			var name = "payload";
+			option.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
+			var xmlField = goog.dom.createDom('field', null, name);
+			xmlField.setAttribute('name', 'VAR');
+			var xmlBlock = goog.dom.createDom('block', null, xmlField);
+			xmlBlock.setAttribute('type', 'variables_get');
+			option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+			options.push(option);
+		}
+	},
 };

@@ -121,18 +121,6 @@ Blockly.MQTT.flyoutCategory = function(workspace) {
 
 		xmlList.push(block);
 	}
-
-	if (Blockly.Blocks['mqtt_get_len']) {
-		var block = goog.dom.createDom('block');
-		block.setAttribute('type', 'mqtt_get_len');
-		xmlList.push(block);
-	}
-
-	if (Blockly.Blocks['mqtt_get_payload']) {
-		var block = goog.dom.createDom('block');
-		block.setAttribute('type', 'mqtt_get_payload');
-		xmlList.push(block);
-	}
 	
 	return xmlList;
 };
