@@ -262,7 +262,7 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 					
 					var key16 = /[0-9A-Fa-f]{16}/;
 					var key32 = /[0-9A-Fa-f]{32}/;
-					var key8 = /[0-9A-Fa-f]8/;
+					var key8 = /[0-9A-Fa-f]{8}/;
 
 					var error = false;
 					form.find("#errors").html("");
