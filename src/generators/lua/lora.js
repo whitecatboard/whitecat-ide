@@ -106,7 +106,7 @@ Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
 	}
 	
 	code += Blockly.Lua.indent(0,'-- when I receive a LoRa frame') + "\n";
-	code += Blockly.Lua.indent(0,'lora.whenReceived(function(_port, _payload)') + "\n";
+	code += Blockly.Lua.indent(0,'lora.whenReceived(function(port, payload)') + "\n";
 	
 	if (Blockly.Lua.developerMode) {
 		code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
@@ -217,12 +217,4 @@ Blockly.Lua['lora_tx'] = function(block) {
 	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
 	
 	return code;
-};
-
-Blockly.Lua['lora_get_port'] = function(block) {
-  return ['_port', Blockly.Lua.ORDER_HIGH];
-};
-
-Blockly.Lua['lora_get_payload'] = function(block) {
-    return ['_payload', Blockly.Lua.ORDER_HIGH];
 };

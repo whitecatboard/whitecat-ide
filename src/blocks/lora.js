@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, lora blocks
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -279,7 +279,7 @@ Blockly.Blocks['lora_join'] = {
 
 	domToMutation: function(xmlElement) {
 		this.interface = xmlElement.getAttribute('interface');
-		
+
 		this.band = xmlElement.getAttribute('band');
 		this.activation = xmlElement.getAttribute("activation");
 		this.dr = xmlElement.getAttribute("dr");
@@ -311,7 +311,7 @@ Blockly.Blocks['lora_join'] = {
 			"appkey": instance.appkey,
 			"devaddr": instance.devaddr,
 			"nwkskey": instance.nwkskey,
-			"appskey": instance.appskey						
+			"appskey": instance.appskey
 		});
 	},
 };
@@ -352,48 +352,17 @@ Blockly.Blocks['lora_tx'] = {
 	updateShape_: Blockly.Blocks['lora_join'].updateShape_,
 };
 
-Blockly.Blocks['lora_get_port'] = {
-	module: "lora",
-	init: function() {
-		this.appendDummyInput()
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.LORA_GET_PORT);
-
-		this.setOutput(true, null);
-		this.setInputsInline(true);
-		this.setPreviousStatement(false, null);
-		this.setNextStatement(false, null);
-		this.setColour(Blockly.Blocks.lora.HUE);
-		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
-	}
-};
-
-Blockly.Blocks['lora_get_payload'] = {
-	module: "lora",
-	init: function() {
-		this.appendDummyInput()
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.LORA_GET_PAYLOAD);
-
-		this.setOutput(true, null);
-		this.setInputsInline(true);
-		this.setPreviousStatement(false, null);
-		this.setNextStatement(false, null);
-		this.setColour(Blockly.Blocks.lora.HUE);
-		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
-	}
-};
-
 Blockly.Blocks['when_i_receive_a_lora_frame'] = {
 	module: "lora",
 	init: function() {
 		this.appendDummyInput()
-			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME);
-		
+			.appendField(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME)
+			.appendField(Blockly.Msg.PROCEDURES_BEFORE_PARAMS + " port, payload");
+
+
 		this.appendStatementInput('DO')
 			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
 
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -413,20 +382,49 @@ Blockly.Blocks['when_i_receive_a_lora_frame'] = {
 				instances++;
 			}
 		}
-		
+
 		if (instances > 1) {
 			this.setWarningText(Blockly.Msg.WARNING_ONLY_ONE_INSTANCE_ALLOWED);
 			if (!this.isInFlyout && !this.getInheritedDisabled()) {
 				this.setDisabled(true);
-			}			
+			}
 		} else {
 			this.setWarningText(null);
 			if (!this.isInFlyout) {
 				this.setDisabled(false);
-			}			
+			}
 		}
 	},
-    section: function() {
+	section: function() {
 		return 'declaration';
-    }
+	},
+	customContextMenu: function(options) {
+		if (!this.isCollapsed()) {
+			// Optin for create port getter
+			var option = {
+				enabled: true
+			};
+			var name = "port";
+			option.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
+			var xmlField = goog.dom.createDom('field', null, name);
+			xmlField.setAttribute('name', 'VAR');
+			var xmlBlock = goog.dom.createDom('block', null, xmlField);
+			xmlBlock.setAttribute('type', 'variables_get');
+			option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+			options.push(option);
+
+			// Optin for create payload getter
+			var option = {
+				enabled: true
+			};
+			var name = "payload";
+			option.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
+			var xmlField = goog.dom.createDom('field', null, name);
+			xmlField.setAttribute('name', 'VAR');
+			var xmlBlock = goog.dom.createDom('block', null, xmlField);
+			xmlBlock.setAttribute('type', 'variables_get');
+			option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+			options.push(option);
+		}
+	},
 };

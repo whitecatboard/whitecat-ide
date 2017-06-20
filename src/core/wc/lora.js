@@ -130,20 +130,6 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 		xmlList.push(block);
 	}
 
-	if (Blockly.Blocks['lora_get_port']) {
-		var block = goog.dom.createDom('block');
-		block.setAttribute('type', 'lora_get_port');
-
-		xmlList.push(block);
-	}
-
-	if (Blockly.Blocks['lora_get_payload']) {
-		var block = goog.dom.createDom('block');
-		block.setAttribute('type', 'lora_get_payload');
-
-		xmlList.push(block);
-	}
-	
 	return xmlList;
 };
 
