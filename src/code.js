@@ -35,20 +35,20 @@
 
 // Test if user's browser is Chrome
 function isChrome() {
-  var isChromium = window.chrome,
-    winNav = window.navigator,
-    vendorName = winNav.vendor,
-    isOpera = winNav.userAgent.indexOf("OPR") > -1,
-    isIEedge = winNav.userAgent.indexOf("Edge") > -1,
-    isIOSChrome = winNav.userAgent.match("CriOS");
+	var isChromium = window.chrome,
+		winNav = window.navigator,
+		vendorName = winNav.vendor,
+		isOpera = winNav.userAgent.indexOf("OPR") > -1,
+		isIEedge = winNav.userAgent.indexOf("Edge") > -1,
+		isIOSChrome = winNav.userAgent.match("CriOS");
 
-  if(isIOSChrome){
-    return true;
-  } else if(isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false) {
-    return true;
-  } else { 
-    return false;
-  }
+	if (isIOSChrome) {
+		return true;
+	} else if (isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 // By default, enable developer mode
@@ -66,10 +66,10 @@ if (typeof require != "undefined") {
 		Code.folder = "https://ide.whitecatboard.org";
 	}
 } else {
-	Code.folder = "https://ide.whitecatboard.org";	
+	Code.folder = "https://ide.whitecatboard.org";
 }
 
-Code.server = "https://ide.whitecatboard.org";	
+Code.server = "https://ide.whitecatboard.org";
 
 var blockAbstraction = {
 	Low: 0,
@@ -113,28 +113,23 @@ Code.defaultStatus = {
 	sensors: []
 };
 
-Code.devices = [
-	{
-		"vendorId": "0x10c4",
-		"productId": "0xea60",
-		"vendor": "Silicon Labs"
-	},
-	{
-		"vendorId": "0x403",
-		"productId": "0x6015",
-		"vendor": "FTDI"
-	},
-	{
-		"vendorId": "0x403",
-		"productId": "0x6001",
-		"vendor": "FTDI"
-	},
-	{
-		"vendorId": "0x1a86",
-		"productId": "0x7523",
-		"vendor": "CH340"
-	}
-];
+Code.devices = [{
+	"vendorId": "0x10c4",
+	"productId": "0xea60",
+	"vendor": "Silicon Labs"
+}, {
+	"vendorId": "0x403",
+	"productId": "0x6015",
+	"vendor": "FTDI"
+}, {
+	"vendorId": "0x403",
+	"productId": "0x6001",
+	"vendor": "FTDI"
+}, {
+	"vendorId": "0x1a86",
+	"productId": "0x7523",
+	"vendor": "CH340"
+}];
 
 Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 
@@ -190,7 +185,7 @@ Code.defaultStorage = function() {
 	if (Code.status.connected) {
 		return StorageType.Board;
 	} else {
-		return StorageType.Computer;		
+		return StorageType.Computer;
 	}
 };
 
@@ -202,38 +197,38 @@ Code.setDefaultStorage = function() {
 	Code.currentFile.changes = Code.defaultStorage();
 };
 
-Code.renderStorage  = function(storage, file, target) {	
+Code.renderStorage = function(storage, file, target) {
 	if (target.attr("id") == "targetFile") {
 		// We only render the file name, without path
 		var tmp = file.split("/");
-	
+
 		file = tmp[tmp.length - 1];
 	} else {
 		//We only render the file path
 		var tmp = file.split("/");
-		
+
 		file = "";
-		for(var i = 0;i < tmp.length;i++) {
+		for (var i = 0; i < tmp.length; i++) {
 			if (tmp[i] != "") {
 				if (file != "") {
 					file = file + "/";
 				}
-			
-				file = file + tmp[i];				
+
+				file = file + tmp[i];
 			}
 		}
-		
+
 		file = "/" + file;
-		
+
 		if (file != "/") {
 			file = file + "/";
 		}
 	}
-	
+
 	if ((storage == StorageType.Cloud) && ((target.attr("id") != "targetFile"))) {
 		file = "";
 	}
-	
+
 	// Get storage's icon
 	var icon = '';
 
@@ -247,116 +242,116 @@ Code.renderStorage  = function(storage, file, target) {
 
 	// Render
 	if (target.attr("id") != "targetFile") {
-		target.html("&nbsp;&nbsp;" + icon + "&nbsp;&nbsp;" + file);	 	
+		target.html("&nbsp;&nbsp;" + icon + "&nbsp;&nbsp;" + file);
 	} else {
-		target.html("|&nbsp;&nbsp;" + icon + file);		
+		target.html("|&nbsp;&nbsp;" + icon + file);
 	}
 };
 
-Code.setCurrentStorage = function(storage, path, file) {	
+Code.setCurrentStorage = function(storage, path, file) {
 	if (typeof path == "undefined") {
 		var tmp = file.split("/");
 		var folder = "";
 		var fileName = "";
-	
+
 		// Folder part
-		for(var i = 0;i < tmp.length - 1;i++) {
+		for (var i = 0; i < tmp.length - 1; i++) {
 			if (tmp[i] != "") {
 				folder = folder + "/" + tmp[i];
-			} 
+			}
 		}
-		
+
 		if (folder == "") {
 			folder = "/";
 		} else {
 			folder = folder + "/";
 		}
-		
+
 		// File part
 		fileName = tmp[tmp.length - 1];
-		
+
 		path = folder;
-		file = fileName;			
-	}	
-	
+		file = fileName;
+	}
+
 	if (storage != StorageType.Cloud) {
-		Code.currentFile.path = path;			
+		Code.currentFile.path = path;
 		Code.currentFile.id = null;
 	} else {
-		Code.currentFile.path = path;					
+		Code.currentFile.path = path;
 		Code.currentFile.id = path;
-		
-		file = file.replace(/\/.*\//g,"");
+
+		file = file.replace(/\/.*\//g, "");
 	}
-	
+
 	Code.currentFile.file = file;
-	
+
 	Code.currentFile.storage = storage;
 	Code.currentFile.changes = false;
-	
-	Code.renderStorage(storage, Code.getCurrentFullPath(), jQuery("#targetFile"));	
+
+	Code.renderStorage(storage, Code.getCurrentFullPath(), jQuery("#targetFile"));
 };
 
 Code.getCurrentFullPath = function() {
 	var path;
-	
+
 	if (Code.currentFile.storage == StorageType.Cloud) {
 		path = "/" + Code.currentFile.id + "/" + Code.currentFile.file;
 	} else {
 		if (typeof Code.currentFile.path == "undefined") {
-			Code.currentFile.path = "";		
+			Code.currentFile.path = "";
 		}
-	
+
 		path = Code.currentFile.path;
-	
+
 		path = path.replace(/[\\\/]+/g, '/');
 		if (path.charAt(0) != "/") {
-			path = "/" + path;			
+			path = "/" + path;
 		}
 
 		path += Code.currentFile.file;
 
-		path = path.replace(/[\\\/]+/g, '/');		
+		path = path.replace(/[\\\/]+/g, '/');
 	}
-		
+
 	return path;
 }
 
 Code.getPathFor = function(folder, file) {
 	var path;
-	
+
 	if (typeof folder == "undefined") {
 		folder = "";
 	}
-	
+
 	if (folder == "") {
-		path = Code.currentFile.path;		
+		path = Code.currentFile.path;
 	} else {
 		path = folder;
 	}
-	
+
 	if (typeof file == "undefined") {
 		file = "";
 	}
-	
+
 	if (file == "") {
-		file = Code.currentFile.file;		
+		file = Code.currentFile.file;
 	}
 
 	path = path.replace(/[\\\/]+/g, '/');
 	if (path.charAt(0) != "/") {
-		path = "/" + path;			
+		path = "/" + path;
 	}
-	
+
 	if (path != "/") {
 		path += "/";
 	}
-	
+
 	path += file;
 
 	path = path.replace(/[\\\/]+/g, '/');
-		
-	return path;	
+
+	return path;
 }
 
 /**
@@ -441,7 +436,7 @@ Code.importPrettify = function() {
 	document.head.appendChild(link);
 	var script = document.createElement('script');
 	script.setAttribute('src', Code.folder + '/prettify.js');
-	document.head.appendChild(script);	
+	document.head.appendChild(script);
 };
 
 Code.getBBox_ = function(element) {
@@ -552,14 +547,14 @@ Code.renderContent = function() {
 			jQuery("#content_block_editor").css('visibility', 'hidden');
 			jQuery("#content_editor").css('visibility', 'hidden');
 			jQuery("#content_blocks").css('visibility', 'visible');
-			
+
 			jQuery("#content_blocks").find(".injectionDiv").css('visibility', 'visible').show();
 			jQuery("#content_block_editor").find(".injectionDiv").css('visibility', 'hidden').hide();
-			
+
 			if (Code.workspace.blocks) {
 				Code.workspace.blocks.setVisible(true);
-				
-				Code.updateToolBox();	
+
+				Code.updateToolBox();
 			}
 		} else if (Code.workspace.type == 'editor') {
 			jQuery("#content_blocks").css('visibility', 'hidden');
@@ -568,12 +563,12 @@ Code.renderContent = function() {
 
 			if (Code.workspace.blocks) {
 				Code.workspace.blocks.setVisible(false);
-			}			
+			}
 		} else if (Code.workspace.type == 'block_editor') {
 			jQuery("#content_blocks").css('visibility', 'hidden');
 			jQuery("#content_editor").css('visibility', 'hidden');
 			jQuery("#content_block_editor").css('visibility', 'visible');
-			
+
 			jQuery("#content_blocks").find(".injectionDiv").css('visibility', 'hidden').hide();
 			jQuery("#content_block_editor").css('visibility', 'visible');
 
@@ -582,13 +577,13 @@ Code.renderContent = function() {
 			}
 		}
 	}
-	
+
 	window.dispatchEvent(new Event('resize'));
 };
 
 Code.buildToolBox = function(callback) {
 	var xml = '';
-	
+
 	xml += '' +
 		'<category id="catEvents">' +
 		'<block type="when_board_starts"></block>' +
@@ -807,9 +802,9 @@ Code.buildToolBox = function(callback) {
 		'</shadow>' +
 		'</value>' +
 		'</block>' +
-	    '<block type="text_print">' +
-	    '</value>' +
-	    '</block>' +
+		'<block type="text_print">' +
+		'</value>' +
+		'</block>' +
 		'<block type="text"></block>' +
 		'<block type="text_pack"></block>' +
 		'<block type="text_unpack"></block>' +
@@ -896,7 +891,7 @@ Code.buildToolBox = function(callback) {
 				'</shadow>' +
 				'</value>' +
 				'</block>';
-			}
+		}
 
 		xml += '</category>';
 	}
@@ -907,15 +902,15 @@ Code.buildToolBox = function(callback) {
 		if (Code.status.modules.i2c) {
 			xml += '' +
 				'<category id="catI2C">' +
-				'<block type="i2csetspeed">' + 
+				'<block type="i2csetspeed">' +
 				'<value name="SPEED">' +
 				'<shadow type="math_number">' +
 				'<field name="NUM">1000</field>' +
 				'</shadow>' +
 				'</value>' +
-			    '</block>' +
-				'<block type="i2cstartcondition">' + 
-			    '</block>' +
+				'</block>' +
+				'<block type="i2cstartcondition">' +
+				'</block>' +
 				'<block type="i2cstopcondition"></block>' +
 				'<block type="i2caddress">' +
 				'<value name="ADDRESS">' +
@@ -949,7 +944,7 @@ Code.buildToolBox = function(callback) {
 	//	if (Code.blockAbstraction == blockAbstraction.Low) {
 	//		xml += '<block type="servo_attach"></block>';
 	//	}
-	
+
 	//	xml += '<block type="servo_move">' +
 	//		'<value name="VALUE">' +
 	//		'<shadow type="math_number">' +
@@ -966,16 +961,16 @@ Code.buildToolBox = function(callback) {
 		xml += '</category>';
 		xml += '</category>';
 	}
-	
+
 	if (Code.status.modules.lora) {
-		xml +=  '<category id="catLora" custom="LORA" colour="20">';
-		xml +=  '<button function="expand(1)">Expand section</button>';
+		xml += '<category id="catLora" custom="LORA" colour="20">';
+		xml += '<button function="expand(1)">Expand section</button>';
 		xml += '</category>';
 	}
 
 	if (Code.status.modules.mqtt) {
-		xml +=  '<category id="catMQTT" custom="MQTT"colour="20">';
-		xml +=  '<button function="expand(1)">Expand section</button>';
+		xml += '<category id="catMQTT" custom="MQTT"colour="20">';
+		xml += '<button function="expand(1)">Expand section</button>';
 		xml += '</category>';
 	}
 
@@ -984,7 +979,7 @@ Code.buildToolBox = function(callback) {
 	//	xml += '</category>';
 	//}
 
-	Code.lib.get(xml, "libs", function(xml){
+	Code.lib.get(xml, "libs", function(xml) {
 		var toolbox = document.getElementById('toolbox');
 		toolbox.innerHTML = xml;
 
@@ -997,13 +992,13 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catComm").attr("colour", Blockly.Blocks.io.HUE);
 		jQuery("#catI2c").attr("colour", Blockly.Blocks.io.HUE);
 		//jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
-		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);	
+		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);
 		//jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catNET").attr("colour", Blockly.Blocks.i2c.HUE);
 		jQuery("#catWIFI").attr("colour", Blockly.Blocks.i2c.HUE);
 		jQuery("#catMQTT").attr("colour", Blockly.Blocks.i2c.HUE);
-		
-		callback();	
+
+		callback();
 	});
 }
 
@@ -1013,7 +1008,7 @@ Code.updateToolBox = function() {
 
 		var toolbox = null;
 		var workSpace = null;
-	
+
 		if (Code.workspace.type == 'block_editor') {
 			toolbox = document.getElementById('block_editortoolbox');
 			workSpace = Code.workspace.block_editor;
@@ -1024,7 +1019,7 @@ Code.updateToolBox = function() {
 
 		if (workSpace) {
 			workSpace.updateToolbox(toolbox);
-		}				
+		}
 	});
 }
 
@@ -1033,7 +1028,7 @@ Code.updateToolBox = function() {
  */
 Code.init = function() {
 	Code.initLanguage();
-	
+
 	var rtl = Code.isRtl();
 	var container = document.getElementById('content_area');
 	var onresize = function(e) {
@@ -1049,18 +1044,18 @@ Code.init = function() {
 					el = document.getElementById('content_block_editor');
 				}
 			}
-			
+
 			var el_tab = el;
-			
+
 			el.style.top = bBox.y + 'px';
 			el.style.left = bBox.x + 'px';
-			
+
 			// Height and width need to be set, read back, then set again to
 			// compensate for scrollbars.
-	        el.style.height = bBox.height + 'px';
-	        el.style.height = (2 * bBox.height - el.offsetHeight - 34) + 'px';
-	        el.style.width = bBox.width + 'px';
-	        el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+			el.style.height = bBox.height + 'px';
+			el.style.height = (2 * bBox.height - el.offsetHeight - 34) + 'px';
+			el.style.width = bBox.width + 'px';
+			el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
 
 			el = document.getElementById('languageDiv');
 
@@ -1072,13 +1067,13 @@ Code.init = function() {
 			el.style.top = (bBox.y - 38) + 'px';
 			el.style.left = (bBox.width - bBox.x - bBox2.width - 10) + 'px';
 			el.style.visibility = 'visible';
-			
+
 			var el = document.getElementById('boardConsole');
 			//var bBoxEl = Code.getBBox_(el);
 
 			el.style.top = el_tab.style.top;
-			el.style.left = (parseInt(el_tab.style.width.replace("px","")) - 600) + 'px';
-		}		
+			el.style.left = (parseInt(el_tab.style.width.replace("px", "")) - 600) + 'px';
+		}
 	};
 
 	window.addEventListener('resize', onresize, false);
@@ -1113,7 +1108,7 @@ Code.init = function() {
 	// and the infinite loop detection function.
 
 	Code.loadBlocks('');
-		
+
 	onresize();
 	Blockly.svgResize(Code.workspace.blocks);
 
@@ -1149,19 +1144,23 @@ Code.init = function() {
 			Code.discard();
 			Code.renderContent();
 		});
-	
+
+	if (jQuery("#developerMode").length > 0) {
+		jQuery("#developerMode").removeClass("disabled");
+		Code.bindClick('developerMode', Code.developerMode);
+	}
+
 	if (jQuery("#blockEditorButton").length > 0) {
-		jQuery("#developerMode, #blockEditorButton").removeClass("disabled");
-		Code.bindClick('blockEditorButton', Code.blockEditor);	
+		jQuery("#blockEditorButton").removeClass("disabled");
+		Code.bindClick('blockEditorButton', Code.blockEditor);
 	}
 
 	if (jQuery("#previewButton").length > 0) {
 		jQuery("#previewButton").removeClass("disabled");
-		Code.bindClick('previewButton', Code.previewCode);	
+		Code.bindClick('previewButton', Code.previewCode);
 	}
 
 	Code.bindClick('switchToCode', Code.switchToCode);
-	Code.bindClick('developerMode', Code.developerMode);
 	Code.bindClick('switchToBlocks', Code.switchToBlocks);
 	Code.bindClick('loadButton', Code.load);
 	Code.bindClick('saveButton', Code.save);
@@ -1224,7 +1223,10 @@ Code.initLanguage = function() {
 		element.text(MSG[element.attr('id').replace('tab_', '')]);
 	});
 
-	document.getElementById('developerMode').title = MSG['developerMode'];
+	if (jQuery("#developerMode").length > 0) {
+		document.getElementById('developerMode').title = MSG['developerMode'];
+	}
+
 	document.getElementById('switchToBlocks').title = MSG['switchToBlocksTooltip'];
 	document.getElementById('switchToCode').title = MSG['switchToCodeTooltip'];
 	document.getElementById('loadButton').title = MSG['loadButtonTooltip'];
@@ -1289,8 +1291,7 @@ Code.initLanguage = function() {
 	for (var i = 0, cat; cat = categories[i]; i++) {
 		try {
 			document.getElementById(cat).setAttribute('name', MSG[cat]);
-		} catch (error) {
-		}
+		} catch (error) {}
 	}
 	var textVars = document.getElementsByClassName('textVar');
 	for (var i = 0, textVar; textVar = textVars[i]; i++) {
@@ -1336,7 +1337,7 @@ Code.runtimeError = function(file, line, code, message) {
 
 Code.run = function() {
 	var code = "";
-	
+
 	Blockly.mainWorkspace.removeStarts();
 	Blockly.mainWorkspace.removeErrors();
 
@@ -1364,9 +1365,9 @@ Code.run = function() {
 	}
 
 	function storageSelected(storage) {
-		jQuery("#selectedStorage").val(storage);		
+		jQuery("#selectedStorage").val(storage);
 	}
-	
+
 	function fileSelected(file) {
 		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
 	}
@@ -1375,7 +1376,7 @@ Code.run = function() {
 		if (folder != '/') {
 			folder = folder + '/';
 		}
-		
+
 		folder = folder.replace(/\/\//g, "/");
 
 		jQuery("#selectedFolder").text(folder);
@@ -1384,7 +1385,7 @@ Code.run = function() {
 
 	var file = Code.getCurrentFullPath();
 	var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
-	if (typeof fileExtension == "undefined") {	
+	if (typeof fileExtension == "undefined") {
 		bootbox.dialog({
 			title: MSG['noTarget'],
 			message: '<div id="runFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
@@ -1413,7 +1414,7 @@ Code.run = function() {
 		});
 
 		// Show root files from board
-		Code.listDirectories(jQuery('#runfile'),"lua", storageSelected, folderSelected, fileSelected);		
+		Code.listDirectories(jQuery('#runfile'), "lua", storageSelected, folderSelected, fileSelected);
 	} else {
 		run();
 	}
@@ -1422,7 +1423,7 @@ Code.run = function() {
 Code.loadFile = function(storage, path, entry) {
 	var file = Code.getPathFor(path, entry);
 	var extension = /(?:\.([^.]+))?$/.exec(file)[1];
-	
+
 	if (extension == 'xml') {
 		Code.workspace.type = "blocks";
 	} else if (extension == 'lua') {
@@ -1430,26 +1431,26 @@ Code.loadFile = function(storage, path, entry) {
 	} else {
 		return;
 	}
-	
+
 	function fileDownloaded(fileContent) {
 		BootstrapDialog.closeAll();
 		bootbox.hideAll();
-		
+
 		if (Code.workspace.type == 'blocks') {
 			var xml = Blockly.Xml.textToDom(fileContent);
 			Code.workspace.blocks.clear();
-			Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);	
+			Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
 			Blockly.resizeSvgContents(Code.workspace.blocks);
 		} else {
 			Code.workspace.editor.setValue(fileContent, -1);
 		}
-	
+
 		Code.setCurrentStorage(storage, path, entry, jQuery("targetFile"));
-		
-		Code.tabRefresh();	
-		Code.renderContent();	
+
+		Code.tabRefresh();
+		Code.renderContent();
 	}
-	
+
 	Code.showProgress(MSG['downloadingFile'] + " " + file + " ...");
 	if (storage == StorageType.Board) {
 		Code.storage.board.load(file, function(fileContent) {
@@ -1468,20 +1469,20 @@ Code.loadFile = function(storage, path, entry) {
 
 Code.saveFile = function(storage, folder, file, content) {
 	var fileName;
-	
+
 	if (typeof folder == "undefined") {
 		fileName = file;
 	} else {
-		fileName = Code.getPathFor(folder, file);	
+		fileName = Code.getPathFor(folder, file);
 	}
-	
+
 	function fileSaved() {
 		Code.setCurrentStorage(storage, folder, file);
-				
+
 		Code.hideProgress();
-		Code.tabRefresh();		
+		Code.tabRefresh();
 	};
-	
+
 	Code.showProgress(MSG['sendingFile'] + " " + fileName + " ...");
 
 	if (storage == StorageType.Board) {
@@ -1525,7 +1526,7 @@ Code.load = function() {
 			},
 		},
 		closable: false
-	});		
+	});
 
 	Code.listDirectories(jQuery('#loadFile'), extension);
 };
@@ -1568,8 +1569,8 @@ Code.save = function() {
 		code = Code.workspace.editor.getValue();
 	} else if (Code.workspace.type == 'block_editor') {
 		var type = jQuery("#content_block_editor_type").val();
-		code = btoa(Code.workspace.block_editorCode.getValue());	
-		
+		code = btoa(Code.workspace.block_editorCode.getValue());
+
 		for (var block in Code.lib.def.blocks) {
 			if (Code.lib.def.blocks[block].spec.type == type) {
 				Code.lib.def.blocks[block].code = code;
@@ -1577,54 +1578,54 @@ Code.save = function() {
 				break;
 			}
 		}
-		
+
 		return;
 	}
 
-	function storageSelected(storage) {		
+	function storageSelected(storage) {
 		jQuery("#selectedStorage").val(storage);
-				
-		Code.renderStorage(storage, "/", jQuery("#storageType"));	
-		
-		jQuery("#selectedFileName").focus();		
+
+		Code.renderStorage(storage, "/", jQuery("#storageType"));
+
+		jQuery("#selectedFileName").focus();
 	}
 
 	function folderSelected(folder) {
 		var storage = jQuery("#selectedStorage").val();
-		
-		jQuery("#selectedFolder").text(folder);
-		jQuery("#selectedFolder").val(folder);			
-		
-		jQuery("#selectedFileName").val("");
-		jQuery("#selectedFileName").focus();		
 
-		Code.renderStorage(storage, folder, jQuery("#storageType"));	
+		jQuery("#selectedFolder").text(folder);
+		jQuery("#selectedFolder").val(folder);
+
+		jQuery("#selectedFileName").val("");
+		jQuery("#selectedFileName").focus();
+
+		Code.renderStorage(storage, folder, jQuery("#storageType"));
 	}
 
 	function fileSelected(folder, file) {
 		var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
-		file = file.replace("." + fileExtension,"");
-		
+		file = file.replace("." + fileExtension, "");
+
 		var storage = jQuery("#selectedStorage").val();
-		
+
 		folderSelected(folder);
 
 		jQuery("#selectedFileName").val(file);
-		jQuery("#selectedFileName").focus();		
+		jQuery("#selectedFileName").focus();
 	}
 
 	var file = Code.getCurrentFullPath();
 	var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
 	if (typeof fileExtension != "undefined") {
-		Code.saveFile(Code.currentFile.storage, undefined, file, code);		
+		Code.saveFile(Code.currentFile.storage, undefined, file, code);
 	} else {
 		file = Code.getPathFor("", "unnamed." + extension);
 		bootbox.dialog({
 			title: MSG['saveBlockTitle'],
 			message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-					MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' + 
-				   '<input type="hidden" id="selectedFolder" value="/"></input><input type="hidden" id="selectedStorage" value="0">'+
-				   '<input type="text" id="selectedFileName" value="">' + '.' + extension,
+				MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' +
+				'<input type="hidden" id="selectedFolder" value="/"></input><input type="hidden" id="selectedStorage" value="0">' +
+				'<input type="text" id="selectedFileName" value="">' + '.' + extension,
 			buttons: {
 				main: {
 					label: MSG['save'],
@@ -1667,51 +1668,51 @@ Code.saveAs = function() {
 		code = Code.workspace.editor.getValue();
 	}
 
-	function storageSelected(storage) {		
+	function storageSelected(storage) {
 		jQuery("#selectedStorage").val(storage);
-				
-		Code.renderStorage(storage, "/", jQuery("#storageType"));	
-		
-		jQuery("#selectedFileName").focus();		
+
+		Code.renderStorage(storage, "/", jQuery("#storageType"));
+
+		jQuery("#selectedFileName").focus();
 	}
 
 	function folderSelected(folder) {
 		var storage = jQuery("#selectedStorage").val();
-		
-		jQuery("#selectedFolder").text(folder);
-		jQuery("#selectedFolder").val(folder);			
-		
-		jQuery("#selectedFileName").val("");
-		jQuery("#selectedFileName").focus();		
 
-		Code.renderStorage(storage, folder, jQuery("#storageType"));	
+		jQuery("#selectedFolder").text(folder);
+		jQuery("#selectedFolder").val(folder);
+
+		jQuery("#selectedFileName").val("");
+		jQuery("#selectedFileName").focus();
+
+		Code.renderStorage(storage, folder, jQuery("#storageType"));
 	}
 
 	function fileSelected(folder, file) {
 		var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
-		file = file.replace("." + fileExtension,"");
+		file = file.replace("." + fileExtension, "");
 
 		var storage = jQuery("#selectedStorage").val();
-		
+
 		folderSelected(folder);
 
 		jQuery("#selectedFileName").val(file);
-		jQuery("#selectedFileName").focus();		
+		jQuery("#selectedFileName").focus();
 	}
 
 	bootbox.dialog({
 		title: MSG['saveBlockTitle'],
 		message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-			MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' + 
-		   '<input type="hidden" id="selectedFolder" value="/"></input><input type="hidden" id="selectedStorage" value="0">'+
-		   '<input type="text" id="selectedFileName" value="">' + '.' + extension,
+			MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' +
+			'<input type="hidden" id="selectedFolder" value="/"></input><input type="hidden" id="selectedStorage" value="0">' +
+			'<input type="text" id="selectedFileName" value="">' + '.' + extension,
 		buttons: {
 			main: {
 				label: MSG['save'],
 				className: "btn-primary",
 				callback: function() {
 					var file = jQuery("#selectedFileName").val();
-					if (file != "") {						
+					if (file != "") {
 						Code.saveFile(jQuery("#selectedStorage").val(), jQuery("#selectedFolder").val(), file + '.' + extension, code);
 					} else {
 						return false;
@@ -1781,20 +1782,20 @@ Code.showAlert = function(text) {
 			setTimeout(function() {
 				jQuery(".btn-alert-instructions").unbind("click").bind("click", function(e) {
 					dialogRef.close();
-					
+
 					var target = jQuery(e.target);
-					
+
 					if (typeof require != "undefined") {
 						if (typeof require('nw.gui') != "undefined") {
 							var win = gui.Window.open(target.data("url"), {
-							  focus: true,
-							  position: 'center',
-							  width: 1055,
-							  height: 700
+								focus: true,
+								position: 'center',
+								width: 1055,
+								height: 700
 							});
 						} else {
 							window.open(target.data("url"), '_blank');
-						}						
+						}
 					} else {
 						window.open(target.data("url"), '_blank');
 					}
@@ -1833,21 +1834,21 @@ Code.showError = function(title, err, callback) {
 
 Code.newFirmware = function() {
 	if (!Code.checkNewVersion) return;
-	
+
 	bootbox.dialog({
 		message: MSG['newFirmware'],
 		buttons: {
 			success: {
 				label: MSG['installNow'],
 				className: "btn-primary",
-				callback: function() {					
+				callback: function() {
 					Code.agent.send({
 						command: "boardUpgrade",
 						arguments: {}
 					}, function(id, info) {
 						Code.showProgress(MSG['downloadingFirmware']);
 					});
-					
+
 				}
 			},
 			danger: {
@@ -1907,19 +1908,19 @@ Code.listDirectoriesUpdate = function(container, storage, path, entries, extensi
 
 	entries.forEach(function(entry) {
 		var include = true;
-		
+
 		if (typeof extension != "undefined") {
 			include = entry.name.match(new RegExp('^.*\.' + extension + '$')) || (entry.type == "d");
 		}
-		
+
 		if (include) {
 			var icon = "icon-file-text2";
 			var entryPath = path;
 			var entryId = "";
-			
+
 			if (entry.type == "d") {
 				icon = "icon-folder2";
-		
+
 				if (storage == StorageType.Cloud) {
 					entryId = entry.id;
 					entryPath = entry.parent;
@@ -1927,19 +1928,19 @@ Code.listDirectoriesUpdate = function(container, storage, path, entries, extensi
 					if (path != "") {
 						entryPath += "/";
 					}
-		
-					entryPath += entry.name;				
+
+					entryPath += entry.name;
 				}
 			}
-		
+
 			if (entry.type == "f") {
 				if (storage == StorageType.Cloud) {
 					entryId = entry.id;
 				}
 			}
-	
-			html = html + '<li class="dir-entry-'+entry.type+'" data-expanded="false" data-type="'+entry.type+'" data-id="'+entryId+'" data-path="'+entryPath+'" data-name="'+entry.name+'" data-storage="'+storage+'"><span data-type="'+entry.type+'" class="icon '+icon+'"></span><span class="dir-label">'+entry.name+'</span></li>';			
-		}		
+
+			html = html + '<li class="dir-entry-' + entry.type + '" data-expanded="false" data-type="' + entry.type + '" data-id="' + entryId + '" data-path="' + entryPath + '" data-name="' + entry.name + '" data-storage="' + storage + '"><span data-type="' + entry.type + '" class="icon ' + icon + '"></span><span class="dir-label">' + entry.name + '</span></li>';
+		}
 	});
 
 	html += '</ul>';
@@ -1949,16 +1950,16 @@ Code.listDirectoriesUpdate = function(container, storage, path, entries, extensi
 
 Code.listDirectories = function(container, extension, storageSelectedCallback, folderSelectedCallback, fileSelectedCallback) {
 	var html = '';
-	
+
 	html += '<ul class="dir-entry">';
-	
+
 	if (Code.status.connected) {
-		html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="'+StorageType.Board+'"><span class="icon icon-chip"></span><span class="dir-label">Board</span></li>';
+		html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="' + StorageType.Board + '"><span class="icon icon-chip"></span><span class="dir-label">Board</span></li>';
 	}
-	
-	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-id data-path data-name data-storage="'+StorageType.Computer+'"><span class="icon icon-display"></span><span class="dir-label">Computer</span></li>';
-	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-id data-path data-name data-storage="'+StorageType.Cloud+'"><span class="icon icon-cloud"></span><span class="dir-label">Cloud</span></li>';
-	
+
+	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-id data-path data-name data-storage="' + StorageType.Computer + '"><span class="icon icon-display"></span><span class="dir-label">Computer</span></li>';
+	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-id data-path data-name data-storage="' + StorageType.Cloud + '"><span class="icon icon-cloud"></span><span class="dir-label">Cloud</span></li>';
+
 	html += '</ul>';
 
 	container.append(html);
@@ -1966,11 +1967,11 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 
 	container.find('.dir-entry-d, .dir-entry-f').unbind().bind('click', function(e) {
 		var target = jQuery(e.target);
-		
+
 		if (target.prop("tagName") != 'LI') {
 			target = target.closest("li");
 		}
-		
+
 		var type = target.attr('data-type');
 		var storage = target.attr('data-storage');
 		var expanded = target.attr('data-expanded');
@@ -1981,23 +1982,23 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 		if (storage != StorageType.Cloud) {
 			path = path.replace(/[\\\/]+/g, '/');
 			if (path.charAt(0) != "/") {
-				path = "/" + path;			
+				path = "/" + path;
 			}
-		
+
 			if (path.charAt(path.length - 1) != "/") {
 				path = path + "/";
 			}
 		}
-		
+
 		if ((type == 'r') || (type == 'd')) {
-			if (expanded == "true") {					
+			if (expanded == "true") {
 				target.find("ul").empty();
 				target.attr("data-expanded", "false");
 			} else {
 				target.attr("data-expanded", "true");
 			}
-			
-			if (expanded == "false") {					
+
+			if (expanded == "false") {
 				if (storage == StorageType.Board) {
 					Code.storage.board.listDirectories(path, function(entries) {
 						Code.listDirectoriesUpdate(target, storage, path, entries, extension);
@@ -2010,29 +2011,29 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 					Code.storage.cloud.listDirectories(id, function(entries) {
 						Code.listDirectoriesUpdate(target, storage, id, entries, extension);
 					});
-				}	
+				}
 			}
-						
+
 			jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
 			jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
-			
+
 			if (typeof storageSelectedCallback != "undefined") {
 				storageSelectedCallback(storage);
-			}			
+			}
 
 			if (typeof folderSelectedCallback != "undefined") {
 				folderSelectedCallback(path);
-			}			
-		} else if (type == "f") {				
+			}
+		} else if (type == "f") {
 			if (typeof storageSelectedCallback != "undefined") {
 				storageSelectedCallback(storage);
-			}			
+			}
 
 			if (typeof fileSelectedCallback != "undefined") {
-				fileSelectedCallback(path, entry);				
+				fileSelectedCallback(path, entry);
 			} else {
-				Code.loadFile(storage, path, entry);					
-			}				
+				Code.loadFile(storage, path, entry);
+			}
 		}
 
 		e.stopPropagation();
@@ -2059,7 +2060,7 @@ Code.tabRefresh = function() {
 	} else {
 		jQuery("#stopButton, #runButton, #rebootButton").removeClass("disabled");
 	}
-	
+
 	if (Code.workspace.type == 'block_editor') {
 		jQuery("#saveButton").removeClass("disabled");
 	}
@@ -2068,17 +2069,17 @@ Code.tabRefresh = function() {
 Code.developerMode = function() {
 	if (jQuery("#developerMode").hasClass("on")) {
 		jQuery("#developerMode").removeClass("on");
-		jQuery("#developerMode").find(".icon").addClass("off");	
-		Blockly.Lua.developerMode = false;	
+		jQuery("#developerMode").find(".icon").addClass("off");
+		Blockly.Lua.developerMode = false;
 	} else {
 		jQuery("#developerMode").addClass("on");
 		jQuery("#developerMode").find(".icon").removeClass("off");
 		Blockly.Lua.developerMode = true;
-	}	
+	}
 
 	Code.workspace.editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace.blocks), -1);
 	Code.workspace.editor.focus();
-	Code.renderContent();						
+	Code.renderContent();
 }
 
 Code.blockEditor = function() {
@@ -2089,25 +2090,25 @@ Code.blockEditor = function() {
 
 		Code.blocklyFactory.init();
 	}
-	
+
 	Code.renderContent();
 }
 
 Code.previewCode = function() {
-	Code.showCode =  !Code.showCode;
-	
+	Code.showCode = !Code.showCode;
+
 	if (Code.showCode) {
 		Code.workspace.type = "editor";
 		Code.workspace.prevType = Code.workspace.type;
 		Code.workspace.editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace.blocks), -1);
 		Code.workspace.editor.focus();
-		Code.renderContent();			
+		Code.renderContent();
 	} else {
 		Code.workspace.type = "blocks";
 		Code.workspace.prevType = Code.workspace.type;
 		Code.workspace.editor.setValue("", -1);
 		Code.workspace.editor.focus();
-		Code.renderContent();						
+		Code.renderContent();
 	}
 }
 
@@ -2116,16 +2117,16 @@ Code.switchToCode = function() {
 		Code.setDefaultStorage();
 		Code.settings.programmingModel = "lua";
 		Settings.save(Code.settings);
-		
+
 		Code.workspace.blocks.clear();
-		
+
 		Code.workspace.type = "editor";
 		Code.workspace.prevType = Code.workspace.type;
 		Code.workspace.editor.setValue("", -1);
 		Code.workspace.editor.focus();
-		Code.renderContent();		
+		Code.renderContent();
 	}
-	
+
 	bootbox.dialog({
 		title: MSG['information'],
 		message: MSG['switchToCodeWarning'],
@@ -2144,7 +2145,7 @@ Code.switchToCode = function() {
 			},
 		},
 		closable: false
-	});		
+	});
 }
 
 Code.switchToBlocks = function() {
@@ -2152,14 +2153,14 @@ Code.switchToBlocks = function() {
 		Code.setDefaultStorage();
 		Code.settings.programmingModel = "blocks";
 		Settings.save(Code.settings);
-	
+
 		Code.workspace.blocks.clear();
-	
+
 		Code.workspace.type = "blocks";
 		Code.workspace.prevType = Code.workspace.type;
 		Code.workspace.editor.setValue("", -1);
 		Code.workspace.editor.focus();
-		Code.renderContent();		
+		Code.renderContent();
 	}
 
 	bootbox.dialog({
@@ -2180,10 +2181,10 @@ Code.switchToBlocks = function() {
 			},
 		},
 		closable: false
-	});		
+	});
 }
 
-Code.setup = function() {	
+Code.setup = function() {
 	Code.agent.addListener("boardPowerOnReset", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
@@ -2200,13 +2201,13 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeStarts();
 
 		Status.hide();
-		
+
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 		Code.status = info.info;
 		Code.settings.board = info.info.board;
-		
+
 		Status.show(Code.board.getDesc(Code.settings.board));
-		
+
 		Code.board.getMaps(Code.settings.board, function(maps) {
 			Code.status.maps = maps;
 
@@ -2214,35 +2215,35 @@ Code.setup = function() {
 			Code.status.firmware = info.info.os + "-" + info.info.version.replace(" ", "-") + "-" + info.info.build;
 			Code.renderContent();
 		});
-		
+
 		if (Code.agent.version != Code.minAgentVersion) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
 		}
-		
+
 		if (Code.agent.version > "1.2") {
 			if (info.newBuild) {
 				Code.newFirmware();
 			}
 		}
 	});
-	
+
 	Code.agent.addListener("boardConsoleOut", function(id, info) {
 		Term.write(atob(info.content));
 	});
-	
+
 	Code.agent.addListener("attachIde", function(id, info) {
 		if (!info.hasOwnProperty("agent-version")) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
 		} else {
 			Code.agent.version = info["agent-version"];
-			
+
 			if (Code.agent.version > "1.2") {
-				Code.agent.consoleUpSocketConnect();		
-				Code.agent.consoleDownSocketConnect();						
+				Code.agent.consoleUpSocketConnect();
+				Code.agent.consoleDownSocketConnect();
 			}
 		}
 	});
-	
+
 	Code.agent.addListener("boardDetached", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
@@ -2255,7 +2256,7 @@ Code.setup = function() {
 			Code.renderContent();
 		});
 	});
-	
+
 	Code.agent.addListener("boardUpgraded", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
@@ -2275,7 +2276,7 @@ Code.setup = function() {
 
 		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).removeStart();
 	});
-	
+
 	Code.agent.addListener("blockError", function(id, info) {
 		Blockly.mainWorkspace.removeStarts();
 		Blockly.mainWorkspace.removeErrors();
@@ -2290,20 +2291,20 @@ Code.setup = function() {
 	Code.agent.addListener("boardUpdate", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
-		
+
 		if (Code.agent.version > "1.2") {
 			info.what = atob(info.what);
 		}
-		
-		Status.show(info.what);			
+
+		Status.show(info.what);
 	});
-	
+
 	Code.agent.addListener("boardRuntimeError", function(id, info) {
 		info.message = atob(info.message);
-		
+
 		Code.runtimeError(info.where, info.line, info.exception, info.message);
 	});
-	
+
 	if (typeof ide_init === "function") {
 		ide_init();
 	}
@@ -2339,70 +2340,64 @@ Code.setup = function() {
 		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
 			Code.board.getMaps(Code.settings.board, function(maps) {
 				Code.status.maps = maps;
-				Code.buildToolBox(function() {	
+				Code.buildToolBox(function() {
 					Code.init();
 					Term.init();
 					Code.renderContent();
-					Code.agent.controlSocketConnect();		
-				});		
+					Code.agent.controlSocketConnect();
+				});
 			});
 		});
-	});	
+	});
 }
 
 window.addEventListener('load', function() {
-    $.ajax( {
-      /* Setup the call */
-      xhrFields: {
-        withCredentials: true
-      }
-    });
-	
+	$.ajax({
+		/* Setup the call */
+		xhrFields: {
+			withCredentials: true
+		}
+	});
+
 	Code.agent = new agent();
 	Code.board = new board();
 	Code.lib = new blockLibrary();
-    
+
 	if (typeof require != "undefined") {
-		if (typeof require('nw.gui') != "undefined") {	
+		if (typeof require('nw.gui') != "undefined") {
 			Code.blocklyFactory = new AppController();
 		}
 	}
-	
+
 	Code.setup();
 });
 
 if (typeof require != "undefined") {
-	if (typeof require('nw.gui') != "undefined") {	
+	if (typeof require('nw.gui') != "undefined") {
 		var gui = require('nw.gui');
 		var win = gui.Window.get();
-		
+
 		win.on('close', function(event) {
 			Code.agent.send({
 				command: "detachIde",
-				arguments: {
-				}
-			}, function(id, info) {
-			});
-			
+				arguments: {}
+			}, function(id, info) {});
+
 			win.close(true);
 		});
 	} else {
 		appWin.addEventListener('close', function() {
 			Code.agent.send({
 				command: "detachIde",
-				arguments: {
-				}
-			}, function(id, info) {
-			});
+				arguments: {}
+			}, function(id, info) {});
 		});
 	}
 } else {
 	window.addEventListener('close', function() {
 		Code.agent.send({
 			command: "detachIde",
-			arguments: {
-			}
-		}, function(id, info) {
-		});
+			arguments: {}
+		}, function(id, info) {});
 	});
 }
