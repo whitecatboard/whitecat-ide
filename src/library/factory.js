@@ -63,7 +63,7 @@ BlockFactory.oldDir = null;
  * unmovable, undeletable factory_base block.
  */
 BlockFactory.STARTER_BLOCK_XML_TEXT = '<xml><block type="factory_base" ' +
-	'deletable="false" movable="false" x="10" y="15">' +
+	'deletable="false" movable="false">' +
 	'<value name="TOOLTIP">' +
 	'<block type="text" deletable="false" movable="false">' +
 	'<field name="TEXT"></field></block></value>' +

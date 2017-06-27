@@ -120,10 +120,26 @@ AppController.prototype.init = function() {
 
 	for (var block in Code.lib.def.blocks) {
 		if (Code.lib.def.blocks[block].spec.type == type) {
-			var code = atob(Code.lib.def.blocks[block].code);
-		
+			var spec = "";
+			var code = "";
+			
+			if (typeof Code.lib.def.blocks[block].xmlSpec != "undefined") {
+				spec = atob(Code.lib.def.blocks[block].xmlSpec);
+			}
+			
+			if (typeof Code.lib.def.blocks[block].code != "undefined") {
+				code = atob(Code.lib.def.blocks[block].code);
+			}
+			
 			Code.workspace.block_editorCode.setValue(code, -1);
-			Code.workspace.block_editorCode.focus();
+			Code.workspace.block_editorCode.focus();		
+		
+			if (spec != "") {
+				if (BlockFactory.mainWorkspace) {
+					BlockFactory.mainWorkspace.clear();
+				    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(spec), BlockFactory.mainWorkspace);					
+				}			
+			}
 		}
 	}
   });		
@@ -147,10 +163,14 @@ AppController.prototype.init = function() {
   if ('BlocklyStorage' in window && window.location.hash.length > 1) {
     BlocklyStorage.retrieveXml(window.location.hash.substring(1),
                                BlockFactory.mainWorkspace);
-  } else {
+  } else {	  
     BlockFactory.showStarterBlock();
   }
+  
   BlockFactory.mainWorkspace.clearUndo();
+
+  // Show first block in library
+  jQuery("#content_block_editor_type").trigger("change");
 
   // Add Block Factory event listeners.
   this.addBlockFactoryEventListeners();
