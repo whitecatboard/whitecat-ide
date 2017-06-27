@@ -553,6 +553,8 @@ Code.renderContent = function() {
 			Code.workspace.blocks.setVisible(false);
 		}
 	} else if (Code.workspace.type == 'block_editor') {
+		Code.blocklyFactory.init();
+		
 		jQuery("#content_blocks").css('visibility', 'hidden');
 		jQuery("#content_editor").css('visibility', 'hidden');
 		jQuery("#content_block_editor").css('visibility', 'visible');
@@ -2326,10 +2328,6 @@ Code.setup = function() {
 					Term.init();
 					Code.renderContent();
 					Code.agent.controlSocketConnect();
-
-					if (Code.blocklyFactory) {
-						Code.blocklyFactory.init();
-					}
 				});
 			});
 		});

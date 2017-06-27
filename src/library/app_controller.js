@@ -37,6 +37,7 @@ goog.require('goog.ui.ColorPicker');
  * @constructor
  */
 AppController = function() {
+	this.inited = false;
 };
 
 /**
@@ -106,6 +107,9 @@ AppController.prototype.onresize = function(event) {
 AppController.prototype.init = function() {
   var self = this;
 
+  if (this.inited) return;
+  this.inited = true;
+  
   var html = '';
   var i = 0;
   for (var block in Code.lib.def.blocks) {
@@ -144,8 +148,6 @@ AppController.prototype.init = function() {
 	}
   });		
 
-  jQuery("#content_block_editor_type").trigger('change');
-  
   this.onresize();
   window.addEventListener('resize', function() {
     self.onresize();
@@ -168,10 +170,10 @@ AppController.prototype.init = function() {
   }
   
   BlockFactory.mainWorkspace.clearUndo();
+  
+  // Add Block Factory event listeners.
+  this.addBlockFactoryEventListeners();
 
   // Show first block in library
   jQuery("#content_block_editor_type").trigger("change");
-
-  // Add Block Factory event listeners.
-  this.addBlockFactoryEventListeners();
 };
