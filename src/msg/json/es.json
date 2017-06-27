@@ -547,5 +547,9 @@
 	"SENSOR_UART": "El sensor está en el UART",
 	"SENSOR_SPI": "El sensor está en el bus SPI",
 
-	"any": "cualquier"
+	"any": "cualquier",
+	
+	"SENSOR_DEVICE_ID": "Identificador en el bus",
+	"SENSOR_DEVICE_ADDR": "Dirección en el bus",
+	"SENSOR_DISCOVER": "Buscar en el bus"
 }

@@ -46,7 +46,7 @@ Blockly.Blocks['sensor_attach'] = {
 		if (index == -1) {
 			instance.workspace.createSensor(
 				undefined,
-				Blockly.Sensors.createSetupStructure(instance.sid, instance.name, instance.interface, instance.pin)
+				Blockly.Sensors.createSetupStructure(instance.sid, instance.name, instance.interface, instance.pin, instance.device)
 			);
 
 			//Get index for sensor
@@ -76,6 +76,7 @@ Blockly.Blocks['sensor_attach'] = {
 		container.setAttribute('pin', this.pin);
 		container.setAttribute("sid", this.sid);
 		container.setAttribute("name", this.name);
+		container.setAttribute("device", this.device);
 
 		return container;
 	},
@@ -85,6 +86,7 @@ Blockly.Blocks['sensor_attach'] = {
 		this.pin = xmlElement.getAttribute('pin');
 		this.sid = xmlElement.getAttribute("sid");
 		this.name = xmlElement.getAttribute("name");
+		this.device = xmlElement.getAttribute("device");
 
 		this.updateShape_();
 	},

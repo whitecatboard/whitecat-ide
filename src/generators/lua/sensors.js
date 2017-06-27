@@ -46,6 +46,8 @@ Blockly.Lua['sensor_read'] = function(block) {
 		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
 	} else if (block.interface == 'UART') {
 		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
+	} else if (block.interface == '1-WIRE') {
+		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0] + ', ' + block.device;
 	}
 		
 	if (codeSection["require"].indexOf('require("block")') == -1) {
@@ -58,13 +60,13 @@ Blockly.Lua['sensor_read'] = function(block) {
 	getCode += Blockly.Lua.indent(0, 'function _get'+block.name+'_' + magnitude + '()') + "\n";
 
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(1,'if (_'+block.name+'_'+block.sid+' == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(2,'_'+block.name+'_'+block.sid+' = sensor.attach("'+block.sid+'", '+int+')') + "\n";
-	tryCode += Blockly.Lua.indent(1,'end') + "\n\n";
-	tryCode += Blockly.Lua.indent(1,'value = _'+block.name+'_'+block.sid+':read("'+magnitude+'")') + "\n";
+	tryCode += Blockly.Lua.indent(0,'if (_'+block.name+'_'+block.sid+' == nil) then') + "\n";
+	tryCode += Blockly.Lua.indent(1,'_'+block.name+'_'+block.sid+' = sensor.attach("'+block.sid+'", '+int+')') + "\n";
+	tryCode += Blockly.Lua.indent(0,'end') + "\n\n";
+	tryCode += Blockly.Lua.indent(0,'value = _'+block.name+'_'+block.sid+':read("'+magnitude+'")') + "\n";
 
 	getCode += Blockly.Lua.indent(1, 'local value\n') + "\n";
-	getCode += Blockly.Lua.indent(1,Blockly.Lua.tryBlock(1, block,tryCode)) + "\n\n";
+	getCode += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(1, block,tryCode)) + "\n";
 	
 	getCode += Blockly.Lua.indent(1, 'return value\n');
 	getCode += Blockly.Lua.indent(0, 'end\n');
@@ -89,6 +91,8 @@ Blockly.Lua['sensor_set'] = function(block) {
 		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
 	} else if (block.interface == 'UART') {
 		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
+	} else if (block.interface == '1-WIRE') {
+		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0] + ', ' + block.device;
 	}
 
 	if (codeSection["require"].indexOf('require("block")') == -1) {

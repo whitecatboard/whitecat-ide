@@ -57,6 +57,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
 			mutation.setAttribute('sid', sensors.setup[index].id);
+			mutation.setAttribute('device', sensors.setup[index].device);
 			mutation.setAttribute('name', name);
 
 			var block = goog.dom.createDom('block');
@@ -76,6 +77,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
 			mutation.setAttribute('sid', sensors.setup[index].id);
+			mutation.setAttribute('device', sensors.setup[index].device);
 			mutation.setAttribute('name', name);
 
 			var block = goog.dom.createDom('block');
@@ -101,6 +103,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
 			mutation.setAttribute('sid', sensors.setup[index].id);
+			mutation.setAttribute('device', sensors.setup[index].device);
 			mutation.setAttribute('name', name);
 
 			var block = goog.dom.createDom('block');
@@ -157,9 +160,11 @@ Blockly.Sensors.sensorChanged = function() {
 	}
 };
 
-Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin) {
+Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin, device) {
 	var setup = {};
 	setup.id = id;
+	setup.device = 0;
+	
 	setup['name'] = sensor;
 	if (interf == "GPIO") {
 		setup['interface'] = "GPIO";
@@ -176,6 +181,10 @@ Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin) {
 	} else if (interf == "SPI") {
 		setup['interface'] = "SPI";
 		setup.pin = pin;
+	} else if (interf == "1-WIRE") {
+		setup['interface'] = "1-WIRE";
+		setup.pin = pin;
+		setup.device = device;
 	}
 
 	return setup;
@@ -262,6 +271,20 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	})
 	uartSelect += "</select>";
 
+	// Build 1-wire selection
+	var oneWireSelect = [];
+	var oneWireSelect = "";
+
+	for (var key in  Code.status.maps.digitalPins) {
+		gpio.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+	}
+
+	var oneWireSelect = '<select id="1-wire" name="1-wire">';
+	gpio.forEach(function(item, index) {
+		oneWireSelect += '<option '+((edit && (item[1] == block.pin))?"selected":"")+' value="' + item[1] + '">' + item[0] + '</option>';
+	})
+	oneWireSelect += "</select>";
+
 	dialogForm = '<form id="sensor_form">';
 	dialogForm += '<label for="id">' + Blockly.Msg.SENSOR + ':&nbsp;&nbsp;</label>' + sensorSelect;
 
@@ -284,6 +307,20 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	} else {
 		dialogForm += '<div class="sensor_interface" id="GPIO_sensor" style="display: none;">';
 		dialogForm += '<label for="gpio">' + Blockly.Msg.SENSOR_DIGITAL_PIN + ':&nbsp;&nbsp;</label>' + gpioSelect;
+		dialogForm += '</div>';
+	}
+
+	if (edit && (block['interface'] == "1-WIRE")) {
+		dialogForm += '<div>';
+		dialogForm += '<label for="1-wire">' + Blockly.Msg.SENSOR_DIGITAL_PIN + ':&nbsp;&nbsp;</label>' + oneWireSelect;
+		dialogForm += '<br><label for="device">' + Blockly.Msg.SENSOR_DEVICE_ID + ':&nbsp;&nbsp;</label>';
+		dialogForm += '<input type="text" value="'+block.device+'" name="device" id="device">'
+		dialogForm += '</div>';
+	} else {
+		dialogForm += '<div class="sensor_interface" id="1-WIRE_sensor" style="display: none;">';
+		dialogForm += '<label for="1-wire">' + Blockly.Msg.SENSOR_DIGITAL_PIN + ':&nbsp;&nbsp;</label>' + oneWireSelect;
+		dialogForm += '<br><label for="device">' + Blockly.Msg.SENSOR_DEVICE_ID + ':&nbsp;&nbsp;</label>';
+		dialogForm += '<input type="text" value="1" name="device" id="device">'
 		dialogForm += '</div>';
 	}
 
@@ -353,11 +390,12 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 						}
 
 						var pin = form.find("#" + interf.toLowerCase()).val();
-
+						var device = form.find("#device").val();
+						
 						if ((sensor != "") && (interf != "")) {
 							workspace.createSensor(
 								edit ? block['name'] : undefined,
-								Blockly.Sensors.createSetupStructure(id, sensor, interf, pin)
+								Blockly.Sensors.createSetupStructure(id, sensor, interf, pin, device)
 							);
 							workspace.toolbox_.refreshSelection();
 						} else {

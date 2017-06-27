@@ -277,6 +277,7 @@ Blockly.Workspace.prototype.createSensor = function(oldName, setup) {
 					blocks[i]['interface'] = setup['interface'];
 					blocks[i].pin = setup.pin;
 					blocks[i].sid = setup.id;
+					blocks[i].device = setup.device;
 					blocks[i]['name'] = setup['name'];
 					blocks[i].updateShape_();
 				}
