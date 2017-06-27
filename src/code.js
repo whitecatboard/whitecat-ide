@@ -926,21 +926,17 @@ Code.buildToolBox = function(callback) {
 		xml += '</category>';
 	}
 
-	//xml += '<category id="catActuators">';
-	//if (Code.status.modules.servo) {
-	//	if (Code.blockAbstraction == blockAbstraction.Low) {
-	//		xml += '<block type="servo_attach"></block>';
-	//	}
-
-	//	xml += '<block type="servo_move">' +
-	//		'<value name="VALUE">' +
-	//		'<shadow type="math_number">' +
-	//		'<field name="NUM">0</field>' +
-	//		'</shadow>' +
-	//		'</value>' +
-	//		'</block>';
-	//}
-	//xml += '</category>';
+	if (Code.status.modules.servo) {
+		xml += '<category id="catActuators">';
+		xml += '<block type="servo_move">' +
+			'<value name="VALUE">' +
+			'<shadow type="math_number">' +
+			'<field name="NUM">0</field>' +
+			'</shadow>' +
+			'</value>' +
+			'</block>';
+	}
+	xml += '</category>';
 
 	if (Code.status.modules.net) {
 		xml += '<category id="catNET" colour="20">';
@@ -978,7 +974,7 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catSensor").attr("colour", Blockly.Blocks.sensor.HUE);
 		jQuery("#catComm").attr("colour", Blockly.Blocks.io.HUE);
 		jQuery("#catI2c").attr("colour", Blockly.Blocks.io.HUE);
-		//jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
+		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);
 		//jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catNET").attr("colour", Blockly.Blocks.i2c.HUE);
@@ -1236,7 +1232,7 @@ Code.initLanguage = function() {
 		categories.push('catSensor');
 	}
 
-	//categories.push('catActuators');
+	categories.push('catActuators');
 
 	if (Code.status.modules.i2c) {
 		categories.push('catComm');
@@ -2310,7 +2306,7 @@ Code.setup = function() {
 	Blockly.Blocks.sensor.HUE = "#2ca5e2";
 	Blockly.Blocks.operators.HUE = "#5cb712";
 	Blockly.Blocks.i2c.HUE = Blockly.Blocks.io.HUE;
-	//Blockly.Blocks.actuators.HUE = "#4a6cd4";
+	Blockly.Blocks.actuators.HUE = "#4a6cd4";
 
 	Blockly.Blocks['try'].HUE = Blockly.Blocks.control.HUE;
 	Blockly.Blocks.loops.HUE = Blockly.Blocks.control.HUE;
@@ -2330,7 +2326,7 @@ Code.setup = function() {
 					Term.init();
 					Code.renderContent();
 					Code.agent.controlSocketConnect();
-					
+
 					if (Code.blocklyFactory) {
 						Code.blocklyFactory.init();
 					}
