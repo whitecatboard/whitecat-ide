@@ -530,51 +530,38 @@ Code.renderContent = function() {
 	var content = document.getElementById('content_' + Code.selected);
 
 	Code.tabRefresh();
-	if (Code.selected == 'board') {
-		Code.setDefaultStorage();
 
-		jQuery("#content_editor").css('visibility', 'hidden');
+	if (Code.workspace.type == 'blocks') {
 		jQuery("#content_block_editor").css('visibility', 'hidden');
-		jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
-		jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
-		jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
+		jQuery("#content_editor").css('visibility', 'hidden');
+		jQuery("#content_blocks").css('visibility', 'visible');
+
+		jQuery("#content_blocks").find(".injectionDiv").css('visibility', 'visible');
+		jQuery("#content_block_editor").find(".injectionDiv").css('visibility', 'hidden');
+
+		if (Code.workspace.blocks) {
+			Code.workspace.blocks.setVisible(true);
+
+			Code.updateToolBox();
+		}
+	} else if (Code.workspace.type == 'editor') {
 		jQuery("#content_blocks").css('visibility', 'hidden');
+		jQuery("#content_editor").css('visibility', 'visible');
+		jQuery("#content_block_editor").css('visibility', 'hidden');
 
-		Code.listDirectories(jQuery('#filesystem'));
-		Code.updateStatus();
-	} else if (Code.selected == 'program') {
-		if (Code.workspace.type == 'blocks') {
-			jQuery("#content_block_editor").css('visibility', 'hidden');
-			jQuery("#content_editor").css('visibility', 'hidden');
-			jQuery("#content_blocks").css('visibility', 'visible');
+		if (Code.workspace.blocks) {
+			Code.workspace.blocks.setVisible(false);
+		}
+	} else if (Code.workspace.type == 'block_editor') {
+		jQuery("#content_blocks").css('visibility', 'hidden');
+		jQuery("#content_editor").css('visibility', 'hidden');
+		jQuery("#content_block_editor").css('visibility', 'visible');
 
-			jQuery("#content_blocks").find(".injectionDiv").css('visibility', 'visible').show();
-			jQuery("#content_block_editor").find(".injectionDiv").css('visibility', 'hidden').hide();
+		jQuery("#content_blocks").find(".injectionDiv").css('visibility', 'hidden');
+		jQuery("#content_block_editor").find(".injectionDiv").css('visibility', 'visible');
 
-			if (Code.workspace.blocks) {
-				Code.workspace.blocks.setVisible(true);
-
-				Code.updateToolBox();
-			}
-		} else if (Code.workspace.type == 'editor') {
-			jQuery("#content_blocks").css('visibility', 'hidden');
-			jQuery("#content_editor").css('visibility', 'visible');
-			jQuery("#content_block_editor").css('visibility', 'hidden');
-
-			if (Code.workspace.blocks) {
-				Code.workspace.blocks.setVisible(false);
-			}
-		} else if (Code.workspace.type == 'block_editor') {
-			jQuery("#content_blocks").css('visibility', 'hidden');
-			jQuery("#content_editor").css('visibility', 'hidden');
-			jQuery("#content_block_editor").css('visibility', 'visible');
-
-			jQuery("#content_blocks").find(".injectionDiv").css('visibility', 'hidden').hide();
-			jQuery("#content_block_editor").css('visibility', 'visible');
-
-			if (Code.workspace.blocks) {
-				Code.workspace.blocks.setVisible(false);
-			}
+		if (Code.workspace.blocks) {
+			Code.workspace.blocks.setVisible(false);
 		}
 	}
 
@@ -2084,11 +2071,9 @@ Code.developerMode = function() {
 
 Code.blockEditor = function() {
 	if (Code.workspace.type == "block_editor") {
-		Code.workspace.type = Code.workspace.prevType;
+		Code.workspace.type = "blocks"
 	} else {
 		Code.workspace.type = "block_editor";
-
-		Code.blocklyFactory.init();
 	}
 
 	Code.renderContent();
@@ -2345,6 +2330,10 @@ Code.setup = function() {
 					Term.init();
 					Code.renderContent();
 					Code.agent.controlSocketConnect();
+					
+					if (Code.blocklyFactory) {
+						Code.blocklyFactory.init();
+					}
 				});
 			});
 		});
@@ -2363,6 +2352,7 @@ window.addEventListener('load', function() {
 	Code.board = new board();
 	Code.lib = new blockLibrary();
 
+	Code.blocklyFactory = null;
 	if (typeof require != "undefined") {
 		if (typeof require('nw.gui') != "undefined") {
 			Code.blocklyFactory = new AppController();

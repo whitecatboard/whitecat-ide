@@ -68,10 +68,10 @@ AppController.prototype.onresize = function(event) {
 
 	var tool = document.getElementById('block_editor_tool');
 	
-	toolTop = 0;
-	tool.style.top = toolTop + 'px';
+	tool.style.top = bBox.y + 'px';
 	tool.style.left = bBox.x + 'px';
-	tool.style.height = (bBox.height) + 'px';
+
+	tool.style.height = (bBox.height - 34) + 'px';
 	tool.style.width = toolWidth + 'px';
 
 	var options = document.getElementById('block_editor_options');
@@ -140,7 +140,8 @@ AppController.prototype.init = function() {
   BlockFactory.mainWorkspace = Blockly.inject('block_editor_tool',
       {collapse: false,
        toolbox: toolbox,
-       media: Code.folder + '/media/'});
+       media: Code.folder + '/media/',
+	  });
 
   // Create the root block on Block Factory main workspace.
   if ('BlocklyStorage' in window && window.location.hash.length > 1) {
