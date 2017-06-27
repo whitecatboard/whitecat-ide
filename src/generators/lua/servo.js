@@ -66,7 +66,7 @@ Blockly.Lua.servo.helper = {
 		return "_servo" + Blockly.Lua.io.helper.nameDigital(block);
 	},
 
-	attach: function(block, output) {
+	attach: function(blocks) {
 		var code = '';
 		
 		if (!Blockly.Lua.servo.helper.hasAncestors(block)) {
