@@ -955,6 +955,10 @@ Code.buildToolBox = function(callback) {
 	if (Code.status.modules.servo) {
 		xml += '<category id="catActuators">';
 		xml += '<block type="servo_move">' +
+			'<value name="PIN">' +
+			'<shadow type="output_digital_pin">' +
+			'</shadow>' +
+			'</value>' +
 			'<value name="VALUE">' +
 			'<shadow type="math_number">' +
 			'<field name="NUM">0</field>' +

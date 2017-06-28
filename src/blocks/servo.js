@@ -40,36 +40,38 @@ Blockly.Blocks['servo_move'] = {
 	module: "servo",
 	init: function() {
 		var thisInstance = this;
-		
+
 		var pins = Blockly.Blocks.io.helper.getPwmPins();
 
 		this.appendDummyInput()
-			.appendField(Blockly.Msg.SERVO_MOVE)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN")
-			.appendField(" ");
-		
+			.appendField(Blockly.Msg.SERVO_MOVE);
+
+		this.appendValueInput("PIN")
+			.setCheck('Number');
+
+
 		this.appendValueInput("VALUE")
-		    .setCheck('Number');
-		
+			.setCheck('Number');
+
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.SERVO_MOVE_DEGREES);
-		
+
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.actuators.HUE);
 		this.setTooltip(Blockly.Msg.SERVO_MOVE_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.SERVO_MOVE_HELPURL);
-				
+
 		this.updateBoardAtFieldChange("NUM");
 	},
-	
+
 	mutationToDom: function() {
 		var container = document.createElement('mutation');
 
 		if (typeof this.value == "undefined") {
 			this.value = -1;
 		}
-		
+
 		container.setAttribute('value', this.value);
 
 		return container;
@@ -79,4 +81,3 @@ Blockly.Blocks['servo_move'] = {
 		this.value = xmlElement.getAttribute('value');
 	},
 };
-	

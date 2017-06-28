@@ -566,7 +566,10 @@ Blockly.Workspace.prototype.migrate = function(xml) {
 		  type = xmlChild.getAttribute('type');
 	  }
   
-	  if ((type == 'setdigitalpin') || (type == 'getdigitalpin') || (type == 'getanalogpin') || (type == 'setpwmpin') || (type == 'when_digital_pin')) {
+	  if (
+		  (type == 'setdigitalpin') || (type == 'getdigitalpin') || (type == 'getanalogpin') || (type == 'setpwmpin') || (type == 'when_digital_pin') ||
+		   (type == 'servo_move')
+	  ) {
 		  xmlChild = this.migratePinField(xmlChild);
 		  xmlChild = this.migrate(xmlChild);
 	  } else {
