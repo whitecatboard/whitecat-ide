@@ -38,6 +38,8 @@ goog.require('goog.ui.ColorPicker');
  */
 AppController = function() {
 	this.inited = false;
+	this.toolWidth = 500;
+	this.previewHeight = 70;
 };
 
 /**
@@ -55,13 +57,11 @@ AppController.prototype.addBlockFactoryEventListeners = function() {
  * Handle resizing of elements.
  */
 AppController.prototype.onresize = function(event) {
-	var toolWidth = 500;
-	var previewHeight = 150;
 	var optionsTop = 0;
-	var optionsHeight = 22;
+	var optionsHeight = 32;
 	var previewTop = 0;
+	var sepWidth = 4;
 	var previewLeft;
-	var previewHeight;
 	var editorTop;
 	
 	var container = document.getElementById('content_area');
@@ -73,30 +73,39 @@ AppController.prototype.onresize = function(event) {
 	tool.style.left = bBox.x + 'px';
 
 	tool.style.height = (bBox.height - 34) + 'px';
-	tool.style.width = toolWidth + 'px';
+	tool.style.width = this.toolWidth + 'px';
+	
+	var v_sep = document.getElementById('block_editor_v_sep');
+	
+	v_sep.style.top = 0 + 'px';
+	v_sep.style.left = (bBox.x + this.toolWidth) + 'px';
+
+	v_sep.style.height = (bBox.height - 34) + 'px';
+	v_sep.style.width = sepWidth + 'px';
 
 	var options = document.getElementById('block_editor_options');
 	options.style.top = optionsTop + 'px';
-	options.style.left = (bBox.x + toolWidth) + 'px';
+	options.style.left = (bBox.x + this.toolWidth + sepWidth) + 'px';
 	options.style.height = (optionsHeight) + 'px';
-	options.style.width = toolWidth + 'px';
+	options.style.width = this.toolWidth + 'px';
 
 	var preview = document.getElementById('preview');
 	
 	previewTop = optionsHeight;
 	preview.style.top = previewTop + 'px';
 	
-	previewLeft = bBox.x + toolWidth;
-	preview.style.left = (bBox.x + toolWidth) + 'px';
+	previewLeft = bBox.x + this.toolWidth;
+	preview.style.left = (bBox.x + this.toolWidth + sepWidth - 1) + 'px';
 	
-	preview.style.height = previewHeight + 'px';
+	preview.style.height = this.previewHeight + 'px';
 	preview.style.width = (bBox.width - parseInt(preview.style.left.replace("px",""))) + 'px';
 	
+
 	var editor = document.getElementById('block_editor_code');
 
-	editorTop = optionsHeight + previewHeight;
+	editorTop = optionsHeight + this.previewHeight;
 	editor.style.top = (editorTop) + 'px';
-	editor.style.left = (bBox.x + toolWidth) + 'px';
+	editor.style.left = (bBox.x + this.toolWidth + sepWidth - 1) + 'px';
 	editor.style.height = (bBox.height - editorTop) + 'px';
 	editor.style.width = (bBox.width - previewLeft) + 'px';
 };
