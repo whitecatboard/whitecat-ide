@@ -2199,7 +2199,7 @@ Code.setup = function() {
 			Code.renderContent();
 		});
 
-		if (Code.agent.version != Code.minAgentVersion) {
+		if ((Code.agent.version != Code.minAgentVersion) || (Code.agent.version == "")) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
 		}
 

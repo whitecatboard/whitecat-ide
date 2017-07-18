@@ -224,45 +224,54 @@ blockLibrary.prototype.create = function(xml, block) {
 blockLibrary.prototype.get = function(xml, id, callback) {
 	var thisInstance = this;
 	
-	this.load(id, function() {
-		// Parse each block
-		var blocks = thisInstance.workDef.blocks;
+	
+	if (typeof require != "undefined") {
+		if (typeof require('nw.gui') != "undefined") {
+			this.load(id, function() {
+				// Parse each block
+				var blocks = thisInstance.workDef.blocks;
 
-		for(var i=0;i < blocks.length;i++) {
-			var block = blocks[i];
+				for(var i=0;i < blocks.length;i++) {
+					var block = blocks[i];
 			
-			// Get the json spec for block
-			var spec = block.spec;
+					// Get the json spec for block
+					var spec = block.spec;
 			
-			// Translate messages
-			for (var prop in spec) {
-				if (/message[0-9]*/.test(prop)) {
-					block.spec[prop] = block.msg[Code.settings.language][prop];
-				}
-			}
-			
-			// Search into arguments
-			//
-			// If argument is field_dropdown and value is not an array evaluate firts
-			for (var prop in spec) {
-				if (/args[0-9]*/.test(prop)) {
-					for (var arg in spec[prop]) {
-						if ((spec[prop][arg].type == 'field_dropdown') && (!jQuery.isArray(spec[prop][arg].options))) {
-							spec[prop][arg].options = eval(spec[prop][arg].options);
+					// Translate messages
+					for (var prop in spec) {
+						if (/message[0-9]*/.test(prop)) {
+							block.spec[prop] = block.msg[Code.settings.language][prop];
 						}
 					}
-				}
-			}
 			
-			// If colour in spec is not an integer, evaluate
-			if (isNaN(parseInt(spec.colour))) {
-				spec.colour = eval(spec.colour);
-			}
+					// Search into arguments
+					//
+					// If argument is field_dropdown and value is not an array evaluate firts
+					for (var prop in spec) {
+						if (/args[0-9]*/.test(prop)) {
+							for (var arg in spec[prop]) {
+								if ((spec[prop][arg].type == 'field_dropdown') && (!jQuery.isArray(spec[prop][arg].options))) {
+									spec[prop][arg].options = eval(spec[prop][arg].options);
+								}
+							}
+						}
+					}
+			
+					// If colour in spec is not an integer, evaluate
+					if (isNaN(parseInt(spec.colour))) {
+						spec.colour = eval(spec.colour);
+					}
 						
-			// Create block
-			xml = thisInstance.create(xml, block);
-		}
+					// Create block
+					xml = thisInstance.create(xml, block);
+				}
 
+				callback(xml);		
+			});
+		} else {
+			callback(xml);		
+		}
+	} else {
 		callback(xml);		
-	});
+	}
 }

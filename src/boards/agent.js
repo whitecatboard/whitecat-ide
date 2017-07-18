@@ -120,6 +120,10 @@ agent.prototype.controlSocketConnect = function() {
 		// Get data. Now data is a stringyfied JSON data.
 		var data = event.data;
 
+		// Some issues related whith later versions of the
+		// create agent <= 1.2
+		data = data.replace('"info": , "', '"');
+		
 		// JSON data
 		var message = JSON.parse(data);
 		
