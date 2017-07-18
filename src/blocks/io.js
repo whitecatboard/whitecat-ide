@@ -107,6 +107,86 @@ Blockly.Blocks.io.helper = {
 	},
 };
 
+Blockly.Blocks['output_digital_pin'] = {
+	module: "pio",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getOutputDigitalPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
+	}
+};
+
+Blockly.Blocks['input_digital_pin'] = {
+	module: "pio",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getInputDigitalPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
+	}
+};
+
+Blockly.Blocks['pwm_pins'] = {
+	module: "pwm",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getPwmPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
+	}
+};
+
+Blockly.Blocks['analog_pins'] = {
+	module: "adc",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getAnalogPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
+	}
+};
+
 Blockly.Blocks['setpwmpin'] = {
 	module: "pwm",
 	init: function() {
@@ -114,8 +194,11 @@ Blockly.Blocks['setpwmpin'] = {
 
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.setpwmpin)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+			.appendField(Blockly.Msg.setpwmpin);
+
+		this.appendValueInput("PIN")
+			.setCheck('Number');
+
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.FREQUENCY);
 		this.appendValueInput("FREQUENCY")
@@ -150,7 +233,9 @@ Blockly.Blocks['setdigitalpin'] = {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(Blockly.Msg.setdigitalpin)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.appendValueInput("PIN")
+			.setCheck('Number');
 
 		this.appendDummyInput()
 			.appendField(' ' + Blockly.Msg.TO + ' ')
@@ -178,8 +263,11 @@ Blockly.Blocks['getdigitalpin'] = {
 
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.getdigitalpin)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+			.appendField(Blockly.Msg.getdigitalpin);
+
+		this.appendValueInput("PIN")
+			.setCheck('Number');
+
 		this.setOutput(true, null);
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
@@ -199,8 +287,12 @@ Blockly.Blocks['getanalogpin'] = {
 
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.getanalogpin)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN")
+			.appendField(Blockly.Msg.getanalogpin);
+
+		this.appendValueInput("PIN")
+			.setCheck('Number');
+
+		this.appendDummyInput()
 			.appendField(Blockly.Msg.IN)
 			.appendField(new Blockly.FieldDropdown([
 				["mvolts", "mvolts"],
@@ -225,8 +317,12 @@ Blockly.Blocks['when_digital_pin'] = {
 
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN)
-			.appendField(new Blockly.FieldDropdown(pins), "PIN")
+			.appendField(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN);
+
+		this.appendValueInput("PIN")
+			.setCheck('Number');
+
+		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_WHEN_DIGITAL_CHANGES)
 			.appendField(new Blockly.FieldDropdown(
 				[

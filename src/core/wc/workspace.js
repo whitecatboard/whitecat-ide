@@ -518,3 +518,64 @@ Blockly.WorkspaceSvg.prototype.removeStarts = function() {
 		blocks[i].removeStart();
 	}
 }
+
+Blockly.Workspace.prototype.migratePinField = function(xml) {
+	var childCount = xml.childNodes.length;
+	
+    for (var i = 0; i < childCount; i++) {
+      var xmlChild = xml.childNodes[i];
+      var name = xmlChild.nodeName.toLowerCase(); 	
+	  
+	  if (name == "field") {
+	  	var aName = xmlChild.getAttribute('name');
+		if (aName == 'PIN') {
+			var value = goog.dom.createDom('value');
+			value.setAttribute('name', 'PIN');
+
+			var shadow = goog.dom.createDom('shadow');
+			shadow.setAttribute('type', 'output_digital_pin');
+			
+			var field = goog.dom.createDom('field');
+			field.setAttribute('name', 'PIN');
+			field.innerText = xmlChild.innerText;
+			
+			shadow.appendChild(field);
+			value.appendChild(shadow);
+			
+			xml.childNodes[i].outerHTML = value.outerHTML;
+		}
+	  }  
+    }
+	
+	return xml;
+}
+
+
+// <value xmlns="http://www.w3.org/1999/xhtml" name="PIN"><shadow type="output_digital_pin" id="`8QC@k8]oIjkR;gHOX9="><field name="PIN">2</field></shadow></value>
+
+
+Blockly.Workspace.prototype.migrate = function(xml) {
+	var childCount = xml.childNodes.length;
+	
+    for (var i = 0; i < childCount; i++) {
+      var xmlChild = xml.childNodes[i];
+      var name = xmlChild.nodeName.toLowerCase(); 	 
+	  
+	  var type = "";
+	  if (typeof xmlChild.getAttribute == "function") {
+		  type = xmlChild.getAttribute('type');
+	  }
+  
+	  if (
+		  (type == 'setdigitalpin') || (type == 'getdigitalpin') || (type == 'getanalogpin') || (type == 'setpwmpin') || (type == 'when_digital_pin') ||
+		   (type == 'servo_move')
+	  ) {
+		  xmlChild = this.migratePinField(xmlChild);
+		  xmlChild = this.migrate(xmlChild);
+	  } else {
+		  xmlChild = this.migrate(xmlChild);
+	  }	 	  
+  	}
+  
+	return xml;
+}

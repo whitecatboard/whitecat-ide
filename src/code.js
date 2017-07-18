@@ -554,7 +554,7 @@ Code.renderContent = function() {
 		}
 	} else if (Code.workspace.type == 'block_editor') {
 		Code.blocklyFactory.init();
-		
+
 		jQuery("#content_blocks").css('visibility', 'hidden');
 		jQuery("#content_editor").css('visibility', 'hidden');
 		jQuery("#content_block_editor").css('visibility', 'visible');
@@ -857,18 +857,42 @@ Code.buildToolBox = function(callback) {
 		xml += '<category id="catIO" colour="20">';
 
 		if (Code.status.modules.pio) {
-			xml += '<block type="when_digital_pin"></block>' +
-				'<block type="setdigitalpin"></block>' +
-				'<block type="getdigitalpin"></block>';
+			xml += '<block type="when_digital_pin">' +
+				'<value name="PIN">' +
+				'<shadow type="input_digital_pin">' +
+				'</shadow>' +
+				'</value>' +
+				'</block>' +
+				'<block type="setdigitalpin">' +
+				'<value name="PIN">' +
+				'<shadow type="output_digital_pin">' +
+				'</shadow>' +
+				'</value>' +
+				'</block>' +
+				'<block type="getdigitalpin">' +
+				'<value name="PIN">' +
+				'<shadow type="input_digital_pin">' +
+				'</shadow>' +
+				'</value>' +
+				'</block>';
 		}
 
 		if (Code.status.modules.adc) {
-			xml += '<block type="getanalogpin"></block>';
+			xml += '<block type="getanalogpin">' +
+				'<value name="PIN">' +
+				'<shadow type="analog_pins">' +
+				'</shadow>' +
+				'</value>' +
+				'</block>';
 		}
 
 		if (Code.status.modules.pwm) {
 			xml += '' +
 				'<block type="setpwmpin">' +
+				'<value name="PIN">' +
+				'<shadow type="pwm_pins">' +
+				'</shadow>' +
+				'</value>' +
 				'<value name="FREQUENCY">' +
 				'<shadow type="math_number">' +
 				'<field name="NUM">1000</field>' +
@@ -931,6 +955,10 @@ Code.buildToolBox = function(callback) {
 	if (Code.status.modules.servo) {
 		xml += '<category id="catActuators">';
 		xml += '<block type="servo_move">' +
+			'<value name="PIN">' +
+			'<shadow type="output_digital_pin">' +
+			'</shadow>' +
+			'</value>' +
 			'<value name="VALUE">' +
 			'<shadow type="math_number">' +
 			'<field name="NUM">0</field>' +
@@ -1423,6 +1451,7 @@ Code.loadFile = function(storage, path, entry) {
 
 		if (Code.workspace.type == 'blocks') {
 			var xml = Blockly.Xml.textToDom(fileContent);
+			xml = Code.workspace.blocks.migrate(xml);
 			Code.workspace.blocks.clear();
 			Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
 			Blockly.resizeSvgContents(Code.workspace.blocks);

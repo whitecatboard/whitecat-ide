@@ -57,21 +57,16 @@ Blockly.Lua.servo.helper = {
 		return false;
 	},
 	
-	name: function(block) {
-		return Code.status.maps.digitalPins[block.getFieldValue('PIN')][0];
-
-	},
-	
 	instance: function(block) {
-		return "_servo" + Blockly.Lua.io.helper.nameDigital(block);
+		return "_servo_" + Blockly.Lua.io.helper.nameDigital(block);
 	},
 
-	attach: function(blocks) {
+	attach: function(block) {
 		var code = '';
 		
 		if (!Blockly.Lua.servo.helper.hasAncestors(block)) {
 			code += Blockly.Lua.indent(0,'if ('+Blockly.Lua.servo.helper.instance(block)+' == nil) then') + "\n";
-			code += Blockly.Lua.indent(1,Blockly.Lua.servo.helper.instance(block) + " = servo.attach(pio."+Code.status.maps.digitalPins[block.getFieldValue('PIN')][0]+")") + "\n";
+			code += Blockly.Lua.indent(1,Blockly.Lua.servo.helper.instance(block) + " = servo.attach("+Blockly.Lua.io.helper.prefixDigital(block)+Blockly.Lua.io.helper.nameDigital(block)+")") + "\n";
 			code += Blockly.Lua.indent(0,'end') + "\n\n";				
 		}
 		
@@ -90,7 +85,7 @@ Blockly.Lua['servo_move'] = function(block) {
 	tryCode += Blockly.Lua.servo.helper.attach(block);	
 	tryCode += Blockly.Lua.indent(0, Blockly.Lua.servo.helper.instance(block) + ':write('+value+')') + "\n";
 		
-	code += Blockly.Lua.tryBlock(0, block, tryCode, 'move servo at pin ' + Blockly.Lua.servo.helper.name(block) + ' by ' + value);
+	code += Blockly.Lua.tryBlock(0, block, tryCode, 'move servo at pin ' + Blockly.Lua.io.helper.nameDigital(block) + ' by ' + value);
 		
 	return code;
 }
