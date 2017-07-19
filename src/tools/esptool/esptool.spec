@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['esptool.py'],
-             pathex=['/Users/jaumeolivepetrus/whitecat-ide/src/tools/esptool'],
+             pathex=['/home/jaume/whitecat-ide/src/tools/esptool'],
              binaries=[],
              datas=[],
              hiddenimports=[],

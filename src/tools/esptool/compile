@@ -1,1 +1,2 @@
 pyinstaller esptool.py
+zip -r esptool-linux dist/esptool
