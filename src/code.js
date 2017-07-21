@@ -2228,7 +2228,7 @@ Code.setup = function() {
 			Code.renderContent();
 		});
 
-		if ((Code.agent.version == "") || (parseFloat(Code.agent.version) <= parseFloat(Code.minAgentVersion))) {
+		if ((Code.agent.version == "") || (parseFloat(Code.agent.version) < parseFloat(Code.minAgentVersion))) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
 		}
 
