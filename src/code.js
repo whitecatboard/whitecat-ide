@@ -80,7 +80,7 @@ Code.blockAbstraction = blockAbstraction.High;
 
 Code.storage = {};
 
-Code.minAgentVersion = "1.3";
+Code.minAgentVersion = "1.4";
 Code.checkNewVersion = true;
 Code.showCode = false;
 
@@ -2228,7 +2228,7 @@ Code.setup = function() {
 			Code.renderContent();
 		});
 
-		if ((Code.agent.version != Code.minAgentVersion) || (Code.agent.version == "")) {
+		if ((Code.agent.version == "") || (parseFloat(Code.agent.version) <= parseFloat(Code.minAgentVersion))) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
 		}
 
