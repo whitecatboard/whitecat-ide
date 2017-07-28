@@ -33,18 +33,18 @@ goog.provide('Blockly.Lua.control');
 goog.require('Blockly.Lua');
 
 Blockly.Lua['wait_for'] = function(block) {
-	var time = block.getFieldValue('time');
+	var time = Blockly.Lua.valueToCode(block, 'TIME', Blockly.Lua.ORDER_NONE);
 	var units = block.getFieldValue('units');
 	
 	var code = '';
 	
 	switch (units) {
 		case 'microseconds':
-			code += "tmr.delayus(" + time + ")\r\n";break;
+			code += "tmr.delayus(math.floor(" + time + "))\r\n";break;
 		case 'milliseconds':
-			code += "tmr.delayms(" + time + ")\r\n";break;
+			code += "tmr.delayms(math.floor(" + time + "))\r\n";break;
 		case 'seconds':	
-			code += "tmr.delay(" + time  + ")\r\n";break;
+			code += "tmr.delay(math.floor(" + time  + "))\r\n";break;
 	}
 	
 	return code;
@@ -55,6 +55,6 @@ Blockly.Lua['cpu_sleep'] = function(block) {
 	
 	var code = '';
 
-	code = 'os.sleep(' + time + ')';	
+	code = 'os.sleep(math.floor(' + time + '))';	
 	return code;
 };

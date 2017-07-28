@@ -41,8 +41,12 @@ Blockly.Blocks['wait_for'] = {
 	module: "tmr",
 	init: function() {
 		this.appendDummyInput()
-			.appendField(Blockly.Msg.wait_for)
-			.appendField(new Blockly.FieldTextInput("1"), "time")
+			.appendField(Blockly.Msg.wait_for);
+
+		this.appendValueInput("TIME")
+			.setCheck('Number');
+
+		this.appendDummyInput()
 			.appendField(new Blockly.FieldDropdown([
 				[Blockly.Msg.microseconds, "microseconds"],
 				[Blockly.Msg.milliseconds, "milliseconds"],

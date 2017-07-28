@@ -623,7 +623,11 @@ Code.buildToolBox = function(callback) {
 		'<block type="exception_raise_again"></block>' +
 		'</category>' +
 		'<category id="catDelays">' +
-		'<block type="wait_for"></block>' +
+		'<block type="wait_for">'+
+		'<shadow type="math_number">' +
+		'<field name="NUM"></field>' +
+		'</shadow>' +
+		'</block>' +
 		'<block type="cpu_sleep">' +
 		'<value name="SECONDS">' +
 		'<shadow type="math_number">' +

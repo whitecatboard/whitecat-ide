@@ -550,6 +550,37 @@ Blockly.Workspace.prototype.migratePinField = function(xml) {
 	return xml;
 }
 
+Blockly.Workspace.prototype.migrateTimeField = function(xml) {
+	var childCount = xml.childNodes.length;
+	
+    for (var i = 0; i < childCount; i++) {
+      var xmlChild = xml.childNodes[i];
+      var name = xmlChild.nodeName.toLowerCase(); 	
+	  
+	  if (name == "field") {
+	  	var aName = xmlChild.getAttribute('name');
+		if (aName == 'time') {
+			var value = goog.dom.createDom('value');
+			value.setAttribute('name', 'TIME');
+			
+			var shadow = goog.dom.createDom('shadow');
+			shadow.setAttribute('type', 'math_number');
+			
+			var field = goog.dom.createDom('field');
+			field.setAttribute('name', 'NUM');
+			field.innerText = xmlChild.innerText;
+			
+			shadow.appendChild(field);
+			value.appendChild(shadow);
+			
+			xml.childNodes[i].outerHTML = value.outerHTML;
+		}
+	  }  
+    }
+	
+	return xml;
+}
+//<value xmlns="http://www.w3.org/1999/xhtml" name="TIMES"><shadow type="math_number" id="8!Ot76gz56!B_k,|fkWA"><field name="NUM">10</field></shadow></value>
 
 // <value xmlns="http://www.w3.org/1999/xhtml" name="PIN"><shadow type="output_digital_pin" id="`8QC@k8]oIjkR;gHOX9="><field name="PIN">2</field></shadow></value>
 
@@ -571,6 +602,9 @@ Blockly.Workspace.prototype.migrate = function(xml) {
 		   (type == 'servo_move')
 	  ) {
 		  xmlChild = this.migratePinField(xmlChild);
+		  xmlChild = this.migrate(xmlChild);
+	  } else if (type == 'wait_for'){
+		  xmlChild = this.migrateTimeField(xmlChild);
 		  xmlChild = this.migrate(xmlChild);
 	  } else {
 		  xmlChild = this.migrate(xmlChild);
