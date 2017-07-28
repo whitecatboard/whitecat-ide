@@ -35,7 +35,7 @@ goog.require('Blockly.Lua');
 Blockly.Lua['lora_configure'] = function(block) {
   var band = block.getFieldValue('BAND');
 
-  return 'lora.setup(' + band + ')\n';
+  return 'lora.attach(' + band + ')\n';
 };
 
 Blockly.Lua['lora_set_devaddr'] = function(block) {
@@ -135,7 +135,7 @@ Blockly.Lua['lora_join'] = function(block) {
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(0,'if (_lora == nil) then') + "\n";
 	tryCode += Blockly.Lua.indent(1,'_lora = true') + "\n";
-	tryCode += Blockly.Lua.indent(1,'lora.setup(lora.BAND'+block.band+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.attach(lora.BAND'+block.band+')') + "\n";
 	tryCode += Blockly.Lua.indent(1,'lora.setAppEui("'+block.appeui+'")') + "\n";
 	tryCode += Blockly.Lua.indent(1,'lora.setAppKey("'+block.appkey+'")') + "\n";		
 	tryCode += Blockly.Lua.indent(1,'lora.setDr('+block.dr+')') + "\n";
@@ -186,7 +186,7 @@ Blockly.Lua['lora_tx'] = function(block) {
 	tryCode += Blockly.Lua.indent(0,'-- setup LoRa WAN stack, if needed') + "\n";
 	tryCode += Blockly.Lua.indent(0,'if (_lora == nil) then') + "\n";
 	tryCode += Blockly.Lua.indent(1,'_lora = true') + "\n";
-	tryCode += Blockly.Lua.indent(1,'lora.setup(lora.BAND'+block.band+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'lora.attach(lora.BAND'+block.band+')') + "\n";
 
 	if (block.activation == 'OTAA') {
 		tryCode += Blockly.Lua.indent(1,'\nif (os.flashEUI() == nil) then') + "\n";
