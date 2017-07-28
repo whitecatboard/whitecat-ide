@@ -2283,7 +2283,12 @@ Code.setup = function() {
 
 	Code.agent.addListener("blockStart", function(id, info) {
 		var block = atob(info.block);
-
+		var obj = Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, ''))
+		
+		if ((obj.type == "cpu_sleep") || (obj.type == "when_board_starts")) {
+			Blockly.mainWorkspace.removeStarts();			
+		}
+		
 		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).addStart();
 	});
 

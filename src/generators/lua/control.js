@@ -55,6 +55,10 @@ Blockly.Lua['cpu_sleep'] = function(block) {
 	
 	var code = '';
 
-	code = 'os.sleep(math.floor(' + time + '))';	
+	if (Blockly.Lua.developerMode) {
+		code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
+	}
+
+	code += 'os.sleep(math.floor(' + time + '))';	
 	return code;
 };
