@@ -195,9 +195,18 @@ Code.setDefaultStorage = function() {
 	Code.currentFile.file = '';
 	Code.currentFile.storage = StorageType.Computer;
 	Code.currentFile.changes = Code.defaultStorage();
+	
+	Code.renderStorage(StorageType.None, Code.currentFile.path , jQuery("#targetFile"));
 };
 
 Code.renderStorage = function(storage, file, target) {
+	if (storage == StorageType.None) {
+		if (target.attr("id") == "targetFile") {
+			target.html("");
+			return;
+		}
+	}
+	
 	if (target.attr("id") == "targetFile") {
 		// We only render the file name, without path
 		var tmp = file.split("/");

@@ -30,8 +30,9 @@
  */
 
 var StorageType = {
-	Board: 0,
-	Computer: 1,
+	None: 0,
+	Board: 1,
+	Computer: 2,
 	Cloud: 3
 };
 
