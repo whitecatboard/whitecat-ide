@@ -615,7 +615,8 @@ Code.buildToolBox = function(callback) {
 		'<block type="exception_raise_again"></block>' +
 		'</category>' +
 		'<category id="catDelays">' +
-		'<block type="wait_for">'+
+		'<block type="wait_for">' +
+		'<value name="TIME">' +
 		'<shadow type="math_number">' +
 		'<field name="NUM"></field>' +
 		'</shadow>' +
@@ -1444,7 +1445,7 @@ Code.saveFile = function(storage, folder, file, id, content, callback) {
 
 		Code.hideProgress();
 		Code.tabRefresh();
-		
+
 		if (typeof callback == "function") {
 			callback();
 		}
@@ -1470,18 +1471,18 @@ Code.saveFile = function(storage, folder, file, id, content, callback) {
 Code.load = function() {
 	function storageSelected(storage) {
 		jQuery("#selectedStorage").val(storage);
-		jQuery("#selectedId").val("");	
+		jQuery("#selectedId").val("");
 	}
 
 	function folderSelected(folder, id) {
 		jQuery("#selectedFileName").val("");
-		jQuery("#selectedId").val(id);	
+		jQuery("#selectedId").val(id);
 	}
 
 	function fileSelected(folder, file, id) {
 		folderSelected(folder);
-		jQuery("#selectedId").val(id);	
-		
+		jQuery("#selectedId").val(id);
+
 		Code.loadFile(jQuery("#selectedStorage").val(), folder, file, id);
 	}
 
@@ -1502,10 +1503,10 @@ Code.load = function() {
 	bootbox.dialog({
 		title: MSG['loadBlockTitle'],
 		message: '<div id="loadFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div>' +
-				 '<input type="hidden" id="selectedFolder" value="">' +
-				 '<input type="hidden" id="selectedStorage" value="">' + 
-				 '<input type="hidden" id="selectedId" value="">' + 	
-				 '<input type="hidden" id="selectedFileName" value="">',
+			'<input type="hidden" id="selectedFolder" value="">' +
+			'<input type="hidden" id="selectedStorage" value="">' +
+			'<input type="hidden" id="selectedId" value="">' +
+			'<input type="hidden" id="selectedFileName" value="">',
 		buttons: {
 			danger: {
 				label: MSG['cancel'],
@@ -1586,7 +1587,7 @@ Code.save = function() {
 		jQuery("#selectedFolder").val(folder);
 
 		jQuery("#selectedFileName").val("");
-		jQuery("#selectedId").val(id);	
+		jQuery("#selectedId").val(id);
 		jQuery("#selectedFileName").focus();
 
 		Code.renderStorage(storage, folder, jQuery("#storageType"));
@@ -1602,7 +1603,7 @@ Code.save = function() {
 
 		jQuery("#selectedFileName").val(file);
 		jQuery("#selectedFileName").focus();
-		jQuery("#selectedId").val(id);	
+		jQuery("#selectedId").val(id);
 	}
 
 	var file = Code.getCurrentFullPath();
@@ -1616,7 +1617,7 @@ Code.save = function() {
 			message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
 				MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' +
 				'<input type="hidden" id="selectedFolder" value="/"></input><input type="hidden" id="selectedStorage" value="0">' +
-				'<input type="hidden" id="selectedId" value="">' + 
+				'<input type="hidden" id="selectedId" value="">' +
 				'<input type="text" id="selectedFileName" value="">' + '.' + extension,
 			buttons: {
 				main: {
@@ -1662,7 +1663,7 @@ Code.saveAs = function(callback) {
 
 	function storageSelected(storage) {
 		jQuery("#selectedStorage").val(storage);
-		jQuery("#selectedId").val("");	
+		jQuery("#selectedId").val("");
 
 		Code.renderStorage(storage, "/", jQuery("#storageType"));
 
@@ -1677,7 +1678,7 @@ Code.saveAs = function(callback) {
 
 		jQuery("#selectedFileName").val("");
 		jQuery("#selectedFileName").focus();
-		jQuery("#selectedId").val(id);	
+		jQuery("#selectedId").val(id);
 
 		Code.renderStorage(storage, folder, jQuery("#storageType"));
 	}
@@ -1692,7 +1693,7 @@ Code.saveAs = function(callback) {
 
 		jQuery("#selectedFileName").val(file);
 		jQuery("#selectedFileName").focus();
-		jQuery("#selectedId").val(id);	
+		jQuery("#selectedId").val(id);
 	}
 
 	bootbox.dialog({
@@ -1922,7 +1923,7 @@ Code.listDirectoriesUpdate = function(container, storage, path, entries, extensi
 
 			if (entry.type == "d") {
 				icon = "icon-folder2";
-				
+
 				if (path != "") {
 					entryPath += "/";
 				}
@@ -1976,6 +1977,15 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 			path = path + "/";
 		}
 
+		jQuery(".dir-entry-d[data-type='r']").each(function(index, value) {
+			var rTarget = jQuery(value);
+			
+			if (!jQuery.contains(value, e.target)) {
+				rTarget.find("ul").empty();
+				rTarget.attr("data-expanded", "false");
+			}
+		});
+
 		if ((type == 'r') || (type == 'd')) {
 			if (expanded == "true") {
 				target.find("ul").empty();
@@ -1988,7 +1998,7 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 				if (storage == StorageType.Board) {
 					Code.storage.board.listDirectories(path, function(entries) {
 						Code.listDirectoriesUpdate(target, storage, path, entries, extension);
-						
+
 						jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
 						jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
 
@@ -2003,7 +2013,7 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 				} else if (storage == StorageType.Computer) {
 					Code.storage.local.listDirectories(path, function(entries) {
 						Code.listDirectoriesUpdate(target, storage, path, entries, extension);
-						
+
 						jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
 						jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
 
@@ -2018,7 +2028,7 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 				} else if (storage == StorageType.Cloud) {
 					Code.storage.cloud.listDirectories(id, function(entries) {
 						Code.listDirectoriesUpdate(target, storage, path, entries, extension);
-						
+
 						jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
 						jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
 
@@ -2030,6 +2040,32 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 							folderSelectedCallback(path, id);
 						}
 					});
+				}
+			} else {
+				if (storage == StorageType.Board) {
+					if (typeof storageSelectedCallback != "undefined") {
+						storageSelectedCallback(storage);
+					}
+
+					if (typeof folderSelectedCallback != "undefined") {
+						folderSelectedCallback(path, id);
+					}
+				} else if (storage == StorageType.Computer) {
+					if (typeof storageSelectedCallback != "undefined") {
+						storageSelectedCallback(storage);
+					}
+
+					if (typeof folderSelectedCallback != "undefined") {
+						folderSelectedCallback(path, id);
+					}
+				} else if (storage == StorageType.Cloud) {
+					if (typeof storageSelectedCallback != "undefined") {
+						storageSelectedCallback(storage);
+					}
+
+					if (typeof folderSelectedCallback != "undefined") {
+						folderSelectedCallback(path, id);
+					}
 				}
 			}
 		} else if (type == "f") {
@@ -2272,11 +2308,11 @@ Code.setup = function() {
 	Code.agent.addListener("blockStart", function(id, info) {
 		var block = atob(info.block);
 		var obj = Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, ''))
-		
+
 		if ((obj.type == "cpu_sleep") || (obj.type == "when_board_starts")) {
-			Blockly.mainWorkspace.removeStarts();			
+			Blockly.mainWorkspace.removeStarts();
 		}
-		
+
 		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).addStart();
 	});
 
