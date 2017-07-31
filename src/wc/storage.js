@@ -218,29 +218,10 @@ Storage.prototype._boardLoad = function(file, callback) {
 }
 
 Storage.prototype._cloudLoad = function(file, callback) {
-	//File contains parent folder and filename
-	var tmp = file.split("/");
-	var folder = "";
-	var fileName = "";
-	
-	for(var i = 0;i < tmp.length;i++) {
-		if (tmp[i] != "") {
-			if (folder == "") {
-				folder = tmp[i];
-			} else {
-				if (fileName == "") {
-					fileName = tmp[i];
-				}
-			}
-		}
-	}
-
 	jQuery.ajax({
 		url: Code.server,
 		data: {
-			loadFile: "",
-			folder: folder,
-			name:  btoa(fileName)
+			loadFile: file
 		},
 		type: "POST",
 		success: function(result) {
@@ -296,30 +277,12 @@ Storage.prototype._boardSave = function(file, content, callback) {
 	});
 }
 
-Storage.prototype._cloudSave = function(file, content, callback) {
-	//File contains parent folder and filename
-	var tmp = file.split("/");
-	var folder = "";
-	var fileName = "";
-	
-	for(var i = 0;i < tmp.length;i++) {
-		if (tmp[i] != "") {
-			if (folder == "") {
-				folder = tmp[i];
-			} else {
-				if (fileName == "") {
-					fileName = tmp[i];
-				}
-			}
-		}
-	}
-		
+Storage.prototype._cloudSave = function(file, id, content, callback) {
 	jQuery.ajax({
 		url: Code.server,
 		data: {
-			saveFile: "",
-			folder: folder,
-			name:  btoa(fileName),
+			saveFile: btoa(file),
+			id: id,
 			content: btoa(content)
 		},
 		type: "POST",
@@ -373,7 +336,7 @@ Storage.prototype.load = function(file, callback) {
 	});
 }
 
-Storage.prototype.save = function(file, content, callback) {
+Storage.prototype.save = function(file, id, content, callback) {
 	var thisInstance = this;
 	
 	thisInstance.init(function() {
@@ -382,7 +345,7 @@ Storage.prototype.save = function(file, content, callback) {
 		} else if (thisInstance.type == StorageType.Computer) {
 			return thisInstance._localSave(file, content, callback);
 		} else if (thisInstance.type == StorageType.Cloud) {
-			return thisInstance._cloudSave(file, content, callback);
+			return thisInstance._cloudSave(file, id, content, callback);
 		}
 	});
 }

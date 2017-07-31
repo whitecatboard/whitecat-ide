@@ -225,10 +225,6 @@ Code.renderStorage = function(storage, file, target) {
 		}
 	}
 
-	if ((storage == StorageType.Cloud) && ((target.attr("id") != "targetFile"))) {
-		file = "";
-	}
-
 	// Get storage's icon
 	var icon = '';
 
@@ -248,7 +244,7 @@ Code.renderStorage = function(storage, file, target) {
 	}
 };
 
-Code.setCurrentStorage = function(storage, path, file) {
+Code.setCurrentStorage = function(storage, path, file, id) {
 	if (typeof path == "undefined") {
 		var tmp = file.split("/");
 		var folder = "";
@@ -279,7 +275,7 @@ Code.setCurrentStorage = function(storage, path, file) {
 		Code.currentFile.id = null;
 	} else {
 		Code.currentFile.path = path;
-		Code.currentFile.id = path;
+		Code.currentFile.id = id;
 
 		file = file.replace(/\/.*\//g, "");
 	}
@@ -295,24 +291,20 @@ Code.setCurrentStorage = function(storage, path, file) {
 Code.getCurrentFullPath = function() {
 	var path;
 
-	if (Code.currentFile.storage == StorageType.Cloud) {
-		path = "/" + Code.currentFile.id + "/" + Code.currentFile.file;
-	} else {
-		if (typeof Code.currentFile.path == "undefined") {
-			Code.currentFile.path = "";
-		}
-
-		path = Code.currentFile.path;
-
-		path = path.replace(/[\\\/]+/g, '/');
-		if (path.charAt(0) != "/") {
-			path = "/" + path;
-		}
-
-		path += Code.currentFile.file;
-
-		path = path.replace(/[\\\/]+/g, '/');
+	if (typeof Code.currentFile.path == "undefined") {
+		Code.currentFile.path = "";
 	}
+
+	path = Code.currentFile.path;
+
+	path = path.replace(/[\\\/]+/g, '/');
+	if (path.charAt(0) != "/") {
+		path = "/" + path;
+	}
+
+	path += Code.currentFile.file;
+
+	path = path.replace(/[\\\/]+/g, '/');
 
 	return path;
 }
@@ -1381,63 +1373,16 @@ Code.run = function() {
 		});
 	}
 
-	function storageSelected(storage) {
-		jQuery("#selectedStorage").val(storage);
-	}
-
-	function fileSelected(file) {
-		jQuery("#selectedFileName").val(file.replace(/\.([^.]*?)$/, ""));
-	}
-
-	function folderSelected(folder) {
-		if (folder != '/') {
-			folder = folder + '/';
-		}
-
-		folder = folder.replace(/\/\//g, "/");
-
-		jQuery("#selectedFolder").text(folder);
-		jQuery("#selectedFolder").val(folder);
-	}
-
 	var file = Code.getCurrentFullPath();
 	var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
 	if (typeof fileExtension == "undefined") {
-		bootbox.dialog({
-			title: MSG['noTarget'],
-			message: '<div id="runFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
-				MSG['saveAs'] + '<span id="selectedFolder"></span><input type="hidden" id="selectedStorage" value=""><input type="text" id="selectedFileName" value="/unnamed">.lua',
-			buttons: {
-				main: {
-					label: MSG['run'],
-					className: "btn-primary",
-					callback: function() {
-						var file = jQuery("#selectedFileName").val();
-						if (file != "") {
-							Code.tabRefresh();
-							run();
-						} else {
-							return false;
-						}
-					}
-				},
-				danger: {
-					label: MSG['cancel'],
-					className: "btn-danger",
-					callback: function() {}
-				},
-			},
-			closable: false
-		});
-
-		// Show root files from board
-		Code.listDirectories(jQuery('#runfile'), "lua", storageSelected, folderSelected, fileSelected);
+		Code.saveAs(run);
 	} else {
 		run();
 	}
 }
 
-Code.loadFile = function(storage, path, entry) {
+Code.loadFile = function(storage, path, entry, id) {
 	var file = Code.getPathFor(path, entry);
 	var extension = /(?:\.([^.]+))?$/.exec(file)[1];
 
@@ -1463,7 +1408,7 @@ Code.loadFile = function(storage, path, entry) {
 			Code.workspace.editor.setValue(fileContent, -1);
 		}
 
-		Code.setCurrentStorage(storage, path, entry, jQuery("targetFile"));
+		Code.setCurrentStorage(storage, path, entry, id);
 
 		Code.tabRefresh();
 		Code.renderContent();
@@ -1479,13 +1424,13 @@ Code.loadFile = function(storage, path, entry) {
 			fileDownloaded(fileContent);
 		});
 	} else if (storage == StorageType.Cloud) {
-		Code.storage.cloud.load(file, function(fileContent) {
+		Code.storage.cloud.load(id, function(fileContent) {
 			fileDownloaded(fileContent);
 		});
 	}
 }
 
-Code.saveFile = function(storage, folder, file, content) {
+Code.saveFile = function(storage, folder, file, id, content, callback) {
 	var fileName;
 
 	if (typeof folder == "undefined") {
@@ -1495,30 +1440,51 @@ Code.saveFile = function(storage, folder, file, content) {
 	}
 
 	function fileSaved() {
-		Code.setCurrentStorage(storage, folder, file);
+		Code.setCurrentStorage(storage, folder, file, id);
 
 		Code.hideProgress();
 		Code.tabRefresh();
+		
+		if (typeof callback == "function") {
+			callback();
+		}
 	};
 
 	Code.showProgress(MSG['sendingFile'] + " " + fileName + " ...");
 
 	if (storage == StorageType.Board) {
-		Code.storage.board.save(fileName, content, function() {
+		Code.storage.board.save(fileName, id, content, function() {
 			fileSaved();
 		});
 	} else if (storage == StorageType.Computer) {
-		Code.storage.local.save(fileName, content, function() {
+		Code.storage.local.save(fileName, id, content, function() {
 			fileSaved();
 		});
 	} else if (storage == StorageType.Cloud) {
-		Code.storage.cloud.save(fileName, content, function() {
+		Code.storage.cloud.save(file, id, content, function() {
 			fileSaved();
 		});
 	}
 }
 
 Code.load = function() {
+	function storageSelected(storage) {
+		jQuery("#selectedStorage").val(storage);
+		jQuery("#selectedId").val("");	
+	}
+
+	function folderSelected(folder, id) {
+		jQuery("#selectedFileName").val("");
+		jQuery("#selectedId").val(id);	
+	}
+
+	function fileSelected(folder, file, id) {
+		folderSelected(folder);
+		jQuery("#selectedId").val(id);	
+		
+		Code.loadFile(jQuery("#selectedStorage").val(), folder, file, id);
+	}
+
 	// File extension is determined by the workspace type
 	// blocks: xml
 	// ediror: lua
@@ -1535,7 +1501,11 @@ Code.load = function() {
 
 	bootbox.dialog({
 		title: MSG['loadBlockTitle'],
-		message: '<div id="loadFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div>',
+		message: '<div id="loadFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div>' +
+				 '<input type="hidden" id="selectedFolder" value="">' +
+				 '<input type="hidden" id="selectedStorage" value="">' + 
+				 '<input type="hidden" id="selectedId" value="">' + 	
+				 '<input type="hidden" id="selectedFileName" value="">',
 		buttons: {
 			danger: {
 				label: MSG['cancel'],
@@ -1546,7 +1516,7 @@ Code.load = function() {
 		closable: false
 	});
 
-	Code.listDirectories(jQuery('#loadFile'), extension);
+	Code.listDirectories(jQuery('#loadFile'), extension, storageSelected, folderSelected, fileSelected);
 };
 
 Code.stop = function() {
@@ -1602,25 +1572,27 @@ Code.save = function() {
 
 	function storageSelected(storage) {
 		jQuery("#selectedStorage").val(storage);
+		jQuery("#selectedId").val("");
 
 		Code.renderStorage(storage, "/", jQuery("#storageType"));
 
 		jQuery("#selectedFileName").focus();
 	}
 
-	function folderSelected(folder) {
+	function folderSelected(folder, id) {
 		var storage = jQuery("#selectedStorage").val();
 
 		jQuery("#selectedFolder").text(folder);
 		jQuery("#selectedFolder").val(folder);
 
 		jQuery("#selectedFileName").val("");
+		jQuery("#selectedId").val(id);	
 		jQuery("#selectedFileName").focus();
 
 		Code.renderStorage(storage, folder, jQuery("#storageType"));
 	}
 
-	function fileSelected(folder, file) {
+	function fileSelected(folder, file, id) {
 		var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
 		file = file.replace("." + fileExtension, "");
 
@@ -1630,12 +1602,13 @@ Code.save = function() {
 
 		jQuery("#selectedFileName").val(file);
 		jQuery("#selectedFileName").focus();
+		jQuery("#selectedId").val(id);	
 	}
 
 	var file = Code.getCurrentFullPath();
 	var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
 	if (typeof fileExtension != "undefined") {
-		Code.saveFile(Code.currentFile.storage, undefined, file, code);
+		Code.saveFile(Code.currentFile.storage, undefined, file, Code.currentFile.id, code);
 	} else {
 		file = Code.getPathFor("", "unnamed." + extension);
 		bootbox.dialog({
@@ -1643,6 +1616,7 @@ Code.save = function() {
 			message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
 				MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' +
 				'<input type="hidden" id="selectedFolder" value="/"></input><input type="hidden" id="selectedStorage" value="0">' +
+				'<input type="hidden" id="selectedId" value="">' + 
 				'<input type="text" id="selectedFileName" value="">' + '.' + extension,
 			buttons: {
 				main: {
@@ -1651,7 +1625,7 @@ Code.save = function() {
 					callback: function() {
 						var file = jQuery("#selectedFileName").val();
 						if (file != "") {
-							Code.saveFile(jQuery("#selectedStorage").val(), jQuery("#selectedFolder").val(), file + '.' + extension, code);
+							Code.saveFile(jQuery("#selectedStorage").val(), jQuery("#selectedFolder").val(), file + '.' + extension, jQuery("#selectedId").val(), code);
 						} else {
 							return false;
 						}
@@ -1671,7 +1645,7 @@ Code.save = function() {
 	}
 };
 
-Code.saveAs = function() {
+Code.saveAs = function(callback) {
 	var code; // Code to save (Lua source code or xml)
 	var extension; // Extension to use (.lua or .xml)
 
@@ -1688,13 +1662,14 @@ Code.saveAs = function() {
 
 	function storageSelected(storage) {
 		jQuery("#selectedStorage").val(storage);
+		jQuery("#selectedId").val("");	
 
 		Code.renderStorage(storage, "/", jQuery("#storageType"));
 
 		jQuery("#selectedFileName").focus();
 	}
 
-	function folderSelected(folder) {
+	function folderSelected(folder, id) {
 		var storage = jQuery("#selectedStorage").val();
 
 		jQuery("#selectedFolder").text(folder);
@@ -1702,11 +1677,12 @@ Code.saveAs = function() {
 
 		jQuery("#selectedFileName").val("");
 		jQuery("#selectedFileName").focus();
+		jQuery("#selectedId").val(id);	
 
 		Code.renderStorage(storage, folder, jQuery("#storageType"));
 	}
 
-	function fileSelected(folder, file) {
+	function fileSelected(folder, file, id) {
 		var fileExtension = /(?:\.([^.]+))?$/.exec(file)[1];
 		file = file.replace("." + fileExtension, "");
 
@@ -1716,6 +1692,7 @@ Code.saveAs = function() {
 
 		jQuery("#selectedFileName").val(file);
 		jQuery("#selectedFileName").focus();
+		jQuery("#selectedId").val(id);	
 	}
 
 	bootbox.dialog({
@@ -1723,6 +1700,7 @@ Code.saveAs = function() {
 		message: '<div id="saveFile" style="position: relative; left: -25px;overflow: auto;width:100%;height:' + (bBox.height * 0.50) + 'px;"></div><br>' +
 			MSG['saveAs'] + '&nbsp;&nbsp;<span id="storageType"></span>' +
 			'<input type="hidden" id="selectedFolder" value="/"></input><input type="hidden" id="selectedStorage" value="0">' +
+			'<input type="hidden" id="selectedId" value="">' +
 			'<input type="text" id="selectedFileName" value="">' + '.' + extension,
 		buttons: {
 			main: {
@@ -1731,7 +1709,7 @@ Code.saveAs = function() {
 				callback: function() {
 					var file = jQuery("#selectedFileName").val();
 					if (file != "") {
-						Code.saveFile(jQuery("#selectedStorage").val(), jQuery("#selectedFolder").val(), file + '.' + extension, code);
+						Code.saveFile(jQuery("#selectedStorage").val(), jQuery("#selectedFolder").val(), file + '.' + extension, jQuery("#selectedId").val(), code, callback);
 					} else {
 						return false;
 					}
@@ -1936,25 +1914,20 @@ Code.listDirectoriesUpdate = function(container, storage, path, entries, extensi
 			var entryPath = path;
 			var entryId = "";
 
-			if (entry.type == "d") {
-				icon = "icon-folder2";
-
-				if (storage == StorageType.Cloud) {
-					entryId = entry.id;
-					entryPath = entry.parent;
-				} else {
-					if (path != "") {
-						entryPath += "/";
-					}
-
-					entryPath += entry.name;
-				}
+			if (typeof entry.id != "undefined") {
+				entryId = entry.id;
+			} else {
+				entryId = "";
 			}
 
-			if (entry.type == "f") {
-				if (storage == StorageType.Cloud) {
-					entryId = entry.id;
+			if (entry.type == "d") {
+				icon = "icon-folder2";
+				
+				if (path != "") {
+					entryPath += "/";
 				}
+
+				entryPath += entry.name;
 			}
 
 			html = html + '<li class="dir-entry-' + entry.type + '" data-expanded="false" data-type="' + entry.type + '" data-id="' + entryId + '" data-path="' + entryPath + '" data-name="' + entry.name + '" data-storage="' + storage + '"><span data-type="' + entry.type + '" class="icon ' + icon + '"></span><span class="dir-label">' + entry.name + '</span></li>';
@@ -1971,10 +1944,7 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 
 	html += '<ul class="dir-entry">';
 
-	if (Code.status.connected) {
-		html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-path data-name data-storage="' + StorageType.Board + '"><span class="icon icon-chip"></span><span class="dir-label">Board</span></li>';
-	}
-
+	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-id data-path data-name data-storage="' + StorageType.Board + '"><span class="icon icon-chip"></span><span class="dir-label">Board</span></li>';
 	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-id data-path data-name data-storage="' + StorageType.Computer + '"><span class="icon icon-display"></span><span class="dir-label">Computer</span></li>';
 	html += '<li class="dir-entry-d" data-expanded="false" data-type="r" data-id data-path data-name data-storage="' + StorageType.Cloud + '"><span class="icon icon-cloud"></span><span class="dir-label">Cloud</span></li>';
 
@@ -1997,15 +1967,13 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 		var entry = target.attr('data-name');
 		var id = target.attr('data-id');
 
-		if (storage != StorageType.Cloud) {
-			path = path.replace(/[\\\/]+/g, '/');
-			if (path.charAt(0) != "/") {
-				path = "/" + path;
-			}
+		path = path.replace(/[\\\/]+/g, '/');
+		if (path.charAt(0) != "/") {
+			path = "/" + path;
+		}
 
-			if (path.charAt(path.length - 1) != "/") {
-				path = path + "/";
-			}
+		if (path.charAt(path.length - 1) != "/") {
+			path = path + "/";
 		}
 
 		if ((type == 'r') || (type == 'd')) {
@@ -2020,27 +1988,49 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 				if (storage == StorageType.Board) {
 					Code.storage.board.listDirectories(path, function(entries) {
 						Code.listDirectoriesUpdate(target, storage, path, entries, extension);
+						
+						jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
+						jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
+
+						if (typeof storageSelectedCallback != "undefined") {
+							storageSelectedCallback(storage);
+						}
+
+						if (typeof folderSelectedCallback != "undefined") {
+							folderSelectedCallback(path, id);
+						}
 					});
 				} else if (storage == StorageType.Computer) {
 					Code.storage.local.listDirectories(path, function(entries) {
 						Code.listDirectoriesUpdate(target, storage, path, entries, extension);
+						
+						jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
+						jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
+
+						if (typeof storageSelectedCallback != "undefined") {
+							storageSelectedCallback(storage);
+						}
+
+						if (typeof folderSelectedCallback != "undefined") {
+							folderSelectedCallback(path, id);
+						}
 					});
 				} else if (storage == StorageType.Cloud) {
 					Code.storage.cloud.listDirectories(id, function(entries) {
-						Code.listDirectoriesUpdate(target, storage, id, entries, extension);
+						Code.listDirectoriesUpdate(target, storage, path, entries, extension);
+						
+						jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
+						jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
+
+						if (typeof storageSelectedCallback != "undefined") {
+							storageSelectedCallback(storage);
+						}
+
+						if (typeof folderSelectedCallback != "undefined") {
+							folderSelectedCallback(path, id);
+						}
 					});
 				}
-			}
-
-			jQuery('.dir-entry-d[data-expanded="true"]').find("span[data-type='d']").removeClass("icon-folder2").addClass("icon-folder-open");
-			jQuery('.dir-entry-d[data-expanded="false"]').find("span[data-type='d']").removeClass("icon-folder-open").addClass("icon-folder2");
-
-			if (typeof storageSelectedCallback != "undefined") {
-				storageSelectedCallback(storage);
-			}
-
-			if (typeof folderSelectedCallback != "undefined") {
-				folderSelectedCallback(path);
 			}
 		} else if (type == "f") {
 			if (typeof storageSelectedCallback != "undefined") {
@@ -2048,9 +2038,7 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 			}
 
 			if (typeof fileSelectedCallback != "undefined") {
-				fileSelectedCallback(path, entry);
-			} else {
-				Code.loadFile(storage, path, entry);
+				fileSelectedCallback(path, entry, id);
 			}
 		}
 
