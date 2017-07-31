@@ -69,7 +69,7 @@ if (typeof require != "undefined") {
 	Code.folder = "https://ide.whitecatboard.org";
 }
 
-Code.server = "https://ided.whitecatboard.org";
+Code.server = "https://ide.whitecatboard.org";
 
 var blockAbstraction = {
 	Low: 0,
