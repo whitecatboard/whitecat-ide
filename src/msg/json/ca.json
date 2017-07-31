@@ -524,5 +524,9 @@
 	
 	"SENSOR_DEVICE_ID": "Identificador al bus",
 	"SENSOR_DEVICE_ADDR": "Adreça al bus",
-	"SENSOR_DISCOVER": "Buscar al bus"
+	"SENSOR_DISCOVER": "Buscar al bus",
+	
+	"DELETE_FILE":"Esborrar",
+	"DELETE_FILE_CONFIRM":"Vols esborrar l'arxiu %1?",
+	"FILE_DELETED": "S'ha esborrat l'arxiu %1."
 }

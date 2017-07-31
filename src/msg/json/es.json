@@ -551,5 +551,9 @@
 	
 	"SENSOR_DEVICE_ID": "Identificador en el bus",
 	"SENSOR_DEVICE_ADDR": "Dirección en el bus",
-	"SENSOR_DISCOVER": "Buscar en el bus"
+	"SENSOR_DISCOVER": "Buscar en el bus",
+
+	"DELETE_FILE":"Borrar",
+	"DELETE_FILE_CONFIRM":"¿Quieres borrar el archivo %1?",
+	"FILE_DELETED": "Se ha borrado el archivo %1."
 }

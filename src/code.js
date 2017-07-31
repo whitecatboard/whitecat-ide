@@ -69,7 +69,7 @@ if (typeof require != "undefined") {
 	Code.folder = "https://ide.whitecatboard.org";
 }
 
-Code.server = "https://ide.whitecatboard.org";
+Code.server = "https://ided.whitecatboard.org";
 
 var blockAbstraction = {
 	Low: 0,
@@ -80,7 +80,7 @@ Code.blockAbstraction = blockAbstraction.High;
 
 Code.storage = {};
 
-Code.minAgentVersion = "1.4";
+Code.minAgentVersion = "1.5";
 Code.checkNewVersion = true;
 Code.showCode = false;
 
@@ -1392,6 +1392,33 @@ Code.run = function() {
 	}
 }
 
+Code.removeFile = function(storage, path, entry, id, callback) {
+	var file = Code.getPathFor(path, entry);
+	var extension = /(?:\.([^.]+))?$/.exec(file)[1];
+
+	if (extension == 'xml') {
+		Code.workspace.type = "blocks";
+	} else if (extension == 'lua') {
+		Code.workspace.type = "editor";
+	} else {
+		return;
+	}
+
+	if (storage == StorageType.Board) {
+		Code.storage.board.remove(file, function(success) {
+			callback(success);				
+		});
+	} else if (storage == StorageType.Computer) {
+		Code.storage.local.remove(file, function(success) {
+			callback(success);				
+		});
+	} else if (storage == StorageType.Cloud) {
+		Code.storage.cloud.remove(id, function(success) {
+			callback(success);				
+		});
+	}
+}
+
 Code.loadFile = function(storage, path, entry, id) {
 	var file = Code.getPathFor(path, entry);
 	var extension = /(?:\.([^.]+))?$/.exec(file)[1];
@@ -1763,16 +1790,18 @@ Code.showInformation = function(text) {
 	BootstrapDialog.closeAll();
 	bootbox.hideAll();
 
-	BootstrapDialog.show({
-		message: text,
-		title: MSG['information'],
-		closable: false,
-		onshow: function(dialogRef) {
-			setTimeout(function() {
-				dialogRef.close();
-			}, 2500);
-		}
-	});
+	setTimeout(function() {
+		BootstrapDialog.show({
+			message: text,
+			title: MSG['information'],
+			closable: false,
+			onshow: function(dialogRef) {
+				setTimeout(function() {
+					dialogRef.close();
+				}, 2500);
+			}
+		});
+	}, 500);
 }
 
 // Alert messages
@@ -1940,7 +1969,11 @@ Code.listDirectoriesUpdate = function(container, storage, path, entries, extensi
 				entryPath += entry.name;
 			}
 
-			html = html + '<li class="dir-entry-' + entry.type + '" data-expanded="false" data-type="' + entry.type + '" data-id="' + entryId + '" data-path="' + entryPath + '" data-name="' + entry.name + '" data-storage="' + storage + '"><span data-type="' + entry.type + '" class="icon ' + icon + '"></span><span class="dir-label">' + entry.name + '</span></li>';
+			html = html +
+				  '<li class="dir-entry-' + entry.type + '" data-expanded="false" data-type="' + 
+				   entry.type + '" data-id="' + entryId + '" data-path="' + entryPath + '" data-name="' + entry.name + '" data-storage="' + storage + '">' +
+				  '<span data-type="' + entry.type + '" class="icon ' + icon + '"></span><span class="dir-label">' + entry.name + '</span>' +
+				  '</li>';
 		}
 	});
 
@@ -2088,6 +2121,35 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 		}
 
 		e.stopPropagation();
+	});
+	
+	jQuery.contextMenu({
+	    selector: ".dir-entry-f",
+	    items: {
+	        remove: {name: Blockly.Msg.DELETE_FILE, callback: function(key, opt) { 
+				var target = jQuery(this);
+				var result;
+				
+				var id = target.attr("data-id");
+				var path = target.attr("data-path");
+				var entry = target.attr("data-name");
+				var storage = target.attr("data-storage");
+				
+				bootbox.confirm(Blockly.Msg.DELETE_FILE_CONFIRM.replace('%1', entry), function(result) {
+					if (result) {
+						Code.removeFile(storage, path, entry, id, function(success) {
+							if (success) {
+								Code.showInformation(Blockly.Msg.FILE_DELETED.replace('%1', entry));		
+							}
+						});						
+					} else {
+						setTimeout(function() {
+							jQuery("body").addClass("modal-open");
+						}, 500);
+					}
+				});				
+			}}
+	    }
 	});
 };
 

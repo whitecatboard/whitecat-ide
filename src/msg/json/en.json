@@ -590,5 +590,9 @@
 	"any": "any",
 	"SENSOR_DEVICE_ID": "Identifier on bus",
 	"SENSOR_DEVICE_ADDR": "Adress on bus",
-	"SENSOR_DISCOVER": "Discover on bus"
+	"SENSOR_DISCOVER": "Discover on bus",
+
+	"DELETE_FILE":"Delete",
+	"DELETE_FILE_CONFIRM":"Do you want to delete %1?",
+	"FILE_DELETED": "%1 has been deleted."
 }

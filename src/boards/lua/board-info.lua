@@ -74,6 +74,40 @@ do
 	    io.write("\"board\": \""..os.board().."\",")
 	end
 
+	function __status()
+	    local shell = false
+	    local history = false
+	    
+	    io.write("\"status\": ")
+		io.write("{")
+		
+		try(
+		    function()
+		        shell = os.shell()
+		        history = os.history()
+		    end,
+		    function(where, line, error, message)
+		    end
+	    )
+	
+	    if (shell) then
+	        shell = "true"
+	    else
+	        shell = "false"
+	    end
+
+	    if (history) then
+	        history = "true"
+	    else
+	        history = "false"
+	    end
+
+	    io.write("\"shell\": "..shell..",")
+	    io.write("\"history\": "..history..",")
+		
+		io.write("}")
+    end
+    
 	function __mods()
 	    io.write("\"modules\": ")
 		io.write("{")
@@ -160,12 +194,14 @@ do
 	__m_pin_maps()
     __cpu()
     __sensors()
+    __status()
     io.write("}")
 	
 	__m_ena = nil
 	__mods = nil
 	__cpu = nil
 	__sensors = nil
+	__status = nil
 	
 	print("")
 end

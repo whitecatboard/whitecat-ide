@@ -59,6 +59,7 @@ function agent() {
 		"boardWriteFile",
 		"boardRunProgram",
 		"boardRunCommand",
+		"boardRemoveFile"
 	];
 	
 	thisInstance.version = "";

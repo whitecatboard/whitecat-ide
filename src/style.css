@@ -295,7 +295,12 @@ button {
 	list-style: none;
 	font-size: 15px;
 	margin-left: -15px;
-	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .dir-label {

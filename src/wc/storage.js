@@ -45,7 +45,6 @@ function Storage(type) {
 Storage.prototype.errorHandler = function(e) {
   var msg = '';
 
-  console.log(e);
 /*
   switch (e.code) {
     case FileError.QUOTA_EXCEEDED_ERR:
@@ -245,6 +244,58 @@ Storage.prototype._cloudLoad = function(file, callback) {
 	});				
 }
 
+Storage.prototype._localRemove = function(file,  callback) {
+	var thisInstance = this;
+	
+    thisInstance.fs.root.getFile(file, {create: true}, function(fileEntry) {
+		fileEntry.remove(function() {
+			callback(true);			
+		}, function() {
+			callback(false);
+		});
+	});
+}
+
+Storage.prototype._boardRemove = function(file,  callback) {
+	Code.agent.send({
+		command: "boardRemoveFile",
+		arguments: {
+			path: btoa(file)
+		}
+	}, function(id, info) {
+		callback(true);
+	});
+}
+
+Storage.prototype._cloudRemove = function(file,  callback) {
+	jQuery.ajax({
+		url: Code.server,
+		data: {
+			removeFile: file,
+		},
+		type: "POST",
+		success: function(result) {
+			result = JSON.parse(result);
+
+			if (!result.success) {
+				Code.showError(MSG['error'], MSG['youHaveAnError'] + '<br><br>' + result.result, function() {});
+				callback(false);
+				return;
+			}
+			
+			result = result.result;
+
+			callback(true);
+			return;
+		},
+
+		error: function() {
+			callback(false);
+			return;			
+		}
+	});				
+}
+
 Storage.prototype._localSave = function(file, content, callback) {
 	var thisInstance = this;
 	
@@ -347,6 +398,20 @@ Storage.prototype.save = function(file, id, content, callback) {
 			return thisInstance._localSave(file, content, callback);
 		} else if (thisInstance.type == StorageType.Cloud) {
 			return thisInstance._cloudSave(file, id, content, callback);
+		}
+	});
+}
+
+Storage.prototype.remove = function(file, callback) {
+	var thisInstance = this;
+	
+	thisInstance.init(function() {
+		if (thisInstance.type == StorageType.Board) {
+			return thisInstance._boardRemove(file,callback);
+		} else if (thisInstance.type == StorageType.Computer) {
+			return thisInstance._localRemove(file, callback);
+		} else if (thisInstance.type == StorageType.Cloud) {
+			return thisInstance._cloudRemove(file, callback);
 		}
 	});
 }
