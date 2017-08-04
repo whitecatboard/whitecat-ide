@@ -50,7 +50,7 @@ var MSG = {
   firmwareUpgraded: 'Firmware upgraded',
   downloadingFirmware: 'Downloafing firmware',
   rebooting: 'Rebooting ...',
-  newFirmware: 'A new firmware version is availanle for your board. Do you want to upgrade?',
+  newFirmware: 'A new firmware version is available for your board. Do you want to upgrade?',
   firmwareNoNewVersion: 'No new version available. Your board is up to date.',
   boardBadFirmwareTitle: 'Bad firmware',
   boardBadFirmware: 'It seems that your board has not a valid firmware, or firmware is corrupted.<br><br>' +

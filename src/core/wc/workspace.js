@@ -613,3 +613,27 @@ Blockly.Workspace.prototype.migrate = function(xml) {
   
 	return xml;
 }
+
+Blockly.Workspace.prototype.clear = function() {
+  var existingGroup = Blockly.Events.getGroup();
+  if (!existingGroup) {
+    Blockly.Events.setGroup(true);
+  }
+  while (this.topBlocks_.length) {
+    this.topBlocks_[0].dispose();
+  }
+  if (!existingGroup) {
+    Blockly.Events.setGroup(false);
+  }
+
+  this.variableList.length = 0;
+
+
+  this.lora = undefined;
+  this.Wifi = undefined;
+  this.MQTT = undefined;
+  this.sensors = undefined;
+  this.events = undefined;
+  
+  this.wcInit();
+};
