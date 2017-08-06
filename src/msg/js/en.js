@@ -559,6 +559,7 @@ Blockly.Msg.configuredigitalpin = "configure digital pin";
 Blockly.Msg.for = "for";
 Blockly.Msg.getanalogpin = "get analog pin value";
 Blockly.Msg.getdigitalpin = "get digital pin value";
+Blockly.Msg.getexternalanalogchannel = "get analog value from";
 Blockly.Msg.high_level = "high level";
 Blockly.Msg.hz = "hz";
 Blockly.Msg.i2cAddress = "set address for";

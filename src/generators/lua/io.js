@@ -114,6 +114,12 @@ Blockly.Lua.io.helper = {
 			((test.type == 'getanalogpin') && (block.getFieldValue('PIN') == test.getFieldValue('PIN')))
 		);			
 	},
+
+	isExternalAnalog: function(block, test) {
+		return (
+			((test.type == 'getexternalanalogchannel') && (block.getFieldValue('UNIT') == test.getFieldValue('UNIT')) && (block.getFieldValue('CHANNEL') == test.getFieldValue('CHANNEL')))
+		);			
+	},
 	
 	hasAncestorsAnalog: function(block) {
 		var previous = block.previousConnection;
@@ -122,6 +128,23 @@ Blockly.Lua.io.helper = {
 			previous = previous.targetBlock();
 			if (previous) {
 				if (Blockly.Lua.io.helper.isAnalog(block, previous)) {
+					return true;
+				}
+			
+				previous = previous.previousConnection;				
+			}
+		}
+		
+		return false;
+	},
+
+	hasAncestorsExternalAnalog: function(block) {
+		var previous = block.previousConnection;
+
+		while (previous) {
+			previous = previous.targetBlock();
+			if (previous) {
+				if (Blockly.Lua.io.helper.isExternalAnalog(block, previous)) {
 					return true;
 				}
 			
@@ -141,9 +164,20 @@ Blockly.Lua.io.helper = {
 		
 		return pin;
 	},
+
+	nameExternalAnalog: function(block) {
+		var unit = Blockly.Lua.statementToCodeNoIndent(block,'UNIT')[0];
+		var channel = Blockly.Lua.statementToCodeNoIndent(block,'CHANNEL')[0];
+
+		return unit.replace("adc.","") + "_" + channel;
+	},
 	
 	instanceAnalog: function(block) {
 		return "_adc_" + Blockly.Lua.io.helper.nameAnalog(block);
+	},
+
+	instanceExternalAnalog: function(block) {
+		return "_adc_" + Blockly.Lua.io.helper.nameExternalAnalog(block);
 	},
 	
 	attachAnalog: function(block) {
@@ -152,6 +186,27 @@ Blockly.Lua.io.helper = {
 		if (!Blockly.Lua.io.helper.hasAncestorsAnalog(block)) {
 			code += Blockly.Lua.indent(0,'if ('+Blockly.Lua.io.helper.instanceAnalog(block)+' == nil) then') + "\n";
 			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instanceAnalog(block) + ' = adc.attach(adc.ADC1, '+ Blockly.Lua.io.helper.prefixDigital(block) + Blockly.Lua.io.helper.nameDigital(block)+', 12)') + "\n";			
+			code += Blockly.Lua.indent(0,'end') + "\n";				
+		}
+
+		return code;
+	},
+
+	attachExternalAnalog: function(block) {
+		var code = '';
+		var unit = Blockly.Lua.statementToCodeNoIndent(block,'UNIT')[0];
+		var channel = Blockly.Lua.statementToCodeNoIndent(block,'CHANNEL')[0];
+		var bits = 12;
+		
+		for (var key in Code.status.maps.externalAdcUnits) {
+			if (Code.status.maps.externalAdcUnits[key][0] == unit.replace("adc.","")) {
+				bits = Code.status.maps.externalAdcUnits[key][2];
+			}
+		}
+		
+		if (!Blockly.Lua.io.helper.hasAncestorsExternalAnalog(block)) {
+			code += Blockly.Lua.indent(0,'if ('+Blockly.Lua.io.helper.instanceExternalAnalog(block)+' == nil) then') + "\n";
+			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instanceExternalAnalog(block) + ' = adc.attach(' + unit + ',' + channel + ',' + bits + ')') + "\n";			
 			code += Blockly.Lua.indent(0,'end') + "\n";				
 		}
 
@@ -300,6 +355,41 @@ Blockly.Lua['getanalogpin'] = function(block) {
 	return [code, Blockly.Lua.ORDER_HIGH];
 };
 
+Blockly.Lua['getexternalanalogchannel'] = function(block) {
+	var format = block.getFieldValue('FORMAT');
+	var tryCode = '', getCode = '', code = '';
+
+	Blockly.Lua.require("block");
+
+	var tryCode = '';
+	tryCode += Blockly.Lua.io.helper.attachExternalAnalog(block, false);
+	
+	getCode += Blockly.Lua.indent(0, "function _getAnalogPin_" + Blockly.Lua.io.helper.nameExternalAnalog(block) + "_" + format +  "()") + "\n";
+	getCode += Blockly.Lua.indent(1, "local raw = nil") + "\n";
+	getCode += Blockly.Lua.indent(1, "local mvolts = nil") + "\n\n";
+
+	getCode += Blockly.Lua.indent(1, Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
+
+	getCode += Blockly.Lua.indent(1, 'raw, mvolts = '+Blockly.Lua.io.helper.instanceExternalAnalog(block)+':read()') + "\n";
+	if (format == 'mvolts') {
+		getCode += Blockly.Lua.indent(1, 'val = mvolts') + "\n\n";
+	} else {
+		getCode += Blockly.Lua.indent(1, 'val = raw') + "\n\n";		
+	}
+	getCode += Blockly.Lua.indent(1, "return val") + "\n";
+	getCode += Blockly.Lua.indent(0, "end") + "\n";
+
+	codeSection["functions"].push(getCode);
+
+	code += Blockly.Lua.indent(0, "_getAnalogPin_" + Blockly.Lua.io.helper.nameExternalAnalog(block) + "_" + format + "()") + "\n";
+
+	if (block.nextConnection) {
+		code += '\n';
+	}
+
+	return [code, Blockly.Lua.ORDER_HIGH];
+};
+
 Blockly.Lua['output_digital_pin'] = function(block) {
 	var pin = block.getFieldValue('PIN');
 	var pinName = Code.status.maps.digitalPins[pin][0];
@@ -326,6 +416,20 @@ Blockly.Lua['analog_pins'] = function(block) {
 	var pinName = Code.status.maps.digitalPins[pin][0];
 	
 	return ['pio.' + pinName, Blockly.Lua.ORDER_HIGH];
+};
+
+
+Blockly.Lua['external_analog_units'] = function(block) {
+	var unit = block.getFieldValue('UNIT');
+	var unitName = Code.status.maps.externalAdcUnits[unit][0];
+	
+	return ['adc.' + unitName, Blockly.Lua.ORDER_HIGH];
+};
+
+Blockly.Lua['external_analog_channels'] = function(block) {
+	var channel = block.getFieldValue('CHANNEL');
+	
+	return [channel, Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['setpwmpin'] = function(block) {

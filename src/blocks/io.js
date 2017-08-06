@@ -96,6 +96,27 @@ Blockly.Blocks.io.helper = {
 		return pins;
 	},
 
+	getExternalAdcUnits: function() {
+		var units = [];
+
+		for (var key in Code.status.maps.externalAdcUnits) {
+			units.push([Code.status.maps.externalAdcUnits[key][0], key]);
+		}
+
+		return units;
+	},
+
+	getExternalAdcChannels: function(unit) {
+		var channels = [];
+		var i;		
+		
+		for(i=0; i < Code.status.maps.externalAdcUnits[unit][1];i++) {
+			channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
+		}
+		
+		return channels;
+	},
+	
 	getPwmPins: function() {
 		var pins = [];
 
@@ -186,6 +207,63 @@ Blockly.Blocks['analog_pins'] = {
 		this.setHelpUrl('');
 	}
 };
+
+Blockly.Blocks['external_analog_units'] = {
+	module: "adc",
+	init: function() {
+		var thisInstance = this;
+		var units = Blockly.Blocks.io.helper.getExternalAdcUnits();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(units), "UNIT");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
+	},
+	onchange: function(e) {
+		if (!this.workspace.isDragging || this.workspace.isDragging()) {
+			return;
+		}
+		
+		if (e.name != "UNIT") return;
+		
+		var unit = this.getFieldValue("UNIT");
+		if (unit) {
+			var drop = this.parentBlock_.childBlocks_[1].getField("CHANNEL");
+			
+			drop.menuGenerator_ = Blockly.Blocks.io.helper.getExternalAdcChannels(unit);	
+			drop.setText("channel0");
+			drop.setValue("0");				
+		}		
+	},
+};
+
+Blockly.Blocks['external_analog_channels'] = {
+	module: "adc",
+	init: function() {
+		var thisInstance = this;
+		var channels = Blockly.Blocks.io.helper.getExternalAdcChannels(2);
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(channels), "CHANNEL");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('');
+	},
+};
+
 
 Blockly.Blocks['setpwmpin'] = {
 	module: "pwm",
@@ -283,13 +361,42 @@ Blockly.Blocks['getdigitalpin'] = {
 Blockly.Blocks['getanalogpin'] = {
 	module: "adc",
 	init: function() {
-		var pins = Blockly.Blocks.io.helper.getAnalogPins();
-
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(Blockly.Msg.getanalogpin);
 
 		this.appendValueInput("PIN")
+			.setCheck('Number');
+
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.IN)
+			.appendField(new Blockly.FieldDropdown([
+				["mvolts", "mvolts"],
+				["raw", "raw"]
+			]), "FORMAT");
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+	},
+
+	hasWatcher: true,
+};
+
+Blockly.Blocks['getexternalanalogchannel'] = {
+	module: "adc",
+	init: function() {
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.getexternalanalogchannel);
+
+		this.appendValueInput("UNIT")
+			.setCheck('Number');
+
+		this.appendValueInput("CHANNEL")
 			.setCheck('Number');
 
 		this.appendDummyInput()

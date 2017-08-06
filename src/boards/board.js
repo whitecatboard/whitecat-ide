@@ -61,7 +61,7 @@ board.prototype.get = function(id, callback) {
 		if (typeof require('nw.gui') != "undefined") {
 		    var fs = require("fs");
 		    var path = require('path');
-  
+
 		    var file = 'boards/defs/' + id + '.json';
 		    var filePath = path.join(process.cwd(), file);  
 
@@ -142,6 +142,10 @@ board.prototype.getMaps = function(id, callback) {
 
 		if (board.hasOwnProperty("uartUnits")) {
 			maps["uartUnits"] = board.uartUnits;
+		}
+
+		if (board.hasOwnProperty("externalAdcUnits")) {
+			maps["externalAdcUnits"] = board.externalAdcUnits;
 		}
 		
 		callback(maps);		

@@ -890,6 +890,16 @@ Code.buildToolBox = function(callback) {
 				'</shadow>' +
 				'</value>' +
 				'</block>';
+			xml += '<block type="getexternalanalogchannel">' +
+				'<value name="UNIT">' +
+				'<shadow type="external_analog_units">' +
+				'</shadow>' +
+				'</value>' +
+				'<value name="CHANNEL">' +
+				'<shadow type="external_analog_channels">' +
+				'</shadow>' +
+				'</value>' +
+				'</block>';
 		}
 
 		if (Code.status.modules.pwm) {

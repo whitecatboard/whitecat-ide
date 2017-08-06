@@ -305,6 +305,7 @@
 	"TO": "a",
 	"getdigitalpin": "obtenir valor pin digital",
 	"getanalogpin": "obtenir valor pin analògic",
+	"getexternalanalogchannel" : "obtenir valor analògic de",
 	"thread_start": "arrancar fil",
 	"microseconds": "microsegons",
 	"milliseconds": "milisegons",

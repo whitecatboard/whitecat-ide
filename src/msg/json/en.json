@@ -382,6 +382,7 @@
 	"TO" : "to",
 	"getdigitalpin" : "get digital pin value",
 	"getanalogpin" : "get analog pin value",
+	"getexternalanalogchannel" : "get analog value from",
 	"thread_start" : "start thread",
 	"microseconds" : "microseconds",
 	"milliseconds" : "milliseconds",
