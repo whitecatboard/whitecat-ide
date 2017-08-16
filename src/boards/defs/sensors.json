@@ -1,0 +1,35 @@
+{
+	"categories": [
+		{"id": "distance", "sensors": [
+			{"id": "2Y0A21"},
+			{"id": "PING28015"}
+		]},
+		{"id": "geopos", "sensors": [
+			{"id": "GPS"}			
+		]},
+		{"id": "humidity", "sensors": [
+			{"id": "BME280"},
+			{"id": "DHT11"},
+			{"id": "DHT22"}			
+		]},
+		{"id": "presence", "sensors": [
+			{"id": "AM412"}
+		]},
+		{"id": "pressure", "sensors": [
+			{"id": "BME280"}			
+		]},
+		{"id": "switches", "sensors": [
+			{"id": "HALL_SWITCH"},
+			{"id": "PUSH_SWITCH"},
+			{"id": "TILT_SWITCH"}
+		]},
+		{"id": "temperature", "sensors": [
+			{"id": "THERMISTOR"},
+			{"id": "BME280"},
+			{"id": "DHT11"},
+			{"id": "DHT22"},			
+			{"id": "DS1820"},			
+			{"id": "TMP36"}		
+		]}
+	]
+}

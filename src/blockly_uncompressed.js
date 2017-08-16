@@ -97,7 +97,7 @@ goog.addDependency("../../../" + dir + "/core/wc/lora.js", ['Blockly.Lora'], ['B
 goog.addDependency("../../../" + dir + "/core/wc/mqtt.js", ['Blockly.MQTT'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/sensors.js", ['Blockly.Sensors'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string', 'Blockly.Blocks.io.helper']);
 goog.addDependency("../../../" + dir + "/core/wc/wifi.js", ['Blockly.Wifi'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
-goog.addDependency("../../../" + dir + "/core/wc/workspace.js", [], ['Blockly.Workspace', 'goog.array', 'goog.math']);
+goog.addDependency("../../../" + dir + "/core/wc/workspace.js", [], ['Blockly.Workspace', 'Blockly.Sensors', 'goog.array', 'goog.math']);
 goog.addDependency("../../alltests.js", [], []);
 goog.addDependency("../../browser_capabilities.js", [], []);
 goog.addDependency("../../protractor.conf.js", [], []);

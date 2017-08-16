@@ -29,9 +29,60 @@
 'use strict';
 
 goog.require('Blockly.Workspace');
+goog.require('Blockly.Sensors');
 
 goog.require('goog.array');
 goog.require('goog.math');
+
+
+Blockly.Workspace.prototype.getSensors = function(callback) {
+	if (typeof require != "undefined") {
+		if (typeof require('nw.gui') != "undefined") {
+		    var fs = require("fs");
+		    var path = require('path');
+
+		    var file = 'boards/defs/sensors.json';
+		    var filePath = path.join(process.cwd(), file);  
+
+			try {
+				var data = fs.readFileSync(filePath, "utf8");
+			} catch (error) {
+				return;
+			}
+
+			try {
+				var def = JSON.parse(data);
+				callback(def);
+			} catch (error) {
+				callback(JSON.parse("{}"));			
+			}
+		} else {
+			jQuery.ajax({
+				url: Code.folder + "/boards/defs/sensors.json",
+				success: function(result) {
+					callback(result);
+					return;
+				},
+		
+				error: function() {
+					callback(JSON.parse("{}"));			
+				}
+			});		
+		}
+	} else {
+		jQuery.ajax({
+			url: Code.folder + "/boards/defs/sensors.json",
+			success: function(result) {
+				callback(result);
+				return;
+			},
+			error: function() {
+				callback(JSON.parse("{}"));			
+			}
+		});
+	}
+}
+
 
 Blockly.Workspace.prototype.wcInit = function() {
 	var thisInstance = this;
@@ -80,6 +131,12 @@ Blockly.Workspace.prototype.wcInit = function() {
 		};
 	}
 
+	if (typeof this.allSensors == "undefined") {
+		this.getSensors(function(info) {
+			thisInstance.allSensors = info;
+		});
+	}
+	
 	if (typeof this.events == "undefined") {
 		this.events = {
 			"builtIn": [
@@ -95,7 +152,6 @@ Blockly.Workspace.prototype.wcInit = function() {
 			this.events.names.push(this.events.builtIn[i]);
 		}
 	}
-	
 	
 	this.registerToolboxCategoryCallback(Blockly.Sensors.NAME_TYPE, Blockly.Sensors.flyoutCategory);
 	this.registerToolboxCategoryCallback(Blockly.Lora.NAME_TYPE, Blockly.Lora.flyoutCategory);

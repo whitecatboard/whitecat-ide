@@ -529,5 +529,22 @@
 	
 	"DELETE_FILE":"Esborrar",
 	"DELETE_FILE_CONFIRM":"Vols esborrar l'arxiu %1?",
-	"FILE_DELETED": "S'ha esborrat l'arxiu %1."
+	"FILE_DELETED": "S'ha esborrat l'arxiu %1.",
+
+	"SENSOR_CATEGORY": "Categoria",
+	"THERMISTOR":"Termistor de 10K",
+	"S2Y0A21":"Sharp 2Y0A21",
+	"PING28015":"PING))) 28015",
+	"GPS":"GPS compatible amb NMEA",
+	"AM412":"Presència basat en el xip AM412",
+	"HALL_SWITCH":"Commutador d'efecte hall",
+	"PUSH_SWITCH":"Polsador",
+	"TILT_SWITCH":"Commutador d'inclinació",
+	"distance":"Distancia",
+	"geopos":"Posició geogràfica",
+	"humidity":"Humitat",
+	"presence":"Presència",
+	"pressure":"Pressió",
+	"switches":"Commutadors",
+	"temperature":"Temperatura"
 }
