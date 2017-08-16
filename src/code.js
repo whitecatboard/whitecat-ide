@@ -2310,6 +2310,11 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
 
+		if (Code.status.connected) {
+			Code.renderContent();
+			return;
+		}
+		
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 		Code.board.getMaps(Code.settings.board, function(maps) {
 			Code.status.maps = maps;
@@ -2321,6 +2326,11 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
 
+		if (Code.status.connected) {
+			Status.show(Code.board.getDesc(Code.settings.board));
+			return;
+		}
+		
 		Status.hide();
 
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
@@ -2368,7 +2378,7 @@ Code.setup = function() {
 	Code.agent.addListener("boardDetached", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
-
+		
 		Status.show("Connect a board");
 
 		Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
