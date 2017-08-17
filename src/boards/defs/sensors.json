@@ -1,22 +1,37 @@
 {
+	"sensors": [
+		{"id": "2Y0A21", "callback": false},
+		{"id": "PING28015", "callback": false},
+		{"id": "GPS", "callback": false},
+		{"id": "BME280", "callback": false},
+		{"id": "DHT11", "callback": false},
+		{"id": "DHT22", "callback": false},
+		{"id": "AM412", "callback": true},
+		{"id": "HALL_SWITCH", "callback": true},
+		{"id": "PUSH_SWITCH", "callback": true},
+		{"id": "TILT_SWITCH", "callback": true},
+		{"id": "THERMISTOR", "callback": false},
+		{"id": "DS1820", "callback": false},
+		{"id": "TMP36", "callback": false}
+	],
 	"categories": [
 		{"id": "distance", "sensors": [
 			{"id": "2Y0A21"},
 			{"id": "PING28015"}
 		]},
 		{"id": "geopos", "sensors": [
-			{"id": "GPS"}			
+			{"id": "GPS"}
 		]},
 		{"id": "humidity", "sensors": [
 			{"id": "BME280"},
 			{"id": "DHT11"},
-			{"id": "DHT22"}			
+			{"id": "DHT22"}
 		]},
 		{"id": "presence", "sensors": [
 			{"id": "AM412"}
 		]},
 		{"id": "pressure", "sensors": [
-			{"id": "BME280"}			
+			{"id": "BME280"}
 		]},
 		{"id": "switches", "sensors": [
 			{"id": "HALL_SWITCH"},
@@ -27,9 +42,9 @@
 			{"id": "THERMISTOR"},
 			{"id": "BME280"},
 			{"id": "DHT11"},
-			{"id": "DHT22"},			
-			{"id": "DS1820"},			
-			{"id": "TMP36"}		
+			{"id": "DHT22"},
+			{"id": "DS1820"},
+			{"id": "TMP36"}
 		]}
 	]
 }

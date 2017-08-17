@@ -62,8 +62,13 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 
 			var block = goog.dom.createDom('block');
 			block.setAttribute('type', 'sensor_attach');
+			
+			var label = sensors.setup[index].id;
+			if (typeof Blockly.Msg[label] != undefined) {
+				label = Blockly.Msg[label];
+			}
 
-			var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_ACQUIRE.replace("%1", name).replace("%2", sensors.setup[index].id));
+			var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_ACQUIRE.replace("%1", name).replace("%2", label));
 			field.setAttribute('name', 'NAME');
 			block.appendChild(field);
 
@@ -72,6 +77,51 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			xmlList.push(block);
 		}
 
+		if (Blockly.Blocks['sensor_when']) {
+			var has_callback = false;
+			
+			Code.status.sensors.forEach(function(sensor, i1) {
+				if (sensor.id == sensors.setup[index].id) {
+					sensors.setup.forEach(function(ssensor, i2) {
+						if (sensor.id == ssensor.id) {
+							has_callback = sensor.callback;
+						}
+					});										
+				}
+			});
+			
+			if (has_callback) {
+				var mutation = goog.dom.createDom('mutation', '');
+				mutation.setAttribute('interface', sensors.setup[index]['interface']);
+				mutation.setAttribute('pin', sensors.setup[index].pin);
+				mutation.setAttribute('sid', sensors.setup[index].id);
+				mutation.setAttribute('device', sensors.setup[index].device);
+				mutation.setAttribute('name', name);
+
+				var block = goog.dom.createDom('block');
+				block.setAttribute('type', 'sensor_when');
+
+				var label = sensors.setup[index].id;
+				if (typeof Blockly.Msg[label] != undefined) {
+					label = Blockly.Msg[label];
+				}
+
+				var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_WHEN2.replace("%1", name).replace("%2", label));
+				field.setAttribute('name', 'NAME');
+				block.appendChild(field);
+
+				var field = goog.dom.createDom('field', null, workspace.sensors.provides[index][0].id);
+				field.setAttribute('name', 'PROVIDES');
+				block.appendChild(field);
+
+				block.appendChild(field);
+
+				block.appendChild(mutation);
+
+				xmlList.push(block);				
+			}
+		}
+		
 		if (Blockly.Blocks['sensor_read']) {
 			var mutation = goog.dom.createDom('mutation', '');
 			mutation.setAttribute('interface', sensors.setup[index]['interface']);
@@ -83,7 +133,12 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			var block = goog.dom.createDom('block');
 			block.setAttribute('type', 'sensor_read');
 
-			var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_READ2.replace("%1", name).replace("%2", sensors.setup[index].id));
+			var label = sensors.setup[index].id;
+			if (typeof Blockly.Msg[label] != undefined) {
+				label = Blockly.Msg[label];
+			}
+
+			var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_READ2.replace("%1", name).replace("%2", label));
 			field.setAttribute('name', 'NAME');
 			block.appendChild(field);
 
@@ -109,7 +164,12 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			var block = goog.dom.createDom('block');
 			block.setAttribute('type', 'sensor_set');
 
-			var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_SET3.replace("%1", name).replace("%2", sensors.setup[index].id));
+			var label = sensors.setup[index].id;
+			if (typeof Blockly.Msg[label] != undefined) {
+				label = Blockly.Msg[label];
+			}
+
+			var field = goog.dom.createDom('field', null, Blockly.Msg.SENSOR_SET3.replace("%1", name).replace("%2", label));
 			field.setAttribute('name', 'NAME');
 			block.appendChild(field);
 

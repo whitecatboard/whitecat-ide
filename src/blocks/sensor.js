@@ -93,7 +93,13 @@ Blockly.Blocks['sensor_attach'] = {
 
 	updateShape_: function() {
 		this.createSensorIfNeeded(this);
-		this.getField("NAME").setText(Blockly.Msg.SENSOR_ATTACH.replace("%1", this.name).replace("%2", this.sid));
+		
+		var label = this.sid;
+		if (typeof Blockly.Msg[label] != undefined) {
+			label = Blockly.Msg[label];
+		}
+		
+		this.getField("NAME").setText(Blockly.Msg.SENSOR_ATTACH.replace("%1", this.name).replace("%2", label));
 	},
 
 	customContextMenu: function(options) {
@@ -151,7 +157,12 @@ Blockly.Blocks['sensor_read'] = {
 			provides.push([item.id, item.id]);
 		});
 
-		this.getField("NAME").setText(Blockly.Msg.SENSOR_READ2.replace("%1", this.name).replace("%2", this.sid));
+		var label = this.sid;
+		if (typeof Blockly.Msg[label] != undefined) {
+			label = Blockly.Msg[label];
+		}
+
+		this.getField("NAME").setText(Blockly.Msg.SENSOR_READ2.replace("%1", this.name).replace("%2", label));
 		this.getField("PROVIDES").menuGenerator_ = provides;
 	},
 
@@ -202,9 +213,80 @@ Blockly.Blocks['sensor_set'] = {
 			properties.push([item.id, item.id]);
 		});
 
-		this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1", this.name).replace("%2", this.sid));
+		var label = this.sid;
+		if (typeof Blockly.Msg[label] != undefined) {
+			label = Blockly.Msg[label];
+		}
+
+		this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1", this.name).replace("%2", label));
 		this.getField("PROPERTIES").menuGenerator_ = properties;
 	},
 
 	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,
+};
+
+Blockly.Blocks['sensor_when'] = {
+	module: "sensor",
+	createSensorIfNeeded: Blockly.Blocks['sensor_attach'].createSensorIfNeeded,
+
+	init: function() {
+		this.setHelpUrl(Blockly.Msg.SENSOR_WHEN_HELPURL);
+		this.setColour(Blockly.Blocks.sensor.HUE);
+
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.SENSOR_WHEN1)
+			.appendField(new Blockly.FieldDropdown([
+				['magnitude', '']
+			]), "PROVIDES")
+			.appendField(Blockly.Msg.SENSOR_WHEN2, "NAME");
+			
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+			
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setTooltip(Blockly.Msg.SENSOR_WHEN_TOOLTIP);		
+	},
+
+	mutationToDom: Blockly.Blocks['sensor_attach'].mutationToDom,
+	domToMutation: Blockly.Blocks['sensor_attach'].domToMutation,
+
+	updateShape_: function() {
+		var index = this.createSensorIfNeeded(this);
+		if (index == -1) return;
+
+		// Build provides option list
+		var provides = [];
+		this.workspace.sensors.provides[index].forEach(function(item, index) {
+			provides.push([item.id, item.id]);
+		});
+
+		var label = this.sid;
+		if (typeof Blockly.Msg[label] != undefined) {
+			label = Blockly.Msg[label];
+		}
+
+		this.getField("NAME").setText(Blockly.Msg.SENSOR_WHEN2.replace("%1", this.name).replace("%2", label));
+		this.getField("PROVIDES").menuGenerator_ = provides;
+	},
+
+	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,
+
+	hasWatcher: false,
+	customContextMenu: function(options) {
+		if (!this.isCollapsed()) {
+			// Optin for create magnitude getter
+			var option = {
+				enabled: true
+			};
+			var name = "value";
+			option.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
+			var xmlField = goog.dom.createDom('field', null, name);
+			xmlField.setAttribute('name', 'VAR');
+			var xmlBlock = goog.dom.createDom('block', null, xmlField);
+			xmlBlock.setAttribute('type', 'variables_get');
+			option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+			options.push(option);
+		}
+	},
 };

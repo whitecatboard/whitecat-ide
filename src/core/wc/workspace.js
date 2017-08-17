@@ -133,7 +133,7 @@ Blockly.Workspace.prototype.wcInit = function() {
 
 	if (typeof this.allSensors == "undefined") {
 		this.getSensors(function(info) {
-			thisInstance.allSensors = info;
+			thisInstance.allSensors = info;			
 		});
 	}
 	
@@ -328,7 +328,7 @@ Blockly.Workspace.prototype.createSensor = function(oldName, setup) {
 		var blocks = this.getAllBlocks();
 
 		for (var i = 0; i < blocks.length; i++) {
-			if ((blocks[i].type == 'sensor_attach') || (blocks[i].type == 'sensor_read') || (blocks[i].type == 'sensor_set')) {
+			if ((blocks[i].type == 'sensor_attach') || (blocks[i].type == 'sensor_read') || (blocks[i].type == 'sensor_set') || (blocks[i].type == 'sensor_when')) {
 				if (blocks[i]['name'] == oldName) {
 					blocks[i]['interface'] = setup['interface'];
 					blocks[i].pin = setup.pin;

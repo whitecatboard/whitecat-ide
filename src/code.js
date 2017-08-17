@@ -2335,6 +2335,16 @@ Code.setup = function() {
 			Code.status.connected = true;
 			Code.status.firmware = info.info.os + "-" + info.info.version.replace(" ", "-") + "-" + info.info.build;
 			Code.renderContent();
+			
+			// Put some information needed for the IDE that is present in sensors.json
+			Code.status.sensors.forEach(function(bsensor, index) {
+				Blockly.mainWorkspace.allSensors.sensors.forEach(function(dsensor, index) {
+					if (dsensor.id == bsensor.id) {
+						bsensor.callback = dsensor.callback;
+					}
+				});
+			});
+			
 		});
 
 		if ((Code.agent.version == "") || (parseFloat(Code.agent.version) < parseFloat(Code.minAgentVersion))) {
