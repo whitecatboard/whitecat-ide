@@ -130,6 +130,10 @@ Blockly.Lua['sensor_when'] = function(block) {
 		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0] + ', ' + block.device;
 	}
 		
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
+	}
+	
 	var tryCode = '';	
 	
 	tryCode += Blockly.Lua.indent(0,'if (_'+block.name+'_'+block.sid+' == nil) then') + "\n";

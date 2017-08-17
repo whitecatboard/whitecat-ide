@@ -143,13 +143,17 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	for (key in codeSection) {
 		codeSection[key] = [];
 	}
+	
+	codeSection["require"].push('require("block")');
 
 	// Get code
 	var line = this.oneBlockToCode(block);
 
 	for (key in codeSection) {
 		if (key != "default") {
-			code += codeSection[key].join('\n') + "\n";
+			if (codeSection[key] != "") {
+				code += codeSection[key].join('\n') + "\n";				
+			}
 		}
 	}
 
@@ -179,12 +183,16 @@ Blockly.Generator.prototype.blockCode = function(block) {
 		codeSection[key] = [];
 	}
 
+	codeSection["require"].push('require("block")');
+
 	// Get code
 	var line = this.oneBlockToCode(block);
 
 	for (key in codeSection) {
 		if (key != "default") {
-			code += codeSection[key].join('\n') + "\n";
+			if (codeSection[key] != "") {
+				code += codeSection[key].join('\n') + "\n";				
+			}
 		}
 	}
 
