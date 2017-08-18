@@ -12,7 +12,8 @@
 		{"id": "TILT_SWITCH", "callback": true},
 		{"id": "THERMISTOR", "callback": false},
 		{"id": "DS1820", "callback": false},
-		{"id": "TMP36", "callback": false}
+		{"id": "TMP36", "callback": false},
+		{"id": "A49E", "callback": false}
 	],
 	"categories": [
 		{"id": "distance", "sensors": [
@@ -26,6 +27,9 @@
 			{"id": "BME280"},
 			{"id": "DHT11"},
 			{"id": "DHT22"}
+		]},
+		{"id": "magnetic_field", "sensors": [
+			{"id": "A49E"}
 		]},
 		{"id": "presence", "sensors": [
 			{"id": "AM412"}

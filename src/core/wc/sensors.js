@@ -64,7 +64,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			block.setAttribute('type', 'sensor_attach');
 			
 			var label = sensors.setup[index].id;
-			if (typeof Blockly.Msg[label] != undefined) {
+			if (typeof Blockly.Msg[label] != "undefined") {
 				label = Blockly.Msg[label];
 			}
 
@@ -102,7 +102,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 				block.setAttribute('type', 'sensor_when');
 
 				var label = sensors.setup[index].id;
-				if (typeof Blockly.Msg[label] != undefined) {
+				if (typeof Blockly.Msg[label] != "undefined") {
 					label = Blockly.Msg[label];
 				}
 
@@ -134,7 +134,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			block.setAttribute('type', 'sensor_read');
 
 			var label = sensors.setup[index].id;
-			if (typeof Blockly.Msg[label] != undefined) {
+			if (typeof Blockly.Msg[label] != "undefined") {
 				label = Blockly.Msg[label];
 			}
 
@@ -165,7 +165,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			block.setAttribute('type', 'sensor_set');
 
 			var label = sensors.setup[index].id;
-			if (typeof Blockly.Msg[label] != undefined) {
+			if (typeof Blockly.Msg[label] != "undefined") {
 				label = Blockly.Msg[label];
 			}
 

@@ -547,6 +547,7 @@
 	"pressure":"Pressió",
 	"switches":"Commutadors",
 	"temperature":"Temperatura",
+	"magnetic_field":"Camp magnètic",
 
 	"SENSOR_WHEN_HELPURL": "",
 	"SENSOR_WHEN_TOOLTIP": "Aquest bloc s'activa quan hi ha una variació en la magnitud.",

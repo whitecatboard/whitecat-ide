@@ -95,7 +95,7 @@ Blockly.Blocks['sensor_attach'] = {
 		this.createSensorIfNeeded(this);
 		
 		var label = this.sid;
-		if (typeof Blockly.Msg[label] != undefined) {
+		if (typeof Blockly.Msg[label] != "undefined") {
 			label = Blockly.Msg[label];
 		}
 		
@@ -158,7 +158,7 @@ Blockly.Blocks['sensor_read'] = {
 		});
 
 		var label = this.sid;
-		if (typeof Blockly.Msg[label] != undefined) {
+		if (typeof Blockly.Msg[label] != "undefined") {
 			label = Blockly.Msg[label];
 		}
 
@@ -214,7 +214,7 @@ Blockly.Blocks['sensor_set'] = {
 		});
 
 		var label = this.sid;
-		if (typeof Blockly.Msg[label] != undefined) {
+		if (typeof Blockly.Msg[label] != "undefined") {
 			label = Blockly.Msg[label];
 		}
 
@@ -262,15 +262,13 @@ Blockly.Blocks['sensor_when'] = {
 		});
 
 		var label = this.sid;
-		if (typeof Blockly.Msg[label] != undefined) {
+		if (typeof Blockly.Msg[label] != "undefined") {
 			label = Blockly.Msg[label];
 		}
 
 		this.getField("NAME").setText(Blockly.Msg.SENSOR_WHEN2.replace("%1", this.name).replace("%2", label));
 		this.getField("PROVIDES").menuGenerator_ = provides;
 	},
-
-	customContextMenu: Blockly.Blocks['sensor_attach'].customContextMenu,
 
 	hasWatcher: false,
 	customContextMenu: function(options) {

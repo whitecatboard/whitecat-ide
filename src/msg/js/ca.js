@@ -586,6 +586,7 @@ Blockly.Msg.i2cStartConditionFor = "condició start per a I2C";
 Blockly.Msg.i2cStopConditionFor = "condició stop per a I2C";
 Blockly.Msg.i2cWriteTo = "escriure a I2C";
 Blockly.Msg.low_level = "nivell baix";
+Blockly.Msg.magnetic_field = "Camp magnètic";
 Blockly.Msg.microseconds = "microsegons";
 Blockly.Msg.milliseconds = "milisegons";
 Blockly.Msg.negative_edge = "flanc negatiu";

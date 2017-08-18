@@ -613,6 +613,7 @@
 	"pressure":"Pressure",
 	"switches":"Switches",
 	"temperature":"Temperature",
+	"magnetic_field":"Magnetic field",
 
 	"SENSOR_WHEN_HELPURL": "",
 	"SENSOR_WHEN_TOOLTIP": "This block is invoked when the magnitude changes.",
