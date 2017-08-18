@@ -29,26 +29,35 @@
 'use strict';
 
 goog.provide('Blockly.Lua.sensors');
+goog.provide('Blockly.Lua.sensors.helper');
 
 goog.require('Blockly.Lua');
+
+Blockly.Lua.sensors.helper = {
+	getInterface: function(block) {
+		var int = '';	
+		if (block.interface == 'GPIO') {
+			int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
+		} else if (block.interface == 'ADC') {
+			int = 'adc.ADC1, adc.' + Code.status.maps.analogPins[block.pin][0] + ', 12';
+		} else if (block.interface == 'I2C') {
+			int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
+		} else if (block.interface == 'UART') {
+			int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
+		} else if (block.interface == '1-WIRE') {
+			int = 'pio.' + Code.status.maps.digitalPins[block.pin][0] + ', ' + block.device;
+		}
+		
+		return int;
+	}
+}
 
 Blockly.Lua['sensor_read'] = function(block) {
 	var magnitude = block.getFieldValue('PROVIDES');
 	var code = '';
 	
 	// Get interface
-	var int = '';	
-	if (block.interface == 'GPIO') {
-		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
-	} else if (block.interface == 'ADC') {
-		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
-	} else if (block.interface == 'I2C') {
-		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
-	} else if (block.interface == 'UART') {
-		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
-	} else if (block.interface == '1-WIRE') {
-		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0] + ', ' + block.device;
-	}
+	var int = Blockly.Lua.sensors.helper.getInterface(block);	
 		
 	if (codeSection["require"].indexOf('require("block")') == -1) {
 		codeSection["require"].push('require("block")');
@@ -82,18 +91,7 @@ Blockly.Lua['sensor_set'] = function(block) {
 	var code = '';
 	
 	// Get interface
-	var int = '';	
-	if (block.interface == 'GPIO') {
-		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
-	} else if (block.interface == 'ADC') {
-		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
-	} else if (block.interface == 'I2C') {
-		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
-	} else if (block.interface == 'UART') {
-		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
-	} else if (block.interface == '1-WIRE') {
-		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0] + ', ' + block.device;
-	}
+	var int = Blockly.Lua.sensors.helper.getInterface(block);	
 
 	if (codeSection["require"].indexOf('require("block")') == -1) {
 		codeSection["require"].push('require("block")');
@@ -117,18 +115,7 @@ Blockly.Lua['sensor_when'] = function(block) {
 	var code = '';
 	
 	// Get interface
-	var int = '';	
-	if (block.interface == 'GPIO') {
-		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
-	} else if (block.interface == 'ADC') {
-		int = 'adc.ADC1, adc.' + Code.status.maps.analogPinsChannel[block.pin][0] + ', 12';
-	} else if (block.interface == 'I2C') {
-		int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
-	} else if (block.interface == 'UART') {
-		int = 'uart.' + Code.status.maps.uartUnits[block.pin][0] + ', 115200, 8, uart.PARNONE, uart.STOP1';
-	} else if (block.interface == '1-WIRE') {
-		int = 'pio.' + Code.status.maps.digitalPins[block.pin][0] + ', ' + block.device;
-	}
+	var int = Blockly.Lua.sensors.helper.getInterface(block);	
 		
 	if (codeSection["require"].indexOf('require("block")') == -1) {
 		codeSection["require"].push('require("block")');
