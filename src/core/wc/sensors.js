@@ -309,7 +309,7 @@ Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin, unit, d
 	setup.id = id;
 	setup.unit = unit;
 	setup.pin = pin;
-	setup.interface = interf;
+	setup['interface'] = interf;
 	setup.device = device;
 
 	return setup;

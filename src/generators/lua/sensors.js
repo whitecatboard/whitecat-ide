@@ -79,20 +79,20 @@ Blockly.Lua['sensor_read'] = function(block) {
 	// Generate code for get sensor value
 	// This code goes to the declaration section
 	var getCode = '';
-	getCode += Blockly.Lua.indent(0, 'function _get'+block.name+'_' + magnitude + '()') + "\n";
+	getCode += Blockly.Lua.indent(0, 'function _get'+block.name+'_' + magnitude.replace(/ /g, '_') + '()') + "\n";
 
 	var tryCode = '';	
 	tryCode += Blockly.Lua.sensors.helper.attach(block);
+	tryCode += Blockly.Lua.indent(0,'value = _'+block.name+'_'+block.sid+':read("'+magnitude+'")') + "\n";
 
 	getCode += Blockly.Lua.indent(1, 'local value\n') + "\n";
-	getCode += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(1, block,tryCode)) + "\n";
-	
+	getCode += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(1, block, tryCode)) + "\n";
 	getCode += Blockly.Lua.indent(1, 'return value\n');
 	getCode += Blockly.Lua.indent(0, 'end\n');
 		
 	codeSection["declaration"].push(getCode);
 
-	return ['_get'+block.name+'_' + magnitude + '()', Blockly.Lua.ORDER_HIGH];	
+	return ['_get'+block.name+'_' + magnitude.replace(/ /g, '_') + '()', Blockly.Lua.ORDER_HIGH];	
 };
 
 Blockly.Lua['sensor_set'] = function(block) {
