@@ -46,7 +46,7 @@ Blockly.Blocks['sensor_attach'] = {
 		if (index == -1) {
 			instance.workspace.createSensor(
 				undefined,
-				Blockly.Sensors.createSetupStructure(instance.sid, instance.name, instance.interface, instance.pin, instance.device)
+				Blockly.Sensors.createSetupStructure(instance.sid, instance.name, instance.interface, instance.pin, instance.unit, instance.device)
 			);
 
 			//Get index for sensor
@@ -74,9 +74,10 @@ Blockly.Blocks['sensor_attach'] = {
 
 		container.setAttribute('interface', this.interface);
 		container.setAttribute('pin', this.pin);
-		container.setAttribute("sid", this.sid);
-		container.setAttribute("name", this.name);
-		container.setAttribute("device", this.device);
+		container.setAttribute('unit', this.unit);
+		container.setAttribute('sid', this.sid);
+		container.setAttribute('name', this.name);
+		container.setAttribute('device', this.device);
 
 		return container;
 	},
@@ -84,9 +85,10 @@ Blockly.Blocks['sensor_attach'] = {
 	domToMutation: function(xmlElement) {
 		this.interface = xmlElement.getAttribute('interface');
 		this.pin = xmlElement.getAttribute('pin');
-		this.sid = xmlElement.getAttribute("sid");
-		this.name = xmlElement.getAttribute("name");
-		this.device = xmlElement.getAttribute("device");
+		this.unit = xmlElement.getAttribute('unit');
+		this.sid = xmlElement.getAttribute('sid');
+		this.name = xmlElement.getAttribute('name');
+		this.device = xmlElement.getAttribute('device');
 
 		this.updateShape_();
 	},

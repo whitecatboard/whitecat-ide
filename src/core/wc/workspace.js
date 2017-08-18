@@ -332,6 +332,7 @@ Blockly.Workspace.prototype.createSensor = function(oldName, setup) {
 				if (blocks[i]['name'] == oldName) {
 					blocks[i]['interface'] = setup['interface'];
 					blocks[i].pin = setup.pin;
+					blocks[i].unit = setup.unit;
 					blocks[i].sid = setup.id;
 					blocks[i].device = setup.device;
 					blocks[i]['name'] = setup['name'];
@@ -636,10 +637,23 @@ Blockly.Workspace.prototype.migrateTimeField = function(xml) {
 	
 	return xml;
 }
-//<value xmlns="http://www.w3.org/1999/xhtml" name="TIMES"><shadow type="math_number" id="8!Ot76gz56!B_k,|fkWA"><field name="NUM">10</field></shadow></value>
 
-// <value xmlns="http://www.w3.org/1999/xhtml" name="PIN"><shadow type="output_digital_pin" id="`8QC@k8]oIjkR;gHOX9="><field name="PIN">2</field></shadow></value>
+Blockly.Workspace.prototype.migrateMutation = function(xml) {
+	var childCount = xml.childNodes.length;
+	
+    for (var i = 0; i < childCount; i++) {
+      var xmlChild = xml.childNodes[i];
+      var name = xmlChild.nodeName.toLowerCase(); 	
+	  
+	  if (name == "mutation") {
+		  if (!xmlChild.getAttribute("unit")) {
+			  xmlChild.setAttribute("unit", 1);
+		  }
+	  }  
+    }
 
+	return xml;
+}
 
 Blockly.Workspace.prototype.migrate = function(xml) {
 	var childCount = xml.childNodes.length;
@@ -661,6 +675,9 @@ Blockly.Workspace.prototype.migrate = function(xml) {
 		  xmlChild = this.migrate(xmlChild);
 	  } else if (type == 'wait_for'){
 		  xmlChild = this.migrateTimeField(xmlChild);
+		  xmlChild = this.migrate(xmlChild);
+	  } else if ((type == 'sensor_read') || (type == 'sensor_set') || (type == 'sensor_when')) {
+		  xmlChild = this.migrateMutation(xmlChild);
 		  xmlChild = this.migrate(xmlChild);
 	  } else {
 		  xmlChild = this.migrate(xmlChild);

@@ -39,7 +39,11 @@ Blockly.Lua.sensors.helper = {
 		if (block.interface == 'GPIO') {
 			int = 'pio.' + Code.status.maps.digitalPins[block.pin][0];
 		} else if (block.interface == 'ADC') {
-			int = 'adc.ADC1, adc.' + Code.status.maps.analogPins[block.pin][0] + ', 12';
+			if (block.unit == 1) {
+				int = 'adc.ADC1, adc.' + Code.status.maps.analogPins[block.pin][0] + ', 12';
+			} else {
+				int = 'adc.' + Code.status.maps.externalAdcUnits[block.unit][0] + ', ' + block.pin + ', ' + Code.status.maps.externalAdcUnits[block.unit][2];
+			}
 		} else if (block.interface == 'I2C') {
 			int = 'i2c.' + Code.status.maps.i2cUnits[block.pin][0];
 		} else if (block.interface == 'UART') {

@@ -428,16 +428,16 @@
 
 	"SENSOR_ALREADY_EXISTS": "Ya existe un sensor llamado '%1'.",
 	"NEW_SENSOR_SELECT_ONE": "(selecciona uno)",
-	"SENSOR": "Modelo de sensor",
-	"SENSOR_DIGITAL_PIN": "El sensor está en pin digital",
-	"SENSOR_ANALOG_PIN": "El sensor está en el pin analógico",
+	"SENSOR": "Sensor",
+	"SENSOR_DIGITAL_PIN": "El sensor está connectat a",
+	"SENSOR_ANALOG_PIN": "El sensor está connectat a",
 	"NEW_SENSOR_TITLE": "Nuevo sensor ...",
 	"SENSOR_CREATE": "Crear",
 	"SENSOR_CANCEL": "Cancelar",
 	"NEW_SENSOR": "Nuevo sensor...",
 	"RENAME_SENSOR": "Renombra sensor ...",
 	"DELETE_SENSOR": "Borra el sensor '%1'",
-	"SENSOR_NAME": "Nombre de este sensor en tu entorn de trabajo",
+	"SENSOR_NAME": "Nombre en el entorn de trabajo",
 	"SENSOR_ACQUIRE_HELPURL": "",
 	"SENSOR_ACQUIRE_TOOLTIP": "Obtener datos del sensor.",
 	"SENSOR_READ_HELPURL": "",
@@ -544,9 +544,9 @@
 	"WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK": "Atención: los eventos solo se pueden procesar dentro de un único bloque de eventos.",
 	"WARNING_NOT_IN_HAT_BLOCK": "Atención: este bloque solo se puede utilizar dentro de un bloque hat.",
 
-	"SENSOR_I2C": "El sensor está en el bus I2C",
-	"SENSOR_UART": "El sensor está en el UART",
-	"SENSOR_SPI": "El sensor está en el bus SPI",
+	"SENSOR_I2C": "El sensor está connectat a",
+	"SENSOR_UART": "El sensor está connectat a",
+	"SENSOR_SPI": "El sensor está connectat a",
 
 	"any": "cualquier",
 	

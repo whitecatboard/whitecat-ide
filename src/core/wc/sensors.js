@@ -56,6 +56,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			var mutation = goog.dom.createDom('mutation', '');
 			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
+			mutation.setAttribute('unit', sensors.setup[index].unit);
 			mutation.setAttribute('setAttribute', sensors.setup[index].id);
 			mutation.setAttribute('device', sensors.setup[index].device);
 			mutation.setAttribute('name', name);
@@ -94,6 +95,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 				var mutation = goog.dom.createDom('mutation', '');
 				mutation.setAttribute('interface', sensors.setup[index]['interface']);
 				mutation.setAttribute('pin', sensors.setup[index].pin);
+				mutation.setAttribute('unit', sensors.setup[index].unit);
 				mutation.setAttribute('sid', sensors.setup[index].id);
 				mutation.setAttribute('device', sensors.setup[index].device);
 				mutation.setAttribute('name', name);
@@ -126,6 +128,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			var mutation = goog.dom.createDom('mutation', '');
 			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
+			mutation.setAttribute('unit', sensors.setup[index].unit);
 			mutation.setAttribute('sid', sensors.setup[index].id);
 			mutation.setAttribute('device', sensors.setup[index].device);
 			mutation.setAttribute('name', name);
@@ -157,6 +160,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			var mutation = goog.dom.createDom('mutation', '');
 			mutation.setAttribute('interface', sensors.setup[index]['interface']);
 			mutation.setAttribute('pin', sensors.setup[index].pin);
+			mutation.setAttribute('unit', sensors.setup[index].unit);
 			mutation.setAttribute('sid', sensors.setup[index].id);
 			mutation.setAttribute('device', sensors.setup[index].device);
 			mutation.setAttribute('name', name);
@@ -270,32 +274,43 @@ Blockly.Sensors.sensorChanged = function() {
 	}
 };
 
-Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin, device) {
-	var setup = {};
-	setup.id = id;
-	setup.device = 0;
-	
-	setup['name'] = sensor;
-	if (interf == "GPIO") {
-		setup['interface'] = "GPIO";
-		setup.pin = pin;
-	} else if (interf == "ADC") {
-		setup['interface'] = "ADC";
-		setup.pin = pin;
-	} else if (interf == "I2C") {
-		setup['interface'] = "I2C";
-		setup.pin = pin;
-	} else if (interf == "UART") {
-		setup['interface'] = "UART";
-		setup.pin = pin;
-	} else if (interf == "SPI") {
-		setup['interface'] = "SPI";
-		setup.pin = pin;
-	} else if (interf == "1-WIRE") {
-		setup['interface'] = "1-WIRE";
-		setup.pin = pin;
-		setup.device = device;
+Blockly.Sensors.adcUnitChanged = function() {
+	var channels = [];
+	var i;		
+
+	var form = jQuery("#sensor_form");
+
+	// Get selected unit
+	var unit = form.find("#adcUnit").find(":selected").attr("value");
+	if (unit == 1){
+		// Get internal channels
+		for (var key in Code.status.maps.analogPins) {
+			channels.push([Code.status.maps.analogPins[key][1] + ' - ' + Code.status.maps.analogPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+		}		
+	} else {
+		// Get externals channels		
+		for(i=0; i < Code.status.maps.externalAdcUnits[unit][1];i++) {
+			channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
+		}		
 	}
+
+	var options = '';
+	channels.forEach(function(item, index) {
+		options += '<option value="' + item[1] + '">' + item[0] + '</option>';
+	});
+	
+	form.find("#adc").html(options);
+};
+
+Blockly.Sensors.createSetupStructure = function(id, sensor, interf, pin, unit, device) {
+	var setup = {};
+	
+	setup.name = sensor;
+	setup.id = id;
+	setup.unit = unit;
+	setup.pin = pin;
+	setup.interface = interf;
+	setup.device = device;
 
 	return setup;
 }
@@ -353,19 +368,48 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 	})
 	gpioSelect += "</select>";
 
-	// Build adc selection
-	var adc = [];
-	var adcSelect = "";
+	// Build adc unit
+	var adcUnit = [];
+	var adcUnitSelect = "";
 
-	for (var key in Code.status.maps.analogPins) {
-		adc.push([Code.status.maps.analogPins[key][1] + ' - ' + Code.status.maps.analogPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+	adcUnit.push(["ADC1","ADC1", 8, 1])
+	for (var key in Code.status.maps.externalAdcUnits) {
+		adcUnit.push([Code.status.maps.externalAdcUnits[key][0], Code.status.maps.externalAdcUnits[key][0], Code.status.maps.externalAdcUnits[key][1], key]);
 	}
 
-	var adcSelect = '<select id="adc" name="adc">';
-	adc.forEach(function(item, index) {
-		adcSelect += '<option '+((edit && (item[1] == block.pin))?"selected":"")+' value="' + item[1] + '">' + item[0] + '</option>';
+	var adcUnitSelect = '<select id="adcUnit" name="adcUnit" onchange="Blockly.Sensors.adcUnitChanged()">';
+	adcUnit.forEach(function(item, index) {
+		adcUnitSelect += '<option '+((edit && (item[3] == block.unit))?"selected":"")+' value="' + item[3] + '">' + item[0] + '</option>';
 	})
-	adcSelect += "</select>";
+	adcUnitSelect += "</select>";
+
+	// Build adc channels selection
+	var adcChan = [];
+	var adcChanSelect = "";
+	var adcUnit = 1;
+	var i;
+	
+	if (edit) {
+		adcUnit = block.unit;
+	}
+	
+	if (adcUnit == 1){
+		// Get internal channels
+		for (var key in Code.status.maps.analogPins) {
+			adcChan.push([Code.status.maps.analogPins[key][1] + ' - ' + Code.status.maps.analogPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+		}		
+	} else {
+		// Get externals channels		
+		for(i=0; i < Code.status.maps.externalAdcUnits[adcUnit][1];i++) {
+			adcChan.push(["channel%1".replace("%1", String(i)), i.toString()]);
+		}		
+	}
+	
+	var adcChanSelect = '<select id="adc" name="adc">';
+	adcChan.forEach(function(item, index) {
+		adcChanSelect += '<option '+((edit && (item[1] == block.pin))?"selected":"")+' value="' + item[1] + '">' + item[0] + '</option>';
+	})
+	adcChanSelect += "</select>";
 
 	// Build i2c selection
 	var i2c = [];
@@ -462,11 +506,11 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 
 	if (edit && (block['interface'] == "ADC")) {
 		dialogForm += '<div>';
-		dialogForm += '<label for="adc">' + Blockly.Msg.SENSOR_ANALOG_PIN + ':&nbsp;&nbsp;</label>' + adcSelect;
+		dialogForm += '<label for="adc">' + Blockly.Msg.SENSOR_ANALOG_PIN + ':&nbsp;&nbsp;</label>' + adcUnitSelect + "&nbsp;&nbsp;" + adcChanSelect;
 		dialogForm += '</div>';
 	} else {
 		dialogForm += '<div class="sensor_interface" id="ADC_sensor" style="display: none;">';
-		dialogForm += '<label for="adc">' + Blockly.Msg.SENSOR_ANALOG_PIN + ':&nbsp;&nbsp;</label>' + adcSelect;
+		dialogForm += '<label for="adc">' + Blockly.Msg.SENSOR_ANALOG_PIN + ':&nbsp;&nbsp;</label>' + adcUnitSelect + "&nbsp;&nbsp;" + adcChanSelect;
 		dialogForm += '</div>';
 	}
 
@@ -527,11 +571,12 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 
 						var pin = form.find("#" + interf.toLowerCase()).val();
 						var device = form.find("#device").val();
-						
+						var unit = form.find("#adcUnit").val();
+							
 						if ((sensor != "") && (interf != "")) {
 							workspace.createSensor(
 								edit ? block['name'] : undefined,
-								Blockly.Sensors.createSetupStructure(id, sensor, interf, pin, device)
+								Blockly.Sensors.createSetupStructure(id, sensor, interf, pin, unit, device)
 							);
 							workspace.toolbox_.refreshSelection();
 						} else {
