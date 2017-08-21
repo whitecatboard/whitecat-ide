@@ -74,7 +74,6 @@ Blockly.Lua['when_board_starts'] = function(block) {
 		}
 	}
 	
-		
 	return code;
 }
 
@@ -119,6 +118,67 @@ Blockly.Lua['when_i_receive'] = function(block) {
 	
 	code += Blockly.Lua.indent(0, '-- when I receive ' + when) + "\n";
 	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
+	
+	return code;
+}
+
+Blockly.Lua['execute_every'] = function(block) {
+	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
+	var every = Blockly.Lua.statementToCodeNoIndent(block, 'TIME');
+	var units = block.getFieldValue('units');
+	var code = '';
+	var initCode = '';
+	var tryCode = '';
+	var timerId = 0;
+	
+	if (codeSection["require"].indexOf('require("block")') == -1) {
+		codeSection["require"].push('require("block")');
+	}
+
+	// Ad timer
+	if (typeof timers[block.id] == "undefined") {
+		timers.push({id: block.id});
+	}
+	
+	// Get timer id
+	timers.forEach(function(timer, index) {
+		if (timer.id == block.id) {
+			timerId = index;
+		}
+	});
+	
+	// Convert time to milliseconds if needed
+	if (units == "seconds") {
+		every[0] = every[0] * 1000;
+	}
+	
+	// Attach timer
+	tryCode += Blockly.Lua.indent(0,'_timer' + timerId + ' = tmr.attach(' + every[0] + ', function()') + "\n";
+
+	if (Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
+	}
+
+	if (statement != "") {
+		tryCode += Blockly.Lua.indent(1, statement);
+	}
+
+	if (Blockly.Lua.developerMode) {
+		tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+	}
+	
+	tryCode += Blockly.Lua.indent(0,'end)') + "\n";
+	
+	code += Blockly.Lua.indent(0,'-- attach timer every ' + every[0] + ' milliseconds') + "\n";
+	code += Blockly.Lua.tryBlock(0, block, tryCode);
+	
+	
+	// Add start code, just when board is started
+	if (codeSection["afterStart"].length == 0) {
+		codeSection["afterStart"].push("-- start timers");		
+	}
+	
+	codeSection["afterStart"].push(Blockly.Lua.indent(0,'_timer' + timerId + ':start()'));
 	
 	return code;
 }

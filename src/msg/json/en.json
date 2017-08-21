@@ -618,5 +618,9 @@
 	"SENSOR_WHEN_HELPURL": "",
 	"SENSOR_WHEN_TOOLTIP": "This block is invoked when the magnitude changes.",
 	"SENSOR_WHEN1": "when ",
-	"SENSOR_WHEN2": " changes from %1 (%2)"
+	"SENSOR_WHEN2": " changes from %1 (%2)",
+	
+	"EVENT_EVERY": "every",
+	"EVENT_EVERY_TOOLTIP": "This block is invoked at regular time intervals.",
+	"EVENT_EVERY_HELPURL": ""
 }

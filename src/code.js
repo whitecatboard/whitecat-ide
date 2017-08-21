@@ -577,6 +577,12 @@ Code.buildToolBox = function(callback) {
 	xml += '' +
 		'<category id="catEvents">' +
 		'<block type="when_board_starts"></block>' +
+		'<block type="execute_every">' + 
+		'<value name="TIME">' +
+		'<shadow type="math_number">' +
+		'<field name="NUM"></field>' +
+		'</shadow>' +
+		'</block>' +
 		'<block type="when_i_receive"></block>' +
 		'<block type="broadcast"></block>' +
 		'<block type="broadcast_and_wait"></block>' +

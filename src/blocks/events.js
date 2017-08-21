@@ -256,3 +256,33 @@ Blockly.Blocks['event_is_being_processed'] = {
 	},
 	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame']
 };
+
+Blockly.Blocks['execute_every'] = {
+	module: "event",
+	init: function() {
+		this.appendDummyInput()
+		.appendField(Blockly.Msg.EVENT_EVERY);
+		
+	this.appendValueInput("TIME")
+		.setCheck('Number');
+
+	this.appendDummyInput()
+		.appendField(new Blockly.FieldDropdown([
+			[Blockly.Msg.milliseconds, "milliseconds"],
+			[Blockly.Msg.seconds, "seconds"]
+		]), "units");
+		
+		
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_EVERY_TOOLTIP);
+		this.setHelpUrl(Blockly.Msg.EVENT_EVERY_HELPURL);
+	},
+	section: function() {
+		return 'events';
+	}
+};

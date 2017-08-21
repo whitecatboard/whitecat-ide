@@ -1,3 +1,5 @@
+var timers = [];
+
 var codeSection = [];
 
 codeSection["require"] = [];
@@ -5,6 +7,7 @@ codeSection["events"] = [];
 codeSection["functions"] = [];
 codeSection["declaration"] = [];
 codeSection["start"] = [];
+codeSection["afterStart"] = [];
 codeSection["default"] = [];
 
 // Whe indent using a tab
@@ -27,6 +30,9 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		workspace = Blockly.getMainWorkspace();
 	}
 
+	// Clear timers
+	timers = [];
+	
 	/*
 	 * Some blocks must be allocate it's generated code in specific code regions. For example,
 	 * "when a lora frame is received" block must be allocated prior to execute anything.
@@ -76,11 +82,13 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	var tmpCode = "";
 
 	for (section in codeSection) {
-		tmpCode = codeSection[section].join('\n'); // Blank line between each section.	
-		code += tmpCode + '\n';
+		if (codeSection[section] != ""){
+			tmpCode = codeSection[section].join('\n'); // Blank line between each section.	
+			code += tmpCode + '\n';
 
-		if (section == "require") {
-			code += "\n";
+			if (section == "require") {
+				code += "\n";
+			}			
 		}
 	}
 

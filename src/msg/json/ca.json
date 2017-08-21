@@ -552,5 +552,9 @@
 	"SENSOR_WHEN_HELPURL": "",
 	"SENSOR_WHEN_TOOLTIP": "Aquest bloc s'activa quan hi ha una variació en la magnitud.",
 	"SENSOR_WHEN1": "quan ",
-	"SENSOR_WHEN2": " canvia pel %1 (%2)"
+	"SENSOR_WHEN2": " canvia pel %1 (%2)",
+
+	"EVENT_EVERY": "cada",
+	"EVENT_EVERY_TOOLTIP": "Aquest bloc s'activa a intervals regulars de temps.",
+	"EVENT_EVERY_HELPURL": ""
 }
