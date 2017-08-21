@@ -881,6 +881,12 @@ Code.buildToolBox = function(callback) {
 				'</shadow>' +
 				'</value>' +
 				'</block>' +
+				'<block type="invertdigitalpin">' +
+				'<value name="PIN">' +
+				'<shadow type="output_digital_pin">' +
+				'</shadow>' +
+				'</value>' +
+				'</block>' +
 				'<block type="getdigitalpin">' +
 				'<value name="PIN">' +
 				'<shadow type="input_digital_pin">' +

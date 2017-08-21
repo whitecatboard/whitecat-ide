@@ -334,6 +334,31 @@ Blockly.Blocks['setdigitalpin'] = {
 	}
 };
 
+Blockly.Blocks['invertdigitalpin'] = {
+	module: "pio",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getOutputDigitalPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.invertdigitalpin)
+
+		this.appendValueInput("PIN")
+			.setCheck('Number');
+
+			this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+		this.setHelpUrl('http://www.example.com/');
+
+		this.updateBoardAtFieldChange("PIN");
+		this.updateBoardAtFieldChange("VALUE");
+	}
+};
+
 Blockly.Blocks['getdigitalpin'] = {
 	module: "pio",
 	init: function() {

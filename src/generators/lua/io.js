@@ -292,6 +292,21 @@ Blockly.Lua['setdigitalpin'] = function(block) {
 	return code;
 };
 
+Blockly.Lua['invertdigitalpin'] = function(block) {
+	var value = block.getFieldValue('VALUE');
+	var tryCode = '', code = '';
+	
+	Blockly.Lua.require("block");
+
+	tryCode += Blockly.Lua.io.helper.attachDigital(block, true);
+	tryCode += Blockly.Lua.indent(0,'pio.pin.inv(' + Blockly.Lua.io.helper.prefixDigital(block) + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+
+
+	code += Blockly.Lua.tryBlock(0, block, tryCode, 'invert digital pin value ' + Blockly.Lua.io.helper.nameDigital(block));
+	
+	return code;
+};
+
 Blockly.Lua['getdigitalpin'] = function(block) {
 	var tryCode = '', getCode = '', code = '';
 

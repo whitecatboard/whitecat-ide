@@ -588,6 +588,7 @@ Blockly.Msg.i2cSpeed = "speed";
 Blockly.Msg.i2cStartConditionFor = "start condition for";
 Blockly.Msg.i2cStopConditionFor = "stop condition for";
 Blockly.Msg.i2cWriteTo = "write to";
+Blockly.Msg.invertdigitalpin = "invert digital pin";
 Blockly.Msg.low_level = "low level";
 Blockly.Msg.magnetic_field = "Magnetic field";
 Blockly.Msg.microseconds = "microseconds";

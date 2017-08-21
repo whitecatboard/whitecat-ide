@@ -379,6 +379,7 @@
 	"configureanalogpin" : "configure analog pin",
 	"BITSOFRESOLUTION" : "bits of resolution",
 	"setdigitalpin" : "set digital pin",
+	"invertdigitalpin" : "invert digital pin",
 	"TO" : "to",
 	"getdigitalpin" : "get digital pin value",
 	"getanalogpin" : "get analog pin value",
