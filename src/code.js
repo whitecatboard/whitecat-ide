@@ -2193,6 +2193,11 @@ Code.tabRefresh = function() {
 	if (Code.workspace.type == 'block_editor') {
 		jQuery("#saveButton").removeClass("disabled");
 	}
+	
+	if (Code.showCode) {
+		jQuery("#saveButton").addClass("disabled");
+		jQuery("#saveAsButton").addClass("disabled");
+	}
 }
 
 Code.developerMode = function() {
