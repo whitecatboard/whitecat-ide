@@ -329,6 +329,7 @@ Blockly.Lua['getanalogpin'] = function(block) {
 	var tryCode = '';
 	tryCode += Blockly.Lua.io.helper.attachAnalog(block, false);
 	
+	getCode += Blockly.Lua.indent(0, "-- get analog pin value " + Blockly.Lua.io.helper.nameAnalog(block)) + " \n";
 	getCode += Blockly.Lua.indent(0, "function _getAnalogPin_" + Blockly.Lua.io.helper.nameAnalog(block) + "_" + format +  "()") + "\n";
 	getCode += Blockly.Lua.indent(1, "local raw = nil") + "\n";
 	getCode += Blockly.Lua.indent(1, "local mvolts = nil") + "\n\n";

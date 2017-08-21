@@ -283,6 +283,6 @@ Blockly.Blocks['execute_every'] = {
 		this.setHelpUrl(Blockly.Msg.EVENT_EVERY_HELPURL);
 	},
 	section: function() {
-		return 'events';
+		return 'declaration';
 	}
 };
