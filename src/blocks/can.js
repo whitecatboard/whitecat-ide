@@ -214,7 +214,7 @@ Blockly.Blocks['canframeset'] = {
 		var value = Blockly.Lua.valueToCode(this, 'VALUE', Blockly.Lua.ORDER_NONE)
 	
 		if (field == "type") {
-			if ((value != "0") && (value != "1")) {
+			if ((value != "0") && (value != "1") && (value != "can.STD") && (value != "can.EXT")) {
 				this.setWarningText(Blockly.Msg.WARNING_CAN_INVALID_TYPE);			
 				this.setDisabled(true);	
 			} else {
