@@ -611,5 +611,9 @@
 	"CAN_TYPE_HELPURL": "",
 	"WARNING_CAN_INVALID_TYPE": "Tipus de paquet invàlid.",
 	"WARNING_CAN_INVALID_DATA": "Dada invàlida. Ha de ser >= 0 i <= 255.",
-	"WARNING_CAN_INVALID_LEN": "Mida invàlida. Ha de ser >= 0 i <= 8."
+	"WARNING_CAN_INVALID_LEN": "Mida invàlida. Ha de ser >= 0 i <= 8.",
+	"UNARY_BITWISE_TOOLTIP": "",
+	"UNARY_BITWISE_HELPURL": "",
+	"BITWISE_TOOLTIP": "",
+	"BITWISE_HELPURL": ""
 }

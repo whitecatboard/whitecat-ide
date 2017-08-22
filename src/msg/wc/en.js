@@ -110,6 +110,7 @@ var MSG = {
   missingAdapterDisplayName: "Missing displayName property for platform ",
   missingBoardId: 'Missing id property',
   catOperators: "Operators",
+  catOperatorsBitwise: "Bitwise",
   catOperatorsNumeric: "Numbers",
   catOperatorsLogic: "Logic",
   catOperatorsText: "Text",

@@ -642,5 +642,9 @@
 	"CAN_TYPE_HELPURL": "",
 	"WARNING_CAN_INVALID_TYPE": "Tipo de paquete inválido.",
 	"WARNING_CAN_INVALID_DATA": "Datp inválido. Ha de ser >= 0 y <= 255.",
-	"WARNING_CAN_INVALID_LEN": "Longitud inválida. Ha de ser >= 0 y <= 8."
+	"WARNING_CAN_INVALID_LEN": "Longitud inválida. Ha de ser >= 0 y <= 8.",
+	"UNARY_BITWISE_TOOLTIP": "",
+	"UNARY_BITWISE_HELPURL": "",
+	"BITWISE_TOOLTIP": "",
+	"BITWISE_HELPURL": ""
 }

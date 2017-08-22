@@ -744,6 +744,27 @@ Code.buildToolBox = function(callback) {
 		'<block type="logic_boolean"></block>' +
 		'<block type="logic_null"></block>' +
 		'</category>' +
+		'<category id="catOperatorsBitwise">' +
+		'<block type="bitwise_unary_op">' +
+		'<value name="OP1">' +
+		'<shadow type="math_number">' +
+		'<field name="NUM">0</field>' +
+		'</shadow>' +
+		'</value>' +
+		'</block>' +	
+		'<block type="bitwise_op">' +
+		'<value name="OP1">' +
+		'<shadow type="math_number">' +
+		'<field name="NUM">0</field>' +
+		'</shadow>' +
+		'</value>' +
+		'<value name="OP2">' +
+		'<shadow type="math_number">' +
+		'<field name="NUM">0</field>' +
+		'</shadow>' +
+		'</value>' +
+		'</block>' +		
+		'</category>' +
 		'<category id="catOperatorsText">' +
 		'<block type="text_join"></block>' +
 		'<block type="text_append">' +
@@ -1360,6 +1381,7 @@ Code.initLanguage = function() {
 	categories.push('catOperatorsNumeric');
 	categories.push('catOperatorsLogic');
 	categories.push('catOperatorsText');
+	categories.push('catOperatorsBitwise');
 	categories.push('catExceptions');
 	categories.push('catEvents');
 	categories.push('catDelays');

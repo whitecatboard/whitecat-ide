@@ -102,6 +102,7 @@ var MSG = {
   missingBoardId: 'No es troba el id de la placa',
   catSensor: "Sensors",
   catOperators: "Operadors",
+  catOperatorsBitwise: "Bit a bit",
   catOperatorsNumeric: "Numérics",
   catOperatorsLogic: "Llògics",
   catOperatorsText: "Text",

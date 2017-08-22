@@ -28,6 +28,8 @@
  */
 'use strict';
 
+goog.provide('Blockly.Blocks.bitlogic');
+
 goog.require('Blockly.Blocks');
 
 Blockly.Blocks['bitlogic_msb'] = {
@@ -74,59 +76,4 @@ Blockly.Blocks['bitlogic_lsb'] = {
       "helpUrl": Blockly.Msg.BITLOGIC_LSB_HELPURL
     });
   }
-};
-
-Blockly.Blocks['bitwise_op'] = {
-	module: "nitwise",
-	init: function() {
-		var ops = [];
-
-		ops.push(["&", "and"]);
-		ops.push(["|", "or"]);
-		ops.push([">>", "rshift"]);
-		ops.push(["<<", "lshift"]);
-
-		this.appendValueInput("OP1")
-			.setCheck('Number');
-
-		this.appendDummyInput()
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(new Blockly.FieldDropdown(ops), "OP");
-
-		this.appendValueInput("OP2")
-			.setCheck('Number');
-
-		this.setOutput(true, null);
-		this.setInputsInline(true);
-		this.setPreviousStatement(false, null);
-		this.setNextStatement(false, null);
-		this.setColour(Blockly.Blocks.operators.HUE);
-		this.setTooltip(Blockly.Msg.BITWISE_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.BITWISE_HELPURL);
-	}
-};
-
-Blockly.Blocks['bitwise_unary_op'] = {
-	module: "nitwise",
-	init: function() {
-		var ops = [];
-
-		ops.push(["~", "not"]);
-
-		this.appendDummyInput()
-			.setAlign(Blockly.ALIGN_RIGHT)
-			.appendField(new Blockly.FieldDropdown(ops), "OP");
-
-		this.appendValueInput("OP1")
-			.setCheck('Number');
-
-		this.setOutput(true, null);
-		this.setInputsInline(true);
-		this.setPreviousStatement(false, null);
-		this.setNextStatement(false, null);
-		this.setColour(Blockly.Blocks.operators.HUE);
-		this.setTooltip(Blockly.Msg.UNARY_BITWISE_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.UNARY_BITWISE_HELPURL);
-
-	}
 };

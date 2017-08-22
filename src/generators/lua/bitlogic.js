@@ -46,3 +46,33 @@ Blockly.Lua['bitlogic_lsb'] = function(block) {
   return [code, Blockly.Lua.ORDER_UNARY];
 };
 
+Blockly.Lua['bitwise_op'] = function(block) {
+	var op1 = Blockly.Lua.valueToCode(block, 'OP1', Blockly.Lua.ORDER_NONE);
+	var op2 = Blockly.Lua.valueToCode(block, 'OP2', Blockly.Lua.ORDER_NONE);
+	var op = block.getFieldValue('OP');
+	
+	if (op == 'and') {
+		op = "&";
+	} else if (op == 'or') {
+		op = "|";
+	} else if (op == 'lshift') {
+		op = "<<";
+	} else if (op == 'rshift') {
+		op = ">>";
+	} else if (op == 'xor') {
+		op = "~";
+	}
+	
+	return ['(' + op1 + ' ' + op + ' ' + op2 + ')', Blockly.Lua.ORDER_UNARY];
+}
+
+Blockly.Lua['bitwise_unary_op'] = function(block) {
+	var op1 = Blockly.Lua.valueToCode(block, 'OP1', Blockly.Lua.ORDER_NONE);
+	var op = block.getFieldValue('OP');
+	
+	if (op == 'not') {
+		op = '~';
+	}
+	
+	return ['(' + op + op1 + ')', Blockly.Lua.ORDER_UNARY];
+}
