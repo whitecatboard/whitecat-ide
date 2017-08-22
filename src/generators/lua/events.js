@@ -77,6 +77,39 @@ Blockly.Lua['when_board_starts'] = function(block) {
 	return code;
 }
 
+Blockly.Lua['thread'] = function(block) {
+	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
+	var code = '';
+		
+	if (statement != '') {
+		if (codeSection["require"].indexOf('require("block")') == -1) {
+			codeSection["require"].push('require("block")');
+		}
+
+		code += Blockly.Lua.indent(0,'-- thread') + "\n";	
+		code += Blockly.Lua.indent(0,'thread.start(function()') + "\n";
+
+		code += Blockly.Lua.indent((statement != '')?1:0,'-- wait for board started') + "\n";
+		code += Blockly.Lua.indent((statement != '')?1:0,'_eventBoardStarted:wait()') + "\n\n";
+
+		if (Blockly.Lua.developerMode) {
+			code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
+		}
+
+		code += Blockly.Lua.tryBlock(1, block, statement);
+
+		if (Blockly.Lua.developerMode) {
+			code += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+		} else {
+			code += '\n';
+		}
+
+		code += Blockly.Lua.indent(0,'end)') + "\n";		
+	}
+	
+	return code;
+}
+
 Blockly.Lua['when_i_receive'] = function(block) {
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var when = block.getFieldValue('WHEN');

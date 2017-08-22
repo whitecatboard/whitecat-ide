@@ -136,6 +136,10 @@ board.prototype.getMaps = function(id, callback) {
 			maps["i2cUnits"] = board.i2cUnits;
 		}
 
+		if (board.hasOwnProperty("canUnits")) {
+			maps["canUnits"] = board.canUnits;
+		}
+
 		if (board.hasOwnProperty("spiUnits")) {
 			maps["spiUnits"] = board.spiUnits;
 		}

@@ -96,6 +96,7 @@ Code.defaultStatus = {
 		"nvs": true,
 		"pack": true,
 		"i2c": true,
+		"can": true,
 		"pio": true,
 		"adc": true,
 		"pwm": true,
@@ -577,6 +578,7 @@ Code.buildToolBox = function(callback) {
 	xml += '' +
 		'<category id="catEvents">' +
 		'<block type="when_board_starts"></block>' +
+		'<block type="thread"></block>' +
 		'<block type="execute_every">' + 
 		'<value name="TIME">' +
 		'<shadow type="math_number">' +
@@ -937,9 +939,45 @@ Code.buildToolBox = function(callback) {
 		xml += '</category>';
 	}
 
-	if ((Code.status.modules.i2c)) {
+	if (Code.status.modules.i2c || Code.status.modules.can) {
 		xml += '<category id="catComm" colour="20">';
 
+		if (Code.status.modules.can) {
+			xml += '' +
+				'<category id="catCan">' +
+				'<block type="cansetspeed">' +
+				'<value name="SPEED">' +
+				'<shadow type="math_number">' +
+				'<field name="NUM">500</field>' +
+				'</shadow>' +
+				'</value>' +
+				'</block>' +
+				'<block type="cansetfilter">' +
+				'<value name="FROM">' +
+				'<shadow type="math_number">' +
+				'<field name="NUM">0</field>' +
+				'</shadow>' +
+				'</value>' +
+				'<value name="TO">' +
+				'<shadow type="math_number">' +
+				'<field name="NUM">0</field>' +
+				'</shadow>' +
+				'</value>' +
+				'</block>' +
+				'<block type="canframewrite"></block>' +
+				'<block type="canread"></block>' +
+				'<block type="canframeset">' + 
+				'<value name="VALUE">' +
+				'<shadow type="math_number">' +
+				'<field name="NUM">0</field>' +
+				'</shadow>' +
+				'</value>' +
+				'</block>' +
+				'<block type="canframeget"></block>' +
+				'<block type="cantype"></block>' +
+			'</category>';
+		}
+		
 		if (Code.status.modules.i2c) {
 			xml += '' +
 				'<category id="catI2C">' +
@@ -1031,7 +1069,8 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catEvents").attr("colour", Blockly.Blocks.events.HUE);
 		jQuery("#catSensor").attr("colour", Blockly.Blocks.sensor.HUE);
 		jQuery("#catComm").attr("colour", Blockly.Blocks.io.HUE);
-		jQuery("#catI2c").attr("colour", Blockly.Blocks.io.HUE);
+		jQuery("#catI2C").attr("colour", Blockly.Blocks.io.HUE);
+		jQuery("#catCan").attr("colour", Blockly.Blocks.io.HUE);
 		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);
 		//jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
@@ -1292,11 +1331,13 @@ Code.initLanguage = function() {
 
 	categories.push('catActuators');
 
-	if (Code.status.modules.i2c) {
+	if (Code.status.modules.i2c || Code.status.modules.can) {
 		categories.push('catComm');
 	}
 
+
 	if (Code.status.modules.i2c) categories.push('catI2C');
+	if (Code.status.modules.can) categories.push('catCan');
 	if (Code.status.modules.lora) categories.push('catLora');
 	//if (Code.status.modules.lora) categories.push('catLoraOTAA');
 	//if (Code.status.modules.lora) categories.push('catLoraABP');
@@ -2478,6 +2519,7 @@ Code.setup = function() {
 	Blockly.Blocks.sensor.HUE = "#2ca5e2";
 	Blockly.Blocks.operators.HUE = "#5cb712";
 	Blockly.Blocks.i2c.HUE = Blockly.Blocks.io.HUE;
+	Blockly.Blocks.can.HUE = Blockly.Blocks.io.HUE;
 	Blockly.Blocks.actuators.HUE = "#4a6cd4";
 
 	Blockly.Blocks['try'].HUE = Blockly.Blocks.control.HUE;
