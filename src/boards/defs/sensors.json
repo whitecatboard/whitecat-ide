@@ -13,9 +13,13 @@
 		{"id": "THERMISTOR", "callback": false},
 		{"id": "DS1820", "callback": false},
 		{"id": "TMP36", "callback": false},
-		{"id": "A49E", "callback": false}
+		{"id": "A49E", "callback": false},
+		{"id": "SDS011", "callback": false}
 	],
 	"categories": [
+		{"id": "air_quality", "sensors": [
+			{"id": "SDS011"}
+		]},
 		{"id": "distance", "sensors": [
 			{"id": "2Y0A21"},
 			{"id": "PING28015"}

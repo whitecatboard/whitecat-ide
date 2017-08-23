@@ -646,5 +646,6 @@
 	"UNARY_BITWISE_TOOLTIP": "",
 	"UNARY_BITWISE_HELPURL": "",
 	"BITWISE_TOOLTIP": "",
-	"BITWISE_HELPURL": ""
+	"BITWISE_HELPURL": "",
+	"air_quality": "Calidad del aire"
 }

@@ -624,6 +624,7 @@ Blockly.Msg.WIFI_STOP = "aturar Wi-Fi";
 Blockly.Msg.WIFI_TYPE = "Tipus";
 Blockly.Msg.WITH = "amb";
 Blockly.Msg.YES = "Si";
+Blockly.Msg.air_quality = "Qualitat de l'aire";
 Blockly.Msg.any = "qualsevol";
 Blockly.Msg.any_edge = "qualsevol flanc";
 Blockly.Msg.configureLora = "configura LoRa utilitzant la banda dels ";
