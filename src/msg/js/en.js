@@ -652,6 +652,7 @@ Blockly.Msg.magnetic_field = "Magnetic field";
 Blockly.Msg.microseconds = "microseconds";
 Blockly.Msg.milliseconds = "milliseconds";
 Blockly.Msg.negative_edge = "negative edge";
+Blockly.Msg.other = "Other";
 Blockly.Msg.positive_edge = "positive edge";
 Blockly.Msg.presence = "Presence";
 Blockly.Msg.pressure = "Pressure";

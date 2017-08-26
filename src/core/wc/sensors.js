@@ -216,40 +216,70 @@ Blockly.Sensors.categoryChanged = function() {
 	form.find(".sensor_name").hide();
 	form.find(".sensor_interface").hide();
 	
-	// Build sensor list from category
-	thisInstance.currentWS.allSensors.categories.forEach(function(category, index) {
-		if (category.id == cat) {
-			var options = '<option data-interface="" value="">' + Blockly.Msg.NEW_SENSOR_SELECT_ONE + '</option>';
+	if (cat == "other") {
+		// Show all uncategorized sensors in this category
+		var options = '<option data-interface="" value="">' + Blockly.Msg.NEW_SENSOR_SELECT_ONE + '</option>';
+
+		Code.status.sensors.forEach(function(sensor, index) {
+			var add = true;
 			
-			category.sensors.forEach(function(csensor, index) {
-				// Get sensor from board
-				var bsensor = null;
-				Code.status.sensors.forEach(function(sensor, index) {
-					if (sensor.id == csensor.id){
-						bsensor = sensor;
-					}
-				});
+			// Check if sensor is categorized
+			thisInstance.currentWS.allSensors.sensors.forEach(function(csensor, index) {
+				if (csensor.id == sensor.id) {
+					// This sensor is categorized
+					add = false;
+				}
+			});
+			
+			if (add) {
+				var label = sensor.id;
 				
-				if (bsensor) {
-					var label = bsensor.id;
-					if (label.match(/^\d/)) {
-						label = "S" + label;
-						
-					}
-					if (typeof Blockly.Msg[label] != "undefined") {
-						label = Blockly.Msg[label];
-					} else {
-						label = bsensor.id;
-					}
-					
-					options += '<option data-interface="' + bsensor['interface'] + '" value="' + bsensor.id + '">' + label + '</option>';							
-				}				
-			});		
+				if (typeof Blockly.Msg[label] != "undefined") {
+					label = Blockly.Msg[label];
+				}
+				
+				options += '<option data-interface="' + sensor['interface'] + '" value="' + sensor.id + '">' + label + '</option>';			
+			}
+		});
+		
+		form.find("#id").html(options);
+		form.find(".id").show();	
+	} else {
+		// Build sensor list from category
+		thisInstance.currentWS.allSensors.categories.forEach(function(category, index) {
+			if (category.id == cat) {
+				var options = '<option data-interface="" value="">' + Blockly.Msg.NEW_SENSOR_SELECT_ONE + '</option>';
 			
-			form.find("#id").html(options);
-			form.find(".id").show();	
-		}
-	});	
+				category.sensors.forEach(function(csensor, index) {
+					// Get sensor from board
+					var bsensor = null;
+					Code.status.sensors.forEach(function(sensor, index) {
+						if (sensor.id == csensor.id){
+							bsensor = sensor;
+						}
+					});
+				
+					if (bsensor) {
+						var label = bsensor.id;
+						if (label.match(/^\d/)) {
+							label = "S" + label;
+						
+						}
+						if (typeof Blockly.Msg[label] != "undefined") {
+							label = Blockly.Msg[label];
+						} else {
+							label = bsensor.id;
+						}
+					
+						options += '<option data-interface="' + bsensor['interface'] + '" value="' + bsensor.id + '">' + label + '</option>';							
+					}				
+				});		
+					
+				form.find("#id").html(options);
+				form.find(".id").show();	
+			}
+		});		
+	}	
 }
 
 Blockly.Sensors.sensorChanged = function() {
@@ -338,6 +368,7 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 		workspace.allSensors.categories.forEach(function(item, index) {
 			sensorCategorySelect += '<option value="' + item.id + '">' + Blockly.Msg[item.id] + '</option>';
 		})
+		sensorCategorySelect += '<option data-interface="" value="other">' + Blockly.Msg.other + '</option>';
 		sensorCategorySelect += "</select>";
 	}
 
@@ -467,7 +498,6 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 		dialogForm += '</div>';		
 	}
 	
-
 	if (edit) {
 		dialogForm += '<div>';
 		dialogForm += '<label for="sensor_name">' + Blockly.Msg.SENSOR_NAME + ':&nbsp;&nbsp;</label>';
