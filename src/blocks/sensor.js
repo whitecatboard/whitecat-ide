@@ -46,7 +46,7 @@ Blockly.Blocks['sensor_attach'] = {
 		if (index == -1) {
 			instance.workspace.createSensor(
 				undefined,
-				Blockly.Sensors.createSetupStructure(instance.sid, instance.name, instance.interface, instance.pin, instance.unit, instance.device)
+				Blockly.Sensors.createSetupStructure(false, instance)
 			);
 
 			//Get index for sensor
@@ -73,23 +73,29 @@ Blockly.Blocks['sensor_attach'] = {
 		var container = document.createElement('mutation');
 
 		container.setAttribute('interface', this.interface);
-		container.setAttribute('pin', this.pin);
-		container.setAttribute('unit', this.unit);
-		container.setAttribute('sid', this.sid);
 		container.setAttribute('name', this.name);
-		container.setAttribute('device', this.device);
-
+		container.setAttribute('sid', this.sid);
+		
+		for(var i=0; i < this.interface.split(",").length; i++) {
+			container.setAttribute('interface'+i+'_unit', this['interface'+i+'_unit']);
+			container.setAttribute('interface'+i+'_subunit', this['interface'+i+'_subunit']);
+			container.setAttribute('interface'+i+'_device', this['interface'+i+'_device']);
+		}
+				
 		return container;
 	},
 
 	domToMutation: function(xmlElement) {
 		this.interface = xmlElement.getAttribute('interface');
-		this.pin = xmlElement.getAttribute('pin');
-		this.unit = xmlElement.getAttribute('unit');
-		this.sid = xmlElement.getAttribute('sid');
 		this.name = xmlElement.getAttribute('name');
-		this.device = xmlElement.getAttribute('device');
-
+		this.sid = xmlElement.getAttribute('sid');
+			
+		for(var i=0; i < this.interface.split(",").length; i++) {
+			this['interface'+i+'_unit'] = xmlElement.getAttribute('interface'+i+'_unit');
+			this['interface'+i+'_subunit'] = xmlElement.getAttribute('interface'+i+'_subunit');
+			this['interface'+i+'_device'] = xmlElement.getAttribute('interface'+i+'_device');
+		}
+		
 		this.updateShape_();
 	},
 
@@ -124,7 +130,6 @@ Blockly.Blocks['sensor_attach'] = {
 				return false;
 			}
 		});
-
 	},
 };
 
@@ -274,6 +279,26 @@ Blockly.Blocks['sensor_when'] = {
 
 	hasWatcher: false,
 	customContextMenu: function(options) {
+		var thisInstance = this;
+	
+		options.push({
+			enabled: true,
+			text: Blockly.Msg.EDIT_SENSOR,
+			callback: function() {
+				Blockly.Sensors.edit(thisInstance);
+				return false;
+			}
+		});
+
+		options.push({
+			enabled: true,
+			text: Blockly.Msg.REMOVE_SENSOR,
+			callback: function() {
+				Blockly.Sensors.remove(thisInstance);
+				return false;
+			}
+		});
+
 		if (!this.isCollapsed()) {
 			// Optin for create magnitude getter
 			var option = {

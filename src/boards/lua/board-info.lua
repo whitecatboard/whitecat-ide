@@ -181,6 +181,13 @@ do
 					end
 					io.write("],")
 				else
+					if (k == "callback") then
+						if (v) then
+							v = "true"
+						else
+							v = "false"
+						end
+					end
 					io.write("\""..k.."\":\""..v.."\",")
 				end
 			end

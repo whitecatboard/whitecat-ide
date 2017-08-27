@@ -1,4 +1,4 @@
-/*
+ /*
  * Whitecat Blocky Environment, whitecat workspace
  *
  * Copyright (C) 2015 - 2016
@@ -33,7 +33,6 @@ goog.require('Blockly.Sensors');
 
 goog.require('goog.array');
 goog.require('goog.math');
-
 
 Blockly.Workspace.prototype.getSensors = function(callback) {
 	if (typeof require != "undefined") {
@@ -331,11 +330,14 @@ Blockly.Workspace.prototype.createSensor = function(oldName, setup) {
 			if ((blocks[i].type == 'sensor_attach') || (blocks[i].type == 'sensor_read') || (blocks[i].type == 'sensor_set') || (blocks[i].type == 'sensor_when')) {
 				if (blocks[i]['name'] == oldName) {
 					blocks[i]['interface'] = setup['interface'];
-					blocks[i].pin = setup.pin;
-					blocks[i].unit = setup.unit;
-					blocks[i].sid = setup.id;
-					blocks[i].device = setup.device;
 					blocks[i]['name'] = setup['name'];
+
+					for (var j=0;j < blocks[i]['interface'].split(",").length;j++) {
+						blocks[i]['interface'+j+'_unit'] = setup['interface'+j+'_unit'];
+						blocks[i]['interface'+j+'_subunit'] = setup['interface'+j+'_subunit'];
+						blocks[i]['interface'+j+'_device'] = setup['interface'+j+'_device'];
+					}
+					
 					blocks[i].updateShape_();
 				}
 			}
@@ -646,8 +648,34 @@ Blockly.Workspace.prototype.migrateMutation = function(xml) {
       var name = xmlChild.nodeName.toLowerCase(); 	
 	  
 	  if (name == "mutation") {
-		  if (!xmlChild.getAttribute("unit")) {
-			  xmlChild.setAttribute("unit", 1);
+		  if (xmlChild.getAttribute("pin") || xmlChild.getAttribute("device") || xmlChild.getAttribute("unit")) {
+			  if (xmlChild.getAttribute("interface") == "ADC") {
+				  if (!xmlChild.getAttribute("unit")) {
+					  xmlChild.setAttribute("interface0_unit", 1);
+					  xmlChild.setAttribute("interface0_subunit", xmlChild.getAttribute("pin"));
+					  xmlChild.setAttribute("interface0_device", xmlChild.getAttribute("device"));			  					  	
+				  } else {
+					  if (!xmlChild.getAttribute("unit")) {
+						  xmlChild.setAttribute("unit", 1);
+					  }
+
+					  xmlChild.setAttribute("interface0_unit", xmlChild.getAttribute("unit"));
+					  xmlChild.setAttribute("interface0_subunit", xmlChild.getAttribute("pin"));
+					  xmlChild.setAttribute("interface0_device", xmlChild.getAttribute("device"));			  					  	
+				  }
+			  } else {
+				  if (!xmlChild.getAttribute("unit")) {
+					  xmlChild.setAttribute("unit", 1);
+				  }
+
+				  xmlChild.setAttribute("interface0_unit", xmlChild.getAttribute("pin"));
+				  xmlChild.setAttribute("interface0_subunit", xmlChild.getAttribute("unit"));
+				  xmlChild.setAttribute("interface0_device", xmlChild.getAttribute("device"));			  	
+			  }
+			  
+			  xmlChild.removeAttribute("pin");
+			  xmlChild.removeAttribute("unit");
+			  xmlChild.removeAttribute("device");
 		  }
 	  }  
     }

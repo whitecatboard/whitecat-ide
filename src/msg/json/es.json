@@ -430,8 +430,7 @@
 	"SENSOR_ALREADY_EXISTS": "Ya existe un sensor llamado '%1'.",
 	"NEW_SENSOR_SELECT_ONE": "(selecciona uno)",
 	"SENSOR": "Sensor",
-	"SENSOR_DIGITAL_PIN": "El sensor está connectat a",
-	"SENSOR_ANALOG_PIN": "El sensor está connectat a",
+	"SENSOR_INT_ATTACHED": "%1 connectado a",
 	"NEW_SENSOR_TITLE": "Nuevo sensor ...",
 	"SENSOR_CREATE": "Crear",
 	"SENSOR_CANCEL": "Cancelar",
@@ -545,10 +544,6 @@
 	"WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK": "Atención: los eventos solo se pueden procesar dentro de un único bloque de eventos.",
 	"WARNING_NOT_IN_HAT_BLOCK": "Atención: este bloque solo se puede utilizar dentro de un bloque hat.",
 
-	"SENSOR_I2C": "El sensor está connectat a",
-	"SENSOR_UART": "El sensor está connectat a",
-	"SENSOR_SPI": "El sensor está connectat a",
-
 	"any": "cualquier",
 	
 	"SENSOR_DEVICE_ID": "Identificador en el bus",
@@ -648,5 +643,8 @@
 	"BITWISE_TOOLTIP": "",
 	"BITWISE_HELPURL": "",
 	"air_quality": "Calidad del aire",
-	"other": "Otros"
+	"other": "Otros",
+	"rotation": "Rotación",
+	"REL_ROT_ENCODER": "Encoder rotatorio relativo",
+	"uv": "UV"
 }
