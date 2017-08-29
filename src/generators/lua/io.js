@@ -261,16 +261,12 @@ Blockly.Lua.io.helper = {
 			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ' = pwm.attach('+ Blockly.Lua.io.helper.prefixDigital(block) + Blockly.Lua.io.helper.nameDigital(block)+', '+freq+', ' + duty + ' * 0.01)') + "\n";	
 			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':start()') + "\n";	
 			code += Blockly.Lua.indent(0,'else') + "\n";				
-			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':stop()') + "\n";	
 			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':setfreq('+freq+')') + "\n";	
 			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':setduty('+duty+' * 0.01)') + "\n";	
-			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instancePwm(block) + ':start()') + "\n";	
 			code += Blockly.Lua.indent(0,'end') + "\n";				
 		} else {
-			code += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':stop()') + "\n";	
 			code += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':setfreq('+freq+')') + "\n";	
 			code += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':setduty('+duty+' * 0.01)') + "\n";	
-			code += Blockly.Lua.indent(0,Blockly.Lua.io.helper.instancePwm(block) + ':start()') + "\n";	
 		}
 
 		return code;

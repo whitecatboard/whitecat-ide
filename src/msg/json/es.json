@@ -646,5 +646,9 @@
 	"other": "Otros",
 	"rotation": "Rotación",
 	"REL_ROT_ENCODER": "Encoder rotatorio relativo",
-	"uv": "UV"
+	"uv": "UV",
+	"potentiometers": "Potenciómetros",
+	"illuminance": "Iluminancia",
+	"LINEAR_POT": "Potenciómetro lineal",
+	"ANALOG_JOYSTICK": "Joystick analógico"
 }

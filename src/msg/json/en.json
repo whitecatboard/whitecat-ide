@@ -681,5 +681,9 @@
 	"other": "Other",
 	"rotation": "Rotation",
 	"REL_ROT_ENCODER": "Relative rotary encoder",
-	"uv": "UV"
+	"uv": "UV",
+	"potentiometers": "Potentiometers",
+	"illuminance": "Illuminance",
+	"LINEAR_POT": "Linear pot",
+	"ANALOG_JOYSTICK": "Analog joystick"
 }

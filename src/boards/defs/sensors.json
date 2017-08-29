@@ -16,7 +16,10 @@
 		{"id": "A49E"},
 		{"id": "SDS011"},
 		{"id": "REL_ROT_ENCODER"},
-		{"id": "GUVA-S12SD"}
+		{"id": "GUVA-S12SD"},
+		{"id": "LINEAR_POT"},
+		{"id": "LDR"},
+		{"id": "ANALOG_JOYSTICK"}
 	],
 	"categories": [
 		{"id": "air_quality", "sensors": [
@@ -34,9 +37,15 @@
 			{"id": "DHT11"},
 			{"id": "DHT22"}
 		]},
+		{"id": "illuminance", "sensors": [
+			{"id": "LDR"}
+		]},
 		{"id": "magnetic_field", "sensors": [
 			{"id": "A49E"}
 		]},
+		{"id": "potentiometers", "sensors": [
+			{"id": "LINEAR_POT"}
+		]},		
 		{"id": "presence", "sensors": [
 			{"id": "AM412"}
 		]},
@@ -47,6 +56,7 @@
 			{"id": "REL_ROT_ENCODER"}
 		]},
 		{"id": "switches", "sensors": [
+			{"id": "ANALOG_JOYSTICK"},
 			{"id": "HALL_SWITCH"},
 			{"id": "PUSH_SWITCH"},
 			{"id": "TILT_SWITCH"}

@@ -1,0 +1,11 @@
+-- Attach LDR sensor to an external ADC (ADS1115) / channel 0
+s = sensor.attach("LDR", adc.ADS1115, 0)
+
+-- Configure sensor. LDR is set on R2, R1 has a fixed value of 10K
+s:set("R1", 0)
+s:set("R2", 10000)
+
+while true do
+  print(s:read("illuminance"))
+  tmr.delayms(500)
+end

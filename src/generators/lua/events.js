@@ -186,20 +186,26 @@ Blockly.Lua['execute_every'] = function(block) {
 	}
 	
 	// Attach timer
-	tryCode += Blockly.Lua.indent(0,'_timer' + timerId + ' = tmr.attach(' + every[0] + ', function()') + "\n";
-
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	}
+	tryCode += Blockly.Lua.indent(0,'_timer' + timerId + ' = thread.create(function()') + "\n";
 
 	if (statement != "") {
-		tryCode += Blockly.Lua.indent(1, statement);
-	}
+		tryCode += Blockly.Lua.indent(1, 'while true do') + "\n";
+		tryCode += Blockly.Lua.indent(2, 'tmr.delayms('+every[0]+')') + "\n\n";
 
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+		if (Blockly.Lua.developerMode) {
+			tryCode += Blockly.Lua.indent(2,'wcBlock.blockStart("'+block.id+'")') + "\n";
+		}
+
+		tryCode += Blockly.Lua.indent(2, statement);
+
+
+		if (Blockly.Lua.developerMode) {
+			tryCode += Blockly.Lua.indent(2,'wcBlock.blockEnd("'+block.id+'")') + "\n";
+		}
+
+		tryCode += Blockly.Lua.indent(1, 'end') + "\n"; 
 	}
-	
+		
 	tryCode += Blockly.Lua.indent(0,'end)') + "\n";
 	
 	code += Blockly.Lua.indent(0,'-- attach timer every ' + every[0] + ' milliseconds') + "\n";
@@ -211,7 +217,7 @@ Blockly.Lua['execute_every'] = function(block) {
 		codeSection["afterStart"].push("-- start timers");		
 	}
 	
-	codeSection["afterStart"].push(Blockly.Lua.indent(0,'_timer' + timerId + ':start()'));
+	codeSection["afterStart"].push(Blockly.Lua.indent(0,'thread.resume(_timer' + timerId + ')'));
 	
 	return code;
 }
