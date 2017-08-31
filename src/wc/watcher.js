@@ -57,6 +57,10 @@ function watcher() {
 	
 	thisInstance.watcher = jQuery('<div title="" style="position:absolute;"></div>').hide().appendTo('body');
 
+	jQuery('.btn-toolbar,#languageDiv,#content_blocks,#statusBar').click(function() {
+		thisInstance.hide();		
+	});
+
 	Blockly.bindEventWithChecks_(document, 'mousemove', this, function(e) {
 		thisInstance.hide();
 	});
