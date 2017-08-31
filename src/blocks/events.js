@@ -95,7 +95,7 @@ Blockly.Blocks['thread'] = {
 		this.setHelpUrl(Blockly.Msg.EVENT_THREAD_HELPURL);
 	},
 	section: function() {
-		return 'declaration';
+		return 'events';
 	}
 };
 
@@ -141,7 +141,7 @@ Blockly.Blocks['when_i_receive'] = {
 		}
 	},
 	section: function() {
-		return 'declaration';
+		return 'events';
 	}
 };
 
@@ -278,18 +278,17 @@ Blockly.Blocks['execute_every'] = {
 	module: "event",
 	init: function() {
 		this.appendDummyInput()
-		.appendField(Blockly.Msg.EVENT_EVERY);
-		
-	this.appendValueInput("TIME")
-		.setCheck('Number');
+			.appendField(Blockly.Msg.EVENT_EVERY);
 
-	this.appendDummyInput()
-		.appendField(new Blockly.FieldDropdown([
-			[Blockly.Msg.milliseconds, "milliseconds"],
-			[Blockly.Msg.seconds, "seconds"]
-		]), "units");
-		
-		
+		this.appendValueInput("TIME")
+			.setCheck('Number');
+
+		this.appendDummyInput()
+			.appendField(new Blockly.FieldDropdown([
+				[Blockly.Msg.milliseconds, "milliseconds"],
+				[Blockly.Msg.seconds, "seconds"]
+			]), "units");
+
 		this.appendStatementInput('DO')
 			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
 
@@ -300,6 +299,6 @@ Blockly.Blocks['execute_every'] = {
 		this.setHelpUrl(Blockly.Msg.EVENT_EVERY_HELPURL);
 	},
 	section: function() {
-		return 'declaration';
+		return 'events';
 	}
 };

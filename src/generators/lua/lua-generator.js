@@ -1,7 +1,5 @@
-var timers = [];
-
+// Code sections
 var codeSection = [];
-
 codeSection["require"] = [];
 codeSection["events"] = [];
 codeSection["functions"] = [];
@@ -9,6 +7,17 @@ codeSection["declaration"] = [];
 codeSection["start"] = [];
 codeSection["afterStart"] = [];
 codeSection["default"] = [];
+
+// Order of code sections
+var codeSectionOrder = [];
+codeSectionOrder.push("require");
+codeSectionOrder.push("events");
+codeSectionOrder.push("functions");
+codeSectionOrder.push("declaration");
+codeSectionOrder.push("start");
+codeSectionOrder.push("afterStart");
+codeSectionOrder.push("default");
+
 
 // Whe indent using a tab
 Blockly.Generator.prototype.INDENT = '\t';
@@ -30,9 +39,6 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		workspace = Blockly.getMainWorkspace();
 	}
 
-	// Clear timers
-	timers = [];
-	
 	/*
 	 * Some blocks must be allocate it's generated code in specific code regions. For example,
 	 * "when a lora frame is received" block must be allocated prior to execute anything.
@@ -42,14 +48,28 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	var section = "default";
 	var key;
 
+	// Clean sections
 	for (key in codeSection) {
 		codeSection[key] = [];
 	}
 
-	// Bwegin
+	var initCode = '';
+	
+	initCode = Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";
+	initCode += Blockly.Lua.indent(0,'-- that must wait for this situation') + "\n";
+	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n";
+	codeSection["events"].push(initCode);
+
+	// Begin
+	var hasBoardStart = false;
+	
 	this.init(workspace);
 	var blocks = workspace.getTopBlocks(true);
 	for (var x = 0, block; block = blocks[x]; x++) {
+		if (block.type == 'when_board_starts') {
+			hasBoardStart = true;
+		}
+		
 		// Put code in default section
 		section = "default";
 
@@ -77,11 +97,35 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		}
 	}
 
+	// If when board start has not defined simulate and empty when board start block
+	if (!hasBoardStart) {
+		initCode = Blockly.Lua.indent(0,'thread.start(function()') + "\n";
+		initCode += Blockly.Lua.indent(1,'-- board is started') + "\n";
+		initCode += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(false)') + "\n";
+		initCode += Blockly.Lua.indent(0,'end)') + "\n";
+		codeSection["start"].push(initCode);		
+	}
+
+	initCode = Blockly.Lua.indent(0,'-- wait for board is started') + "\n";
+	initCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n";
+	codeSection["start"].push(initCode);
+	
+	// Put definitions into declaration section
+	for (var name in Blockly.Lua.definitions_) {
+		codeSection["declaration"].push(Blockly.Lua.definitions_[name]);
+	}
+
+	// Clean up temporary data
+	delete Blockly.Lua.definitions_;
+	delete Blockly.Lua.functionNames_;
+	
+	Blockly.Lua.variableDB_.reset();
+
 	// Generate code from code sections
 	var code = "";
 	var tmpCode = "";
 
-	for (section in codeSection) {
+	codeSectionOrder.forEach(function(section, index) {
 		if (codeSection[section] != ""){
 			tmpCode = codeSection[section].join('\n'); // Blank line between each section.	
 			code += tmpCode + '\n';
@@ -89,10 +133,8 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 			if (section == "require") {
 				code += "\n";
 			}			
-		}
-	}
-
-	code = this.finish(code) + '\n';
+		}		
+	});
 
 	// Final scrubbing of whitespace.
 	code = code.replace(/^\s+\n/, '');
@@ -148,6 +190,7 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	
 	this.init(workspace);
 
+	// Clean code sections
 	for (key in codeSection) {
 		codeSection[key] = [];
 	}
@@ -157,13 +200,13 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	// Get code
 	var line = this.oneBlockToCode(block);
 
-	for (key in codeSection) {
+	codeSectionOrder.forEach(function(section, index) {
 		if (key != "default") {
 			if (codeSection[key] != "") {
 				code += codeSection[key].join('\n') + "\n";				
 			}
 		}
-	}
+	});
 
 	code += "function _code()\n";
 	code += "local previous = wcBlock.developerMode\n";
@@ -187,6 +230,7 @@ Blockly.Generator.prototype.blockCode = function(block) {
 	
 	this.init(workspace);
 
+	// Clean code sections
 	for(key in codeSection) {
 		codeSection[key] = [];
 	}
@@ -196,13 +240,13 @@ Blockly.Generator.prototype.blockCode = function(block) {
 	// Get code
 	var line = this.oneBlockToCode(block);
 
-	for (key in codeSection) {
+	codeSectionOrder.forEach(function(section, index) {
 		if (key != "default") {
 			if (codeSection[key] != "") {
 				code += codeSection[key].join('\n') + "\n";				
 			}
 		}
-	}
+	});
 
 	code += "function _code()\n";
 	code += "thread.start(function()\n";

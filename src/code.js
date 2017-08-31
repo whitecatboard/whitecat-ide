@@ -1631,7 +1631,7 @@ Code.load = function() {
 		buttons: {
 			danger: {
 				label: MSG['cancel'],
-				className: "btn-danger",
+				className: "btn-default",
 				callback: function() {}
 			},
 		},
@@ -1741,6 +1741,11 @@ Code.save = function() {
 				'<input type="hidden" id="selectedId" value="">' +
 				'<input type="text" id="selectedFileName" value="">' + '.' + extension,
 			buttons: {
+				danger: {
+					label: MSG['cancel'],
+					className: "btn-default",
+					callback: function() {}
+				},
 				main: {
 					label: MSG['save'],
 					className: "btn-primary",
@@ -1752,11 +1757,6 @@ Code.save = function() {
 							return false;
 						}
 					}
-				},
-				danger: {
-					label: MSG['cancel'],
-					className: "btn-danger",
-					callback: function() {}
 				},
 			},
 			closable: false
@@ -1825,6 +1825,11 @@ Code.saveAs = function(callback) {
 			'<input type="hidden" id="selectedId" value="">' +
 			'<input type="text" id="selectedFileName" value="">' + '.' + extension,
 		buttons: {
+			danger: {
+				label: MSG['cancel'],
+				className: "btn-default",
+				callback: function() {}
+			},
 			main: {
 				label: MSG['save'],
 				className: "btn-primary",
@@ -1836,11 +1841,6 @@ Code.saveAs = function(callback) {
 						return false;
 					}
 				}
-			},
-			danger: {
-				label: MSG['cancel'],
-				className: "btn-danger",
-				callback: function() {}
 			},
 		},
 		closable: false
@@ -1958,6 +1958,13 @@ Code.newFirmware = function() {
 	bootbox.dialog({
 		message: MSG['newFirmware'],
 		buttons: {
+			danger: {
+				label: MSG['notNow'],
+				className: "btn-default",
+				callback: function() {
+					Code.checkNewVersion = false;
+				}
+			},
 			success: {
 				label: MSG['installNow'],
 				className: "btn-primary",
@@ -1969,13 +1976,6 @@ Code.newFirmware = function() {
 						Code.showProgress(MSG['downloadingFirmware']);
 					});
 
-				}
-			},
-			danger: {
-				label: MSG['notNow'],
-				className: "btn-danger",
-				callback: function() {
-					Code.checkNewVersion = false;
 				}
 			},
 		},
@@ -2332,17 +2332,17 @@ Code.switchToCode = function() {
 		title: MSG['information'],
 		message: MSG['switchToCodeWarning'],
 		buttons: {
+			danger: {
+				label: MSG['no'],
+				className: "btn-default",
+				callback: function() {}
+			},
 			success: {
 				label: MSG['yes'],
 				className: "btn-primary",
 				callback: function() {
 					doSwitch();
 				}
-			},
-			danger: {
-				label: MSG['no'],
-				className: "btn-danger",
-				callback: function() {}
 			},
 		},
 		closable: false
@@ -2368,17 +2368,17 @@ Code.switchToBlocks = function() {
 		title: MSG['informatiom'],
 		message: MSG['switchToBlocksWarning'],
 		buttons: {
+			danger: {
+				label: MSG['no'],
+				className: "btn-default",
+				callback: function() {}
+			},
 			success: {
 				label: MSG['yes'],
 				className: "btn-primary",
 				callback: function() {
 					doSwitch();
 				}
-			},
-			danger: {
-				label: MSG['no'],
-				className: "btn-danger",
-				callback: function() {}
 			},
 		},
 		closable: false
@@ -2467,33 +2467,39 @@ Code.setup = function() {
 	});
 
 	Code.agent.addListener("blockStart", function(id, info) {
-		var block = atob(info.block).replace(/\0/g, '');
-		var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
+		if (Code.workspace.type == "blocks") {
+			var block = atob(info.block).replace(/\0/g, '');
+			var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
 
-		if ((obj.type == "cpu_sleep") || (obj.type == "when_board_starts")) {
-			Blockly.mainWorkspace.removeStarts();
+			if ((obj.type == "cpu_sleep") || (obj.type == "when_board_starts")) {
+				Blockly.mainWorkspace.removeStarts();
+			}
+
+			obj.addStart();
 		}
-
-		obj.addStart();
 	});
 
 	Code.agent.addListener("blockEnd", function(id, info) {
-		var block = atob(info.block).replace(/\0/g, '');;
-		var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
+		if (Code.workspace.type == "blocks") {
+			var block = atob(info.block).replace(/\0/g, '');;
+			var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
 
-		obj.removeStart();
+			obj.removeStart();
+		}
 	});
 
 	Code.agent.addListener("blockError", function(id, info) {
-		Blockly.mainWorkspace.removeStarts();
-		Blockly.mainWorkspace.removeErrors();
+		if (Code.workspace.type == "blocks") {
+			Blockly.mainWorkspace.removeStarts();
+			Blockly.mainWorkspace.removeErrors();
 
-		var block = atob(info.block).replace(/\0/g, '');;
-		var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
-		var error = atob(info.error);
+			var block = atob(info.block).replace(/\0/g, '');;
+			var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
+			var error = atob(info.error);
 
-		obj.addError();
-		obj.setWarningText(error);
+			obj.addError();
+			obj.setWarningText(error);
+		}
 	});
 
 	Code.agent.addListener("boardUpdate", function(id, info) {

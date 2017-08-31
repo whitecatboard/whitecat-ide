@@ -85,7 +85,5 @@ function wcBlock.blockError(id, err, msg)
 		uart.write(uart.CONSOLE,">\n")
 		uart.unlock(uart.CONSOLE)
 	end
-	
-	thread.stop();
-	error(err..":"..msg)
+	thread.stop()
 end

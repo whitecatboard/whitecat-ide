@@ -224,15 +224,20 @@ Blockly.Lua.blockStart = function(indent, block) {
 
 Blockly.Lua.blockEnd = function(indent, block) {
 	if (Blockly.Lua.developerMode) {
-		return Blockly.Lua.indent(indent,'wcBlock.blockEnd('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n\n";	
+		return Blockly.Lua.indent(indent,'wcBlock.blockEnd('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";	
 	} else {
-		return '\n';
+		return '';
 	}
 }
 
 Blockly.Lua.blockError = function(indent, block) {
+	var code = '';
+	
 	if (Blockly.Lua.developerMode) {
-		return Blockly.Lua.indent(indent,'wcBlock.blockError('+Blockly.Lua.blockIdToNum(block.id)+', err, message)') + "\n";	
+		code = Blockly.Lua.indent(indent,'_eventBoardStarted:broadcast(false)') + "\n";			
+		code += Blockly.Lua.indent(indent,'wcBlock.blockError('+Blockly.Lua.blockIdToNum(block.id)+', err, message)') + "\n";
+		
+		return code;	
 	} else {
 		return '';
 	}
