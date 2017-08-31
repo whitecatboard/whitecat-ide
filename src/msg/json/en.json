@@ -627,7 +627,8 @@
 	"CAN_READ_TOOLTIP": "Read a frame from the CAN bus.",
 	"CAN_READ_HELPURL": "",
 	"CAN_GET": "get",
-	"CAN_GET_FROM_FRAME": "from frame",
+	"CAN_GET_FROM_FRAME": "from",
+	"CAN_GET_TO_FRAME": "to",
 	"CAN_GET_TOOLTIP": "",
 	"CAN_GET_HELPURL": "Get a field value from a CAN frame.",	
 	"CAN_GET_IDENTIFIER": "identifier", 
@@ -685,5 +686,18 @@
 	"potentiometers": "Potentiometers",
 	"illuminance": "Illuminance",
 	"LINEAR_POT": "Linear pot",
-	"ANALOG_JOYSTICK": "Analog joystick"
+	"ANALOG_JOYSTICK": "Analog joystick",
+
+	"DEFAULT_CAN_FRAME": "frame",
+	"NEW_CAN_FRAME": "New frame ...",
+	"EDIT_CAN_FRAME_TITLE": "Edit frame ...",	
+	"NEW_CAN_FRAME_TITLE": "New frame ...",
+	"CAN_FRAME_CREATE": "Creeate frame ...",
+	"CAN_FRAME_ALREADY_EXISTS": "An frame named '%1' already exists.",
+	"CAN_FRAME_CANCEL": "Cancel",
+	"CAN_FRAME_NAME": "Frame name",
+	"RENAME_CAN_FRAME": "Rename frame...",
+	"DELETE_CAN_FRAME": "Delete the '%1' frame",
+	"CAN_FRAME_CANNOT_REMOVE": "This frame cannot remove.",
+	"CAN_FRAME_CANNOT_RENAME": "This frame cannot rename."
 }

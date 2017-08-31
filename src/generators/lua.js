@@ -44,46 +44,46 @@ Blockly.Lua = new Blockly.Generator('Lua');
  * @private
  */
 Blockly.Lua.addReservedWords(
-    // Special character
-    '_,' +
-    // From theoriginalbit's script:
-    // https://github.com/espertus/blockly-lua/issues/6
-    '__inext,assert,bit,colors,colours,coroutine,disk,dofile,error,fs,' +
-    'fetfenv,getmetatable,gps,help,io,ipairs,keys,loadfile,loadstring,math,' +
-    'native,next,os,paintutils,pairs,parallel,pcall,peripheral,print,' +
-    'printError,rawequal,rawget,rawset,read,rednet,redstone,rs,select,' +
-    'setfenv,setmetatable,sleep,string,table,term,textutils,tonumber,' +
-    'tostring,turtle,type,unpack,vector,write,xpcall,_VERSION,__indext,' +
-    // Not included in the script, probably because it wasn't enabled:
-    'HTTP,' +
-    // Keywords (http://www.lua.org/pil/1.3.html).
-    'and,break,do,else,elseif,end,false,for,function,if,in,local,nil,not,or,' +
-    'repeat,return,then,true,until,while,' +
-    // Metamethods (http://www.lua.org/manual/5.2/manual.html).
-    'add,sub,mul,div,mod,pow,unm,concat,len,eq,lt,le,index,newindex,call,' +
-    // Basic functions (http://www.lua.org/manual/5.2/manual.html, section 6.1).
-    'assert,collectgarbage,dofile,error,_G,getmetatable,inpairs,load,' +
-    'loadfile,next,pairs,pcall,print,rawequal,rawget,rawlen,rawset,select,' +
-    'setmetatable,tonumber,tostring,type,_VERSION,xpcall,' +
-    // Modules (http://www.lua.org/manual/5.2/manual.html, section 6.3).
-    'require,package,string,table,math,bit32,io,file,os,debug'
+	// Special character
+	'_,' +
+	// From theoriginalbit's script:
+	// https://github.com/espertus/blockly-lua/issues/6
+	'__inext,assert,bit,colors,colours,coroutine,disk,dofile,error,fs,' +
+	'fetfenv,getmetatable,gps,help,io,ipairs,keys,loadfile,loadstring,math,' +
+	'native,next,os,paintutils,pairs,parallel,pcall,peripheral,print,' +
+	'printError,rawequal,rawget,rawset,read,rednet,redstone,rs,select,' +
+	'setfenv,setmetatable,sleep,string,table,term,textutils,tonumber,' +
+	'tostring,turtle,type,unpack,vector,write,xpcall,_VERSION,__indext,' +
+	// Not included in the script, probably because it wasn't enabled:
+	'HTTP,' +
+	// Keywords (http://www.lua.org/pil/1.3.html).
+	'and,break,do,else,elseif,end,false,for,function,if,in,local,nil,not,or,' +
+	'repeat,return,then,true,until,while,' +
+	// Metamethods (http://www.lua.org/manual/5.2/manual.html).
+	'add,sub,mul,div,mod,pow,unm,concat,len,eq,lt,le,index,newindex,call,' +
+	// Basic functions (http://www.lua.org/manual/5.2/manual.html, section 6.1).
+	'assert,collectgarbage,dofile,error,_G,getmetatable,inpairs,load,' +
+	'loadfile,next,pairs,pcall,print,rawequal,rawget,rawlen,rawset,select,' +
+	'setmetatable,tonumber,tostring,type,_VERSION,xpcall,' +
+	// Modules (http://www.lua.org/manual/5.2/manual.html, section 6.3).
+	'require,package,string,table,math,bit32,io,file,os,debug'
 );
 
 /**
  * Order of operation ENUMs.
  * http://www.lua.org/manual/5.3/manual.html#3.4.8
  */
-Blockly.Lua.ORDER_ATOMIC = 0;          // literals
+Blockly.Lua.ORDER_ATOMIC = 0; // literals
 // The next level was not explicit in documentation and inferred by Ellen.
-Blockly.Lua.ORDER_HIGH = 1;            // Function calls, tables[]
-Blockly.Lua.ORDER_EXPONENTIATION = 2;  // ^
-Blockly.Lua.ORDER_UNARY = 3;           // not # - ~
-Blockly.Lua.ORDER_MULTIPLICATIVE = 4;  // * / %
-Blockly.Lua.ORDER_ADDITIVE = 5;        // + -
-Blockly.Lua.ORDER_CONCATENATION = 6;   // ..
-Blockly.Lua.ORDER_RELATIONAL = 7;      // < > <=  >= ~= ==
-Blockly.Lua.ORDER_AND = 8;             // and
-Blockly.Lua.ORDER_OR = 9;              // or
+Blockly.Lua.ORDER_HIGH = 1; // Function calls, tables[]
+Blockly.Lua.ORDER_EXPONENTIATION = 2; // ^
+Blockly.Lua.ORDER_UNARY = 3; // not # - ~
+Blockly.Lua.ORDER_MULTIPLICATIVE = 4; // * / %
+Blockly.Lua.ORDER_ADDITIVE = 5; // + -
+Blockly.Lua.ORDER_CONCATENATION = 6; // ..
+Blockly.Lua.ORDER_RELATIONAL = 7; // < > <=  >= ~= ==
+Blockly.Lua.ORDER_AND = 8; // and
+Blockly.Lua.ORDER_OR = 9; // or
 Blockly.Lua.ORDER_NONE = 99;
 
 /**
@@ -97,18 +97,22 @@ Blockly.Lua.ORDER_NONE = 99;
  * @param {!Blockly.Workspace} workspace Workspace to generate code from.
  */
 Blockly.Lua.init = function(workspace) {
-  // Create a dictionary of definitions to be printed before the code.
-  Blockly.Lua.definitions_ = Object.create(null);
-  // Create a dictionary mapping desired function names in definitions_
-  // to actual function names (to avoid collisions with user functions).
-  Blockly.Lua.functionNames_ = Object.create(null);
+	Blockly.Lua.blockNums = 0;
+	Blockly.Lua.blockNum = [];
+	Blockly.Lua.blockId = [];
+	
+	// Create a dictionary of definitions to be printed before the code.
+	Blockly.Lua.definitions_ = Object.create(null);
+	// Create a dictionary mapping desired function names in definitions_
+	// to actual function names (to avoid collisions with user functions).
+	Blockly.Lua.functionNames_ = Object.create(null);
 
-  if (!Blockly.Lua.variableDB_) {
-    Blockly.Lua.variableDB_ =
-        new Blockly.Names(Blockly.Lua.RESERVED_WORDS_);
-  } else {
-    Blockly.Lua.variableDB_.reset();
-  }
+	if (!Blockly.Lua.variableDB_) {
+		Blockly.Lua.variableDB_ =
+			new Blockly.Names(Blockly.Lua.RESERVED_WORDS_);
+	} else {
+		Blockly.Lua.variableDB_.reset();
+	}
 };
 
 /**
@@ -117,16 +121,16 @@ Blockly.Lua.init = function(workspace) {
  * @return {string} Completed code.
  */
 Blockly.Lua.finish = function(code) {
-  // Convert the definitions dictionary into a list.
-  var definitions = [];
-  for (var name in Blockly.Lua.definitions_) {
-    definitions.push(Blockly.Lua.definitions_[name]);
-  }
-  // Clean up temporary data.
-  delete Blockly.Lua.definitions_;
-  delete Blockly.Lua.functionNames_;
-  Blockly.Lua.variableDB_.reset();
-  return definitions.join('\n\n') + '\n\n\n' + code;
+	// Convert the definitions dictionary into a list.
+	var definitions = [];
+	for (var name in Blockly.Lua.definitions_) {
+		definitions.push(Blockly.Lua.definitions_[name]);
+	}
+	// Clean up temporary data.
+	delete Blockly.Lua.definitions_;
+	delete Blockly.Lua.functionNames_;
+	Blockly.Lua.variableDB_.reset();
+	return definitions.join('\n\n') + '\n\n\n' + code;
 };
 
 /**
@@ -138,7 +142,7 @@ Blockly.Lua.finish = function(code) {
  * @return {string} Legal line of code.
  */
 Blockly.Lua.scrubNakedValue = function(line) {
-  return 'local _ = ' + line + '\n';
+	return 'local _ = ' + line + '\n';
 };
 
 /**
@@ -149,10 +153,10 @@ Blockly.Lua.scrubNakedValue = function(line) {
  * @private
  */
 Blockly.Lua.quote_ = function(string) {
-  string = string.replace(/\\/g, '\\\\')
-                 .replace(/\n/g, '\\\n')
-                 .replace(/'/g, '\\\'');
-  return '\'' + string + '\'';
+	string = string.replace(/\\/g, '\\\\')
+		.replace(/\n/g, '\\\n')
+		.replace(/'/g, '\\\'');
+	return '\'' + string + '\'';
 };
 
 /**
@@ -165,32 +169,32 @@ Blockly.Lua.quote_ = function(string) {
  * @private
  */
 Blockly.Lua.scrub_ = function(block, code) {
-  var commentCode = '';
-  // Only collect comments for blocks that aren't inline.
-  if (!block.outputConnection || !block.outputConnection.targetConnection) {
-    // Collect comment for this block.
-    var comment = block.getCommentText();
-    comment = Blockly.utils.wrap(comment, Blockly.Lua.COMMENT_WRAP - 3);
-    if (comment) {
-      commentCode += Blockly.Lua.prefixLines(comment, '-- ') + '\n';
-    }
-    // Collect comments for all value arguments.
-    // Don't collect comments for nested statements.
-    for (var i = 0; i < block.inputList.length; i++) {
-      if (block.inputList[i].type == Blockly.INPUT_VALUE) {
-        var childBlock = block.inputList[i].connection.targetBlock();
-        if (childBlock) {
-          comment = Blockly.Lua.allNestedComments(childBlock);
-          if (comment) {
-            commentCode += Blockly.Lua.prefixLines(comment, '-- ');
-          }
-        }
-      }
-    }
-  }
-  var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-  var nextCode = Blockly.Lua.blockToCode(nextBlock);
-  return commentCode + code + nextCode;
+	var commentCode = '';
+	// Only collect comments for blocks that aren't inline.
+	if (!block.outputConnection || !block.outputConnection.targetConnection) {
+		// Collect comment for this block.
+		var comment = block.getCommentText();
+		comment = Blockly.utils.wrap(comment, Blockly.Lua.COMMENT_WRAP - 3);
+		if (comment) {
+			commentCode += Blockly.Lua.prefixLines(comment, '-- ') + '\n';
+		}
+		// Collect comments for all value arguments.
+		// Don't collect comments for nested statements.
+		for (var i = 0; i < block.inputList.length; i++) {
+			if (block.inputList[i].type == Blockly.INPUT_VALUE) {
+				var childBlock = block.inputList[i].connection.targetBlock();
+				if (childBlock) {
+					comment = Blockly.Lua.allNestedComments(childBlock);
+					if (comment) {
+						commentCode += Blockly.Lua.prefixLines(comment, '-- ');
+					}
+				}
+			}
+		}
+	}
+	var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
+	var nextCode = Blockly.Lua.blockToCode(nextBlock);
+	return commentCode + code + nextCode;
 };
 
 Blockly.Lua.inTryBlock = function(block) {
@@ -202,67 +206,106 @@ Blockly.Lua.inTryBlock = function(block) {
 			if (previous.type == "exception_try") {
 				return true;
 			}
-		
-			previous = previous.previousConnection;				
+
+			previous = previous.previousConnection;
 		}
-	}	
-	
+	}
+
 	return false;
+}
+
+Blockly.Lua.blockStart = function(indent, block) {
+	if (Blockly.Lua.developerMode) {
+		return Blockly.Lua.indent(indent,'wcBlock.blockStart('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";
+	} else {
+		return '';
+	}
+}
+
+Blockly.Lua.blockEnd = function(indent, block) {
+	if (Blockly.Lua.developerMode) {
+		return Blockly.Lua.indent(indent,'wcBlock.blockEnd('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n\n";	
+	} else {
+		return '\n';
+	}
+}
+
+Blockly.Lua.blockError = function(indent, block) {
+	if (Blockly.Lua.developerMode) {
+		return Blockly.Lua.indent(indent,'wcBlock.blockError('+Blockly.Lua.blockIdToNum(block.id)+', err, message)') + "\n";	
+	} else {
+		return '';
+	}
 }
 
 Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	var tryCode = '';
+	var blockId = Blockly.Lua.blockIdToNum(block.id);
 
 	if (typeof comment == "undefined") {
 		comment = "";
 	}
-	
+
 	if (comment != "") {
 		tryCode += "-- begin: " + comment + "\n";
 	}
 
 	if (!Blockly.Lua.developerMode || Blockly.Lua.inTryBlock(block)) {
-		tryCode += Blockly.Lua.indent(indent,code);
+		tryCode += Blockly.Lua.indent(indent, code);
 	} else {
-		tryCode += Blockly.Lua.indent(0,'try(') + '\n';
-		tryCode += Blockly.Lua.indent(1,'function()') + "\n";
-	
+		tryCode += Blockly.Lua.indent(0, 'try(') + '\n';
+		tryCode += Blockly.Lua.indent(1, 'function()') + "\n";
+
 		if (code != "") {
-			tryCode += Blockly.Lua.indent(2,code);
+			tryCode += Blockly.Lua.indent(2, code);
 		}
-	
-		tryCode += Blockly.Lua.indent(1,'end,') + "\n";
-		tryCode += Blockly.Lua.indent(1,'function(where, line, err, message)') + "\n";
-		tryCode += Blockly.Lua.indent(2,'wcBlock.blockError("' + block.id + '", err, message)') + "\n";
-		tryCode += Blockly.Lua.indent(1,'end') + "\n";
-		tryCode += Blockly.Lua.indent(0,')');
-	
-		tryCode = Blockly.Lua.indent(indent, tryCode) + "\n";	
+
+		tryCode += Blockly.Lua.indent(1, 'end,') + "\n";
+		tryCode += Blockly.Lua.indent(1, 'function(where, line, err, message)') + "\n";
+		tryCode += Blockly.Lua.blockError(2, block);
+		tryCode += Blockly.Lua.indent(1, 'end') + "\n";
+		tryCode += Blockly.Lua.indent(0, ')');
+
+		tryCode = Blockly.Lua.indent(indent, tryCode) + "\n";
 	}
-		
+
 	if (comment != "") {
 		tryCode += "-- end: " + comment + "\n";
 	}
-	
+
 	if (block.nextConnection) {
 		if (block.nextConnection.targetBlock()) {
 			tryCode += '\n';
 		}
 	}
-	
-	return tryCode;	
+
+	return tryCode;
 }
 
 Blockly.Lua.require = function(lib) {
-	if (codeSection["require"].indexOf('require("'+lib+'")') == -1) {
-		codeSection["require"].push('require("'+lib+'")');
+	if (codeSection["require"].indexOf('require("' + lib + '")') == -1) {
+		codeSection["require"].push('require("' + lib + '")');
 	}
 }
 
 Blockly.Lua.indent = function(n, code) {
-	for(var i=0;i<n;i++) {
+	for (var i = 0; i < n; i++) {
 		code = Blockly.Lua.prefixLines(code, Blockly.Lua.INDENT);
 	}
-	
+
 	return code;
+}
+
+Blockly.Lua.blockIdToNum = function(id) {
+	if (typeof Blockly.Lua.blockNum[id] == "undefined") {
+		Blockly.Lua.blockNums = Blockly.Lua.blockNums + 1;
+		Blockly.Lua.blockNum[id] = Blockly.Lua.blockNums;	
+		Blockly.Lua.blockId[Blockly.Lua.blockNums] = id;	
+	}
+	
+	return Blockly.Lua.blockNum[id];
+}
+
+Blockly.Lua.numToBlockId = function(num) {
+	return Blockly.Lua.blockId[num];
 }

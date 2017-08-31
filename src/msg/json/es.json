@@ -464,7 +464,7 @@
 
 	"DEFAULT_EVENT": "evento",
 	"NEW_EVENT": "Nuevo evento ...",
-	"EDIT_EVENT_TITLE": "Editar el event ...",	
+	"EDIT_EVENT_TITLE": "Editar el evento ...",	
 	"NEW_EVENT_TITLE": "Nuevo evento ...",
 	"EVENT_CREATE": "Crear evento ...",
 	"EVENT_ALREADY_EXISTS": "Ya existe un evento con el nombre '%1'.",
@@ -592,7 +592,8 @@
 	"CAN_READ_TOOLTIP": "Lee un paquet desd el CAN bus.",
 	"CAN_READ_HELPURL": "",
 	"CAN_GET": "obtener",
-	"CAN_GET_FROM_FRAME": "del paquete",
+	"CAN_GET_FROM_FRAME": "de",
+	"CAN_GET_TO_FRAME": "hacia",
 	"CAN_GET_TOOLTIP": "",
 	"CAN_GET_HELPURL": "Ontiene el valor de un campo de un paquete CAN.",	
 	"CAN_GET_IDENTIFIER": "identificador", 
@@ -650,5 +651,18 @@
 	"potentiometers": "Potenciómetros",
 	"illuminance": "Iluminancia",
 	"LINEAR_POT": "Potenciómetro lineal",
-	"ANALOG_JOYSTICK": "Joystick analógico"
+	"ANALOG_JOYSTICK": "Joystick analógico",
+
+	"DEFAULT_CAN_FRAME": "paquete",
+	"NEW_CAN_FRAME": "Nuevo paquete ...",
+	"EDIT_CAN_FRAME_TITLE": "Editar el paquete ...",	
+	"NEW_CAN_FRAME_TITLE": "Nuevo paquete ...",
+	"CAN_FRAME_CREATE": "Crear paquete ...",
+	"CAN_FRAME_ALREADY_EXISTS": "Ya existe un paquete con el nombre '%1'.",
+	"CAN_FRAME_CANCEL": "Cancelar",
+	"CAN_FRAME_NAME": "Nombre del paquete",
+	"RENAME_CAN_FRAME": "Modificar el nombre del paquete...",
+	"DELETE_CAN_FRAME": "Borrar el paquete '%1'",
+	"CAN_FRAME_CANNOT_REMOVE": "Este paquete no se puede borrar.",
+	"CAN_FRAME_CANNOT_RENAME": "Este paquete no permite cambiar de nombre."
 }

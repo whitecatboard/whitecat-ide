@@ -2414,17 +2414,7 @@ Code.setup = function() {
 
 			Code.status.connected = true;
 			Code.status.firmware = info.info.os + "-" + info.info.version.replace(" ", "-") + "-" + info.info.build;
-			Code.renderContent();
-			
-			// Put some information needed for the IDE that is present in sensors.json
-			Code.status.sensors.forEach(function(bsensor, index) {
-				Blockly.mainWorkspace.allSensors.sensors.forEach(function(dsensor, index) {
-					if (dsensor.id == bsensor.id) {
-						bsensor.callback = dsensor.callback;
-					}
-				});
-			});
-			
+			Code.renderContent();			
 		});
 
 		if ((Code.agent.version == "") || (parseFloat(Code.agent.version) < parseFloat(Code.minAgentVersion))) {
@@ -2477,31 +2467,33 @@ Code.setup = function() {
 	});
 
 	Code.agent.addListener("blockStart", function(id, info) {
-		var block = atob(info.block);
-		var obj = Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, ''))
+		var block = atob(info.block).replace(/\0/g, '');
+		var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
 
 		if ((obj.type == "cpu_sleep") || (obj.type == "when_board_starts")) {
 			Blockly.mainWorkspace.removeStarts();
 		}
 
-		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).addStart();
+		obj.addStart();
 	});
 
 	Code.agent.addListener("blockEnd", function(id, info) {
-		var block = atob(info.block);
+		var block = atob(info.block).replace(/\0/g, '');;
+		var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
 
-		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).removeStart();
+		obj.removeStart();
 	});
 
 	Code.agent.addListener("blockError", function(id, info) {
 		Blockly.mainWorkspace.removeStarts();
 		Blockly.mainWorkspace.removeErrors();
 
-		var block = atob(info.block);
+		var block = atob(info.block).replace(/\0/g, '');;
+		var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
 		var error = atob(info.error);
 
-		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).addError();
-		Blockly.mainWorkspace.getBlockById(block.replace(/\0/g, '')).setWarningText(error);
+		obj.addError();
+		obj.setWarningText(error);
 	});
 
 	Code.agent.addListener("boardUpdate", function(id, info) {

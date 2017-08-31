@@ -144,17 +144,14 @@ Blockly.Lua['sensor_when'] = function(block) {
 	tryCode += Blockly.Lua.indent(0, '_' + block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+':callback(function(magnitude)') + "\n";
 	tryCode += Blockly.Lua.indent(1, 'local value = magnitude.' + magnitude) + "\n\n";	
 	tryCode += Blockly.Lua.indent(1, 'if value == nil then return end') + "\n\n";
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	}
-	
+
+	tryCode += Blockly.Lua.blockStart(1, block);
+
 	if (statement != "") {
 		tryCode += Blockly.Lua.indent(1, statement);
 	}
 	
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-	}
+	tryCode += Blockly.Lua.blockEnd(1, block);
 
 	tryCode += Blockly.Lua.indent(0, 'end)') + "\n";	
 

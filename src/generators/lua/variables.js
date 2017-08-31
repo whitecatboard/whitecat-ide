@@ -30,17 +30,25 @@ goog.require('Blockly.Lua');
 
 
 Blockly.Lua['variables_get'] = function(block) {
-  // Variable getter.
-  var code = Blockly.Lua.variableDB_.getName(block.getFieldValue('VAR'),
-      Blockly.Variables.NAME_TYPE);
-  return [code, Blockly.Lua.ORDER_ATOMIC];
+	// Variable getter.
+	if (typeof Blockly.Lua.variableDB_ == "undefined") {
+		return ['', Blockly.Lua.ORDER_ATOMIC];
+	}
+	var code = Blockly.Lua.variableDB_.getName(block.getFieldValue('VAR'),
+		Blockly.Variables.NAME_TYPE);
+	return [code, Blockly.Lua.ORDER_ATOMIC];
 };
 
 Blockly.Lua['variables_set'] = function(block) {
-  // Variable setter.
-  var argument0 = Blockly.Lua.valueToCode(block, 'VALUE',
-      Blockly.Lua.ORDER_NONE) || '0';
-  var varName = Blockly.Lua.variableDB_.getName(
-      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-  return varName + ' = ' + argument0 + '\n';
+	// Variable setter.
+	var argument0 = Blockly.Lua.valueToCode(block, 'VALUE',
+		Blockly.Lua.ORDER_NONE) || '0';
+
+	if (typeof Blockly.Lua.variableDB_ == "undefined") {
+		return ['', Blockly.Lua.ORDER_ATOMIC];
+	}
+
+	var varName = Blockly.Lua.variableDB_.getName(
+		block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+	return varName + ' = ' + argument0 + '\n';
 };

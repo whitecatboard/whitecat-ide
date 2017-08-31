@@ -468,17 +468,13 @@ Blockly.Lua['when_digital_pin'] = function(block) {
 	tryCode += Blockly.Lua.io.helper.attachDigital(block, false);
 	tryCode += Blockly.Lua.indent(0,'pio.pin.interrupt(' + Blockly.Lua.io.helper.prefixDigital(block) + Blockly.Lua.io.helper.nameDigital(block)+', function()') + "\n";
 
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	}
+	tryCode += Blockly.Lua.blockStart(1, block);
 
 	if (statement != "") {
 		tryCode += Blockly.Lua.indent(1, statement);
 	}
 
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-	}
+	tryCode += Blockly.Lua.blockEnd(1, block);
 
 	tryCode += Blockly.Lua.indent(0,'end, pio.pin.'+when+')') + "\n";
 

@@ -108,17 +108,11 @@ Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
 	code += Blockly.Lua.indent(0,'-- when I receive a LoRa frame') + "\n";
 	code += Blockly.Lua.indent(0,'lora.whenReceived(function(port, payload)') + "\n";
 	
-	if (Blockly.Lua.developerMode) {
-		code += Blockly.Lua.indent(1,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	}
-	
+	code += Blockly.Lua.blockStart(1, block);
 	if (statement != '') {
 		code += Blockly.Lua.tryBlock(1,block, statement);
 	}
-	
-	if (Blockly.Lua.developerMode) {
-		code += Blockly.Lua.indent(1,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-	}
+	code += Blockly.Lua.blockEnd(1, block);
 	
 	code += Blockly.Lua.indent(0,'end)') + "\n";
 	
@@ -147,14 +141,10 @@ Blockly.Lua['lora_join'] = function(block) {
 
 	tryCode += Blockly.Lua.indent(0,'end') + "\n\n";
 	
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(0,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	}
-	
+	tryCode += Blockly.Lua.blockStart(0, block);
 	tryCode += Blockly.Lua.indent(0,'lora.join()') + "\n";
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(0,'wcBlock.blockEnd("'+block.id+'")') + "\n";
-	}
+	tryCode += Blockly.Lua.blockEnd(0, block);
+
 	code += Blockly.Lua.indent(0,'-- lora join') + "\n";
 	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
 	
@@ -179,9 +169,7 @@ Blockly.Lua['lora_tx'] = function(block) {
 	
 	var tryCode = '';	
 
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(0,'wcBlock.blockStart("'+block.id+'")') + "\n";
-	}
+	tryCode += Blockly.Lua.blockStart(0, block);
 
 	tryCode += Blockly.Lua.indent(0,'-- setup LoRa WAN stack, if needed') + "\n";
 	tryCode += Blockly.Lua.indent(0,'if (_lora == nil) then') + "\n";
@@ -209,10 +197,9 @@ Blockly.Lua['lora_tx'] = function(block) {
 
 	tryCode += Blockly.Lua.indent(0,'-- transmit') + "\n";
 	tryCode += Blockly.Lua.indent(0,'lora.tx('+confirmed+', '+port+', '+payload+')') + "\n";
-	if (Blockly.Lua.developerMode) {
-		tryCode += Blockly.Lua.indent(0,'wcBlock.blockEnd("'+block.id+'")' + "\n");
-	}
 	
+	tryCode += Blockly.Lua.blockEnd(0, block);
+
 	code += Blockly.Lua.indent(0,'-- lora tx') + "\n";
 	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
 	

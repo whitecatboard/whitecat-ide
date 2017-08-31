@@ -151,6 +151,22 @@ Blockly.Workspace.prototype.wcInit = function() {
 			this.events.names.push(this.events.builtIn[i]);
 		}
 	}
+
+	if (typeof this.canFrames == "undefined") {
+		this.canFrames = {
+			"builtIn": [
+				'frame'
+			],
+
+			"names": [], // Array of can frame names names in workspace
+		};
+
+		// Add built in 
+		var i;
+		for (i = 0; i < this.canFrames.builtIn.length; i++) {
+			this.canFrames.names.push(this.canFrames.builtIn[i]);
+		}
+	}
 	
 	this.registerToolboxCategoryCallback(Blockly.Sensors.NAME_TYPE, Blockly.Sensors.flyoutCategory);
 	this.registerToolboxCategoryCallback(Blockly.Lora.NAME_TYPE, Blockly.Lora.flyoutCategory);
@@ -161,6 +177,16 @@ Blockly.Workspace.prototype.wcInit = function() {
 Blockly.Workspace.prototype.eventIndexOf = function(name) {
 	for (var i = 0, eventName; eventName = this.events.names[i]; i++) {
 		if (Blockly.Names.equals(eventName, name)) {
+			return i;
+		}
+	}
+
+	return -1;
+};
+
+Blockly.Workspace.prototype.canFrameIndexOf = function(name) {
+	for (var i = 0, frameName; frameName = this.canFrames.names[i]; i++) {
+		if (Blockly.Names.equals(frameName, name)) {
 			return i;
 		}
 	}
@@ -200,6 +226,40 @@ Blockly.Workspace.prototype.doCreateEvent = function(oldName, newName) {
 	}
 
 	return this.eventIndexOf(newName);
+};
+
+Blockly.Workspace.prototype.doCreateCanFrame = function(oldName, newName) {
+	// When we want to create can frame oldName = undefined, newName <> undefined
+	// When we want to rename can frame oldName <> undefined, newName <> undefined
+	var update = (typeof oldName != "undefined");
+	if (!update) {
+		oldName = newName;
+	}
+
+	// Get event index for oldName
+	var index = this.canFrameIndexOf(oldName);
+	if (update) {
+		if (index == -1) {
+			// Nothing to update, oldName doesn't exists
+			return -1;
+		} else {
+			if (this.canFrameIndexOf(newName) == -1) {
+				this.canFrames.names[index] = newName;
+			} else {
+				// Nothing to update, newName exists	
+				return -1;
+			}
+		}
+	} else {
+		if (this.canFrameIndexOf(newName) == -1) {
+			this.canFrames.names.push(newName);
+		} else {
+			// Nothing to create, newName exists	
+			return -1;
+		}
+	}
+
+	return this.canFrameIndexOf(newName);
 };
 
 Blockly.Workspace.prototype.createEvent = function(oldName, focus) {
@@ -272,6 +332,76 @@ Blockly.Workspace.prototype.createEvent = function(oldName, focus) {
 	});
 };
 
+Blockly.Workspace.prototype.createCanFrame = function(oldName, focus) {
+	var thisInstance = this;
+	var dialogForm = "";
+	var edit = false;
+
+	if (typeof oldName != "undefined") edit = true;
+
+	if (edit) {
+		// Get event index
+		var index = this.canFrameIndexOf(oldName);
+
+		if (index < this.canFrames.builtIn.length) {
+			Code.showError(Blockly.Msg.ERROR, Blockly.Msg.CAN_FRAME_CANNOT_RENAME, function() {});
+
+			return;
+		}
+
+	}
+
+	dialogForm = '<form id="can_frame_form">';
+
+	dialogForm += '<div>';
+	dialogForm += '<label for="frame_name">' + Blockly.Msg.CAN_FRAME_NAME + ':&nbsp;&nbsp;</label>';
+
+	if (edit) {
+		dialogForm += '<input id="frame_name" frame_name="name" value="' + oldName + '">';
+	} else {
+		dialogForm += '<input id="frame_name" name="frame_name" value="">';
+	}
+	dialogForm += '</div>';
+	dialogForm += '</form>';
+
+	var dialog = bootbox.dialog({
+		title: edit ? Blockly.Msg.EDIT_CAN_FRAME_TITLE : Blockly.Msg.NEW_CAN_FRAME_TITLE,
+		message: dialogForm,
+		buttons: {
+			main: {
+				label: edit ? Blockly.Msg.UPDATE : Blockly.Msg.CAN_FRAME_CREATE,
+				clasevent: "btn-primary",
+				callback: function() {
+					var newName = jQuery("#can_frame_form").find("#frame_name").val();
+					if (newName) {
+						if ((thisInstance.canFrameIndexOf(newName) == -1) || (edit && oldName == newName)) {
+							var index = thisInstance.doCreateCanFrame(
+								edit ? oldName : undefined,
+								newName
+							);
+
+							focus.setValue(newName);
+							focus.setText(newName);
+						} else {
+							Code.showError(Blockly.Msg.ERROR, Blockly.Msg.CAN_FRAME_ALREADY_EXISTS.replace('%1', newName), function() {});
+						}
+					}
+				}
+			},
+			danger: {
+				label: Blockly.Msg.CAN_FRAME_CANCEL,
+				clasevent: "btn-danger",
+				callback: function() {}
+			},
+		},
+		closable: false
+	});
+
+	dialog.one("shown.bs.modal", function() {
+		dialog.find("#frame_name").focus();
+	});
+};
+
 Blockly.Workspace.prototype.deleteEvent = function(name, focus) {
 	// Get event index
 	var index = this.eventIndexOf(name);
@@ -283,6 +413,20 @@ Blockly.Workspace.prototype.deleteEvent = function(name, focus) {
 		this.events.names.splice(index, 1);
 		focus.setValue(this.events.names[0]);
 		focus.setText(this.events.names[0]);
+	}
+};
+
+Blockly.Workspace.prototype.deleteCanFrame = function(name, focus) {
+	// Get event index
+	var index = this.canFrameIndexOf(name);
+
+	if (index < this.canFrames.builtIn.length) {
+		Code.showError(Blockly.Msg.ERROR, Blockly.Msg.CAN_FRAME_CANNOT_REMOVE, function() {});
+	} else {
+		// Remove from names
+		this.canFrames.names.splice(index, 1);
+		focus.setValue(this.canFrames.names[0]);
+		focus.setText(this.canFrames.names[0]);
 	}
 };
 
@@ -735,6 +879,7 @@ Blockly.Workspace.prototype.clear = function() {
   this.MQTT = undefined;
   this.sensors = undefined;
   this.events = undefined;
+  this.canFrames = undefined;
   
   this.wcInit();
 };

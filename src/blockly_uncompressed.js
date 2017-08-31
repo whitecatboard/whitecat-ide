@@ -91,6 +91,7 @@ goog.addDependency("../../../" + dir + "/core/workspace_svg.js", ['Blockly.Works
 goog.addDependency("../../../" + dir + "/core/xml.js", ['Blockly.Xml'], ['goog.asserts', 'goog.dom']);
 goog.addDependency("../../../" + dir + "/core/zoom_controls.js", ['Blockly.ZoomControls'], ['Blockly.Touch', 'goog.dom']);
 goog.addDependency("../../../" + dir + "/core/wc/block.js", [], []);
+goog.addDependency("../../../" + dir + "/core/wc/field_can_frame.js", ['Blockly.wc.FieldCanFrame'], ['Blockly.FieldDropdown', 'Blockly.Msg', 'Blockly.Events', 'goog.asserts', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/field_event.js", ['Blockly.wc.FieldEvent'], ['Blockly.FieldDropdown', 'Blockly.Msg', 'Blockly.Events', 'goog.asserts', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/field_exception.js", ['Blockly.wc.FieldException'], ['Blockly.FieldDropdown', 'Blockly.Msg', 'Blockly.Events', 'goog.asserts', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/wc/lora.js", ['Blockly.Lora'], ['Blockly.Blocks', 'Blockly.Workspace', 'goog.string']);
@@ -1664,6 +1665,7 @@ goog.require('Blockly.ZoomControls');
 goog.require('Blockly.constants');
 goog.require('Blockly.inject');
 goog.require('Blockly.utils');
+goog.require('Blockly.wc.FieldCanFrame');
 goog.require('Blockly.wc.FieldEvent');
 goog.require('Blockly.wc.FieldException');
 

@@ -114,11 +114,14 @@ Blockly.Blocks['canread'] = {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(Blockly.Msg.CAN_READ)
-			.appendField(new Blockly.FieldDropdown(modules), "MODULE");
-		this.setOutput(true, null);
-		this.setInputsInline(true);
-		this.setPreviousStatement(false, null);
-		this.setNextStatement(false, null);
+			.appendField(new Blockly.FieldDropdown(modules), "MODULE")
+			.appendField(Blockly.Msg.CAN_GET_TO_FRAME)
+			.appendField(new Blockly.wc.FieldCanFrame("frame"), "FRAME");
+			
+			
+			this.setInputsInline(true);
+			this.setPreviousStatement(true, null);
+			this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.can.HUE);
 		this.setTooltip(Blockly.Msg.CAN_READ_TOOLTIP);
 		this.setHelpUrl(Blockly.Msg.CAN_READ_HELPURL);
@@ -150,9 +153,9 @@ Blockly.Blocks['canframeget'] = {
 				[Blockly.Msg.CAN_GET_D6, "d6"],
 				[Blockly.Msg.CAN_GET_D7, "d7"],
 			]), "FIELD")
-			.appendField(Blockly.Msg.CAN_GET_FROM_FRAME);
+			.appendField(Blockly.Msg.CAN_GET_FROM_FRAME)
+			.appendField(new Blockly.wc.FieldCanFrame("frame"), "FRAME");
 
-		this.appendValueInput("FRAME");
 			
 		this.setOutput(true, null);
 		this.setInputsInline(true);
@@ -189,9 +192,8 @@ Blockly.Blocks['canframeset'] = {
 				[Blockly.Msg.CAN_GET_D6, "d6"],
 				[Blockly.Msg.CAN_GET_D7, "d7"],
 			]), "FIELD")
-			.appendField(Blockly.Msg.CAN_SET_TO_FRAME);
-
-		this.appendValueInput("FRAME");
+			.appendField(Blockly.Msg.CAN_SET_TO_FRAME)
+			.appendField(new Blockly.wc.FieldCanFrame("frame"), "FRAME");
 
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.CAN_SET_TO_VALUE);
@@ -254,10 +256,9 @@ Blockly.Blocks['canframewrite'] = {
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(Blockly.Msg.CAN_WRITE)
 			.appendField(new Blockly.FieldDropdown(modules), "MODULE")
-			.appendField(Blockly.Msg.CAN_WRITE_FRAME);
+			.appendField(Blockly.Msg.CAN_WRITE_FRAME)
+		.appendField(new Blockly.wc.FieldCanFrame("frame"), "FRAME");
 
-		this.appendValueInput("FRAME");
-		
 		this.setInputsInline(true);
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);

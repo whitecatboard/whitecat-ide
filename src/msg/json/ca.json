@@ -562,7 +562,8 @@
 	"CAN_READ_TOOLTIP": "Llegeix un paquet des del CAN bus.",
 	"CAN_READ_HELPURL": "",
 	"CAN_GET": "obtenir",
-	"CAN_GET_FROM_FRAME": "del paquet",
+	"CAN_GET_FROM_FRAME": "de",
+	"CAN_GET_TO_FRAME": "cap a",
 	"CAN_GET_TOOLTIP": "",
 	"CAN_GET_HELPURL": "Obté el valor d'un camp d'un paquet CAN.",	
 	"CAN_GET_IDENTIFIER": "identificador", 
@@ -620,5 +621,18 @@
 	"potentiometers": "Potenciòmetres",
 	"illuminance": "Il·luminació",
 	"LINEAR_POT": "Potenciòmetre lineal",
-	"ANALOG_JOYSTICK": "Joystick analògic"
+	"ANALOG_JOYSTICK": "Joystick analògic",
+
+	"DEFAULT_CAN_FRAME": "paquet",
+	"NEW_CAN_FRAME": "Nou paquet ...",
+	"EDIT_CAN_FRAME_TITLE": "Editar paquet ...",	
+	"NEW_CAN_FRAME_TITLE": "Nou paquet ...",
+	"CAN_FRAME_CREATE": "Crear paquet ...",
+	"CAN_FRAME_ALREADY_EXISTS": "Ja existeix un paquet anomenat '%1'.",
+	"CAN_FRAME_CANCEL": "Cancel·lar",
+	"CAN_FRAME_NAME": "Nom del paquet",
+	"RENAME_CAN_FRAME": "Canviar el nom del paquet...",
+	"DELETE_CAN_FRAME": "Esborrar el paquet '%1'",
+	"CAN_FRAME_CANNOT_REMOVE": "Aquest paquet no es pot esborrar.",
+	"CAN_FRAME_CANNOT_RENAME": "Aquest paquet no permer canviar el nom."
 }
