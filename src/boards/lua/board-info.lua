@@ -129,6 +129,7 @@ do
 	    __m_ena("servo",servo)
 	    __m_ena("sdisplay",sdisplay)
 	    __m_ena("net",net)
+		__m_ena("can",can)
 		io.write("},")
 
 	    io.write("\"exceptions\": ")
@@ -151,6 +152,7 @@ do
 	    __m_exceptions("servo")
 	    __m_exceptions("sdisplay")
 	    __m_exceptions("net")
+		__m_exceptions("can")
 		io.write("},")
 	end
 
