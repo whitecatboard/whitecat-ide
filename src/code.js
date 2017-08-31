@@ -1635,7 +1635,8 @@ Code.load = function() {
 				callback: function() {}
 			},
 		},
-		closable: false
+		closable: false,
+		onEscape: true
 	});
 
 	Code.listDirectories(jQuery('#loadFile'), extension, storageSelected, folderSelected, fileSelected);
@@ -1759,7 +1760,8 @@ Code.save = function() {
 					}
 				},
 			},
-			closable: false
+			closable: false,
+			onEscape: true
 		});
 
 		storageSelected(Code.defaultStorage());
@@ -1843,7 +1845,8 @@ Code.saveAs = function(callback) {
 				}
 			},
 		},
-		closable: false
+		closable: false,
+		onEscape: true
 	});
 
 	storageSelected(Code.defaultStorage());
@@ -1979,7 +1982,8 @@ Code.newFirmware = function() {
 				}
 			},
 		},
-		closable: false
+		closable: false,
+		onEscape: true
 	});
 }
 
@@ -2345,7 +2349,8 @@ Code.switchToCode = function() {
 				}
 			},
 		},
-		closable: false
+		closable: false,
+		onEscape: true
 	});
 }
 
@@ -2381,7 +2386,8 @@ Code.switchToBlocks = function() {
 				}
 			},
 		},
-		closable: false
+		closable: false,
+		onEscape: true
 	});
 }
 
