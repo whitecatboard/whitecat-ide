@@ -634,5 +634,8 @@
 	"RENAME_CAN_FRAME": "Canviar el nom del paquet...",
 	"DELETE_CAN_FRAME": "Esborrar el paquet '%1'",
 	"CAN_FRAME_CANNOT_REMOVE": "Aquest paquet no es pot esborrar.",
-	"CAN_FRAME_CANNOT_RENAME": "Aquest paquet no permer canviar el nom."
+	"CAN_FRAME_CANNOT_RENAME": "Aquest paquet no permer canviar el nom.",
+	"FOREVER": "per sempre",
+	"EVENT_THREAD_TOOLTIP": "",
+	"EVENT_THREAD_HELPURL": ""
 }

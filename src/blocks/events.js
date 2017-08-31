@@ -86,7 +86,7 @@ Blockly.Blocks['thread'] = {
 	module: "event",
 	init: function() {
 		this.appendStatementInput('DO')
-			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+			.appendField(Blockly.Msg.FOREVER).setAlign(Blockly.ALIGN_RIGHT);
 
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);

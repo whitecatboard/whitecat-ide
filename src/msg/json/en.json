@@ -699,5 +699,8 @@
 	"RENAME_CAN_FRAME": "Rename frame...",
 	"DELETE_CAN_FRAME": "Delete the '%1' frame",
 	"CAN_FRAME_CANNOT_REMOVE": "This frame cannot remove.",
-	"CAN_FRAME_CANNOT_RENAME": "This frame cannot rename."
+	"CAN_FRAME_CANNOT_RENAME": "This frame cannot rename.",
+	"FOREVER": "forever",
+	"EVENT_THREAD_TOOLTIP": "",
+	"EVENT_THREAD_HELPURL": ""
 }
