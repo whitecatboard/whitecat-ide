@@ -201,9 +201,9 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	var line = this.oneBlockToCode(block);
 
 	codeSectionOrder.forEach(function(section, index) {
-		if (key != "default") {
-			if (codeSection[key] != "") {
-				code += codeSection[key].join('\n') + "\n";				
+		if (section != "default") {
+			if (codeSection[section] != "") {
+				code += codeSection[section].join('\n') + "\n";				
 			}
 		}
 	});
@@ -241,9 +241,9 @@ Blockly.Generator.prototype.blockCode = function(block) {
 	var line = this.oneBlockToCode(block);
 
 	codeSectionOrder.forEach(function(section, index) {
-		if (key != "default") {
-			if (codeSection[key] != "") {
-				code += codeSection[key].join('\n') + "\n";				
+		if (section != "default") {
+			if (codeSection[section] != "") {
+				code += codeSection[section].join('\n') + "\n";				
 			}
 		}
 	});
