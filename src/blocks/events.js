@@ -184,7 +184,7 @@ Blockly.Blocks['broadcast'] = {
 			}
 		}
 	},
-	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame']
+	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every']
 };
 
 Blockly.Blocks['broadcast_and_wait'] = {
@@ -202,6 +202,7 @@ Blockly.Blocks['broadcast_and_wait'] = {
 		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_HELPURL);
 	},
 	onchange: function(e) {
+		return;
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
 			return;
 		}
@@ -227,7 +228,7 @@ Blockly.Blocks['broadcast_and_wait'] = {
 			}
 		}
 	},
-	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame']
+	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every']
 };
 
 Blockly.Blocks['event_is_being_processed'] = {
@@ -271,7 +272,7 @@ Blockly.Blocks['event_is_being_processed'] = {
 			}
 		}
 	},
-	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame']
+	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every']
 };
 
 Blockly.Blocks['execute_every'] = {

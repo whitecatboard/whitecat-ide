@@ -1184,12 +1184,13 @@ Code.init = function() {
 	var block_editortoolboxpreview = document.getElementById('block_editortoolboxpreview');
 
 	Code.workspace.blocks = Blockly.inject('content_blocks', {
+		/*
 		grid: {
 			spacing: 25,
 			length: 3,
 			colour: '#ccc',
 			snap: true
-		},
+		},*/
 		media: Code.folder + '/media/',
 		rtl: rtl,
 		toolbox: toolbox,
