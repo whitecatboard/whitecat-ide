@@ -6,7 +6,27 @@ var IDEHelp = {
 	"broadcast_and_wait": "Broadcast-()-and-wait",
 	"when_board_starts": "When-board-starts",
 	"when_i_receive": "When-I-receive-()",
-	"execute_every": "Every-()-(unit)"
+	"execute_every": "Every-()-(unit)",
+	"controls_repeat": "Repeat-()-times",
+	"controls_whileUntil": "Repeat-while-()",
+}
+
+Blockly.Block.prototype.isInHatBlock = function() {
+	var hatBlocks = [
+		'when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every', 'thread', 'mqtt_subscribe'
+	];
+	
+	var block = this;
+	do {
+		if (hatBlocks.indexOf(block.type) != -1) {
+			return true;
+			
+			break;
+		}
+		block = block.getSurroundParent();
+	} while (block);
+	
+	return false;
 }
 
 Blockly.Block.prototype.getHelpUrl = function()  {

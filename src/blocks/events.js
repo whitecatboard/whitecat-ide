@@ -162,17 +162,8 @@ Blockly.Blocks['broadcast'] = {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
 			return;
 		}
-		var legal = false;
-		// Is the block nested in a loop?
-		var block = this;
-		do {
-			if (this.SURROUND_TYPES.indexOf(block.type) != -1) {
-				legal = true;
-				break;
-			}
-			block = block.getSurroundParent();
-		} while (block);
-		if (legal) {
+
+		if (this.isInHatBlock()) {
 			this.setWarningText(null);
 			if (!this.isInFlyout) {
 				this.setDisabled(false);
@@ -183,8 +174,7 @@ Blockly.Blocks['broadcast'] = {
 				this.setDisabled(true);
 			}
 		}
-	},
-	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every']
+	}
 };
 
 Blockly.Blocks['broadcast_and_wait'] = {
@@ -202,21 +192,11 @@ Blockly.Blocks['broadcast_and_wait'] = {
 		this.setHelpUrl(this.getHelpUrl());
 	},
 	onchange: function(e) {
-		return;
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
 			return;
 		}
-		var legal = false;
-		// Is the block nested in a loop?
-		var block = this;
-		do {
-			if (this.SURROUND_TYPES.indexOf(block.type) != -1) {
-				legal = true;
-				break;
-			}
-			block = block.getSurroundParent();
-		} while (block);
-		if (legal) {
+
+		if (this.isInHatBlock()) {
 			this.setWarningText(null);
 			if (!this.isInFlyout) {
 				this.setDisabled(false);
@@ -227,8 +207,7 @@ Blockly.Blocks['broadcast_and_wait'] = {
 				this.setDisabled(true);
 			}
 		}
-	},
-	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every']
+	}
 };
 
 Blockly.Blocks['event_is_being_processed'] = {
@@ -250,17 +229,8 @@ Blockly.Blocks['event_is_being_processed'] = {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
 			return;
 		}
-		var legal = false;
-		// Is the block nested in a loop?
-		var block = this;
-		do {
-			if (this.SURROUND_TYPES.indexOf(block.type) != -1) {
-				legal = true;
-				break;
-			}
-			block = block.getSurroundParent();
-		} while (block);
-		if (legal) {
+
+		if (this.isInHatBlock()) {
 			this.setWarningText(null);
 			if (!this.isInFlyout) {
 				this.setDisabled(false);
@@ -271,8 +241,7 @@ Blockly.Blocks['event_is_being_processed'] = {
 				this.setDisabled(true);
 			}
 		}
-	},
-	SURROUND_TYPES: ['when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every']
+	}
 };
 
 Blockly.Blocks['execute_every'] = {

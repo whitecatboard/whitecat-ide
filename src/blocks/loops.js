@@ -82,7 +82,7 @@ Blockly.Blocks['controls_repeat'] = {
       "nextStatement": null,
       "colour": Blockly.Blocks.loops.HUE,
       "tooltip": Blockly.Msg.CONTROLS_REPEAT_TOOLTIP,
-      "helpUrl": Blockly.Msg.CONTROLS_REPEAT_HELPURL
+      "helpUrl": this.getHelpUrl("controls_repeat")
     });
     this.appendStatementInput('DO')
         .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
