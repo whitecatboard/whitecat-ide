@@ -1,5 +1,26 @@
 'use strict';
 
+
+var IDEHelp = {
+	"broadcast": "Broadcast-()",
+	"broadcast_and_wait": "Broadcast-()-and-wait",
+	"when_board_starts": "When-board-starts",
+	"when_i_receive": "When-I-receive-()",
+	"execute_every": "Every-()-(unit)"
+}
+
+Blockly.Block.prototype.getHelpUrl = function()  {
+	var url;
+	
+	if (typeof IDEHelp[this.type] != "undefined") {
+		url = 'https://whitecatboard.org/git/wiki/whitecat-ide/' + IDEHelp[this.type];
+	} else {
+		url = '';
+		
+	}
+	return url;
+}
+
 Blockly.Block.prototype.updateBoardAtFieldChange = function(field) {
 	var thisInstance = this;
 	

@@ -50,7 +50,7 @@ Blockly.Blocks['when_board_starts'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_BOARD_STARTS_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_BOARD_STARTS_HELPURL);
+		this.setHelpUrl(this.getHelpUrl());
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
@@ -92,7 +92,7 @@ Blockly.Blocks['thread'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_THREAD_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_THREAD_HELPURL);
+		this.setHelpUrl(this.getHelpUrl());
 	},
 	section: function() {
 		return 'events';
@@ -113,7 +113,7 @@ Blockly.Blocks['when_i_receive'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_I_RECEIVE_HELPURL);
+		this.setHelpUrl(this.getHelpUrl());
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
@@ -156,7 +156,7 @@ Blockly.Blocks['broadcast'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_HELPURL);
+		this.setHelpUrl(this.getHelpUrl());
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
@@ -199,7 +199,7 @@ Blockly.Blocks['broadcast_and_wait'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_HELPURL);
+		this.setHelpUrl(this.getHelpUrl());
 	},
 	onchange: function(e) {
 		return;
@@ -244,7 +244,7 @@ Blockly.Blocks['event_is_being_processed'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_IS_BEING_PROCESSED_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_IS_BEING_PROCESSED_HELPURL);
+		this.setHelpUrl(this.getHelpUrl());
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
@@ -297,7 +297,7 @@ Blockly.Blocks['execute_every'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_EVERY_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_EVERY_HELPURL);
+		this.setHelpUrl(this.getHelpUrl());
 	},
 	section: function() {
 		return 'events';
