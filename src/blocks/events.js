@@ -57,6 +57,17 @@ Blockly.Blocks['when_board_starts'] = {
 			return;
 		}
 
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			this.setDisabled(true);
+			return;
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if (e.newValue != e.oldValue) {
+				this.disabledByUser = e.newValue;
+			}
+		}
+
 		var instances = 0;
 		var blocks = this.workspace.getTopBlocks(true);
 		for (var x = 0, block; block = blocks[x]; x++) {
@@ -67,13 +78,19 @@ Blockly.Blocks['when_board_starts'] = {
 
 		if (instances > 1) {
 			this.setWarningText(Blockly.Msg.WARNING_ONLY_ONE_INSTANCE_ALLOWED);
-			if (!this.isInFlyout && !this.getInheritedDisabled()) {
+			if (!this.isInFlyout) {
 				this.setDisabled(true);
 			}
 		} else {
+			var wasInWarning = (this.warning != null);
+			
 			this.setWarningText(null);
-			if (!this.isInFlyout) {
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
 				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
 			}
 		}
 	},
@@ -115,9 +132,20 @@ Blockly.Blocks['when_i_receive'] = {
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_TOOLTIP);
 		this.setHelpUrl(this.getHelpUrl());
 	},
-	onchange: function(e) {
+	onchange: function(e) {	
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
 			return;
+		}
+		
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			this.setDisabled(true);
+			return;
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if (e.newValue != e.oldValue) {
+				this.disabledByUser = e.newValue;
+			}
 		}
 
 		var uses = 0;
@@ -130,13 +158,19 @@ Blockly.Blocks['when_i_receive'] = {
 
 		if (uses > 1) {
 			this.setWarningText(Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);
-			if (!this.isInFlyout && !this.getInheritedDisabled()) {
+			if (!this.isInFlyout) {
 				this.setDisabled(true);
 			}
 		} else {
+			var wasInWarning = (this.warning != null);
+			
 			this.setWarningText(null);
-			if (!this.isInFlyout) {
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
 				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
 			}
 		}
 	},
