@@ -58,12 +58,14 @@ Blockly.Blocks['when_board_starts'] = {
 		}
 
 		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
-			this.setDisabled(true);
-			return;
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
 		}
 
 		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
-			if (e.newValue != e.oldValue) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
 				this.disabledByUser = e.newValue;
 			}
 		}
@@ -138,12 +140,14 @@ Blockly.Blocks['when_i_receive'] = {
 		}
 		
 		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
-			this.setDisabled(true);
-			return;
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
 		}
 
 		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
-			if (e.newValue != e.oldValue) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
 				this.disabledByUser = e.newValue;
 			}
 		}
@@ -197,10 +201,29 @@ Blockly.Blocks['broadcast'] = {
 			return;
 		}
 
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
+				this.disabledByUser = e.newValue;
+			}
+		}
+
 		if (this.isInHatBlock()) {
+			var wasInWarning = (this.warning != null);
+			
 			this.setWarningText(null);
-			if (!this.isInFlyout) {
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
 				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
 			}
 		} else {
 			this.setWarningText(Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK);
@@ -230,10 +253,29 @@ Blockly.Blocks['broadcast_and_wait'] = {
 			return;
 		}
 
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
+				this.disabledByUser = e.newValue;
+			}
+		}
+
 		if (this.isInHatBlock()) {
+			var wasInWarning = (this.warning != null);
+			
 			this.setWarningText(null);
-			if (!this.isInFlyout) {
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
 				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
 			}
 		} else {
 			this.setWarningText(Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK);
@@ -264,10 +306,29 @@ Blockly.Blocks['event_is_being_processed'] = {
 			return;
 		}
 
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
+				this.disabledByUser = e.newValue;
+			}
+		}
+
 		if (this.isInHatBlock()) {
+			var wasInWarning = (this.warning != null);
+			
 			this.setWarningText(null);
-			if (!this.isInFlyout) {
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
 				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
 			}
 		} else {
 			this.setWarningText(Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK);
