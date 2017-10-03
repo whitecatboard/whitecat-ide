@@ -57,7 +57,6 @@ Blockly.Blocks['sensor_attach'] = {
 	},
 
 	init: function() {
-		this.setHelpUrl(Blockly.Msg.SENSOR_ATTACH_HELPURL);
 		this.setColour(Blockly.Blocks.sensor.HUE);
 
 		this.appendDummyInput()
@@ -138,7 +137,6 @@ Blockly.Blocks['sensor_read'] = {
 	createSensorIfNeeded: Blockly.Blocks['sensor_attach'].createSensorIfNeeded,
 
 	init: function() {
-		this.setHelpUrl(Blockly.Msg.SENSOR_READ_HELPURL);
 		this.setColour(Blockly.Blocks.sensor.HUE);
 
 		this.appendDummyInput()
@@ -187,7 +185,6 @@ Blockly.Blocks['sensor_set'] = {
 	 * @this Blockly.Block
 	 */
 	init: function() {
-		this.setHelpUrl(Blockly.Msg.SENSOR_SET_HELPURL);
 		this.setColour(Blockly.Blocks.sensor.HUE);
 
 		this.appendDummyInput()
@@ -237,7 +234,6 @@ Blockly.Blocks['sensor_when'] = {
 	createSensorIfNeeded: Blockly.Blocks['sensor_attach'].createSensorIfNeeded,
 
 	init: function() {
-		this.setHelpUrl(Blockly.Msg.SENSOR_WHEN_HELPURL);
 		this.setColour(Blockly.Blocks.sensor.HUE);
 
 		this.appendDummyInput()

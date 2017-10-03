@@ -64,7 +64,6 @@ Blockly.Blocks['i2csetspeed'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.i2c.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };
 
@@ -87,7 +86,6 @@ Blockly.Blocks['i2cstartcondition'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.i2c.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };
 
@@ -109,7 +107,6 @@ Blockly.Blocks['i2cstopcondition'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.i2c.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };
 
@@ -142,7 +139,6 @@ Blockly.Blocks['i2caddress'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.i2c.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };
 
@@ -165,7 +161,6 @@ Blockly.Blocks['i2cread'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.i2c.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };
 
@@ -191,6 +186,5 @@ Blockly.Blocks['i2cwrite'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.i2c.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };

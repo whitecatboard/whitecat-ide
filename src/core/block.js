@@ -150,6 +150,11 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
   if (goog.isFunction(this.init)) {
     this.init();
   }
+  
+  // WHITECAT IDE
+  this.setHelpUrl(this.getHelpUrl());
+  // WHITECAT IDE
+  
   // Record initial inline state.
   /** @type {boolean|undefined} */
   this.inputsInlineDefault = this.inputsInline;

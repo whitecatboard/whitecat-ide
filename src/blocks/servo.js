@@ -60,7 +60,6 @@ Blockly.Blocks['servo_move'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.actuators.HUE);
 		this.setTooltip(Blockly.Msg.SERVO_MOVE_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.SERVO_MOVE_HELPURL);
 
 		this.updateBoardAtFieldChange("NUM");
 	},

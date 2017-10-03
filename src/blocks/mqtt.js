@@ -56,7 +56,6 @@ Blockly.Blocks['mqtt_publish'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.MQTT.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('');
 	},
 
 	mutationToDom: function() {
@@ -122,12 +121,10 @@ Blockly.Blocks['mqtt_subscribe'] = {
 		this.setNextStatement(true, null);
 		this.setColour(230);
 		this.setTooltip('');
-		this.setHelpUrl('');
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.MQTT.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {

@@ -43,7 +43,6 @@ Blockly.Blocks['wifi_start'] = {
 	    this.setNextStatement(true, null);
 	    this.setColour(Blockly.Blocks.Wifi.HUE);
 	    this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 
 	mutationToDom: function() {
@@ -87,7 +86,6 @@ Blockly.Blocks['wifi_stop'] = {
 	    this.setNextStatement(true, null);
 	    this.setColour(Blockly.Blocks.Wifi.HUE);
 	    this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 
 	configureWifi: Blockly.Blocks['wifi_start'].configureWifi,

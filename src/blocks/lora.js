@@ -54,7 +54,6 @@ Blockly.Blocks['lora_configure'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -72,7 +71,6 @@ Blockly.Blocks['lora_set_deveui'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -90,7 +88,6 @@ Blockly.Blocks['lora_set_appeui'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -108,7 +105,6 @@ Blockly.Blocks['lora_set_devaddr'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -126,7 +122,6 @@ Blockly.Blocks['lora_set_nwkskey'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -144,7 +139,6 @@ Blockly.Blocks['lora_set_appskey'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -162,7 +156,6 @@ Blockly.Blocks['lora_set_appkey'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -184,7 +177,6 @@ Blockly.Blocks['lora_set_adr'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -212,7 +204,6 @@ Blockly.Blocks['lora_set_dr'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -240,7 +231,6 @@ Blockly.Blocks['lora_set_retx'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 };
 
@@ -256,7 +246,6 @@ Blockly.Blocks['lora_join'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 
 	mutationToDom: function() {
@@ -343,7 +332,6 @@ Blockly.Blocks['lora_tx'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 
 	configureLora: Blockly.Blocks['lora_join'].configureLora,
@@ -366,7 +354,6 @@ Blockly.Blocks['when_i_receive_a_lora_frame'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.lora.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_I_RECEIVE_A_LORA_FRAME_HELPURL);
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {

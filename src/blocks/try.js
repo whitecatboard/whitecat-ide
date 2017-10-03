@@ -2,7 +2,7 @@
  * Whitecat Blocky Environment, exception control blocks
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  * 
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  * 
@@ -72,8 +72,6 @@ Blockly.Blocks['exception_try_finally'] = {
 
 Blockly.Blocks['exception_try'] = {
 	init: function() {
-		this.setHelpUrl(Blockly.Msg.TEXT_TRY_HELPURL);
-
 		this.appendStatementInput('TRY0')
 			.appendField(Blockly.Msg.TEXT_TRY_TITLE).setAlign(Blockly.ALIGN_RIGHT);
 
@@ -237,7 +235,6 @@ Blockly.Blocks['exception_catch_error'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.try.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };
 
@@ -252,6 +249,5 @@ Blockly.Blocks['exception_raise_again'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.try.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };

@@ -144,7 +144,6 @@ Blockly.Blocks['output_digital_pin'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('');
 	}
 };
 
@@ -164,7 +163,6 @@ Blockly.Blocks['input_digital_pin'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('');
 	}
 };
 
@@ -184,7 +182,6 @@ Blockly.Blocks['pwm_pins'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('');
 	}
 };
 
@@ -204,7 +201,6 @@ Blockly.Blocks['analog_pins'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('');
 	}
 };
 
@@ -224,7 +220,6 @@ Blockly.Blocks['external_analog_units'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('');
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
@@ -260,7 +255,6 @@ Blockly.Blocks['external_analog_channels'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('');
 	},
 };
 
@@ -293,7 +287,6 @@ Blockly.Blocks['setpwmpin'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 
 		this.updateBoardAtFieldChange("PIN");
 		this.updateBoardAtFieldChange("FREQUENCY");
@@ -327,7 +320,6 @@ Blockly.Blocks['setdigitalpin'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 
 		this.updateBoardAtFieldChange("PIN");
 		this.updateBoardAtFieldChange("VALUE");
@@ -352,7 +344,6 @@ Blockly.Blocks['invertdigitalpin'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 
 		this.updateBoardAtFieldChange("PIN");
 		this.updateBoardAtFieldChange("VALUE");
@@ -377,7 +368,6 @@ Blockly.Blocks['getdigitalpin'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 
 	hasWatcher: true,
@@ -405,7 +395,6 @@ Blockly.Blocks['getanalogpin'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 
 	hasWatcher: true,
@@ -436,7 +425,6 @@ Blockly.Blocks['getexternalanalogchannel'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	},
 
 	hasWatcher: true,
@@ -473,7 +461,6 @@ Blockly.Blocks['when_digital_pin'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN_HELPURL);
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {

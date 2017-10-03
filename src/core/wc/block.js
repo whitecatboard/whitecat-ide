@@ -1,12 +1,19 @@
 'use strict';
 
-
 var IDEHelp = {
+	// Events
 	"broadcast": "Broadcast-()",
 	"broadcast_and_wait": "Broadcast-()-and-wait",
 	"when_board_starts": "When-board-starts",
 	"when_i_receive": "When-I-receive-()",
 	"execute_every": "Every-()-(unit)",
+	"thread": "Forever",
+
+	// Delays
+	"wait_for": "Wait-()-(unit)",
+	"cpu_sleep": "Sleep-()-seconds",
+
+	// Loops
 	"controls_repeat": "Repeat-()-times",
 	"controls_whileUntil": "Repeat-while-()",
 }
@@ -36,7 +43,6 @@ Blockly.Block.prototype.isInHatBlock = function() {
 	
 	return false;
 }
-
 
 Blockly.Block.prototype.checkIsInHatBlock = function(e) {
 	if (!this.workspace.isDragging || this.workspace.isDragging()) {
@@ -74,7 +80,6 @@ Blockly.Block.prototype.checkIsInHatBlock = function(e) {
 		}
 	}
 }
-
 
 Blockly.Block.prototype.getHelpUrl = function()  {
 	var url;

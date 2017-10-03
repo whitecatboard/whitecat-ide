@@ -66,7 +66,6 @@ Blockly.Blocks['cansetspeed'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.can.HUE);
 		this.setTooltip(Blockly.Msg.CAN_SET_SPEED_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.CAN_SET_SPEED_HELPURL);
 	}
 };
 
@@ -98,7 +97,6 @@ Blockly.Blocks['cansetfilter'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.can.HUE);
 		this.setTooltip(Blockly.Msg.CAN_SET_SPEED_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.CAN_SET_SPEED_HELPURL);
 	}
 };
 
@@ -124,7 +122,6 @@ Blockly.Blocks['canread'] = {
 			this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.can.HUE);
 		this.setTooltip(Blockly.Msg.CAN_READ_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.CAN_READ_HELPURL);
 	}
 };
 
@@ -163,7 +160,6 @@ Blockly.Blocks['canframeget'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.can.HUE);
 		this.setTooltip(Blockly.Msg.CAN_GET_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.CAN_GET_HELPURL);
 	}
 };
 
@@ -205,7 +201,6 @@ Blockly.Blocks['canframeset'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.can.HUE);
 		this.setTooltip(Blockly.Msg.CAN_SET_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.CAN_SET_HELPURL);
 	},
 	onchange: function(e) {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
@@ -264,7 +259,6 @@ Blockly.Blocks['canframewrite'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.can.HUE);
 		this.setTooltip(Blockly.Msg.CAN_WRITE_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.CAN_WRITE_HELPURL);
 	}
 };
 
@@ -284,6 +278,5 @@ Blockly.Blocks['cantype'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.can.HUE);
 		this.setTooltip(Blockly.Msg.CAN_TYPE_TOOLTIP);
-		this.setHelpUrl(Blockly.Msg.CAN_TYPE_HELPURL);
 	}
 };

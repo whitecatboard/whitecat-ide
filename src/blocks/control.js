@@ -56,7 +56,6 @@ Blockly.Blocks['wait_for'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.control.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };
 
@@ -76,6 +75,5 @@ Blockly.Blocks['cpu_sleep'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.control.HUE);
 		this.setTooltip('');
-		this.setHelpUrl('http://www.example.com/');
 	}
 };
