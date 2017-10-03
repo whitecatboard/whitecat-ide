@@ -113,9 +113,6 @@ Blockly.Blocks['thread'] = {
 		this.setTooltip(Blockly.Msg.EVENT_THREAD_TOOLTIP);
 		this.setHelpUrl(this.getHelpUrl());
 	},
-	section: function() {
-		return 'events';
-	}
 };
 
 Blockly.Blocks['when_i_receive'] = {
@@ -178,9 +175,6 @@ Blockly.Blocks['when_i_receive'] = {
 			}
 		}
 	},
-	section: function() {
-		return 'events';
-	}
 };
 
 Blockly.Blocks['broadcast'] = {
@@ -255,7 +249,4 @@ Blockly.Blocks['execute_every'] = {
 		this.setTooltip(Blockly.Msg.EVENT_EVERY_TOOLTIP);
 		this.setHelpUrl(this.getHelpUrl());
 	},
-	section: function() {
-		return 'events';
-	}
 };

@@ -99,22 +99,30 @@ Blockly.Lua['lora_set_retx'] = function(block) {
 
 Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
+	var tryCode = '';
 	var code = '';
 	
 	if (codeSection["require"].indexOf('require("block")') == -1) {
 		codeSection["require"].push('require("block")');
 	}
 	
-	code += Blockly.Lua.indent(0,'-- when I receive a LoRa frame') + "\n";
-	code += Blockly.Lua.indent(0,'lora.whenReceived(function(port, payload)') + "\n";
+	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
+	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+
+	tryCode += Blockly.Lua.indent(0,'lora.whenReceived(function(port, payload)') + "\n";
 	
-	code += Blockly.Lua.blockStart(1, block);
+	tryCode += Blockly.Lua.blockStart(1, block);
 	if (statement != '') {
-		code += Blockly.Lua.tryBlock(1,block, statement);
+		tryCode += Blockly.Lua.tryBlock(1,block, statement);
 	}
-	code += Blockly.Lua.blockEnd(1, block);
+	tryCode += Blockly.Lua.blockEnd(1, block);
 	
-	code += Blockly.Lua.indent(0,'end)') + "\n";
+	tryCode += Blockly.Lua.indent(0,'end)') + "\n";
+	
+	code += Blockly.Lua.indent(0,'-- when I receive a LoRa frame') + "\n";
+	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";	
+	code += Blockly.Lua.tryBlock(1, block,tryCode);	
+	code += Blockly.Lua.indent(0, 'end)') + "\n";	
 	
 	return code;
 }

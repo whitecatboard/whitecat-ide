@@ -137,25 +137,32 @@ Blockly.Lua['sensor_when'] = function(block) {
 		codeSection["require"].push('require("block")');
 	}
 	
-	var tryCode = '';	
+	var tryCode = '';
 	
-	tryCode += Blockly.Lua.sensors.helper.attach(block);
+	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
+	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+
+	tryCode += Blockly.Lua.indent(0,Blockly.Lua.sensors.helper.attach(block));
 	
 	tryCode += Blockly.Lua.indent(0, '_' + block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+':callback(function(magnitude)') + "\n";
 	tryCode += Blockly.Lua.indent(1, 'local value = magnitude.' + magnitude) + "\n\n";	
 	tryCode += Blockly.Lua.indent(1, 'if value == nil then return end') + "\n\n";
 
-	tryCode += Blockly.Lua.blockStart(1, block);
+	tryCode += Blockly.Lua.blockStart(2, block);
 
 	if (statement != "") {
-		tryCode += Blockly.Lua.indent(1, statement);
+		tryCode += Blockly.Lua.indent(2, statement);
 	}
 	
-	tryCode += Blockly.Lua.blockEnd(1, block);
+	tryCode += Blockly.Lua.blockEnd(2, block);
 
-	tryCode += Blockly.Lua.indent(0, 'end)') + "\n";	
+	tryCode += Blockly.Lua.indent(1, 'end)') + "\n";	
+	
 
-	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block,tryCode)) + "\n";	
+	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";	
+	code += Blockly.Lua.tryBlock(1, block,tryCode);	
+	code += Blockly.Lua.indent(0, 'end)') + "\n";	
+
 	
 	return code;
 };

@@ -98,27 +98,29 @@ Blockly.Lua['when_i_receive'] = function(block) {
 	initCode += Blockly.Lua.indent(0, '_event' + eventId + ' = event.create()') + "\n";
 	codeSection["events"].push(initCode);
 
-	tryCode += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";
-	tryCode += Blockly.Lua.indent(1, 'while true do') + "\n";
-	tryCode += Blockly.Lua.indent(2, '-- wait for event "' + when + '"') + "\n";
-	tryCode += Blockly.Lua.indent(2, '_event' + eventId + ':wait()') + "\n\n";
+	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
+	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+	tryCode += Blockly.Lua.indent(0, 'while true do') + "\n";
+	tryCode += Blockly.Lua.indent(1, '-- wait for event "' + when + '"') + "\n";
+	tryCode += Blockly.Lua.indent(1, '_event' + eventId + ':wait()') + "\n\n";
 
-	tryCode += Blockly.Lua.blockStart(2, block);
+	tryCode += Blockly.Lua.blockStart(1, block);
 
 	if (statement != "") {
-		tryCode += Blockly.Lua.indent(2, statement);
+		tryCode += Blockly.Lua.indent(1, statement);
 	}
 
-	tryCode += Blockly.Lua.indent(2, '_event' + eventId + ':done()') + "\n\n";
+	tryCode += Blockly.Lua.indent(1, '_event' + eventId + ':done()') + "\n";
 
-	tryCode += Blockly.Lua.blockEnd(2, block);
+	tryCode += Blockly.Lua.blockEnd(1, block);
 
-	tryCode += Blockly.Lua.indent(1, 'end') + "\n";
-
-	tryCode += Blockly.Lua.indent(0, 'end)') + "\n";
+	tryCode += Blockly.Lua.indent(0, 'end') + "\n";
 
 	code += Blockly.Lua.indent(0, '-- when I receive ' + when) + "\n";
-	code += Blockly.Lua.tryBlock(0, block, tryCode) + "\n";
+
+	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";	
+	code += Blockly.Lua.tryBlock(1, block,tryCode);	
+	code += Blockly.Lua.indent(0, 'end)') + "\n";	
 
 	return code;
 }
