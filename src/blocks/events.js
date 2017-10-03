@@ -196,42 +196,6 @@ Blockly.Blocks['broadcast'] = {
 		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_TOOLTIP);
 		this.setHelpUrl(this.getHelpUrl());
 	},
-	onchange: function(e) {
-		if (!this.workspace.isDragging || this.workspace.isDragging()) {
-			return;
-		}
-
-		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
-			if (e.blockId == this.id) {
-				this.setDisabled(true);
-				return;
-			}
-		}
-
-		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
-			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
-				this.disabledByUser = e.newValue;
-			}
-		}
-
-		if (this.isInHatBlock()) {
-			var wasInWarning = (this.warning != null);
-			
-			this.setWarningText(null);
-			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
-				this.setDisabled(false);
-			} else {
-				if (typeof this.disabledByUser != "undefined") {
-					this.setDisabled(this.disabledByUser);
-				}	
-			}
-		} else {
-			this.setWarningText(Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK);
-			if (!this.isInFlyout && !this.getInheritedDisabled()) {
-				this.setDisabled(true);
-			}
-		}
-	}
 };
 
 Blockly.Blocks['broadcast_and_wait'] = {
@@ -248,42 +212,6 @@ Blockly.Blocks['broadcast_and_wait'] = {
 		this.setTooltip(Blockly.Msg.EVENT_BROADCAST_AND_WAIT_TOOLTIP);
 		this.setHelpUrl(this.getHelpUrl());
 	},
-	onchange: function(e) {
-		if (!this.workspace.isDragging || this.workspace.isDragging()) {
-			return;
-		}
-
-		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
-			if (e.blockId == this.id) {
-				this.setDisabled(true);
-				return;
-			}
-		}
-
-		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
-			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
-				this.disabledByUser = e.newValue;
-			}
-		}
-
-		if (this.isInHatBlock()) {
-			var wasInWarning = (this.warning != null);
-			
-			this.setWarningText(null);
-			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
-				this.setDisabled(false);
-			} else {
-				if (typeof this.disabledByUser != "undefined") {
-					this.setDisabled(this.disabledByUser);
-				}	
-			}
-		} else {
-			this.setWarningText(Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK);
-			if (!this.isInFlyout && !this.getInheritedDisabled()) {
-				this.setDisabled(true);
-			}
-		}
-	}
 };
 
 Blockly.Blocks['event_is_being_processed'] = {
@@ -301,42 +229,6 @@ Blockly.Blocks['event_is_being_processed'] = {
 		this.setTooltip(Blockly.Msg.EVENT_IS_BEING_PROCESSED_TOOLTIP);
 		this.setHelpUrl(this.getHelpUrl());
 	},
-	onchange: function(e) {
-		if (!this.workspace.isDragging || this.workspace.isDragging()) {
-			return;
-		}
-
-		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
-			if (e.blockId == this.id) {
-				this.setDisabled(true);
-				return;
-			}
-		}
-
-		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
-			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
-				this.disabledByUser = e.newValue;
-			}
-		}
-
-		if (this.isInHatBlock()) {
-			var wasInWarning = (this.warning != null);
-			
-			this.setWarningText(null);
-			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
-				this.setDisabled(false);
-			} else {
-				if (typeof this.disabledByUser != "undefined") {
-					this.setDisabled(this.disabledByUser);
-				}	
-			}
-		} else {
-			this.setWarningText(Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK);
-			if (!this.isInFlyout && !this.getInheritedDisabled()) {
-				this.setDisabled(true);
-			}
-		}
-	}
 };
 
 Blockly.Blocks['execute_every'] = {

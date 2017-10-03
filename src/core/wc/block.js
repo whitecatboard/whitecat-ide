@@ -11,6 +11,14 @@ var IDEHelp = {
 	"controls_whileUntil": "Repeat-while-()",
 }
 
+Blockly.Block.prototype.isHatBlock = function() {
+	var hatBlocks = [
+		'when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every', 'thread', 'mqtt_subscribe'
+	];
+	
+	return (hatBlocks.indexOf(this.type) != -1);
+}
+
 Blockly.Block.prototype.isInHatBlock = function() {
 	var hatBlocks = [
 		'when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every', 'thread', 'mqtt_subscribe'
@@ -28,6 +36,45 @@ Blockly.Block.prototype.isInHatBlock = function() {
 	
 	return false;
 }
+
+
+Blockly.Block.prototype.checkIsInHatBlock = function(e) {
+	if (!this.workspace.isDragging || this.workspace.isDragging()) {
+		return;
+	}
+
+	if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+		if (e.blockId == this.id) {
+			this.setDisabled(true);
+			return;
+		}
+	}
+
+	if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+		if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
+			this.disabledByUser = e.newValue;
+		}
+	}
+
+	if (this.isInHatBlock()) {
+		var wasInWarning = (this.warning != null);
+		
+		this.setWarningText(null);
+		if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
+			this.setDisabled(false);
+		} else {
+			if (typeof this.disabledByUser != "undefined") {
+				this.setDisabled(this.disabledByUser);
+			}	
+		}
+	} else {
+		this.setWarningText(Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK);
+		if (!this.isInFlyout && !this.getInheritedDisabled()) {
+			this.setDisabled(true);
+		}
+	}
+}
+
 
 Blockly.Block.prototype.getHelpUrl = function()  {
 	var url;

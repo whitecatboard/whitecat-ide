@@ -14,9 +14,9 @@ codeSectionOrder.push("require");
 codeSectionOrder.push("events");
 codeSectionOrder.push("functions");
 codeSectionOrder.push("declaration");
+codeSectionOrder.push("default");
 codeSectionOrder.push("start");
 codeSectionOrder.push("afterStart");
-codeSectionOrder.push("default");
 
 
 // Whe indent using a tab
@@ -92,6 +92,16 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 				line = this.scrubNakedValue(line);
 			}
 
+			if (!block.isHatBlock()) {
+				initCode = Blockly.Lua.indent(0,'thread.start(function()') + "\n";
+				initCode += Blockly.Lua.indent(1,'-- Wait until board is started') + "\n";
+				initCode += Blockly.Lua.indent(1,'_eventBoardStarted:wait()') + "\n\n";
+				initCode += Blockly.Lua.indent(1,line);
+				initCode += Blockly.Lua.indent(0,'end)') + "\n";
+				
+				line = initCode;
+			}
+
 			// Put code in it's section
 			codeSection[section].push(line);
 		}
@@ -106,10 +116,6 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		codeSection["start"].push(initCode);		
 	}
 
-	initCode = Blockly.Lua.indent(0,'-- wait for board is started') + "\n";
-	initCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n";
-	codeSection["start"].push(initCode);
-	
 	// Put definitions into declaration section
 	for (var name in Blockly.Lua.definitions_) {
 		codeSection["declaration"].push(Blockly.Lua.definitions_[name]);
