@@ -234,7 +234,6 @@ Blockly.Lua.blockError = function(indent, block) {
 	var code = '';
 	
 	if (Blockly.Lua.developerMode) {
-		code = Blockly.Lua.indent(indent,'_eventBoardStarted:broadcast(false)') + "\n";			
 		code += Blockly.Lua.indent(indent,'wcBlock.blockError('+Blockly.Lua.blockIdToNum(block.id)+', err, message)') + "\n";
 		
 		return code;	
