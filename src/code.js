@@ -2567,6 +2567,10 @@ Code.setup = function() {
 					Term.init();
 					Code.renderContent();
 					Code.agent.controlSocketConnect();
+					
+					if (typeof ide_post_init === "function") {
+						ide_post_init();
+					}
 				});
 			});
 		});
