@@ -150,7 +150,6 @@ Blockly.Lua['execute_every'] = function(block) {
 	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n\n";
 	code += Blockly.Lua.indent(1, 'while true do') + "\n";
 
-	code += Blockly.Lua.indent(2, 'tmr.delayms(' + every[0] + ')') + "\n";
 	code += Blockly.Lua.blockStart(2, block);
 
 	if (statement != "") {
@@ -159,6 +158,7 @@ Blockly.Lua['execute_every'] = function(block) {
 	}
 
 	code += Blockly.Lua.blockEnd(2, block);
+	code += Blockly.Lua.indent(2, 'tmr.delayms(' + every[0] + ')') + "\n";
 	code += Blockly.Lua.indent(1, 'end') + "\n";
 
 	code += Blockly.Lua.indent(0, 'end)') + "\n";
