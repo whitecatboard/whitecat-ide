@@ -16,6 +16,11 @@ var IDEHelp = {
 	// Loops
 	"controls_repeat": "Repeat-()-times",
 	"controls_whileUntil": "Repeat-while-()",
+	
+	// IO
+	"setdigitalpin": "Set-digital-pin-()-to-()",
+	"invertdigitalpin": "Invert-digital-pin-()",
+	"getdigitalpin": "Get-digital-pin-value-()"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {
