@@ -50,7 +50,10 @@ Blockly.Lua['when_board_starts'] = function(block) {
 		code += Blockly.Lua.blockEnd(1, block) + "\n";
 
 		code += Blockly.Lua.indent(1,'-- board is started, broadcast to threads that are waiting') + "\n";
-		code += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(false)') + "\n";
+		code += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(true)') + "\n\n";
+
+		code += Blockly.Lua.indent(1,'-- destroy _eventBoardStarted event') + "\n";
+		code += Blockly.Lua.indent(1,'_eventBoardStarted = nil') + "\n";
 
 		code += Blockly.Lua.indent(0, 'end)') + "\n\n";
 	}

@@ -15,6 +15,7 @@ function wcBlock.blockStart(id)
 			wcBlock.messages[id] = {}
 			wcBlock.messages[id].lastStart = os.clock()
 			wcBlock.messages[id].lastEnd = 0
+			wcBlock.messages[id].ended = true
 		else
 			local _, millis = math.modf(os.clock() - wcBlock.messages[id].lastStart)
 			
@@ -25,6 +26,7 @@ function wcBlock.blockStart(id)
 				return
 			else
 				wcBlock.messages[id].lastStart = os.clock()
+				wcBlock.messages[id].ended = false
 			end
 		end
 		
@@ -53,11 +55,12 @@ function wcBlock.blockEnd(id)
 			
 			millis = millis * 1000
 			
-			if (millis < wcBlock.reportLimit) then
+			if ((millis < wcBlock.reportLimit) and (wcBlock.messages[id].ended)) then
             	wcBlock.mutex:unlock()
 				return
 			else
 				wcBlock.messages[id].lastEnd = os.clock()
+				wcBlock.messages[id].ended = true
 			end
 		end
 
