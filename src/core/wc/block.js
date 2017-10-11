@@ -20,7 +20,11 @@ var IDEHelp = {
 	// IO
 	"setdigitalpin": "Set-digital-pin-()-to-()",
 	"invertdigitalpin": "Invert-digital-pin-()",
-	"getdigitalpin": "Get-digital-pin-value-()"
+	"getdigitalpin": "Get-digital-pin-value-()",
+	"getanalogpin": "Get-analog-pin-value-()-in-()",
+	"getexternalanalogchannel": "Get-analog-value-from-()-()-in-()",
+	"setpwmpin": "Set-PWM-pin-()-to-frequency-()-hertzs-and-duty-()-%25",
+	"when_digital_pin": "When-digital-pin-()-changes-at-()"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {
