@@ -417,10 +417,11 @@ body.modal-open .modal .modal-dialog {
 	font-weight: 400;
 }
 
-.waitingForBoard {
+.waiting {
 	vertical-align: middle;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
+	display: none;
 }
 
 

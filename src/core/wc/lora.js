@@ -209,7 +209,7 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<label for="AppKey">AppKey:&nbsp;&nbsp;</label><input id="AppKey" name="AppKey" style="width:300px;" value="'+workspace.lora.appkey+'">';
 	dialogForm += '</div>';
 	dialogForm += '<br><span>'+Blockly.Msg.LORA_GET_OTAA_DATA_HELP+'</span><br>';
-	dialogForm += '<br><button type="button" class="btn" id="getOTAAData">'+Blockly.Msg.LORA_GET_DATA+'</button><br>';
+	dialogForm += '<br><button type="button" class="btn" id="getOTAAData">'+Blockly.Msg.LORA_GET_DATA+'</button>&nbsp;<span id="waitingOTAA" class="waiting"><i class="spinner icon icon-spinner3"></i></span><br>';
 	dialogForm += '</div>';
 
 	dialogForm += '<div id="ABP" style="display: none;">';
@@ -226,7 +226,7 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<label for="AppSKey">AppSKey:&nbsp;&nbsp;</label><input id="AppSKey" name="AppSKey" style="width:300px;" value="'+workspace.lora.appskey+'">';
 	dialogForm += '</div>';
 	dialogForm += '<br><span>'+Blockly.Msg.LORA_GET_ABP_DATA_HELP+'</span><br>';
-	dialogForm += '<br><button type="button" class="btn" id="getABPData">'+Blockly.Msg.LORA_GET_DATA+'</button><br>';
+	dialogForm += '<br><button type="button" class="btn" id="getABPData">'+Blockly.Msg.LORA_GET_DATA+'</button>&nbsp;<span id="waitingABP" class="waiting"><i class="spinner icon icon-spinner3"></i></span><br>';
 	dialogForm += '</div>';
 	dialogForm += '<span class="error-msg" id="errors"></span>';
 
@@ -326,10 +326,12 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 		var form = jQuery("#lora_form");
 		
 		form.find("#getOTAAData").click(function() {
+			jQuery("#waitingOTAA").show();
 			jQuery.ajax({
 				url: Code.server + "/?nodeRegister",
 				type: "POST",
 				success: function(result) {
+					jQuery("#waitingOTAA").hide();
 					result = JSON.parse(result);
 					if (result.success) {
 						result = JSON.parse(result.result);
@@ -343,15 +345,18 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 				},
 
 				error: function() {
+					jQuery("#waitingOTAA").hide();
 				}
 			});					
 		});
 
 		form.find("#getABPData").click(function() {
+			jQuery("#waitingABP").show();
 			jQuery.ajax({
 				url: Code.server + "/?nodeRegister",
 				type: "POST",
 				success: function(result) {
+					jQuery("#waitingABP").hide();
 					result = JSON.parse(result);
 					if (result.success) {
 						result = JSON.parse(result.result);
@@ -365,6 +370,7 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 				},
 
 				error: function() {
+					jQuery("#waitingABP").hide();
 				}
 			});	
 		});
