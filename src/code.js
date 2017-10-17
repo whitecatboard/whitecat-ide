@@ -1988,44 +1988,6 @@ Code.newFirmware = function() {
 	});
 }
 
-Code.updateStatus = function() {
-	var container = jQuery('#boardStatus');
-
-	var html;
-
-	if (Code.status.connected) {
-		html = '<table class="table table-striped">';
-		html += '<thead>';
-		html += '<th>' + MSG['item'] + '</th>';
-		html += '<th>' + MSG['value'] + '</th>';
-		html += '</thead>';
-		html += '<tbody>';
-		html += '<tr><td>' + MSG['installedFirmware'] + '</td><td>' + Code.status.firmware + '</td></tr>';
-		html += '<tr><td>' + MSG['cpuModel'] + '</td><td>' + Code.status.cpu + '</td></tr>';
-		html += '</tbody>';
-		html += '</table>';
-		html += '</table>';
-
-		if (Code.status.hasFirmwareUpgradeSupport) {
-			html += '<button id="checkFirmwareButton" type="button" class="btn btn-default" aria-label="Left Align">';
-			html += MSG['checkForFirmwareUpdates'];
-			html += '</button>';
-		}
-
-		container.html(html);
-
-		// TO DO
-		//if (thisInstance.status.hasFirmwareUpgradeSupport) {
-		//	Code.bindClick('checkFirmwareButton', Code.checkFirmware);
-		//}
-	} else {
-		html = '<span class="waitingForBoard"><i class="spinner icon icon-spinner3"></i> ' + MSG['waitingForBoard'] + '</span>';
-		container.html(html);
-	}
-
-	window.dispatchEvent(new Event('resize'));
-}
-
 Code.listDirectoriesUpdate = function(container, storage, path, entries, extension) {
 	var html = '';
 
