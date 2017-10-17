@@ -194,8 +194,11 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<input id="adr" name="adr" type="checkbox" data-group-cls="btn-group-sm" value="'+workspace.lora.adr+'">';
 	dialogForm += '</div>';
 	dialogForm += '<div><br>';
-	
+			
 	dialogForm += '<div id="OTAA" style="display: none;">';
+	dialogForm += '<div style="margin: 0px;border-bottom: 1px solid #e5e5e5;">';
+	dialogForm += '<label>'+Blockly.Msg.LORA_ACTIVATION_DATA+'&nbsp;&nbsp;</label>';
+	dialogForm += '</div><br>';
 	dialogForm += '<div>';
 	dialogForm += '<label for="DevEUI">DevEUI:&nbsp;&nbsp;</label><input id="DevEUI" name="DevEUI" style="width:300px;" value="'+workspace.lora.deveui+'">';
 	dialogForm += '</div>';
@@ -205,9 +208,14 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<div>';
 	dialogForm += '<label for="AppKey">AppKey:&nbsp;&nbsp;</label><input id="AppKey" name="AppKey" style="width:300px;" value="'+workspace.lora.appkey+'">';
 	dialogForm += '</div>';
+	dialogForm += '<br><span>'+Blockly.Msg.LORA_GET_OTAA_DATA_HELP+'</span><br>';
+	dialogForm += '<br><button type="button" class="btn" id="getOTAAData">'+Blockly.Msg.LORA_GET_DATA+'</button><br>';
 	dialogForm += '</div>';
 
 	dialogForm += '<div id="ABP" style="display: none;">';
+	dialogForm += '<div style="margin: 0px;border-bottom: 1px solid #e5e5e5;">';
+	dialogForm += '<label>'+Blockly.Msg.LORA_PERSONALIZATION_DATA+'&nbsp;&nbsp;</label>';
+	dialogForm += '</div><br>';
 	dialogForm += '<div>';
 	dialogForm += '<label for="DevAddr">DevAddr:&nbsp;&nbsp;</label><input id="DevAddr" name="DevAddr" style="width:300px;" value="'+workspace.lora.devaddr+'">';
 	dialogForm += '</div>';
@@ -217,10 +225,10 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<div>';
 	dialogForm += '<label for="AppSKey">AppSKey:&nbsp;&nbsp;</label><input id="AppSKey" name="AppSKey" style="width:300px;" value="'+workspace.lora.appskey+'">';
 	dialogForm += '</div>';
+	dialogForm += '<br><span>'+Blockly.Msg.LORA_GET_ABP_DATA_HELP+'</span><br>';
+	dialogForm += '<br><button type="button" class="btn" id="getABPData">'+Blockly.Msg.LORA_GET_DATA+'</button><br>';
 	dialogForm += '</div>';
-	dialogForm += '<div>';
 	dialogForm += '<span class="error-msg" id="errors"></span>';
-	dialogForm += '</div>';
 
 	dialogForm += '</form>';
 	
@@ -315,6 +323,52 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	});
 	
 	box.bind('shown.bs.modal', function(){
+		var form = jQuery("#lora_form");
+		
+		form.find("#getOTAAData").click(function() {
+			jQuery.ajax({
+				url: Code.server + "/?nodeRegister",
+				type: "POST",
+				success: function(result) {
+					result = JSON.parse(result);
+					if (result.success) {
+						result = JSON.parse(result.result);
+						
+						form.find("#AppEUI").val(result.OTAA.AppEUI);
+						form.find("#DevEUI").val(result.OTAA.DevEUI);
+						form.find("#AppKey").val(result.OTAA.AppKey);
+					} else {
+						form.find("#errors").html(result.result);
+					}
+				},
+
+				error: function() {
+				}
+			});					
+		});
+
+		form.find("#getABPData").click(function() {
+			jQuery.ajax({
+				url: Code.server + "/?nodeRegister",
+				type: "POST",
+				success: function(result) {
+					result = JSON.parse(result);
+					if (result.success) {
+						result = JSON.parse(result.result);
+						
+						form.find("#DevAddr").val(result.ABP.DevAddr);
+						form.find("#NwkSKey").val(result.ABP.NwkSKey);
+						form.find("#AppSKey").val(result.ABP.AppSKey);
+					} else {
+						form.find("#errors").html(result.result);
+					}
+				},
+
+				error: function() {
+				}
+			});	
+		});
+
 		jQuery(':checkbox').checkboxpicker({
 		  html: true,
 		  offLabel: '<span class="glyphicon glyphicon-remove">',
@@ -322,7 +376,7 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 		}).on('change', function() {
 			var form = jQuery("#lora_form");
 			
-			form.find("#adr").val(this.checked);
+			form.find("#adr").val(this.checked);			
 		}).prop('checked', workspace.lora.adr == 'true');
 		
 		Blockly.Lora.activationChanged();

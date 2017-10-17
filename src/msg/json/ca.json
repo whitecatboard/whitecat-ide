@@ -637,5 +637,11 @@
 	"CAN_FRAME_CANNOT_RENAME": "Aquest paquet no permer canviar el nom.",
 	"FOREVER": "per sempre",
 	"EVENT_THREAD_TOOLTIP": "",
-	"EVENT_THREAD_HELPURL": ""
+	"EVENT_THREAD_HELPURL": "",
+	
+	"LORA_ACTIVATION_DATA": "Dades d'activació del node:",
+	"LORA_PERSONALIZATION_DATA": "Dades de personalització del node:",
+	"LORA_GET_DATA": "Obtenir dades ...",
+	"LORA_GET_OTAA_DATA_HELP": "The Whitecat IDE ofereix als seus usuaris una aplicació TTN LoRa WAN per provar un node OTAA. Si voleu utilitzar-lo, feu clic al botó 'Obtenir dades' per obtenir les dades d'activació.",
+	"LORA_GET_ABP_DATA_HELP": "The Whitecat IDE ofereix als seus usuaris una aplicació TTN LoRa WAN per provar un node ABP. Si voleu utilitzar-lo, feu clic al botó 'Obtenir dades' per obtenir les dades de personalització."
 }
