@@ -152,6 +152,10 @@ Blockly.MQTT.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<label for="password">Password:&nbsp;&nbsp;</label><input type="password" id="password" name="password" style="width:100px;" value="'+workspace.MQTT.password+'">';
 	dialogForm += '</div>';
 	dialogForm += '</div>';
+	dialogForm += '</div>';
+	dialogForm += '<br><span>'+Blockly.Msg.MQTT_GET_DATA_HELP+'</span><br>';
+	dialogForm += '<br><button type="button" class="btn" id="getMQTTData">'+Blockly.Msg.MQTT_GET_DATA+'</button>&nbsp;<span id="waitingMQTT" class="waiting"><i class="spinner icon icon-spinner3"></i></span><br>';
+	dialogForm += '</div>';
 
 	dialogForm += '<span class="error-msg" id="errors"></span>';
 
@@ -237,6 +241,37 @@ Blockly.MQTT.configure = function(workspace, opt_callback, block) {
 			} else {
 				form.find("#credentials").hide();				
 			}
-		}).prop('checked', workspace.MQTT.secure == 'true');		
+		}).prop('checked', workspace.MQTT.secure == 'true');
+		
+		var form = jQuery("#MQTT_form");
+		
+		form.find("#getMQTTData").click(function() {
+			jQuery("#waitingMQTT").show();
+			jQuery.ajax({
+				url: Code.server + "/?mqttRegister",
+				type: "POST",
+				success: function(result) {
+					jQuery("#waitingMQTT").hide();
+					result = JSON.parse(result);
+					if (result.success) {
+						jQuery(':checkbox').prop('checked',true);
+						
+						result = JSON.parse(result.result);
+						
+						form.find("#clientid").val("mqtt");
+						form.find("#host").val("mqtt.whitecatboard.org");
+						form.find("#port").val("8883");
+						form.find("#username").val(result.user);
+						form.find("#password").val(result.password);
+					} else {
+						form.find("#errors").html(result.result);
+					}
+				},
+
+				error: function() {
+					jQuery("#waitingMQTT").hide();
+				}
+			});					
+		});		
 	});
 };

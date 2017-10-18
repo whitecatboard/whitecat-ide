@@ -673,5 +673,8 @@
 	"LORA_PERSONALIZATION_DATA": "Datos de personalización del nodo:",
 	"LORA_GET_DATA": "Obtener datos ...",
 	"LORA_GET_OTAA_DATA_HELP": "The Whitecat IDE ofrece a sus usuarios una aplicación TTN Lora WAN para probar un nodo OTAA. Si desea utilizarlo, haga clic en el botón 'Obtener datos' para obtener los datos de activación.",
-	"LORA_GET_ABP_DATA_HELP": "The Whitecat IDE ofrece a sus usuarios una aplicación TTN Lora WAN para probar un nodo ABP. Si desea utilizarlo, haga clic en el botón 'Obtener datos' para obtener los datos de personalización."
+	"LORA_GET_ABP_DATA_HELP": "The Whitecat IDE ofrece a sus usuarios una aplicación TTN Lora WAN para probar un nodo ABP. Si desea utilizarlo, haga clic en el botón 'Obtener datos' para obtener los datos de personalización.",
+
+	"MQTT_GET_DATA_HELP": "The Whitecat IDE ofrece a sus usuarios un broker MQTT con fines de prueba. Si desea utilizar, haga clic en el botón 'Obtener datos' para obtener los datos de la conexión..",
+	"MQTT_GET_DATA": "Obtener datos ..."
 }
