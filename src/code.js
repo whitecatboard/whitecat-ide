@@ -70,6 +70,7 @@ if (typeof require != "undefined") {
 }
 
 Code.server = "https://ide.whitecatboard.org";
+Code.cloud = null;
 
 var blockAbstraction = {
 	Low: 0,
@@ -1455,8 +1456,22 @@ Code.run = function() {
 	} else if (Code.workspace.type == 'editor') {
 		code = Code.workspace.editor.getValue();
 	}
+	
+	if (Code.cloud) {
+		Code.cloud.Disconnect();
+		Code.cloud = null;
+	}
 
 	function run() {
+		var cloud = null;
+		
+		if (Blockly.Lua.usesMQTT(Code.workspace.blocks)) {
+			var MQTT = Blockly.mainWorkspace.MQTT;
+			
+			Code.cloud = new Cloud(MQTT.username, MQTT.password);
+			Code.cloud.Connect();		
+		}
+		
 		Code.showProgress(MSG['sendingCode']);
 		Code.agent.send({
 			command: "boardRunProgram",
@@ -1645,7 +1660,12 @@ Code.load = function() {
 
 Code.stop = function() {
 	Blockly.mainWorkspace.removeStarts();
-
+	
+	if (Code.cloud) {
+		Code.cloud.Disconnect();
+		Code.cloud = null;
+	}
+	
 	Code.agent.send({
 		command: "boardStop",
 		arguments: {}

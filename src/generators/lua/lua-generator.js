@@ -150,6 +150,24 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	return code;
 };
 
+Blockly.Generator.prototype.usesMQTT = function(workspace) {
+	if (!workspace) {
+		// Backwards compatability from before there could be multiple workspaces.
+		console.warn('No workspace specified in workspaceToCode call.  Guessing.');
+		workspace = Blockly.getMainWorkspace();
+	}
+
+
+	var blocks = workspace.getAllBlocks();
+	for (var x = 0, block; block = blocks[x]; x++) {
+		if ((block.type == "mqtt_publish") || (block.type == "mqtt_subscribe")) {
+			return true;
+		}
+	}
+
+	return false;
+};
+
 Blockly.Generator.prototype.oneBlockToCode = function(block) {
 	if (!block) {
 		return '';
