@@ -66,7 +66,7 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	this.init(workspace);
 	var blocks = workspace.getTopBlocks(true);
 	for (var x = 0, block; block = blocks[x]; x++) {
-		if (block.type == 'when_board_starts') {
+		if ((block.type == 'when_board_starts') && (!block.disabled)) {
 			hasBoardStart = true;
 		}
 		
