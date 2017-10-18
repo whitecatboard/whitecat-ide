@@ -43,6 +43,8 @@ Blockly.Lua['mqtt_publish'] = function(block) {
 	}
 	
 	var tryCode = '';	
+	tryCode += Blockly.Lua.blockStart(0, block);
+
 	tryCode += Blockly.Lua.indent(0,'-- create the MQTT client and connect, if needed') + "\n";
 	tryCode += Blockly.Lua.indent(0,'if (_mqtt == nil) then') + "\n";
 	tryCode += Blockly.Lua.indent(1,'_mqtt = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', '+block.secure+')') + "\n";
@@ -50,7 +52,9 @@ Blockly.Lua['mqtt_publish'] = function(block) {
 	tryCode += Blockly.Lua.indent(0,'end') + "\n\n";
 
 	tryCode += Blockly.Lua.indent(0,'-- publish to topic') + "\n";
-	tryCode += Blockly.Lua.indent(0,'_mqtt:publish('+topic+', '+payload+', mqtt.QOS'+qos+')');
+	tryCode += Blockly.Lua.indent(0,'_mqtt:publish('+topic+', '+payload+', mqtt.QOS'+qos+')') + "\n";;
+
+	tryCode += Blockly.Lua.blockEnd(0, block);
 
 	code += Blockly.Lua.indent(0,'-- publish to MQTT topic ' + topic) + "\n";
 	code += Blockly.Lua.tryBlock(0,block,tryCode) + "\n";
