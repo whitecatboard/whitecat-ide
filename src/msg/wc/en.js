@@ -124,5 +124,6 @@ var MSG = {
   alert: "Alert",
   connectABoard: "Connect a board",
   pleaseUpgradeAgent: "A new version of The Whitecat Create Agent is available. Please, upgrade it to ensure the correct operation of The Whitecat IDE. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Open upgrade instructions ...</button>",
-  thisFuntionRequiresUpdateAgent: "This function requires to update The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Open upgrade instructions ...</button>"
+  thisFuntionRequiresUpdateAgent: "This function requires to update The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"https://whitecatboard.org/git/wiki/whitecat-create-agent/How-to-update\">Open upgrade instructions ...</button>",
+  cloudConsoleOn: "Cloud"
 };

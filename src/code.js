@@ -1171,10 +1171,12 @@ Code.init = function() {
 			el.style.visibility = 'visible';
 
 			var el = document.getElementById('boardConsole');
-			//var bBoxEl = Code.getBBox_(el);
-
 			el.style.top = el_tab.style.top;
 			el.style.left = (parseInt(el_tab.style.width.replace("px", "")) - 600) + 'px';
+
+			var el = document.getElementById('cloudConsole');
+			el.style.top = el_tab.style.top;
+			el.style.left = (parseInt(el_tab.style.width.replace("px", "")) - 800) + 'px';
 		}
 	};
 
@@ -1460,12 +1462,16 @@ Code.run = function() {
 	if (Code.cloud) {
 		Code.cloud.Disconnect();
 		Code.cloud = null;
+		
+		Status.show("cloudConsoleOff");
 	}
 
 	function run() {
 		var cloud = null;
 		
 		if (Blockly.Lua.usesMQTT(Code.workspace.blocks)) {
+			Status.show("cloudConsoleOn");
+			
 			var MQTT = Blockly.mainWorkspace.MQTT;
 			
 			Code.cloud = new Cloud(MQTT.username, MQTT.password);
@@ -1662,6 +1668,8 @@ Code.stop = function() {
 	Blockly.mainWorkspace.removeStarts();
 	
 	if (Code.cloud) {
+		Status.show("cloudConsoleOff");
+
 		Code.cloud.Disconnect();
 		Code.cloud = null;
 	}
@@ -2482,7 +2490,7 @@ Code.setup = function() {
 			Blockly.mainWorkspace.removeStarts();
 			Blockly.mainWorkspace.removeErrors();
 
-			var block = atob(info.block).replace(/\0/g, '');;
+			var block = atob(info.block).replace(/\0/g, '');
 			var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
 			var error = atob(info.error);
 

@@ -388,18 +388,3 @@ Term.write = function(text) {
 		}				
 	}	
 }
-
-Term.show = function() {
-	var term = Term.div;
-	
-	if (!Term.visible) {
-		term.show();	
-		term.focus();	
-	} else {
-		term.hide();
-	}
-	
-	Term.visible = !Term.visible;
-
-	Code.renderContent();
-}

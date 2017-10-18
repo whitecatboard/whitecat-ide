@@ -129,5 +129,6 @@ var MSG = {
   stoppingProgram: "Parando el programa",
   cannotConnectToAgent: "No se puede conectar con el agente",
   corruptedFirmware: "Firmware corrupto",
-  flashError: "Error en la flash"
+  flashError: "Error en la flash",
+  cloudConsoleOn: "Nube"
 };

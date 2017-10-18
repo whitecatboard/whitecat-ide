@@ -646,5 +646,7 @@
 	"LORA_GET_ABP_DATA_HELP": "The Whitecat IDE ofereix als seus usuaris una aplicació TTN LoRa WAN per provar un node ABP. Si voleu utilitzar-lo, feu clic al botó 'Obtenir dades' per obtenir les dades de personalització.",
 
 	"MQTT_GET_DATA_HELP": "The Whitecat IDE ofereix als seus usuaris un broker MQTT amb finalitats de prova. Si voleu utilitzar-lo, feu clic al botó 'Obtenir dades' per obtenir les dades de la connexió.",
-	"MQTT_GET_DATA": "Obtenir dades ..."
+	"MQTT_GET_DATA": "Obtenir dades ...",
+
+	"cloudConsoleOn": "Núvol"
 }

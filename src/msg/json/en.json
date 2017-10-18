@@ -711,5 +711,5 @@
 	"LORA_GET_ABP_DATA_HELP": "The Whitecat IDE offer to its users a TTN LoRa WAN application for test an ABP node. If you want to use it, please click the 'Get data' button to get the personalization data.",
 	
 	"MQTT_GET_DATA_HELP": "The Whitecat IDE offer to its users a MQTT broquer for testing purposes. If you want to use it, please click the 'Get data' button to get the connection data.",
-	"MQTT_GET_DATA": "Get data ..."
+	"MQTT_GET_DATA": "Get data ..."	
 }

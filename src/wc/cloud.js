@@ -59,6 +59,29 @@ function Cloud(user, password) {
 			userName: thisInstance.username,
 			password: password
         };
+		
+		var html = '';
+			
+		html += '<table id="cloudTable" width="100%">';
+		html += '<thead>';
+		html += '<tr>';
+		html += '<th>Time</th><th>Topic</th><th>Payload</th>';
+		html += '</tr>';
+		html += '</thead>';
+		html += '<tbody>';
+		html += '</thead>';
+		html += '</table>';
+		
+		jQuery("#cloudConsole").html(html);		
+		jQuery("#cloudTable").DataTable({
+			"lengthMenu": [[10, 25], [10, 25]],
+			"order": [[ 0, "desc" ]],
+			"columns": [
+				{"width": "5%"},
+				{"width": "20%"},
+				{"width": "75%"},
+			]
+		});
 	}
 }
 
@@ -83,4 +106,8 @@ Cloud.prototype.onConnectionLost = function(response) {
 Cloud.prototype.onMessageArrived = function(message) {
     var topic = message.destinationName;
     var payload = message.payloadString;
+	
+	var table = jQuery("#cloudTable").DataTable();
+	
+	table.row.add([jQuery.format.date(new Date(), 'dd/M/yy hh:mm:ss'),topic,payload]).draw(false);
 };

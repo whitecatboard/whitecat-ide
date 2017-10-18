@@ -40,25 +40,28 @@ var Status = {};
 
 Status.messages = [];
 
-Status.messages["Downloading prerequisites"] = {tag: "downloadingPrerequisites", type: statusType.Progress};
-Status.messages["Uploading framework"] = {tag: "uploadingFramework", type: statusType.Progress};
-Status.messages["Downloading esptool"] = {tag: "downloadingEsptool", type: statusType.Progress};
-Status.messages["Unpacking esptool"] = {tag: "unpackingEsptool", type: statusType.Progress};
-Status.messages["Downloading firmware"] = {tag: "downloadingFirmware", type: statusType.Progress};
-Status.messages["Unpacking firmware"] = {tag: "unpackingFirmware", type: statusType.Progress};
-Status.messages["No board attached"] = {tag: "noBoardAttached", type: statusType.Alert, page: "whitecat-ide/Errors:--No-board-attached"};
-Status.messages["Scanning boards"] = {tag: "scanningBoards", type: statusType.Progress};
-Status.messages["Python not found"] = {tag: "pythonNotFound", type: statusType.Alert};
-Status.messages["Reseting board"] = {tag: "resetingBoard", type: statusType.Progress};
-Status.messages["Stopping program"] = {tag: "stoppingProgram", type: statusType.Progress};
-Status.messages["Can't connect to agent"] = {tag: "cannotConnectToAgent", type: statusType.Alert, page: "whitecat-ide/Errors:--Can't-connect-to-agent"};
-Status.messages["Connect a board"] = {tag: "connectABoard", type: statusType.Alert};
-Status.messages["Corrupted firmware"] = {tag: "corruptedFirmware", type: statusType.Alert};
-Status.messages["Flash error"] = {tag: "flashError", type: statusType.Alert};
+Status.messages["Downloading prerequisites"] = {tag: "downloadingPrerequisites", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["Uploading framework"] = {tag: "uploadingFramework", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["Downloading esptool"] = {tag: "downloadingEsptool", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["Unpacking esptool"] = {tag: "unpackingEsptool", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["Downloading firmware"] = {tag: "downloadingFirmware", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["Unpacking firmware"] = {tag: "unpackingFirmware", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["No board attached"] = {tag: "noBoardAttached", type: statusType.Alert, page: "whitecat-ide/Errors:--No-board-attached", zone: "statusBar1"};
+Status.messages["Scanning boards"] = {tag: "scanningBoards", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["Python not found"] = {tag: "pythonNotFound", type: statusType.Aler, zone: "statusBar1"};
+Status.messages["Reseting board"] = {tag: "resetingBoard", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["Stopping program"] = {tag: "stoppingProgram", type: statusType.Progress, zone: "statusBar1"};
+Status.messages["Can't connect to agent"] = {tag: "cannotConnectToAgent", type: statusType.Alert, page: "whitecat-ide/Errors:--Can't-connect-to-agent", zone: "statusBar1"};
+Status.messages["Connect a board"] = {tag: "connectABoard", type: statusType.Alert, zone: "statusBar1"};
+Status.messages["Corrupted firmware"] = {tag: "corruptedFirmware", type: statusType.Alert, zone: "statusBar1"};
+Status.messages["Flash error"] = {tag: "flashError", type: statusType.Alert, zone: "statusBar1"};
 
-Status.messages["Whitecat N1 ESP32"] = {tag: "boardAttached", type: statusType.Info};
-Status.messages["ESP32 Thing"] = {tag: "boardAttached", type: statusType.Info};
-Status.messages["ESP32 Core Board"] = {tag: "boardAttached", type: statusType.Info};
+Status.messages["Whitecat N1 ESP32"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
+Status.messages["ESP32 Thing"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
+Status.messages["ESP32 Core Board"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
+
+Status.messages["cloudConsoleOn"] = {tag: "cloudConsoleOn", type: statusType.Info, zone: "statusBar2"};
+Status.messages["cloudConsoleOff"] = {tag: "cloudConsoleOff", type: statusType.Info, zone: "statusBar2"};
 
 Status.current = {
 	type: statusType.Nothing,
@@ -70,11 +73,13 @@ Status.show = function(message) {
 	var type = statusType.Info;
 	var tag = "";
 	var url = undefined;
+	var zone = "";
 	
 	// Get the status type, tag, and url from the message map
 	if (typeof messageMap != "undefined") {
 		type = messageMap.type;
 		tag = messageMap.tag;
+		zone = messageMap.zone;
 		
 		if (typeof messageMap.page != "undefined") {
 			url = "https://whitecatboard.org/git/wiki/" + messageMap.page;			
@@ -84,7 +89,7 @@ Status.show = function(message) {
 	// Show the status only is a new status
 	if ((Status.current.type != type) || (Status.current.message != message)) {
 		// Remove all additional styles
-		jQuery(".statusBar").removeClass("statusBarClick").unbind("click");
+		jQuery("." + zone).removeClass("statusBarClick").unbind("click");
 		
 		// Store current status
 		Status.current.type = type;
@@ -120,6 +125,9 @@ Status.show = function(message) {
 			if (tag == "boardAttached") {
 				html += '<span class="icon icon-arrow-down5" style="margin-right: 2px;vertical-align: text-bottom;"></span>';	
 			}				
+			if ((tag == "cloudConsoleOn") || (tag == "cloudConsoleOff")) {
+				html += '<span class="icon icon-arrow-down5" style="margin-right: 2px;vertical-align: text-bottom;"></span>';	
+			}				
 		}
 		
 		// Add icon
@@ -129,7 +137,7 @@ Status.show = function(message) {
 						
 		if (type == statusType.Alert) {
 			// Alerts are bind to an url that contains information about it
-			jQuery(".statusBar").addClass("statusBarClick").bind('click', function(e) {
+			jQuery("." + zone).addClass("statusBarClick").bind('click', function(e) {
 				if (typeof url != "undefined") {
 					if (typeof require != "undefined") {
 						if (typeof require('nw.gui') != "undefined") {
@@ -149,20 +157,62 @@ Status.show = function(message) {
 			});			
 		} else if (type == statusType.Info) {
 			if (tag == "boardAttached") {
-				jQuery(".statusBar").addClass("statusBarClick").bind('click', function(e) {
+				jQuery("." + zone).addClass("statusBarClick").bind('click', function(e) {
+					jQuery("#cloudConsole").hide();
+					jQuery("#cloudConsole").attr("data-visibe","false");
+					
 					if (Code.agent.version > "1.2") {
-						Term.show();
+						var visible = jQuery("#boardConsole").attr("data-visibe");
+						if (typeof visible == "undefined") {
+							visible = false;
+						}
+					
+						if ((visible == "") || (visible == "false")) {
+							jQuery("#boardConsole").show();
+							jQuery("#boardConsole").attr("data-visibe","true");
+							jQuery("#boardConsole").focus();
+						} else {
+							jQuery("#boardConsole").hide();
+							jQuery("#boardConsole").attr("data-visibe","false");
+						}
 					} else {
 						Code.showAlert(MSG['thisFuntionRequiresUpdateAgent']);
 					}
 				});
 			}
+
+			if ((tag == "cloudConsoleOn") || (tag == "cloudConsoleOff"))  {
+				jQuery("." + zone).addClass("statusBarClick").bind('click', function(e) {
+					jQuery("#boardConsole").hide();
+					jQuery("#boardConsole").attr("data-visibe","false");
+
+					var visible = jQuery("#cloudConsole").attr("data-visibe");
+					if (typeof visible == "undefined") {
+						visible = false;
+					}
+					
+					if ((visible == "") || (visible == "false")) {
+						jQuery("#cloudConsole").show();
+						jQuery("#cloudConsole").attr("data-visibe","true");
+					} else {
+						jQuery("#cloudConsole").hide();
+						jQuery("#cloudConsole").attr("data-visibe","false");						
+					}
+				});
+			}
 		}
 		
-		jQuery(".statusBar").html(html).show();	
+		if (tag == "cloudConsoleOff") {
+			jQuery("." + zone).html(html).hide();
+			jQuery("#cloudConsole").hide();
+			jQuery("#cloudConsole").attr("data-visibe","false");						
+		} else {
+			jQuery("." + zone).html(html).show();				
+		}
 	}
 }
 
 Status.hide = function() {
-	jQuery(".statusBar").hide();	
+	jQuery(".statusBar1").hide();	
+	jQuery(".statusBar2").hide();	
 }

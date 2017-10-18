@@ -496,6 +496,21 @@ body.modal-open .modal .modal-dialog {
 	display: none;
 }
 
+.cloudConsole {
+	position: absolute;
+    background: #fff;
+    min-width: 800px;
+    min-height: 300px;
+	border: 1px solid #eee;
+	z-index: 1049;
+	display: none;
+	padding: 10px !important;
+}
+
+.cloudConsole:focus {
+	outline-width: 0px;
+}
+
 .noselect {
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -516,4 +531,8 @@ body.modal-open .modal .modal-dialog {
 .consoleCH {
     font-family: monospace  !important;
     font-size: 12px  !important;
+}
+
+.table-responsive {
+    max-height:300px;
 }
