@@ -13,11 +13,10 @@ function wcBlock.blockStart(id)
 	if (wcBlock.developerMode) then
 		if (wcBlock.messages[id] == nil) then
 			wcBlock.messages[id] = {}
-			wcBlock.messages[id].lastStart = os.clock()
-			wcBlock.messages[id].lastEnd = 0
-			wcBlock.messages[id].ended = true
+			wcBlock.messages[id].last = 0
+			wcBlock.messages[id].ended = false
 		else
-			local _, millis = math.modf(os.clock() - wcBlock.messages[id].lastStart)
+			local _, millis = math.modf(os.clock() - wcBlock.messages[id].last)
 			
 			millis = millis * 1000
 			
@@ -25,7 +24,7 @@ function wcBlock.blockStart(id)
 			    wcBlock.mutex:unlock()
 				return
 			else
-				wcBlock.messages[id].lastStart = os.clock()
+				wcBlock.messages[id].last = os.clock()
 				wcBlock.messages[id].ended = false
 			end
 		end
@@ -48,10 +47,10 @@ function wcBlock.blockEnd(id)
 	if (wcBlock.developerMode) then
 		if (wcBlock.messages[id] == nil) then
 			wcBlock.messages[id] = {}
-			wcBlock.messages[id].lastStart = 0
-			wcBlock.messages[id].lastEnd = os.clock()
+			wcBlock.messages[id].last = 0
+			wcBlock.messages[id].ended = false
 		else
-			local _, millis = math.modf(os.clock() - wcBlock.messages[id].lastEnd)
+			local _, millis = math.modf(os.clock() - wcBlock.messages[id].last)
 			
 			millis = millis * 1000
 			
@@ -59,7 +58,7 @@ function wcBlock.blockEnd(id)
             	wcBlock.mutex:unlock()
 				return
 			else
-				wcBlock.messages[id].lastEnd = os.clock()
+				wcBlock.messages[id].last = os.clock()
 				wcBlock.messages[id].ended = true
 			end
 		end

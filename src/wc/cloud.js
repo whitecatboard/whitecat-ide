@@ -35,7 +35,7 @@ function Cloud(user, password) {
 	if (thisInstance.username != "") {
 		thisInstance.client = new Paho.MQTT.Client(
 						"mqtt.whitecatboard.org",
-						80,
+						9883,
 						"/" + thisInstance.username,
 						"web_" + parseInt(Math.random() * 100, 10)
 		);		
@@ -45,7 +45,7 @@ function Cloud(user, password) {
 		
 	    thisInstance.options = {
             timeout: 3,
-            useSSL: false,
+            useSSL: true,
             cleanSession: true,
             onSuccess: function() {
 				thisInstance.client.subscribe("/" + thisInstance.username + "/+", {qos: 0});
