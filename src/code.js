@@ -1096,9 +1096,9 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);
 		//jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
-		jQuery("#catNET").attr("colour", Blockly.Blocks.i2c.HUE);
-		jQuery("#catWIFI").attr("colour", Blockly.Blocks.i2c.HUE);
-		jQuery("#catMQTT").attr("colour", Blockly.Blocks.i2c.HUE);
+		jQuery("#catNET").attr("colour", Blockly.Blocks.lora.HUE);
+		jQuery("#catWIFI").attr("colour", Blockly.Blocks.lora.HUE);
+		jQuery("#catMQTT").attr("colour", Blockly.Blocks.lora.HUE);
 
 		callback();
 	});
