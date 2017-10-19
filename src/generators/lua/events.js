@@ -74,7 +74,6 @@ Blockly.Lua['thread'] = function(block) {
 	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n\n";
 	code += Blockly.Lua.blockStart(1, block);
 	code += Blockly.Lua.indent(1, 'while true do') + "\n";
-
 	code += Blockly.Lua.tryBlock(2, block, statement);
 
 	code += Blockly.Lua.indent(1, 'end') + "\n";

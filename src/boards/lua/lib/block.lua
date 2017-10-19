@@ -13,10 +13,10 @@ function wcBlock.blockStart(id)
 	if (wcBlock.developerMode) then
 		if (wcBlock.messages[id] == nil) then
 			wcBlock.messages[id] = {}
-			wcBlock.messages[id].last = 0
+			wcBlock.messages[id].last = os.clock()
 			wcBlock.messages[id].ended = false
 		else
-			local _, millis = math.modf(os.clock() - wcBlock.messages[id].last)
+			local millis = math.modf(os.clock() - wcBlock.messages[id].last)
 			
 			millis = millis * 1000
 			
@@ -47,10 +47,10 @@ function wcBlock.blockEnd(id)
 	if (wcBlock.developerMode) then
 		if (wcBlock.messages[id] == nil) then
 			wcBlock.messages[id] = {}
-			wcBlock.messages[id].last = 0
+			wcBlock.messages[id].last = os.clock()
 			wcBlock.messages[id].ended = false
 		else
-			local _, millis = math.modf(os.clock() - wcBlock.messages[id].last)
+			local millis = math.modf(os.clock() - wcBlock.messages[id].last)
 			
 			millis = millis * 1000
 			
@@ -58,7 +58,11 @@ function wcBlock.blockEnd(id)
             	wcBlock.mutex:unlock()
 				return
 			else
-				wcBlock.messages[id].last = os.clock()
+				if (millis >= wcBlock.reportLimit) then
+					wcBlock.messages[id].last = 0
+				else
+					wcBlock.messages[id].last = os.clock()
+				end
 				wcBlock.messages[id].ended = true
 			end
 		end
