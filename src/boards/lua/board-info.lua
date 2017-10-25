@@ -74,7 +74,7 @@ do
 	    io.write("\"build\": \""..curr_build.."\",")
 	    io.write("\"commit\": \""..curr_commit.."\",")
 	    io.write("\"board\": \""..type.."\",")
-	    io.write("\"subtype\": \""..type.."\",")
+	    io.write("\"subtype\": \""..subtype.."\",")
 	    io.write("\"brand\": \""..brand.."\",")
 	end
 
