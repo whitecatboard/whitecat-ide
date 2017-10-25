@@ -65,13 +65,17 @@ do
 	end
 
 	function __cpu()
-	    local curr_os, curr_ver, curr_build, curr_commit = os.version();
+	    local curr_os, curr_ver, curr_build, curr_commit = os.version()
+		local type, subtype, brand = os.board()
+		
 	    io.write("\"cpu\": \""..os.cpu().."\",")
 	    io.write("\"os\": \""..curr_os.."\",")
 	    io.write("\"version\": \""..curr_ver.."\",")
 	    io.write("\"build\": \""..curr_build.."\",")
 	    io.write("\"commit\": \""..curr_commit.."\",")
-	    io.write("\"board\": \""..os.board().."\",")
+	    io.write("\"board\": \""..type.."\",")
+	    io.write("\"subtype\": \""..type.."\",")
+	    io.write("\"brand\": \""..brand.."\",")
 	end
 
 	function __status()
