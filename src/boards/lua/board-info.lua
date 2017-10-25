@@ -68,6 +68,14 @@ do
 	    local curr_os, curr_ver, curr_build, curr_commit = os.version()
 		local type, subtype, brand = os.board()
 		
+		if (subtype == nil) then
+			subtype = ""
+		end
+
+		if (brand == nil) then
+			brand = ""
+		end
+		
 	    io.write("\"cpu\": \""..os.cpu().."\",")
 	    io.write("\"os\": \""..curr_os.."\",")
 	    io.write("\"version\": \""..curr_ver.."\",")
@@ -76,6 +84,14 @@ do
 	    io.write("\"board\": \""..type.."\",")
 	    io.write("\"subtype\": \""..subtype.."\",")
 	    io.write("\"brand\": \""..brand.."\",")
+		
+		isOTA = (not (string.find(subtype, "OTA") == nil)) or (not (string.find(subtype, "OTA-",) == nil))
+		
+		if (isOTA) then
+			io.write("\"ota\": true,")
+		else
+			io.write("\"ota\": false,")
+		end
 	end
 
 	function __status()
