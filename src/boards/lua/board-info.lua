@@ -85,7 +85,7 @@ do
 	    io.write("\"subtype\": \""..subtype.."\",")
 	    io.write("\"brand\": \""..brand.."\",")
 		
-		isOTA = (not (string.find(subtype, "OTA") == nil)) or (not (string.find(subtype, "OTA-",) == nil))
+		isOTA = (not (string.find(subtype, "OTA") == nil)) or (not (string.find(subtype, "OTA-") == nil))
 		
 		if (isOTA) then
 			io.write("\"ota\": true,")
