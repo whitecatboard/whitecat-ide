@@ -1474,7 +1474,7 @@ Code.run = function() {
 			
 			var MQTT = Blockly.mainWorkspace.MQTT;
 			
-			Code.cloud = new Cloud(MQTT.username, MQTT.password);
+			Code.cloud = new Cloud("mqtt", MQTT.username, MQTT.password);
 			Code.cloud.Connect();		
 		}
 		

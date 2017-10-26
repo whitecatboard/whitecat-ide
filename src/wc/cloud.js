@@ -27,7 +27,7 @@
  * this software.
  */
 
-function Cloud(user, password) {
+function Cloud(type, user, password) {
 	var thisInstance = this;
 	
 	thisInstance.username = user;
@@ -62,26 +62,50 @@ function Cloud(user, password) {
 		
 		var html = '';
 			
-		html += '<table id="cloudTable" width="100%">';
-		html += '<thead>';
-		html += '<tr>';
-		html += '<th>Time</th><th>Topic</th><th>Payload</th>';
-		html += '</tr>';
-		html += '</thead>';
-		html += '<tbody>';
-		html += '</thead>';
-		html += '</table>';
+		if (type == "mqtt") {
+			html += '<table id="cloudTable" width="100%">';
+			html += '<thead>';
+			html += '<tr>';
+			html += '<th>Time</th><th>Topic</th><th>Payload</th>';
+			html += '</tr>';
+			html += '</thead>';
+			html += '<tbody>';
+			html += '</thead>';
+			html += '</table>';
 		
-		jQuery("#cloudConsole").html(html);		
-		jQuery("#cloudTable").DataTable({
-			"lengthMenu": [[10, 25], [10, 25]],
-			"order": [[ 0, "desc" ]],
-			"columns": [
-				{"width": "5%"},
-				{"width": "20%"},
-				{"width": "75%"},
-			]
-		});
+			jQuery("#cloudConsole").html(html);		
+			jQuery("#cloudTable").DataTable({
+				"lengthMenu": [[10, 25], [10, 25]],
+				"order": [[ 0, "desc" ]],
+				"columns": [
+					{"width": "5%"},
+					{"width": "20%"},
+					{"width": "75%"},
+				]
+			});			
+		} else {
+			html += '<table id="cloudTable" width="100%">';
+			html += '<thead>';
+			html += '<tr>';
+			html += '<th>Time</th><th>Device</th><th>Payload</th>';
+			html += '</tr>';
+			html += '</thead>';
+			html += '<tbody>';
+			html += '</thead>';
+			html += '</table>';
+		
+			jQuery("#cloudConsole").html(html);		
+			jQuery("#cloudTable").DataTable({
+				"lengthMenu": [[10, 25], [10, 25]],
+				"order": [[ 0, "desc" ]],
+				"columns": [
+					{"width": "5%"},
+					{"width": "20%"},
+					{"width": "75%"},
+				]
+			});
+		}
+
 	}
 }
 
@@ -109,5 +133,11 @@ Cloud.prototype.onMessageArrived = function(message) {
 	
 	var table = jQuery("#cloudTable").DataTable();
 	
-	table.row.add([jQuery.format.date(new Date(), 'dd/M/yy hh:mm:ss'),topic,payload]).draw(false);
+	var parts = topic.split("/");
+	
+	if ((parts[1] == "ttn") && (parts[3] == "up")) {
+		table.row.add([jQuery.format.date(new Date(), 'dd/M/yy hh:mm:ss'),topic,payload]).draw(false);				
+	} else {
+		table.row.add([jQuery.format.date(new Date(), 'dd/M/yy hh:mm:ss'),topic,payload]).draw(false);		
+	}	
 };

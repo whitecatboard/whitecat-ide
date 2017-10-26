@@ -6,6 +6,7 @@
 		{"id": "BME280"},
 		{"id": "DHT11"},
 		{"id": "DHT22"},
+		{"id": "DHT23"},
 		{"id": "AM412"},
 		{"id": "HALL_SWITCH"},
 		{"id": "PUSH_SWITCH"},
@@ -19,7 +20,15 @@
 		{"id": "GUVA-S12SD"},
 		{"id": "LINEAR_POT"},
 		{"id": "LDR"},
-		{"id": "ANALOG_JOYSTICK"}
+		{"id": "ANALOG_JOYSTICK"},
+		{"id": "US015"},
+		{"id": "KEY_MATRIX_4_4"},
+		{"id": "2P_TOGGLE_SWITCH"},
+		{"id": "3P_TOGGLE_SWITCH"},
+		{"id": "BH1620FVC"},
+		{"id": "BH1721FVC"},
+		{"id": "BDE0600G"},
+		{"id": "ML8511"}
 	],
 	"categories": [
 		{"id": "air_quality", "sensors": [
@@ -27,7 +36,8 @@
 		]},
 		{"id": "distance", "sensors": [
 			{"id": "2Y0A21"},
-			{"id": "PING28015"}
+			{"id": "PING28015"},
+			{"id": "US015"}
 		]},
 		{"id": "geopos", "sensors": [
 			{"id": "GPS"}
@@ -38,7 +48,10 @@
 			{"id": "DHT22"}
 		]},
 		{"id": "illuminance", "sensors": [
-			{"id": "LDR"}
+			{"id": "BH1620FVC"},
+			{"id": "BH1721FVC"},
+			{"id": "LDR"},
+			{"id": "ML8511"}
 		]},
 		{"id": "magnetic_field", "sensors": [
 			{"id": "A49E"}
@@ -56,16 +69,21 @@
 			{"id": "REL_ROT_ENCODER"}
 		]},
 		{"id": "switches", "sensors": [
+			{"id": "2P_TOGGLE_SWITCH"},
+			{"id": "3P_TOGGLE_SWITCH"},
 			{"id": "ANALOG_JOYSTICK"},
 			{"id": "HALL_SWITCH"},
+			{"id": "KEY_MATRIX_4_4"},
 			{"id": "PUSH_SWITCH"},
 			{"id": "TILT_SWITCH"}
 		]},
 		{"id": "temperature", "sensors": [
 			{"id": "THERMISTOR"},
+			{"id": "BDE0600G"},
 			{"id": "BME280"},
 			{"id": "DHT11"},
 			{"id": "DHT22"},
+			{"id": "DHT23"},
 			{"id": "DS1820"},
 			{"id": "TMP36"}
 		]},
