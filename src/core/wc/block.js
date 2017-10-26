@@ -94,7 +94,7 @@ Blockly.Block.prototype.getHelpUrl = function()  {
 	var url;
 	
 	if (typeof IDEHelp[this.type] != "undefined") {
-		url = 'https://whitecatboard.org/git/wiki/whitecat-ide/' + IDEHelp[this.type];
+		url = 'https://ide.whitecatboard.org/wiki/' + IDEHelp[this.type];
 	} else {
 		url = '';
 		
