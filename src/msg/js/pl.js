@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "Zmień wartość:";
 Blockly.Msg.CLEAN_UP = "Uporządkuj bloki";
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "Zwiń bloki";
 Blockly.Msg.COLLAPSE_BLOCK = "Zwiń blok";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "kolor 1";

@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Envia un paquete al CAN bus.";
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";
 Blockly.Msg.CHANGE_VALUE_TITLE = "Cambiar el valor:";
 Blockly.Msg.CLEAN_UP = "Limpiar los bloques";
+Blockly.Msg.CLOSE = "Cerrar";
 Blockly.Msg.COLLAPSE_ALL = "Contraer bloques";
 Blockly.Msg.COLLAPSE_BLOCK = "Contraer bloque";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "color 1";

@@ -736,7 +736,24 @@ Blockly.BlockSvg.prototype.onMouseUp_ = function(e) {
 Blockly.BlockSvg.prototype.showHelp_ = function() {
   var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
   if (url) {
-    window.open(url);
+  	// WHITECAT IDE  
+  	jQuery.ajax({
+  		url: url,
+  		type: "GET",
+  		success: function(result) {
+			bootbox.dialog({
+				title: Blockly.Msg.HELP,
+				message: result,
+				closable: true,
+				onEscape: true,
+				size: "large"
+			});
+  		},
+  		error: function() {
+  		}
+  	});	
+	// window.open(url);
+    // WHITECAT IDE
   }
 };
 

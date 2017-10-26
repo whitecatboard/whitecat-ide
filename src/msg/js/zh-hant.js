@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "修改值:";
 Blockly.Msg.CLEAN_UP = "清理積木";
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "收合積木";
 Blockly.Msg.COLLAPSE_BLOCK = "收合積木";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "顏色 1";

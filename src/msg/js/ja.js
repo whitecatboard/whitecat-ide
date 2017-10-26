@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "値を変える：";
 Blockly.Msg.CLEAN_UP = "ブロックを整理する";
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "ブロックを折りたたむ";
 Blockly.Msg.COLLAPSE_BLOCK = "ブロックを折りたたむ";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "色 1";

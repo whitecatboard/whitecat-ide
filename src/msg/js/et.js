@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "Muuda väärtust:";
 Blockly.Msg.CLEAN_UP = "Korista plokid kokku";
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "Tõmba plokid kokku";
 Blockly.Msg.COLLAPSE_BLOCK = "Tõmba plokk kokku";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "1. värvist";

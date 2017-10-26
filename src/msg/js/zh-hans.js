@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "更改值：";
 Blockly.Msg.CLEAN_UP = "整理块";
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "折叠块";
 Blockly.Msg.COLLAPSE_BLOCK = "折叠块";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "颜色1";

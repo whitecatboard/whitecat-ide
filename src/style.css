@@ -536,3 +536,8 @@ body.modal-open .modal .modal-dialog {
 .table-responsive {
     max-height:300px;
 }
+
+.modal-body {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}

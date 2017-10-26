@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "שנה ערך:";
 Blockly.Msg.CLEAN_UP = "סידור בלוקים";
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "צמצם קטעי קוד";
 Blockly.Msg.COLLAPSE_BLOCK = "צמצם קטע קוד";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "צבע 1";

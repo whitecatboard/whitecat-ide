@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "मान परिवर्तित करें:";
 Blockly.Msg.CLEAN_UP = "Clean up Blocks";  // untranslated
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "ब्लॉक संक्षिप्त करें";
 Blockly.Msg.COLLAPSE_BLOCK = "ब्लॉक को संक्षिप्त करें";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "रंग 1";

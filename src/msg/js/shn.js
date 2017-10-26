@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "လႅၵ်ႈလၢႆႈၼမ်ႉၵတ်ႉ";
 Blockly.Msg.CLEAN_UP = "Clean up Blocks";  // untranslated
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "ပလွၵ်ႉတင်းၼမ် လႅဝ်";
 Blockly.Msg.COLLAPSE_BLOCK = "ပလွၵ်ႉလႅဝ်";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "သီ 1";

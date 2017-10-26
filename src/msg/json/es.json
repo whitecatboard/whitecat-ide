@@ -678,5 +678,6 @@
 	"MQTT_GET_DATA_HELP": "The Whitecat IDE ofrece a sus usuarios un broker MQTT con fines de prueba. Si desea utilizar, haga clic en el botón 'Obtener datos' para obtener los datos de la conexión..",
 	"MQTT_GET_DATA": "Obtener datos ...",
 	
-	"cloudConsoleOn": "Nube"
+	"cloudConsoleOn": "Nube",
+	"CLOSE": "Cerrar"
 }

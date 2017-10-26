@@ -80,6 +80,7 @@ Blockly.Msg.CAN_WRITE_HELPURL = "Send a frame to the CAN bus.";  // untranslated
 Blockly.Msg.CAN_WRITE_TOOLTIP = "";  // untranslated
 Blockly.Msg.CHANGE_VALUE_TITLE = "값 바꾸기:";
 Blockly.Msg.CLEAN_UP = "블록 정리";
+Blockly.Msg.CLOSE = "Close";  // untranslated
 Blockly.Msg.COLLAPSE_ALL = "블록 축소";
 Blockly.Msg.COLLAPSE_BLOCK = "블록 축소";
 Blockly.Msg.COLOUR_BLEND_COLOUR1 = "색 1";
