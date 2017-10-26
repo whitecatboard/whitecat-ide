@@ -130,7 +130,7 @@ Cloud.prototype.onConnectionLost = function(response) {
 Cloud.prototype.onMessageArrived = function(message) {
     var topic = message.destinationName;
     var payload = message.payloadString;
-	
+
 	var table = jQuery("#cloudTable").DataTable();
 	
 	var parts = topic.split("/");

@@ -84,8 +84,10 @@ Status.show = function(message) {
 		if (typeof messageMap.page != "undefined") {
 			url = "https://whitecatboard.org/git/wiki/" + messageMap.page;			
 		}
+	} else {
+		zone = "statusBar1";
 	}
-	
+	 
 	// Show the status only is a new status
 	if ((Status.current.type != type) || (Status.current.message != message)) {
 		// Remove all additional styles
