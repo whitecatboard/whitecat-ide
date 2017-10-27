@@ -2416,12 +2416,12 @@ Code.setup = function() {
 
 		if ((Code.agent.version == "") || (parseFloat(Code.agent.version) < parseFloat(Code.minAgentVersion))) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
-		}
-
-		if (Code.agent.version > "1.2") {
-			if (info.newBuild) {
-				Code.newFirmware();
-			}
+		} else {
+			if (Code.agent.version > "1.2") {
+				if (info.newBuild) {
+					Code.newFirmware();
+				}
+			}	
 		}
 	});
 
