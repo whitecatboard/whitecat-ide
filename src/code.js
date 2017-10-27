@@ -81,7 +81,7 @@ Code.blockAbstraction = blockAbstraction.High;
 
 Code.storage = {};
 
-Code.minAgentVersion = "1.5";
+Code.minAgentVersion = "1.6";
 Code.checkNewVersion = true;
 Code.showCode = false;
 
@@ -1460,22 +1460,22 @@ Code.run = function() {
 	}
 	
 	if (Code.cloud) {
-		Code.cloud.Disconnect();
-		Code.cloud = null;
+		//Code.cloud.Disconnect();
+		//Code.cloud = null;
 		
-		Status.show("cloudConsoleOff");
+		//Status.show("cloudConsoleOff");
 	}
 
 	function run() {
 		var cloud = null;
 		
 		if (Blockly.Lua.usesMQTT(Code.workspace.blocks)) {
-			Status.show("cloudConsoleOn");
+			//Status.show("cloudConsoleOn");
 			
-			var MQTT = Blockly.mainWorkspace.MQTT;
+			//var MQTT = Blockly.mainWorkspace.MQTT;
 			
-			Code.cloud = new Cloud("mqtt", MQTT.username, MQTT.password);
-			Code.cloud.Connect();		
+			//Code.cloud = new Cloud("mqtt", MQTT.username, MQTT.password);
+			//Code.cloud.Connect();		
 		}
 		
 		Code.showProgress(MSG['sendingCode']);

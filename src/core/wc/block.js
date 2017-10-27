@@ -24,7 +24,15 @@ var IDEHelp = {
 	"getanalogpin": "Get-analog-pin-value-()-in-()",
 	"getexternalanalogchannel": "Get-analog-value-from-()-()-in-()",
 	"setpwmpin": "Set-PWM-pin-()-to-frequency-()-hertzs-and-duty-()-%25",
-	"when_digital_pin": "When-digital-pin-()-changes-at-()"
+	"when_digital_pin": "When-digital-pin-()-changes-at-()",
+	
+	// Wi-Fi
+	"wifi_start": "Start-Wi-Fi",
+	"wifi_stop": "Stop-Wi-Fi",
+	
+	// MQTT
+	"mqtt_subscribe": "When-a-message-is-received-to-topic-()-with-()-with:-length,-payload",
+	"mqtt_publish": "Publish-()-to-topic-()-with-()"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {

@@ -223,7 +223,8 @@ Blockly.MQTT.configure = function(workspace, opt_callback, block) {
 				callback: function() {}
 			},
 		},
-		closable: false
+		closable: false,
+		onEscape: true
 	});
 	
 	box.bind('shown.bs.modal', function(){

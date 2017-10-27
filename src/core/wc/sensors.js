@@ -756,7 +756,8 @@ Blockly.Sensors.createSensor = function(workspace, opt_callback, block) {
 				callback: function() {}
 			},
 		},
-		closable: false
+		closable: false,
+		onEscape: true
 	}).on('shown.bs.modal', function (e) {
 		Blockly.Sensors.sensorChanged(block, edit);
 	});
