@@ -733,61 +733,17 @@ Blockly.BlockSvg.prototype.onMouseUp_ = function(e) {
  * Load the block's help page in a new window.
  * @private
  */
-// WHITECAT IDE  
-Blockly.BlockSvg.prototype.addHelpHandlers = function() {
-	var thisInstance = this;
-	
-	jQuery(".modal-body").find("a").unbind("click").bind("click", function(e) {
-		var target = jQuery(e.target);
-		
-	  	jQuery.ajax({
-	  		url: target.attr("href"),
-	  		type: "GET",
-			crossDomain:true,
-	  		success: function(result) {
-				jQuery(".modal-body").find("a").unbind("click");
-				
-				jQuery(".modal-body").html(result);
-				
-				thisInstance.addHelpHandlers();
-	  		},
-	  		error: function() {
-	  		}
-		});					
-		
-		return false;
-	});	
-};
-// WHITECAT IDE  
 
+// WHITECAT IDE
 Blockly.BlockSvg.prototype.showHelp_ = function() {
   var thisInstance = this;
 
   var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
   if (url) {
-  	// WHITECAT IDE  
-  	jQuery.ajax({
-  		url: url,
-  		type: "GET",
-		crossDomain:true,
-  		success: function(result) {
-			bootbox.dialog({
-				title: Blockly.Msg.HELP,
-				message: result,
-				closable: true,
-				onEscape: true,
-				size: "large"
-			}).on('shown.bs.modal', function (e) {
-				thisInstance.addHelpHandlers();
-			});
-  		},
-  		error: function() {
-  		}
-	});
-	// window.open(url);
-    // WHITECAT IDE
+	  Code.showHelp(url);
   }
 };
+// WHITECAT IDE
 
 /**
  * Show the context menu for this block.

@@ -6,3 +6,10 @@ src/blocks_compressed.js
 src/lua_compressed.js
 src/tools/esptool/build
 src/tools/esptool/dist
+src/blockly_accessible_uncompressed.js
+src/test.js
+src/blockly_compressed.js
+src/blockly_uncompressed.js
+src/lua_compressed.js
+src/wc.js
+src/blocks_compressed.js

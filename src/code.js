@@ -1540,9 +1540,8 @@ Code.loadFile = function(storage, path, entry, id) {
 	}
 
 	function fileDownloaded(fileContent) {
-		BootstrapDialog.closeAll();
-		bootbox.hideAll();
-
+		Code.closeDialogs();
+		
 		if (Code.workspace.type == 'blocks') {
 			var xml = Blockly.Xml.textToDom(fileContent);
 			xml = Code.workspace.blocks.migrate(xml);
@@ -1885,8 +1884,7 @@ Code.saveAs = function(callback) {
 
 // Progress messages
 Code.showProgress = function(title) {
-	BootstrapDialog.closeAll();
-	bootbox.hideAll();
+	Code.closeDialogs();
 
 	BootstrapDialog.show({
 		message: '<div class="progress progress-striped active" style="width: 100%;">' +
@@ -1899,14 +1897,12 @@ Code.showProgress = function(title) {
 }
 
 Code.hideProgress = function() {
-	BootstrapDialog.closeAll();
-	bootbox.hideAll();
+	Code.closeDialogs();
 }
 
 // Information messages
 Code.showInformation = function(text) {
-	BootstrapDialog.closeAll();
-	bootbox.hideAll();
+	Code.closeDialogs();
 
 	setTimeout(function() {
 		BootstrapDialog.show({
@@ -1922,10 +1918,54 @@ Code.showInformation = function(text) {
 	}, 500);
 }
 
-// Alert messages
-Code.showAlert = function(text) {
+Code.closeDialogs = function() {
 	BootstrapDialog.closeAll();
 	bootbox.hideAll();
+	Code.removeHelpHandlers();
+}
+
+Code.removeHelpHandlers = function() {
+	jQuery(".modal-body").find("a").unbind("click");
+}
+
+Code.addHelpHandlers = function() {
+	jQuery(".modal-body").find("a").unbind("click").bind("click", function(e) {
+		var target = jQuery(e.target);
+
+		alert(Code.server + "/" + target.attr("href"));
+		Code.showHelp(Code.server + "/" + target.attr("href"));
+		
+		return false;
+	});		
+}
+
+Code.showHelp = function(url) {
+	Code.closeDialogs();
+	setTimeout(function() {
+	  	jQuery.ajax({
+	  		url: Code.server + "/" + url,
+	  		type: "GET",
+			crossDomain:true,
+	  		success: function(result) {
+				bootbox.dialog({
+					title: Blockly.Msg.HELP,
+					message: result,
+					closable: true,
+					onEscape: true,
+					size: "large"
+				}).on('shown.bs.modal', function (e) {
+					Code.addHelpHandlers();
+				});
+	  		},
+	  		error: function() {
+	  		}
+		});
+	}, 500);
+}
+
+// Alert messages
+Code.showAlert = function(text) {
+	Code.closeDialogs();
 
 	BootstrapDialog.show({
 		message: text,
@@ -1940,17 +1980,12 @@ Code.showAlert = function(text) {
 
 					if (typeof require != "undefined") {
 						if (typeof require('nw.gui') != "undefined") {
-							var win = gui.Window.open(target.data("url"), {
-								focus: true,
-								position: 'center',
-								width: 1055,
-								height: 700
-							});
+							Code.showHelp(target.data("url"));
 						} else {
-							window.open(target.data("url"), '_blank');
+							Code.showHelp(target.data("url"));
 						}
 					} else {
-						window.open(target.data("url"), '_blank');
+						Code.showHelp(target.data("url"));
 					}
 				});
 			}, 500);
@@ -1960,8 +1995,7 @@ Code.showAlert = function(text) {
 }
 
 Code.showError = function(title, err, callback) {
-	BootstrapDialog.closeAll();
-	bootbox.hideAll();
+	Code.closeDialogs();
 
 	setTimeout(function() {
 		bootbox.dialog({
