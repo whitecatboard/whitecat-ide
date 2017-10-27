@@ -82,7 +82,8 @@ Code.blockAbstraction = blockAbstraction.High;
 Code.storage = {};
 
 Code.minAgentVersion = "1.6";
-Code.checkNewVersion = true;
+Code.checkNewFirmwareVersion = true;
+Code.checkNewAgentVersion = true;
 Code.showCode = false;
 
 Code.storage.board = null;
@@ -1985,7 +1986,7 @@ Code.showError = function(title, err, callback) {
 }
 
 Code.newFirmware = function() {
-	if (!Code.checkNewVersion) return;
+	if (!Code.checkNewFirmwareVersion) return;
 
 	bootbox.dialog({
 		message: MSG['newFirmware'],
@@ -1994,7 +1995,7 @@ Code.newFirmware = function() {
 				label: MSG['notNow'],
 				className: "btn-default",
 				callback: function() {
-					Code.checkNewVersion = false;
+					Code.checkNewFirmwareVersion = false;
 				}
 			},
 			success: {
@@ -2415,7 +2416,11 @@ Code.setup = function() {
 		});
 
 		if ((Code.agent.version == "") || (parseFloat(Code.agent.version) < parseFloat(Code.minAgentVersion))) {
-			Code.showAlert(MSG['pleaseUpgradeAgent']);
+			if (Code.checkNewAgentVersion) {
+				Code.showAlert(MSG['pleaseUpgradeAgent']);
+			}
+			
+			Code.checkNewAgentVersion = false;
 		} else {
 			if (Code.agent.version > "1.2") {
 				if (info.newBuild) {
