@@ -77,7 +77,7 @@ Blockly.Blocks['bitlogic_lsb'] = {
 };
 
 Blockly.Blocks['bitwise_op'] = {
-	module: "nitwise",
+	module: "bitwise",
 	hasWatcher: true,
 	init: function() {
 		var ops = [];
@@ -108,7 +108,7 @@ Blockly.Blocks['bitwise_op'] = {
 };
 
 Blockly.Blocks['bitwise_unary_op'] = {
-	module: "nitwise",
+	module: "bitwise",
 	hasWatcher: true,
 	init: function() {
 		var ops = [];
