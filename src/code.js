@@ -286,7 +286,7 @@ Code.setCurrentStorage = function(storage, path, file, id) {
 		Code.currentFile.path = path;
 		Code.currentFile.id = null;
 	} else {
-		Code.currentFile.path = path;
+		Code.currentFile.path = "";
 		Code.currentFile.id = id;
 
 		file = file.replace(/\/.*\//g, "");
@@ -319,6 +319,12 @@ Code.getCurrentFullPath = function() {
 	path = path.replace(/[\\\/]+/g, '/');
 
 	return path;
+}
+
+Code.getBasename = function(path) {
+	var tmp = path.split("/");
+	
+	return tmp[tmp.length - 1];
 }
 
 Code.getPathFor = function(folder, file) {

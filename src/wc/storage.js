@@ -330,6 +330,8 @@ Storage.prototype._boardSave = function(file, content, callback) {
 }
 
 Storage.prototype._cloudSave = function(file, id, content, callback) {
+	file = Code.getBasename(file);
+	
 	jQuery.ajax({
 		url: Code.server,
 		data: {
