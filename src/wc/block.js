@@ -30,7 +30,7 @@ var IDEHelp = {
 	"wifi_start": "wiki/Start-Wi-Fi",
 	"wifi_stop": "wiki/Stop-Wi-Fi",
 	
-	// MQTT
+	// MQTT 
 	"mqtt_subscribe": "wiki/When-a-message-is-received-to-topic-()-with-()-with:-length,-payload",
 	"mqtt_publish": "wiki/Publish-()-to-topic-()-with-()",
 	
@@ -40,7 +40,11 @@ var IDEHelp = {
 	
 	// BITWISE
 	"bitwise_unary_op": "wiki/Bitwise-(operator)-(operand)",
-	"bitwise_op": "wiki/Bitwise-(operand)-(operator)-(operand)"
+	"bitwise_op": "wiki/Bitwise-(operand)-(operator)-(operand)",
+	 
+	// Pack / unpack 
+	"text_pack": "wiki/Pack-hex-string-with-(),-with(),-...",
+	"text_unpack": "wiki/Unpack-hex-string-()-to-(),-to-(),-..."
 }
 
 Blockly.Block.prototype.isHatBlock = function() {
