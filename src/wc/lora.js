@@ -130,6 +130,19 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 		xmlList.push(block);
 	}
 
+	if (Blockly.Blocks['text_pack']) {
+		var block = goog.dom.createDom('block');
+		block.setAttribute('type', 'text_pack');
+		xmlList.push(block);
+	}
+
+	if (Blockly.Blocks['text_unpack']) {
+		var block = goog.dom.createDom('block');
+		block.setAttribute('type', 'text_unpack');
+		xmlList.push(block);
+	}
+	
+
 	return xmlList;
 };
 
