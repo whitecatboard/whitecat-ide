@@ -40,8 +40,8 @@ Blockly.Lua['text_pack'] = function(block) {
       code[n] = Blockly.Lua.valueToCode(block, 'WITH' + n,
           Blockly.Lua.ORDER_NONE) || '\'\'';
     }
-    code = to + ' = pack.pack(' + code.join(', ') + ')\n';
-    return code;
+	
+	return ['pack.pack(' + code.join(', ') + ')', Blockly.Lua.ORDER_HIGH];	
 };
 
 Blockly.Lua['text_unpack'] = function(block) {

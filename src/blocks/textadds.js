@@ -68,23 +68,25 @@ Blockly.Blocks['text_pack'] = {
    * Block for creating a string made up of any number of elements of any type.
    * @this Blockly.Block
    */
+  hasWatcher: true,
   init: function() {
     this.setHelpUrl(Blockly.Msg.TEXT_PACK_HELPURL);
     this.setColour(Blockly.Blocks.texts.HUE);
 
-    this.appendValueInput('TO0')
-        .appendField(Blockly.Msg.TEXT_PACK_TITLE1);
+	this.appendDummyInput()
+		.setAlign(Blockly.ALIGN_RIGHT)
+		.appendField(Blockly.Msg.TEXT_PACK_TITLE1);
 
     this.appendValueInput('WITH0')
         .appendField(Blockly.Msg.TEXT_PACK_TITLE2).setAlign(Blockly.ALIGN_RIGHT);
 
     this.withCount_ = 1;
     this.toCount_ = 1;
-    this.setOutput(false, null);
+    this.setOutput(true, null);
     this.setMutator(new Blockly.Mutator(['pack_create_item_with']));
     this.setTooltip(Blockly.Msg.TEXT_PACK_TOOLTIP);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
   },
   /**
    * Create XML to represent number of text inputs.
@@ -111,7 +113,6 @@ Blockly.Blocks['text_pack'] = {
    */
   domToMutation: function(xmlElement) {
     this.withCount_ = parseInt(xmlElement.getAttribute('with'), 10) || 0;
-    this.toCount_ = parseInt(xmlElement.getAttribute('to'), 10) || 0;
     this.updateShape_();
   },
   /**
@@ -154,10 +155,6 @@ Blockly.Blocks['text_pack'] = {
           this.withCount_++;
           withConnections.push(itemBlock.withConnection_);
           break;
-        case 'pack_create_item_to':
-          this.toCount_++;
-          toConnections.push(itemBlock.toConnection_);
-          break;
         default:
           throw 'Unknown block type.';
       }
@@ -168,10 +165,6 @@ Blockly.Blocks['text_pack'] = {
     // Reconnect any child blocks.
     for (var i = 1; i <= this.withCount_; i++) {
       Blockly.Mutator.reconnect(withConnections[i], this, 'WITH' + i);
-    }
-      	
-    for (var i = 1; i <= this.toCount_; i++) {
-      Blockly.Mutator.reconnect(toConnections[i], this, 'TO' + i);
     }
   },
   /**
@@ -188,12 +181,6 @@ Blockly.Blocks['text_pack'] = {
           var inputWith = this.getInput('WITH' + i);
           intemBlock.withConnection_ =
               inputWith && inputWith.connection.targetConnection;
-          i++;
-          break;
-        case 'pack_create_item_to':
-          var inputTo = this.getInput('TO' + i);
-          intemBlock.toConnection_ =
-              inputTo && inputTo.connection.targetConnection;
           i++;
           break;
         default:
@@ -215,23 +202,10 @@ Blockly.Blocks['text_pack'] = {
       i++;
     }
 
-    var i = 1;
-    while (this.getInput('TO' + i)) {
-      this.removeInput('TO' + i);
-      i++;
-    }
-
     for (var i = 0; i < this.withCount_; i++) {
       if (!this.getInput('WITH' + i)) {
         var input = this.appendValueInput('WITH' + i);
         input.appendField(Blockly.Msg.TEXT_PACK_TITLE2).setAlign(Blockly.ALIGN_RIGHT);
-      }
-    }
-
-    for (var i = 0; i < this.toCount_; i++) {
-      if (!this.getInput('TO' + i)) {
-        var input = this.appendValueInput('TO' + i);
-        input.appendField(Blockly.Msg.TEXT_PACK_TITLE3).setAlign(Blockly.ALIGN_RIGHT);
       }
     }
   }
@@ -297,15 +271,12 @@ Blockly.Blocks['text_unpack'] = {
    * @this Blockly.Block
    */
   mutationToDom: function() {
-    if (!this.toCount_ && !this.fromCount_) {
+    if (!this.toCount_) {
       return null;
     }
     var container = document.createElement('mutation');
     if (this.toCount_) {
       container.setAttribute('with', this.toCount_);
-    }
-    if (this.fromCount_) {
-      container.setAttribute('from', this.fromCount_);
     }
     return container;
   },
@@ -316,7 +287,6 @@ Blockly.Blocks['text_unpack'] = {
    */
   domToMutation: function(xmlElement) {
     this.toCount_ = parseInt(xmlElement.getAttribute('with'), 10) || 0;
-    this.fromCount_ = parseInt(xmlElement.getAttribute('from'), 10) || 0;
     this.updateShape_();
   },
   /**
@@ -348,20 +318,14 @@ Blockly.Blocks['text_unpack'] = {
     var itemBlock = containerBlock.nextConnection.targetBlock();
 
     this.toCount_ = 0;
-    this.fromCount_ = 0;
 
     var toConnections = [null];
-    var fromConnections = [null];
 
     while (itemBlock) {
       switch (itemBlock.type) {
         case 'unpack_create_item_to':
           this.toCount_++;
           toConnections.push(itemBlock.toConnection_);
-          break;
-        case 'unpack_create_item_from':
-          this.fromCount_++;
-          fromConnections.push(itemBlock.fromConnection_);
           break;
         default:
           throw 'Unknown block type.';
@@ -373,11 +337,7 @@ Blockly.Blocks['text_unpack'] = {
     // Reconnect any child blocks.
     for (var i = 1; i <= this.toCount_; i++) {
       Blockly.Mutator.reconnect(toConnections[i], this, 'TO' + i);
-    }
-      	
-    for (var i = 1; i <= this.fromCount_; i++) {
-      Blockly.Mutator.reconnect(fromConnections[i], this, 'FROM' + i);
-    }
+    }      	
   },
   /**
    * Store pointers to any connected child blocks.
@@ -393,12 +353,6 @@ Blockly.Blocks['text_unpack'] = {
           var inputWith = this.getInput('TO' + i);
           intemBlock.toConnection_ =
               inputWith && inputWith.connection.targetConnection;
-          i++;
-          break;
-        case 'unpack_create_item_from':
-          var inputTo = this.getInput('FROM' + i);
-          intemBlock.fromConnection_ =
-              inputTo && inputTo.connection.targetConnection;
           i++;
           break;
         default:
@@ -430,13 +384,6 @@ Blockly.Blocks['text_unpack'] = {
       if (!this.getInput('TO' + i)) {
         var input = this.appendValueInput('TO' + i);
         input.appendField(Blockly.Msg.TEXT_UNPACK_TITLE2).setAlign(Blockly.ALIGN_RIGHT);
-      }
-    }
-
-    for (var i = 0; i < this.fromCount_; i++) {
-      if (!this.getInput('FROM' + i)) {
-        var input = this.appendValueInput('FROM' + i);
-        input.appendField(Blockly.Msg.TEXT_UNPACK_TITLE3).setAlign(Blockly.ALIGN_RIGHT);
       }
     }
   }

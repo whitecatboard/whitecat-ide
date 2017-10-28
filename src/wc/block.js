@@ -36,7 +36,11 @@ var IDEHelp = {
 	
 	// LORA
 	"when_i_receive_a_lora_frame": "wiki/When-I-receive-a-LoRa-frame-with:-port,-payload",
-	"lora_tx": "wiki/Transmit-()-frame-to-port-()"
+	"lora_tx": "wiki/Transmit-()-frame-to-port-()",
+	
+	// BITWISE
+	"bitwise_unary_op": "wiki/Bitwise-(operator)-(operand)",
+	"bitwise_op": "wiki/Bitwise-(operand)-(operator)-(operand)"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {

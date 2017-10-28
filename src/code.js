@@ -833,7 +833,8 @@ Code.buildToolBox = function(callback) {
 		'</block>' +
 		'<block type="text"></block>' +
 		'<block type="text_pack"></block>' +
-		'<block type="text_unpack"></block>' +
+		'<block type="text_unpack">' +
+		'</block>' +
 		'</category>' +
 		'</category>' +
 		'<category id="catLists" colour="260">' +
