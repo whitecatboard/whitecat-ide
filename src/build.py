@@ -190,18 +190,31 @@ class Gen_compressed(threading.Thread):
         ("output_info", "statistics"),
       ]
 
+    print("core")
+    code = ""
+    closureCode = ""
     # Read in all the source files.
     filenames = calcdeps.CalculateDependencies(self.search_paths,
         [os.path.join("core", "blockly.js")])
     for filename in filenames:
       # Filter out the Closure files (the compiler will add them).
       if filename.startswith(os.pardir + os.sep):  # '../'
-        continue
-      f = open(filename)
-      params.append(("js_code", "".join(f.readlines())))
-      f.close()
+        f = open(filename)
+        closureCode = closureCode + "".join(f.readlines());
+        f.close()
+      else:
+        print(filename)
+        f = open(filename)
+        code = code + "".join(f.readlines());
+        f.close()
 
-    self.do_compile(params, target_filename, filenames, "")
+    f = open("tmp.js", "w")
+    f.write(closureCode + code)
+    f.close()
+
+    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --js tmp.js')
+    
+    #self.do_compile(params, target_filename, filenames, "")
 
   def gen_blocks(self):
     target_filename = "blocks_compressed.js"
@@ -215,18 +228,36 @@ class Gen_compressed(threading.Thread):
         ("output_info", "statistics"),
       ]
 
+    code = "goog.provide('Blockly.Blocks');"
+    
     # Read in all the source files.
     # Add Blockly.Blocks to be compatible with the compiler.
     params.append(("js_code", "goog.provide('Blockly.Blocks');"))
     filenames = glob.glob(os.path.join("blocks", "*.js"))
     for filename in filenames:
       f = open(filename)
-      params.append(("js_code", "".join(f.readlines())))
+      code = code + "".join(f.readlines());
       f.close()
 
     # Remove Blockly.Blocks to be compatible with Blockly.
     remove = "var Blockly={Blocks:{}};"
-    self.do_compile(params, target_filename, filenames, remove)
+
+    f = open("tmp.js", "w")
+    f.write(code)
+    f.close()
+
+    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --js tmp.js')
+
+    f = open(target_filename)
+    code = "".join(f.readlines());
+    code = code.replace(remove, "")
+    f.close()
+    
+    f = open(target_filename, "w")
+    f.write(code)
+    f.close()
+
+    #self.do_compile(params, target_filename, filenames, remove)
 
   def gen_generator(self, language):
     target_filename = language + "_compressed.js"
@@ -240,6 +271,7 @@ class Gen_compressed(threading.Thread):
         ("output_info", "statistics"),
       ]
 
+    code = "goog.provide('Blockly.Generator');"
     # Read in all the source files.
     # Add Blockly.Generator to be compatible with the compiler.
     params.append(("js_code", "goog.provide('Blockly.Generator');"))
@@ -248,13 +280,29 @@ class Gen_compressed(threading.Thread):
     filenames.insert(0, os.path.join("generators", language + ".js"))
     for filename in filenames:
       f = open(filename)
-      params.append(("js_code", "".join(f.readlines())))
+      code = code + "".join(f.readlines());
       f.close()
     filenames.insert(0, "[goog.provide]")
 
     # Remove Blockly.Generator to be compatible with Blockly.
     remove = "var Blockly={Generator:{}};"
-    self.do_compile(params, target_filename, filenames, remove)
+
+    f = open("tmp.js", "w")
+    f.write(code)
+    f.close()
+    
+    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --js tmp.js')
+
+    f = open(target_filename)
+    code = "".join(f.readlines());
+    code = code.replace(remove, "")
+    f.close()
+    
+    f = open(target_filename, "w")
+    f.write(code)
+    f.close()
+    
+    #self.do_compile(params, target_filename, filenames, remove)
 
   def do_compile(self, params, target_filename, filenames, remove):
     # Send the request to Google.

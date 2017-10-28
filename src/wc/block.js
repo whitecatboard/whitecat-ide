@@ -2,37 +2,37 @@
 
 var IDEHelp = {
 	// Events
-	"broadcast": "Broadcast-()",
-	"broadcast_and_wait": "Broadcast-()-and-wait",
-	"when_board_starts": "When-board-starts",
-	"when_i_receive": "When-I-receive-()",
-	"execute_every": "Every-()-(unit)",
-	"thread": "Forever",
+	"broadcast": "wiki/Broadcast-()",
+	"broadcast_and_wait": "wiki/Broadcast-()-and-wait",
+	"when_board_starts": "wiki/When-board-starts",
+	"when_i_receive": "wiki/When-I-receive-()",
+	"execute_every": "wiki/Every-()-(unit)",
+	"thread": "wiki/Forever",
 
 	// Delays
-	"wait_for": "Wait-()-(unit)",
-	"cpu_sleep": "Sleep-()-seconds",
+	"wait_for": "wiki/Wait-()-(unit)",
+	"cpu_sleep": "wiki/Sleep-()-seconds",
 
 	// Loops
-	"controls_repeat": "Repeat-()-times",
-	"controls_whileUntil": "Repeat-while-()",
+	"controls_repeat": "wiki/Repeat-()-times",
+	"controls_whileUntil": "wiki/Repeat-while-()",
 	
 	// IO
-	"setdigitalpin": "Set-digital-pin-()-to-()",
-	"invertdigitalpin": "Invert-digital-pin-()",
-	"getdigitalpin": "Get-digital-pin-value-()",
-	"getanalogpin": "Get-analog-pin-value-()-in-()",
-	"getexternalanalogchannel": "Get-analog-value-from-()-()-in-()",
-	"setpwmpin": "Set-PWM-pin-()-to-frequency-()-hertzs-and-duty-()-%25",
-	"when_digital_pin": "When-digital-pin-()-changes-at-()",
+	"setdigitalpin": "wiki/Set-digital-pin-()-to-()",
+	"invertdigitalpin": "wiki/Invert-digital-pin-()",
+	"getdigitalpin": "wiki/Get-digital-pin-value-()",
+	"getanalogpin": "wiki/Get-analog-pin-value-()-in-()",
+	"getexternalanalogchannel": "wiki/Get-analog-value-from-()-()-in-()",
+	"setpwmpin": "wiki/Set-PWM-pin-()-to-frequency-()-hertzs-and-duty-()-%25",
+	"when_digital_pin": "wiki/When-digital-pin-()-changes-at-()",
 	
 	// Wi-Fi
-	"wifi_start": "Start-Wi-Fi",
-	"wifi_stop": "Stop-Wi-Fi",
+	"wifi_start": "wiki/Start-Wi-Fi",
+	"wifi_stop": "wiki/Stop-Wi-Fi",
 	
 	// MQTT
-	"mqtt_subscribe": "When-a-message-is-received-to-topic-()-with-()-with:-length,-payload",
-	"mqtt_publish": "Publish-()-to-topic-()-with-()"
+	"mqtt_subscribe": "wiki/When-a-message-is-received-to-topic-()-with-()-with:-length,-payload",
+	"mqtt_publish": "wiki/Publish-()-to-topic-()-with-()"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {
@@ -102,7 +102,7 @@ Blockly.Block.prototype.getHelpUrl = function()  {
 	var url;
 	
 	if (typeof IDEHelp[this.type] != "undefined") {
-		url = 'https://ide.whitecatboard.org/wiki/' + IDEHelp[this.type];
+		url = IDEHelp[this.type];
 	} else {
 		url = '';
 		

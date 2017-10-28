@@ -1,15 +1,15 @@
 ./build.py
 java -jar ./../yuicompressor-2.4.8.jar blockly_compressed.js > wc.js
 java -jar ./../yuicompressor-2.4.8.jar blocks_compressed.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/workspace.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/sensors.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/wifi.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/mqtt.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/lora.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/field_event.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/field_can_frame.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/field_exception.js >> wc.js
-java -jar ./../yuicompressor-2.4.8.jar core/wc/block.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/workspace.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/sensors.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/wifi.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/mqtt.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/lora.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/field_event.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/field_can_frame.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/field_exception.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/block.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/settings.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/watcher.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/storage.js >> wc.js

@@ -46,12 +46,12 @@ Status.messages["Downloading esptool"] = {tag: "downloadingEsptool", type: statu
 Status.messages["Unpacking esptool"] = {tag: "unpackingEsptool", type: statusType.Progress, zone: "statusBar1"};
 Status.messages["Downloading firmware"] = {tag: "downloadingFirmware", type: statusType.Progress, zone: "statusBar1"};
 Status.messages["Unpacking firmware"] = {tag: "unpackingFirmware", type: statusType.Progress, zone: "statusBar1"};
-Status.messages["No board attached"] = {tag: "noBoardAttached", type: statusType.Alert, page: "whitecat-ide/Errors:--No-board-attached", zone: "statusBar1"};
+Status.messages["No board attached"] = {tag: "noBoardAttached", type: statusType.Alert, page: "wiki/Errors:--No-board-attached", zone: "statusBar1"};
 Status.messages["Scanning boards"] = {tag: "scanningBoards", type: statusType.Progress, zone: "statusBar1"};
 Status.messages["Python not found"] = {tag: "pythonNotFound", type: statusType.Aler, zone: "statusBar1"};
 Status.messages["Reseting board"] = {tag: "resetingBoard", type: statusType.Progress, zone: "statusBar1"};
 Status.messages["Stopping program"] = {tag: "stoppingProgram", type: statusType.Progress, zone: "statusBar1"};
-Status.messages["Can't connect to agent"] = {tag: "cannotConnectToAgent", type: statusType.Alert, page: "whitecat-ide/Errors:--Can't-connect-to-agent", zone: "statusBar1"};
+Status.messages["Can't connect to agent"] = {tag: "cannotConnectToAgent", type: statusType.Alert, page: "wiki/Errors:--Can't-connect-to-agent", zone: "statusBar1"};
 Status.messages["Connect a board"] = {tag: "connectABoard", type: statusType.Alert, zone: "statusBar1"};
 Status.messages["Corrupted firmware"] = {tag: "corruptedFirmware", type: statusType.Alert, zone: "statusBar1"};
 Status.messages["Flash error"] = {tag: "flashError", type: statusType.Alert, zone: "statusBar1"};
@@ -82,7 +82,7 @@ Status.show = function(message) {
 		zone = messageMap.zone;
 		
 		if (typeof messageMap.page != "undefined") {
-			url = "https://whitecatboard.org/git/wiki/" + messageMap.page;			
+			url = messageMap.page;			
 		}
 	} else {
 		zone = "statusBar1";
@@ -143,17 +143,12 @@ Status.show = function(message) {
 				if (typeof url != "undefined") {
 					if (typeof require != "undefined") {
 						if (typeof require('nw.gui') != "undefined") {
-							var win = gui.Window.open(url, {
-							  focus: true,
-							  position: 'center',
-							  width: 1055,
-							  height: 700
-							});
+							Code.showHelp(url);
 						} else {
-							window.open(url, '_blank');
+							Code.showHelp(url);
 						}
 					} else {
-						window.open(url, '_blank');					
+						Code.showHelp(url);
 					}	
 				}				
 			});			

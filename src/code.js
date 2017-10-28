@@ -1931,9 +1931,15 @@ Code.removeHelpHandlers = function() {
 Code.addHelpHandlers = function() {
 	jQuery(".modal-body").find("a").unbind("click").bind("click", function(e) {
 		var target = jQuery(e.target);
-
-		alert(Code.server + "/" + target.attr("href"));
-		Code.showHelp(Code.server + "/" + target.attr("href"));
+		var href = target.attr("href");
+		
+		// If href is external open in browser
+		if (href.startsWith("http:") || href.startsWith("https:")) {
+			window.open(href,"_blank")
+		} else {
+			// Open in dialog
+			Code.showHelp(href);
+		}
 		
 		return false;
 	});		
@@ -1991,7 +1997,6 @@ Code.showAlert = function(text) {
 			}, 500);
 		}
 	});
-
 }
 
 Code.showError = function(title, err, callback) {
