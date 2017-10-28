@@ -1611,6 +1611,34 @@ Code.saveFile = function(storage, folder, file, id, content, callback) {
 	}
 }
 
+Code.loadExample = function(file) {
+	function fileDownloaded(fileContent) {
+		Code.closeDialogs();
+		
+		Code.workspace.type == 'blocks';
+		
+		// Discard all blocks
+		Code.workspace.blocks.clear();
+		Code.setDefaultStorage();
+		Code.tabRefresh();
+		
+		// Load
+		var xml = Blockly.Xml.textToDom(fileContent);
+		xml = Code.workspace.blocks.migrate(xml);
+		Code.workspace.blocks.clear();
+		Blockly.Xml.domToWorkspace(xml, Code.workspace.blocks);
+		Blockly.resizeSvgContents(Code.workspace.blocks);
+
+		Code.tabRefresh();
+		Code.renderContent();
+		Code.workspace.blocks.scrollCenter();
+	}
+
+	Code.storage.cloud.load(btoa(file), function(fileContent) {
+		fileDownloaded(fileContent);
+	});
+}
+
 Code.load = function() {
 	function storageSelected(storage) {
 		jQuery("#selectedStorage").val(storage);
@@ -1933,8 +1961,11 @@ Code.addHelpHandlers = function() {
 		var target = jQuery(e.target);
 		var href = target.attr("href");
 		
-		// If href is external open in browser
-		if (href.startsWith("http:") || href.startsWith("https:")) {
+		if (href.startsWith("https://ide.whitecatboard.org/?file=")) {
+			// Open code
+			Code.loadExample(href.replace("https://ide.whitecatboard.org/?file=",""));
+		} else if (href.startsWith("http:") || href.startsWith("https:")) {
+			// href is external open in browser
 			window.open(href,"_blank")
 		} else {
 			// Open in dialog
