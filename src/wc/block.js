@@ -32,7 +32,11 @@ var IDEHelp = {
 	
 	// MQTT
 	"mqtt_subscribe": "wiki/When-a-message-is-received-to-topic-()-with-()-with:-length,-payload",
-	"mqtt_publish": "wiki/Publish-()-to-topic-()-with-()"
+	"mqtt_publish": "wiki/Publish-()-to-topic-()-with-()",
+	
+	// LORA
+	"when_i_receive_a_lora_frame": "wiki/When-I-receive-a-LoRa-frame-with:-port,-payload",
+	"lora_tx": "wiki/Transmit-()-frame-to-port-()"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {

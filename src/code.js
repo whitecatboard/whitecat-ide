@@ -2655,6 +2655,27 @@ if (typeof require != "undefined") {
 		});
 	}
 } else {
+	// Send alive message to server at regular intervals for matain the
+	// session with server open
+	setInterval(function() {
+		jQuery.ajax({
+			url: Code.server,
+			data: {
+				alive: ""
+			},
+			type: "POST",
+			success: function(result) {
+				result = JSON.parse(result);
+			
+				if (!result.success) {
+				}
+				return;
+			},
+			error: function() {
+			}
+		});				
+	}, 1000 * 60 * 5);
+	
 	window.addEventListener('close', function() {
 		Code.agent.send({
 			command: "detachIde",
