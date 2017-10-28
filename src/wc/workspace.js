@@ -90,7 +90,7 @@ Blockly.Workspace.prototype.wcInit = function() {
 		this.lora = {
 			"band": "868",
 			"activation": "ABP",
-			"dr": "0",
+			"dr": "4",
 			"retx": "0",
 			"adr": "false",
 			"deveui": "",
