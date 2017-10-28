@@ -49,7 +49,7 @@ Blockly.Lua['text_unpack'] = function(block) {
     var code = '';
     
 	for (var n = 0; n < block.toCount_; n++) {
-		code += Blockly.Lua.valueToCode(block, 'TO' + n, Blockly.Lua.ORDER_NONE) + ', ' + packed + ' = pack.unpack(' + packed + ', false)\n';
+		code += Blockly.Lua.valueToCode(block, 'TO' + n, Blockly.Lua.ORDER_NONE) + ', ' + packed + ' = pack.unpack(' + packed + ', true)\n';
     }
 	
     return code;
