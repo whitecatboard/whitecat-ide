@@ -242,6 +242,18 @@ Blockly.Lua.blockError = function(indent, block) {
 	}
 }
 
+Blockly.Lua.blockErrorCatched = function(indent, block) {
+	var code = '';
+	
+	if (Blockly.Lua.developerMode) {
+		code += Blockly.Lua.indent(indent,'wcBlock.blockErrorCatched('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";
+		
+		return code;	
+	} else {
+		return '';
+	}
+}
+
 Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	var tryCode = '';
 	var blockId = Blockly.Lua.blockIdToNum(block.id);
@@ -4320,6 +4332,7 @@ Blockly.Lua['exception_try'] = function(block) {
    code += Blockly.Lua.indent(1, 'end, ') + "\n";
    code += Blockly.Lua.indent(1, 'function(where, line, errCode, msg)') + "\n";
    code += Blockly.Lua.indent(1, catchStatement);
+   code += Blockly.Lua.blockErrorCatched(2, block);
 
    if (finallyStatement != '') {
 	   code += Blockly.Lua.indent(1, 'end, ') + "\n";
@@ -4343,11 +4356,13 @@ Blockly.Lua['exception_catch_error'] = function(block) {
 	if (error == "any") {
 		code += Blockly.Lua.indent(0, 'if (errCode ~= nil) then') + "\n";
 		code += Blockly.Lua.indent(0, doStatement);
+		code += Blockly.Lua.blockErrorCatched(1, block);
 		code += Blockly.Lua.indent(1, 'return') + "\n";
 		code += Blockly.Lua.indent(0, 'end') + "\n";		
 	} else {
 		code += Blockly.Lua.indent(0, 'if ((errCode ~= nil) and (errCode == '+error+')) then') + "\n";
 		code += Blockly.Lua.indent(0, doStatement);
+		code += Blockly.Lua.blockErrorCatched(1, block);
 		code += Blockly.Lua.indent(1, 'return') + "\n";
 		code += Blockly.Lua.indent(0, 'end') + "\n";		
 	}

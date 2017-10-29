@@ -102,3 +102,19 @@ function wcBlock.blockError(id, err, msg)
 	wcBlock.mutex:unlock()
 	thread.stop()
 end
+
+function wcBlock.blockErrorCatched(id)
+	wcBlock.mutex:lock()
+	if (wcBlock.developerMode) then
+		uart.lock(uart.CONSOLE)
+		uart.write(uart.CONSOLE,"<blockErrorCatched,")
+		if id == nil then
+			uart.write(uart.CONSOLE,"?")
+		else
+			uart.write(uart.CONSOLE,tostring(id))
+		end
+		uart.write(uart.CONSOLE,">\n")
+		uart.unlock(uart.CONSOLE)
+	end
+	wcBlock.mutex:unlock()
+end

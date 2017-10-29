@@ -41,6 +41,7 @@ function agent() {
 		"blockStart",
 		"blockEnd",
 		"blockError",
+		"blockErrorCatched",
 		"boardUpdate",
 		"boardConsoleOut",
 		"boardRuntimeError"

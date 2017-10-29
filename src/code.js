@@ -2591,6 +2591,13 @@ Code.setup = function() {
 		}
 	});
 
+	Code.agent.addListener("blockErrorCatched", function(id, info) {
+		if (Code.workspace.type == "blocks") {
+			Blockly.mainWorkspace.removeStarts();
+			Blockly.mainWorkspace.removeErrors();
+		}
+	});
+
 	Code.agent.addListener("boardUpdate", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();

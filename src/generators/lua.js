@@ -242,6 +242,18 @@ Blockly.Lua.blockError = function(indent, block) {
 	}
 }
 
+Blockly.Lua.blockErrorCatched = function(indent, block) {
+	var code = '';
+	
+	if (Blockly.Lua.developerMode) {
+		code += Blockly.Lua.indent(indent,'wcBlock.blockErrorCatched('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";
+		
+		return code;	
+	} else {
+		return '';
+	}
+}
+
 Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	var tryCode = '';
 	var blockId = Blockly.Lua.blockIdToNum(block.id);

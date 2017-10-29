@@ -637,7 +637,7 @@ Blockly.Msg.VARIABLE_ALREADY_EXISTS = "A variable named '%1' already exists.";  
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Dada invàlida. Ha de ser >= 0 i <= 255.";
 Blockly.Msg.WARNING_CAN_INVALID_LEN = "Mida invàlida. Ha de ser >= 0 i <= 8.";
 Blockly.Msg.WARNING_CAN_INVALID_TYPE = "Tipus de paquet invàlid.";
-Blockly.Msg.WARNING_CATCH_ERROR_NOT_ALLOWED_HERE = "Advertència: Aquest bloc només es pot utilitzar dins un bloc 'quan l''error és capturat'.";
+Blockly.Msg.WARNING_CATCH_ERROR_NOT_ALLOWED_HERE = "Advertència: Aquest bloc només es pot utilitzar dins un bloc 'quan l'error és capturat'.";
 Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK = "Atenció: els events només es poden processar dins d'un únic bloc d'esdeveniment.";
 Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK = "Atenció: aquest bloc només es pot utilitzar dins d'un bloc hat.";
 Blockly.Msg.WARNING_ONLY_ONE_INSTANCE_ALLOWED = "Atenció: només es permet una instància d'aquest bloc.";
