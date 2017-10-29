@@ -35,6 +35,9 @@ goog.require('Blockly.Lua');
 Blockly.Lua['bitlogic_msb'] = function(block) {
 	var argument0 = Blockly.Lua.valueToCode(block, 'BOOL',
 		Blockly.Lua.ORDER_UNARY) || 'true';
+		
+	argument0 = 'math.floor(' + argument0 + ')';
+		
 	var code = '((' + argument0 + ' & 0xff00) >> 8)';
 	return [code, Blockly.Lua.ORDER_UNARY];
 };

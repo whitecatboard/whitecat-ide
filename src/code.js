@@ -631,8 +631,6 @@ Code.buildToolBox = function(callback) {
 		'<category id="catLogic">' +
 		'<block type="controls_if"></block>' +
 		'<block type="logic_ternary"></block>' +
-		'<block type="bitlogic_msb"></block>' +
-		'<block type="bitlogic_lsb"></block>' +
 		'</category>' +
 		'<category id="catExceptions">' +
 		'<block type="exception_try"></block>' +
@@ -772,6 +770,20 @@ Code.buildToolBox = function(callback) {
 		'</shadow>' +
 		'</value>' +
 		'</block>' +		
+		'<block type="bitlogic_msb">'+
+		'<value name="BOOL">' +
+		'<shadow type="math_number">' +
+		'<field name="NUM">0</field>' +
+		'</shadow>' +
+		'</value>' +
+		'</block>' +
+		'<block type="bitlogic_lsb">'+
+		'<value name="BOOL">' +
+		'<shadow type="math_number">' +
+		'<field name="NUM">0</field>' +
+		'</shadow>' +
+		'</value>' +
+		'</block>' +
 		'</category>' +
 		'<category id="catOperatorsText">' +
 		'<block type="text_join"></block>' +

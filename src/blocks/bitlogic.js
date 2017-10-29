@@ -42,11 +42,11 @@ Blockly.Blocks['bitlogic_msb'] = {
         {
           "type": "input_value",
           "name": "BOOL",
-          "check": "Boolean"
+          "check": "Number"
         }
       ],
-      "output": "Boolean",
-      "colour": Blockly.Blocks.logic.HUE,
+      "output": "Number",
+      "colour": Blockly.Blocks.operators.HUE,
       "tooltip": Blockly.Msg.BITLOGIC_MSB_TOOLTIP,
       "helpUrl": Blockly.Msg.BITLOGIC_MSB_HELPURL
     });
@@ -65,11 +65,11 @@ Blockly.Blocks['bitlogic_lsb'] = {
         {
           "type": "input_value",
           "name": "BOOL",
-          "check": "Boolean"
+          "check": "Number"
         }
       ],
-      "output": "Boolean",
-      "colour": Blockly.Blocks.logic.HUE,
+      "output": "Number",
+      "colour": Blockly.Blocks.operators.HUE,
       "tooltip": Blockly.Msg.BITLOGIC_LSB_TOOLTIP,
       "helpUrl": Blockly.Msg.BITLOGIC_LSB_HELPURL
     });

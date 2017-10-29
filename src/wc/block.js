@@ -41,6 +41,8 @@ var IDEHelp = {
 	// BITWISE
 	"bitwise_unary_op": "wiki/Bitwise:-(operator)-(operand)",
 	"bitwise_op": "wiki/Bitwise:-(operand)-(operator)-(operand)",
+	"bitlogic_msb": "wiki/Bitwise:-MSB-()",
+	"bitlogic_lsb": "wiki/Bitwise:-LSB-()",
 	 
 	// Pack / unpack 
 	"text_pack": "wiki/Pack-hex-string-with-(),-with(),-...",
