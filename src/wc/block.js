@@ -71,7 +71,17 @@ var IDEHelp = {
 	
 	// Logic
 	"logic_ternary": "",
-	"controls_if": "wiki/Control:-If-()-do-()-else-if-()-..-else-if-()-else-()"
+	"controls_if": "wiki/Control:-If-()-do-()-else-if-()-..-else-if-()-else-()",
+	"logic_compare": "wiki/Logic-operator:-(operand)-(relational-operator)-(operand)",
+	"logic_operation": "wiki/Logic-operator:-(operand)-(logical-operator)-(operand)",
+	"logic_negate": "wiki/Logic-operator:-Not-(operand)",
+	"logic_boolean": "wiki/Logic-operator:-(constant)",
+	"logic_null": "wiki/Logic-operator:-null",
+	
+	// Variables
+	"variables_get": "wiki/Variables:-()",
+	"variables_set": "wiki/Variables:-Set-()-to-()",
+	"math_change": "wiki/Variables:-Change-()-by-()"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {

@@ -744,7 +744,8 @@ Code.buildToolBox = function(callback) {
 		'<block type="math_random_float"></block>' +
 		'</category>' +
 		'<category id="catOperatorsLogic">' +
-		'<block type="logic_compare"></block>' +
+		'<block type="logic_compare">' +
+		'</block>' +	
 		'<block type="logic_operation"></block>' +
 		'<block type="logic_negate"></block>' +
 		'<block type="logic_boolean"></block>' +
