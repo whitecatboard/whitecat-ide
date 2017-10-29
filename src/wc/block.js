@@ -16,6 +16,9 @@ var IDEHelp = {
 	// Loops
 	"controls_repeat_ext": "wiki/Control:-Repeat-()-times",
 	"controls_whileUntil": "wiki/Control:-Repeat-while-()",
+	"controls_forEach": "wiki/Control:-For-each-item-()-in-list-()",
+	"controls_for": "wiki/Control:-Count-with-()-from-()-to-()-by-()",
+	"controls_flow_statements": "wiki/Control:-()-of-loop",
 	
 	// IO
 	"setdigitalpin": "wiki/Input-Output:-Set-digital-pin-()-to-()",
