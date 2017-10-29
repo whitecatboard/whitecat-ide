@@ -2,45 +2,45 @@
 
 var IDEHelp = {
 	// Events
-	"broadcast": "wiki/Broadcast-()",
-	"broadcast_and_wait": "wiki/Broadcast-()-and-wait",
-	"when_board_starts": "wiki/When-board-starts",
-	"when_i_receive": "wiki/When-I-receive-()",
-	"execute_every": "wiki/Every-()-(unit)",
-	"thread": "wiki/Forever",
+	"broadcast": "wiki/Event:-Broadcast-()",
+	"broadcast_and_wait": "wiki/Event:-Broadcast-()-and-wait",
+	"when_board_starts": "wiki/Event:-When-board-starts",
+	"when_i_receive": "wiki/Event:-When-I-receive-()",
+	"execute_every": "wiki/Event:-Every-()-(unit)",
+	"thread": "wiki/Event:-Forever",
 
 	// Delays
-	"wait_for": "wiki/Wait-()-(unit)",
-	"cpu_sleep": "wiki/Sleep-()-seconds",
+	"wait_for": "wiki/Control:-Wait-()-(unit)",
+	"cpu_sleep": "wiki/Control:-Sleep-()-seconds",
 
 	// Loops
-	"controls_repeat": "wiki/Repeat-()-times",
-	"controls_whileUntil": "wiki/Repeat-while-()",
+	"controls_repeat_ext": "wiki/Control:-Repeat-()-times",
+	"controls_whileUntil": "wiki/Control:-Repeat-while-()",
 	
 	// IO
-	"setdigitalpin": "wiki/Set-digital-pin-()-to-()",
-	"invertdigitalpin": "wiki/Invert-digital-pin-()",
-	"getdigitalpin": "wiki/Get-digital-pin-value-()",
-	"getanalogpin": "wiki/Get-analog-pin-value-()-in-()",
-	"getexternalanalogchannel": "wiki/Get-analog-value-from-()-()-in-()",
-	"setpwmpin": "wiki/Set-PWM-pin-()-to-frequency-()-hertzs-and-duty-()-%25",
-	"when_digital_pin": "wiki/When-digital-pin-()-changes-at-()",
+	"setdigitalpin": "wiki/Input-Output:-Set-digital-pin-()-to-()",
+	"invertdigitalpin": "wiki/Input-Output:-Invert-digital-pin-()",
+	"getdigitalpin": "wiki/Input-Output:-Get-digital-pin-value-()",
+	"getanalogpin": "wiki/Input-Output:-Get-analog-pin-value-()-in-()",
+	"getexternalanalogchannel": "wiki/Input-Output:-Get-analog-value-from-()-()-in-()",
+	"setpwmpin": "wiki/Input-Output:-Set-PWM-pin-()-to-frequency-()-hertzs-and-duty-()-%25",
+	"when_digital_pin": "wiki/Event:-When-digital-pin-()-changes-at-()",
 	
 	// Wi-Fi
-	"wifi_start": "wiki/Start-Wi-Fi",
-	"wifi_stop": "wiki/Stop-Wi-Fi",
+	"wifi_start": "wiki/Wi-Fi:-Start-Wi-Fi",
+	"wifi_stop": "wiki/Wi-Fi:-Stop-Wi-Fi",
 	
 	// MQTT 
-	"mqtt_subscribe": "wiki/When-a-message-is-received-to-topic-()-with-()-with:-length,-payload",
-	"mqtt_publish": "wiki/Publish-()-to-topic-()-with-()",
+	"mqtt_subscribe": "wiki/Event:-When-a-message-is-received-to-topic-()-with-()-with:-length,-payload",
+	"mqtt_publish": "wiki/MQTT:-Publish-()-to-topic-()-with-()",
 	
 	// LORA
-	"when_i_receive_a_lora_frame": "wiki/When-I-receive-a-LoRa-frame-with:-port,-payload",
-	"lora_tx": "wiki/Transmit-()-frame-to-port-()",
+	"when_i_receive_a_lora_frame": "wiki/Event:-When-I-receive-a-LoRa-frame-with:-port,-payload",
+	"lora_tx": "wiki/LoRa:-Transmit-()-frame-to-port-()",
 	
 	// BITWISE
-	"bitwise_unary_op": "wiki/Bitwise-(operator)-(operand)",
-	"bitwise_op": "wiki/Bitwise-(operand)-(operator)-(operand)",
+	"bitwise_unary_op": "wiki/Bitwise:-(operator)-(operand)",
+	"bitwise_op": "wiki/Bitwise:-(operand)-(operator)-(operand)",
 	 
 	// Pack / unpack 
 	"text_pack": "wiki/Pack-hex-string-with-(),-with(),-...",
