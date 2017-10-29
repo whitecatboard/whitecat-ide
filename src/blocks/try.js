@@ -88,22 +88,6 @@ Blockly.Blocks['exception_try'] = {
 
 		// Assign 'this' to a variable for use in the tooltip closure below.
 		var thisBlock = this;
-		/*
-		this.setTooltip(function() {
-		  if (!thisBlock.elseifCount_ && !thisBlock.elseCount_) {
-		    return Blockly.Msg.CONTROLS_IF_TOOLTIP_1;
-		  } else if (!thisBlock.elseifCount_ && thisBlock.elseCount_) {
-		    return Blockly.Msg.CONTROLS_IF_TOOLTIP_2;
-		  } else if (thisBlock.elseifCount_ && !thisBlock.elseCount_) {
-		    return Blockly.Msg.CONTROLS_IF_TOOLTIP_3;
-		  } else if (thisBlock.elseifCount_ && thisBlock.elseCount_) {
-		    return Blockly.Msg.CONTROLS_IF_TOOLTIP_4;
-		  }
-		  return '';
-		});
-		this.elseifCount_ = 0;
-		this.elseCount_ = 0;
-		*/
 	},
 	/**
 	 * Create XML to represent the number of else-if and else inputs.
@@ -235,7 +219,43 @@ Blockly.Blocks['exception_catch_error'] = {
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.try.HUE);
 		this.setTooltip('');
-	}
+	},
+	onchange: function(e) {
+		if (!this.workspace.isDragging || this.workspace.isDragging()) {
+			return;
+		}
+
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
+				this.disabledByUser = e.newValue;
+			}
+		}
+
+		if (!this.isInBlock('exception_try', 'CATCH0')) {
+			this.setWarningText(Blockly.Msg.WARNING_CATCH_ERROR_NOT_ALLOWED_HERE);
+			if (!this.isInFlyout) {
+				this.setDisabled(true);
+			}
+		} else {
+			var wasInWarning = (this.warning != null);
+			
+			this.setWarningText(null);
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
+				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
+			}
+		}
+ 	},
 };
 
 Blockly.Blocks['exception_raise_again'] = {
@@ -249,5 +269,41 @@ Blockly.Blocks['exception_raise_again'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.try.HUE);
 		this.setTooltip('');
-	}
+	},
+	onchange: function(e) {
+		if (!this.workspace.isDragging || this.workspace.isDragging()) {
+			return;
+		}
+
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
+				this.disabledByUser = e.newValue;
+			}
+		}
+
+		if (!this.isInBlock('exception_catch_error')) {
+			this.setWarningText(Blockly.Msg.WARNING_RAISE_ERROR_AGAIN_NOT_ALLOWED_HERE);
+			if (!this.isInFlyout) {
+				this.setDisabled(true);
+			}
+		} else {
+			var wasInWarning = (this.warning != null);
+			
+			this.setWarningText(null);
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
+				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
+			}
+		}
+ 	},
 };

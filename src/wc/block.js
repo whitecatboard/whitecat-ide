@@ -62,7 +62,12 @@ var IDEHelp = {
 	"math_modulo": "wiki/Numbers:-remainder-of-()-()",
 	"math_constrain": "wiki/Numbers:-constraint-()-low-()-high-()",
 	"math_random_int": "wiki/Numbers:-random-integer-from-()-to-()",
-	"math_random_float": "wiki/Numbers:-random-fraction"
+	"math_random_float": "wiki/Numbers:-random-fraction",
+	
+	// Exceptions
+	"exception_try": "wiki/Control:-Try-()-catch-()-finally-()",
+	"exception_catch_error": "wiki/Control:-Try-()-catch-()-finally-()",
+	"exception_raise_again": "wiki/Control:-Raise-catched-error-again"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {
@@ -126,6 +131,50 @@ Blockly.Block.prototype.checkIsInHatBlock = function(e) {
 			this.setDisabled(true);
 		}
 	}
+}
+
+Blockly.Block.prototype.isInField = function(parentBlock, field) {
+	var i;
+	var j;
+	
+	// Find field
+	for(i=0; i < parentBlock.inputList.length;i++) {
+		if (parentBlock.inputList[i].name == field) {
+			// Get first block connected to the field
+			var firstBlock = parentBlock.inputList[i].connection.targetConnection.sourceBlock_;
+			
+			// Get all descendants
+			var descendants = firstBlock.getDescendants();
+			
+			for(j=0; j < descendants.length;j++) {
+				if (descendants[j].type == this.type) {
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
+}
+
+Blockly.Block.prototype.isInBlock = function(type, field) {
+	var block = this;
+	var parentBlock = this;
+
+	do {
+		if (parentBlock.type == type) {
+			if (typeof field != "undefined") {
+				return this.isInField(parentBlock, field);
+			} else {
+				return true;				
+			}
+			
+			break;
+		}
+		parentBlock = parentBlock.getSurroundParent();
+	} while (parentBlock);
+	
+	return false;	
 }
 
 Blockly.Block.prototype.getHelpUrl = function()  {

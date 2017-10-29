@@ -637,9 +637,11 @@ Blockly.Msg.VARIABLE_ALREADY_EXISTS = "一個名為%1的變數已存在。";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_LEN = "Invalid length. Must be >= 0 and <= 8.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_TYPE = "Invalid frame type";  // untranslated
+Blockly.Msg.WARNING_CATCH_ERROR_NOT_ALLOWED_HERE = "Warning: This block may only be used within a 'when error is catched' block.";  // untranslated
 Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK = "Warning: events can only be processed in one event block.";  // untranslated
 Blockly.Msg.WARNING_NOT_IN_HAT_BLOCK = "Warning: this block may only be used within a hat block.";  // untranslated
 Blockly.Msg.WARNING_ONLY_ONE_INSTANCE_ALLOWED = "Warning: only one instance of this block is allowed.";  // untranslated
+Blockly.Msg.WARNING_RAISE_ERROR_AGAIN_NOT_ALLOWED_HERE = "Warning: This block may only be used within a 'try catch finally' block in its catch part.";  // untranslated
 Blockly.Msg.WIFI_CONFIG_TITLE = "Wi-Fi contiguration ...";  // untranslated
 Blockly.Msg.WIFI_INVALID = "Invalid %1 value.";  // untranslated
 Blockly.Msg.WIFI_START = "start Wi-Fi";  // untranslated

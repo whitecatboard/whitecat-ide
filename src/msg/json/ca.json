@@ -649,5 +649,8 @@
 	"MQTT_GET_DATA": "Obtenir dades ...",
 
 	"cloudConsoleOn": "Núvol",
-	"CLOSE": "Tancar"
+	"CLOSE": "Tancar",
+
+	"WARNING_RAISE_ERROR_AGAIN_NOT_ALLOWED_HERE": "Advertència: Aquest bloc només es pot utilitzar dins un bloc 'prova captura finalment' en la seva part captura.",
+	"WARNING_CATCH_ERROR_NOT_ALLOWED_HERE": "Advertència: Aquest bloc només es pot utilitzar dins un bloc 'quan l'error és capturat'."	
 }

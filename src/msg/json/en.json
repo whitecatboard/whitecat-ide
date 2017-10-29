@@ -713,5 +713,8 @@
 	"MQTT_GET_DATA_HELP": "The Whitecat IDE offer to its users a MQTT broquer for testing purposes. If you want to use it, please click the 'Get data' button to get the connection data.",
 	"MQTT_GET_DATA": "Get data ..."	,
 
-	"CLOSE": "Close"
+	"CLOSE": "Close",
+
+	"WARNING_RAISE_ERROR_AGAIN_NOT_ALLOWED_HERE": "Warning: This block may only be used within a 'try catch finally' block in its catch part.",
+	"WARNING_CATCH_ERROR_NOT_ALLOWED_HERE": "Warning: This block may only be used within a 'when error is catched' block."
 }
