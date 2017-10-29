@@ -44,7 +44,20 @@ var IDEHelp = {
 	 
 	// Pack / unpack 
 	"text_pack": "wiki/Pack-hex-string-with-(),-with(),-...",
-	"text_unpack": "wiki/Unpack-hex-string-()-to-(),-to-(),-..."
+	"text_unpack": "wiki/Unpack-hex-string-()-to-(),-to-(),-...",
+	
+	"math_round": "wiki/Numbers:-(round-function)-()",
+	"math_number": "wiki/Numbers:-(value)",
+	"math_arithmetic": "wiki/Numbers:-(operand)-(operator)-(operand)",
+	"math_single": "wiki/Numbers:-(function)-()",
+	"math_trig": "wiki/Numbers:-(trigonometric-function)-()",
+	"math_constant": "wiki/Numbers:-(constant)",
+	"math_number_property": "wiki/Numbers:-()-is-(property)",
+	"math_on_list": "wiki/Numbers:-(operation)-of-list-()",
+	"math_modulo": "wiki/Numbers:-remainder-of-()-()",
+	"math_constrain": "wiki/Numbers:-constraint-()-low-()-high-()",
+	"math_random_int": "wiki/Numbers:-random-integer-from-()-to-()",
+	"math_random_float": "wiki/Numbers:-random-fraction"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {

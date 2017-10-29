@@ -84,13 +84,13 @@ Blockly.Lua['math_single'] = function(block) {
       code = 'math.log(' + arg + ')';
       break;
     case 'LOG10':
-      code = 'math.log10(' + arg + ')';
+      code = 'math.log(' + arg + ', 10)';
       break;
     case 'EXP':
       code = 'math.exp(' + arg + ')';
       break;
     case 'POW10':
-      code = 'math.pow(10,' + arg + ')';
+      code = '10 ^ ' + arg;
       break;
     case 'ROUND':
       // This rounds up.  Blockly does not specify rounding direction.

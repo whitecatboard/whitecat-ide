@@ -2997,13 +2997,13 @@ Blockly.Lua['math_single'] = function(block) {
       code = 'math.log(' + arg + ')';
       break;
     case 'LOG10':
-      code = 'math.log10(' + arg + ')';
+      code = 'math.log(' + arg + ', 10)';
       break;
     case 'EXP':
       code = 'math.exp(' + arg + ')';
       break;
     case 'POW10':
-      code = 'math.pow(10,' + arg + ')';
+      code = '10 ^ ' + arg;
       break;
     case 'ROUND':
       // This rounds up.  Blockly does not specify rounding direction.
@@ -4153,7 +4153,7 @@ Blockly.Lua['text_unpack'] = function(block) {
     var code = '';
     
 	for (var n = 0; n < block.toCount_; n++) {
-		code += Blockly.Lua.valueToCode(block, 'TO' + n, Blockly.Lua.ORDER_NONE) + ', ' + packed + ' = pack.unpack(' + packed + ', false)\n';
+		code += Blockly.Lua.valueToCode(block, 'TO' + n, Blockly.Lua.ORDER_NONE) + ', ' + packed + ' = pack.unpack(' + packed + ', true)\n';
     }
 	
     return code;

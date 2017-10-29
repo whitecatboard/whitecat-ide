@@ -2627,6 +2627,10 @@ Code.setup = function() {
 
 	Blockly.Blocks.texts.HUE = Blockly.Blocks.operators.HUE;
 	Blockly.Blocks.math.HUE = Blockly.Blocks.operators.HUE;
+	
+	Object.keys(IDEHelp).forEach(function(key) {
+		//Blockly.Blocks[key].setHelpUrl(IDEHelp[key]);
+	});	
 
 	jQuery.getScript('msg/wc/' + Code.settings.language + '.js', function() {
 		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
