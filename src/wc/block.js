@@ -66,8 +66,12 @@ var IDEHelp = {
 	
 	// Exceptions
 	"exception_try": "wiki/Control:-Try-()-catch-()-finally-()",
-	"exception_catch_error": "wiki/Control:-Try-()-catch-()-finally-()",
-	"exception_raise_again": "wiki/Control:-Raise-catched-error-again"
+	"exception_catch_error": "wiki/Control:-When-error-()-is-catched-do-()",
+	"exception_raise_again": "wiki/Control:-Raise-catched-error-again",
+	
+	// Logic
+	"logic_ternary": "",
+	"controls_if": "wiki/Control:-If-()-do-()-else-if-()-..-else-if-()-else-()"
 }
 
 Blockly.Block.prototype.isHatBlock = function() {
