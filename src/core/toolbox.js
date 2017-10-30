@@ -305,6 +305,11 @@ Blockly.Toolbox.prototype.syncTrees_ = function(treeIn, treeOut, pathToMedia) {
     switch (childIn.tagName.toUpperCase()) {
       case 'CATEGORY':
         var childOut = this.tree_.createNode(childIn.getAttribute('name'));
+		
+		// WHITECAT IDE
+		childOut.catId = childIn.getAttribute('id');
+		// WHITECAT IDE
+
         childOut.blocks = [];
         treeOut.add(childOut);
         var custom = childIn.getAttribute('custom');

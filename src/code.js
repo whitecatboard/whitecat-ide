@@ -134,6 +134,14 @@ Code.devices = [{
 	"vendor": "CH340"
 }];
 
+Code.categoryHelp = {
+	"catEvents": "wiki/Event-blocks",
+	"catControl": "wiki/Control-blocks",
+	"catLora": "wiki/LoRa-blocks",
+	"catNET": "wiki/Network-blocks",
+	"catMQTT": "wiki/MQTT-blocks",
+};
+
 Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 
 Code.platforms = ["MacIntel", "Win32", "Linux x86_64"];
@@ -576,7 +584,33 @@ Code.renderContent = function() {
 			Code.workspace.blocks.setVisible(false);
 		}
 	}
-
+	
+	jQuery.contextMenu({
+	    selector: "[role='treeitem']",
+	    items: {
+	        remove: {name: Blockly.Msg.HELP + " ...", callback: function(key, opt) { 
+				var target = jQuery(this);
+				var id = target[0].id;
+				var toolBoxCats = Code.workspace.blocks.toolbox_.tree_.children_;
+				
+				var i;
+				
+				for(i=0;i<toolBoxCats.length;i++) {
+					if (typeof toolBoxCats[i].id_ != "undefined") {
+						if (toolBoxCats[i].id_ == id) {
+							var category = toolBoxCats[i].catId;
+						
+							if (typeof Code.categoryHelp[category] != "undefined") {
+								Code.showHelp(Code.categoryHelp[category]);		
+								break;					
+							}
+						}						
+					}
+				}
+			}}
+	    }
+	});
+	
 	window.dispatchEvent(new Event('resize'));
 };
 
@@ -1140,7 +1174,7 @@ Code.updateToolBox = function() {
 
 		if (workSpace) {
 			workSpace.updateToolbox(toolbox);
-		}
+		}		
 	});
 }
 
