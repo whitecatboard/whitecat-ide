@@ -493,6 +493,11 @@ Blockly.Xml.domToBlockHeadless_ = function(xmlBlock, workspace) {
         // Custom data for an advanced block.
         if (block.domToMutation) {
           block.domToMutation(xmlChild);
+
+  	    // WHITECAT IDE
+  	    block.setHelpUrl(block.getHelpUrl());
+  	    // WHITECAT IDE
+
           if (block.initSvg) {
             // Mutation may have added some elements that need initializing.
             block.initSvg();

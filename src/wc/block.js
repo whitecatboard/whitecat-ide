@@ -84,6 +84,14 @@ var IDEHelp = {
 	"math_change": "wiki/Variables:-Change-()-by-()"
 }
 
+Blockly.Block.prototype.isSensorBlock = function() {
+	var hatBlocks = [
+		'sensor_read', 'sensor_set', 'sensor_when'
+	];
+	
+	return (hatBlocks.indexOf(this.type) != -1);
+}
+
 Blockly.Block.prototype.isHatBlock = function() {
 	var hatBlocks = [
 		'when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every', 'thread', 'mqtt_subscribe'
@@ -193,13 +201,23 @@ Blockly.Block.prototype.isInBlock = function(type, field) {
 
 Blockly.Block.prototype.getHelpUrl = function()  {
 	var url;
+	var thisInstance = this;
 	
-	if (typeof IDEHelp[this.type] != "undefined") {
-		url = IDEHelp[this.type];
+	if (this.isSensorBlock()) {
+		Code.workspace.blocks.allSensors.sensors.forEach(function(csensor) {
+			if (csensor.id == thisInstance.sid) {
+				url = csensor.help;
+			}
+		});
 	} else {
-		url = '';
+		if (typeof IDEHelp[this.type] != "undefined") {
+			url = IDEHelp[this.type];
+		} else {
+			url = '';
 		
+		}		
 	}
+	
 	return url;
 }
 

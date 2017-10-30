@@ -596,7 +596,7 @@ Blockly.Events.Change.prototype.run = function(forward) {
       if (block.domToMutation) {
         value = value || '<mutation></mutation>';
         var dom = Blockly.Xml.textToDom('<xml>' + value + '</xml>');
-        block.domToMutation(dom.firstChild);
+        block.domToMutation(dom.firstChild);		
       }
       Blockly.Events.fire(new Blockly.Events.Change(
           block, 'mutation', null, oldMutation, value));
