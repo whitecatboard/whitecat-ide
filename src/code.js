@@ -137,9 +137,29 @@ Code.devices = [{
 Code.categoryHelp = {
 	"catEvents": "wiki/Event-blocks",
 	"catControl": "wiki/Control-blocks",
-	"catLora": "wiki/LoRa-blocks",
+	"catLoops": "wiki/Control-blocks",
+	"catLogic": "wiki/Control-blocks",
+	"catLogiccatLogic": "wiki/Control-blocks",
+	"catDelays": "wiki/Control-blocks",
+	"catExceptions": "wiki/Control-blocks",
+	"catOperators": "wiki/Operator-blocks",
+	"catOperatorsNumeric": "wiki/Numbers-blocks",
+	"catOperatorsLogic": "Logic-operator-blocks",
+	"catOperatorsBitwise": "wiki/Bitwise-blocks",
+	"catOperatorsText": "wiki/Text-blocks",
+	"catLists": "",
+	"catVariables": "wiki/Variable-blocks",
+	"catFunctions": "",
+	"catIO": "wiki/Input---Output-blocks",
+	"catComm": "",
+	"catCan": "wiki/CAN-blocks",
+	"catI2C": "wiki/I2C-blocks",
+	"catSensor": "wiki/Sensor-blocks",
+	"catActuators": "",
 	"catNET": "wiki/Network-blocks",
-	"catMQTT": "wiki/MQTT-blocks",
+	"catWIFI": "wiki/Network-blocks",
+	"catLora": "wiki/LoRa-blocks",
+	"catMQTT": "wiki/MQTT-blocks"
 };
 
 Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
@@ -584,27 +604,49 @@ Code.renderContent = function() {
 			Code.workspace.blocks.setVisible(false);
 		}
 	}
+
+	// Avoid toolbox items to be text-selected
+	jQuery("[role='treeitem']").addClass("noselect");	
 	
+	// Add context menu to toolbox items to get help
 	jQuery.contextMenu({
 	    selector: "[role='treeitem']",
 	    items: {
 	        remove: {name: Blockly.Msg.HELP + " ...", callback: function(key, opt) { 
 				var target = jQuery(this);
 				var id = target[0].id;
-				var toolBoxCats = Code.workspace.blocks.toolbox_.tree_.children_;
+
+				function findCat(categories) {
+					var i;
+					
+					if (!categories) return "";
 				
-				var i;
-				
-				for(i=0;i<toolBoxCats.length;i++) {
-					if (typeof toolBoxCats[i].id_ != "undefined") {
-						if (toolBoxCats[i].id_ == id) {
-							var category = toolBoxCats[i].catId;
+					for(i=0;i<categories.length;i++) {
+						var category = findCat(categories[i].children_);
 						
-							if (typeof Code.categoryHelp[category] != "undefined") {
-								Code.showHelp(Code.categoryHelp[category]);		
-								break;					
-							}
-						}						
+						if (category == "") {
+							if (typeof categories[i].id_ != "undefined") {
+								if (categories[i].id_ == id) {
+									return categories[i].catId;
+								}						
+							}							
+						} else {
+							return category;
+						}
+					}					
+					
+					return "";
+				}
+				
+				var category = findCat(Code.workspace.blocks.toolbox_.tree_.children_);
+				
+				if (category != "") {
+					if (typeof Code.categoryHelp[category] != "undefined") {
+						var url = Code.categoryHelp[category];
+					
+						if (url != "") {
+							Code.showHelp(url);											
+						}					
 					}
 				}
 			}}
