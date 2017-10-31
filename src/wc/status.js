@@ -143,12 +143,12 @@ Status.show = function(message) {
 				if (typeof url != "undefined") {
 					if (typeof require != "undefined") {
 						if (typeof require('nw.gui') != "undefined") {
-							Code.showHelp(url);
+							Code.Help.show("alerts", url);
 						} else {
-							Code.showHelp(url);
+							Code.Help.show("alerts", url);
 						}
 					} else {
-						Code.showHelp(url);
+						Code.Help.show("alerts", url);
 					}	
 				}				
 			});			

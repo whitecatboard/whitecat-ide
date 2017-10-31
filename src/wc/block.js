@@ -1,89 +1,5 @@
 'use strict';
 
-var IDEHelp = {
-	// Events
-	"broadcast": "wiki/Event:-Broadcast-()",
-	"broadcast_and_wait": "wiki/Event:-Broadcast-()-and-wait",
-	"when_board_starts": "wiki/Event:-When-board-starts",
-	"when_i_receive": "wiki/Event:-When-I-receive-()",
-	"execute_every": "wiki/Event:-Every-()-(unit)",
-	"thread": "wiki/Event:-Forever",
-
-	// Delays
-	"wait_for": "wiki/Control:-Wait-()-(unit)",
-	"cpu_sleep": "wiki/Control:-Sleep-()-seconds",
-
-	// Loops
-	"controls_repeat_ext": "wiki/Control:-Repeat-()-times",
-	"controls_whileUntil": "wiki/Control:-Repeat-while-()",
-	"controls_forEach": "wiki/Control:-For-each-item-()-in-list-()",
-	"controls_for": "wiki/Control:-Count-with-()-from-()-to-()-by-()",
-	"controls_flow_statements": "wiki/Control:-()-of-loop",
-	
-	// IO
-	"setdigitalpin": "wiki/Input-Output:-Set-digital-pin-()-to-()",
-	"invertdigitalpin": "wiki/Input-Output:-Invert-digital-pin-()",
-	"getdigitalpin": "wiki/Input-Output:-Get-digital-pin-value-()",
-	"getanalogpin": "wiki/Input-Output:-Get-analog-pin-value-()-in-()",
-	"getexternalanalogchannel": "wiki/Input-Output:-Get-analog-value-from-()-()-in-()",
-	"setpwmpin": "wiki/Input-Output:-Set-PWM-pin-()-to-frequency-()-hertzs-and-duty-()-%25",
-	"when_digital_pin": "wiki/Event:-When-digital-pin-()-changes-at-()",
-	
-	// Wi-Fi
-	"wifi_start": "wiki/Wi-Fi:-Start-Wi-Fi",
-	"wifi_stop": "wiki/Wi-Fi:-Stop-Wi-Fi",
-	
-	// MQTT 
-	"mqtt_subscribe": "wiki/Event:-When-a-message-is-received-to-topic-()-with-()-with:-length,-payload",
-	"mqtt_publish": "wiki/MQTT:-Publish-()-to-topic-()-with-()",
-	
-	// LORA
-	"when_i_receive_a_lora_frame": "wiki/Event:-When-I-receive-a-LoRa-frame-with:-port,-payload",
-	"lora_tx": "wiki/LoRa:-Transmit-()-frame-to-port-()",
-	
-	// BITWISE
-	"bitwise_unary_op": "wiki/Bitwise:-(operator)-(operand)",
-	"bitwise_op": "wiki/Bitwise:-(operand)-(operator)-(operand)",
-	"bitlogic_msb": "wiki/Bitwise:-MSB-()",
-	"bitlogic_lsb": "wiki/Bitwise:-LSB-()",
-	 
-	// Pack / unpack 
-	"text_pack": "wiki/Pack-hex-string-with-(),-with(),-...",
-	"text_unpack": "wiki/Unpack-hex-string-()-to-(),-to-(),-...",
-	
-	"math_round": "wiki/Numbers:-(round-function)-()",
-	"math_number": "wiki/Numbers:-(value)",
-	"math_arithmetic": "wiki/Numbers:-(operand)-(operator)-(operand)",
-	"math_single": "wiki/Numbers:-(function)-()",
-	"math_trig": "wiki/Numbers:-(trigonometric-function)-()",
-	"math_constant": "wiki/Numbers:-(constant)",
-	"math_number_property": "wiki/Numbers:-()-is-(property)",
-	"math_on_list": "wiki/Numbers:-(operation)-of-list-()",
-	"math_modulo": "wiki/Numbers:-remainder-of-()-()",
-	"math_constrain": "wiki/Numbers:-constraint-()-low-()-high-()",
-	"math_random_int": "wiki/Numbers:-random-integer-from-()-to-()",
-	"math_random_float": "wiki/Numbers:-random-fraction",
-	
-	// Exceptions
-	"exception_try": "wiki/Control:-Try-()-catch-()-finally-()",
-	"exception_catch_error": "wiki/Control:-When-error-()-is-catched-do-()",
-	"exception_raise_again": "wiki/Control:-Raise-catched-error-again",
-	
-	// Logic
-	"logic_ternary": "",
-	"controls_if": "wiki/Control:-If-()-do-()-else-if-()-..-else-if-()-else-()",
-	"logic_compare": "wiki/Logic-operator:-(operand)-(relational-operator)-(operand)",
-	"logic_operation": "wiki/Logic-operator:-(operand)-(logical-operator)-(operand)",
-	"logic_negate": "wiki/Logic-operator:-Not-(operand)",
-	"logic_boolean": "wiki/Logic-operator:-(constant)",
-	"logic_null": "wiki/Logic-operator:-null",
-	
-	// Variables
-	"variables_get": "wiki/Variables:-()",
-	"variables_set": "wiki/Variables:-Set-()-to-()",
-	"math_change": "wiki/Variables:-Change-()-by-()"
-}
-
 Blockly.Block.prototype.isSensorBlock = function() {
 	var hatBlocks = [
 		'sensor_read', 'sensor_set', 'sensor_when'
@@ -204,18 +120,9 @@ Blockly.Block.prototype.getHelpUrl = function()  {
 	var thisInstance = this;
 	
 	if (this.isSensorBlock()) {
-		Code.workspace.blocks.allSensors.sensors.forEach(function(csensor) {
-			if (csensor.id == thisInstance.sid) {
-				url = csensor.help;
-			}
-		});
+		url = Code.Help.getUrl("sensors", thisInstance.sid);
 	} else {
-		if (typeof IDEHelp[this.type] != "undefined") {
-			url = IDEHelp[this.type];
-		} else {
-			url = '';
-		
-		}		
+		url = Code.Help.getUrl("blocks", this.type);
 	}
 	
 	return url;

@@ -90,6 +90,8 @@ Code.storage.board = null;
 Code.storage.local = null;
 Code.storage.cloud = null;
 
+Code.Help = null;
+
 Code.defaultStatus = {
 	cpu: "ESP32",
 	connected: false,
@@ -133,34 +135,6 @@ Code.devices = [{
 	"productId": "0x7523",
 	"vendor": "CH340"
 }];
-
-Code.categoryHelp = {
-	"catEvents": "wiki/Event-blocks",
-	"catControl": "wiki/Control-blocks",
-	"catLoops": "wiki/Control-blocks",
-	"catLogic": "wiki/Control-blocks",
-	"catLogiccatLogic": "wiki/Control-blocks",
-	"catDelays": "wiki/Control-blocks",
-	"catExceptions": "wiki/Control-blocks",
-	"catOperators": "wiki/Operator-blocks",
-	"catOperatorsNumeric": "wiki/Numbers-blocks",
-	"catOperatorsLogic": "Logic-operator-blocks",
-	"catOperatorsBitwise": "wiki/Bitwise-blocks",
-	"catOperatorsText": "wiki/Text-blocks",
-	"catLists": "",
-	"catVariables": "wiki/Variable-blocks",
-	"catFunctions": "",
-	"catIO": "wiki/Input---Output-blocks",
-	"catComm": "",
-	"catCan": "wiki/CAN-blocks",
-	"catI2C": "wiki/I2C-blocks",
-	"catSensor": "wiki/Sensor-blocks",
-	"catActuators": "",
-	"catNET": "wiki/Network-blocks",
-	"catWIFI": "wiki/Network-blocks",
-	"catLora": "wiki/LoRa-blocks",
-	"catMQTT": "wiki/MQTT-blocks"
-};
 
 Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
 
@@ -641,13 +615,7 @@ Code.renderContent = function() {
 				var category = findCat(Code.workspace.blocks.toolbox_.tree_.children_);
 				
 				if (category != "") {
-					if (typeof Code.categoryHelp[category] != "undefined") {
-						var url = Code.categoryHelp[category];
-					
-						if (url != "") {
-							Code.showHelp(url);											
-						}					
-					}
+					Code.Help.show("categories", category);
 				}
 			}}
 	    }
@@ -2043,55 +2011,7 @@ Code.showInformation = function(text) {
 Code.closeDialogs = function() {
 	BootstrapDialog.closeAll();
 	bootbox.hideAll();
-	Code.removeHelpHandlers();
-}
-
-Code.removeHelpHandlers = function() {
-	jQuery(".modal-body").find("a").unbind("click");
-}
-
-Code.addHelpHandlers = function() {
-	jQuery(".modal-body").find("a").unbind("click").bind("click", function(e) {
-		var target = jQuery(e.target);
-		var href = target.attr("href");
-		
-		if (href.startsWith("https://ide.whitecatboard.org/?file=")) {
-			// Open code
-			Code.loadExample(href.replace("https://ide.whitecatboard.org/?file=",""));
-		} else if (href.startsWith("http:") || href.startsWith("https:")) {
-			// href is external open in browser
-			window.open(href,"_blank")
-		} else {
-			// Open in dialog
-			Code.showHelp(href);
-		}
-		
-		return false;
-	});		
-}
-
-Code.showHelp = function(url) {
-	Code.closeDialogs();
-	setTimeout(function() {
-	  	jQuery.ajax({
-	  		url: Code.server + "/" + url,
-	  		type: "GET",
-			crossDomain:true,
-	  		success: function(result) {
-				bootbox.dialog({
-					title: Blockly.Msg.HELP,
-					message: result,
-					closable: true,
-					onEscape: true,
-					size: "large"
-				}).on('shown.bs.modal', function (e) {
-					Code.addHelpHandlers();
-				});
-	  		},
-	  		error: function() {
-	  		}
-		});
-	}, 500);
+	Code.Help.closeAll();
 }
 
 // Alert messages
@@ -2111,12 +2031,12 @@ Code.showAlert = function(text) {
 
 					if (typeof require != "undefined") {
 						if (typeof require('nw.gui') != "undefined") {
-							Code.showHelp(target.data("url"));
+							Code.Help.show("alerts", target.data("url"));
 						} else {
-							Code.showHelp(target.data("url"));
+							Code.Help.show("alerts", target.data("url"));
 						}
 					} else {
-						Code.showHelp(target.data("url"));
+						Code.Help.show("alerts", target.data("url"));
 					}
 				});
 			}, 500);
@@ -2724,23 +2644,21 @@ Code.setup = function() {
 	Blockly.Blocks.texts.HUE = Blockly.Blocks.operators.HUE;
 	Blockly.Blocks.math.HUE = Blockly.Blocks.operators.HUE;
 	
-	Object.keys(IDEHelp).forEach(function(key) {
-		//Blockly.Blocks[key].setHelpUrl(IDEHelp[key]);
-	});	
-
 	jQuery.getScript('msg/wc/' + Code.settings.language + '.js', function() {
 		jQuery.getScript('msg/js/' + Code.settings.language + '.js', function() {
 			Code.board.getMaps(Code.settings.board, function(maps) {
 				Code.status.maps = maps;
-				Code.buildToolBox(function() {
-					Code.init();
-					Term.init();
-					Code.renderContent();
-					Code.agent.controlSocketConnect();
-					
-					if (typeof ide_post_init === "function") {
-						ide_post_init();
-					}
+				Code.Help.get(function() {
+					Code.buildToolBox(function() {
+						Code.init();
+						Term.init();
+						Code.renderContent();
+						Code.agent.controlSocketConnect();
+				
+						if (typeof ide_post_init === "function") {
+							ide_post_init();
+						}
+					});
 				});
 			});
 		});
@@ -2755,6 +2673,7 @@ window.addEventListener('load', function() {
 		}
 	});
 
+	Code.Help = new Help();
 	Code.agent = new agent();
 	Code.board = new board();
 	Code.lib = new blockLibrary();

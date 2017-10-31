@@ -740,7 +740,7 @@ Blockly.BlockSvg.prototype.showHelp_ = function() {
 
   var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
   if (url) {
-	  Code.showHelp(url);
+	  Code.Help._show(url);
   }
 };
 // WHITECAT IDE

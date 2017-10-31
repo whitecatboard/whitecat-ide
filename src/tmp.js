@@ -2732,17 +2732,18 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 			}
 
 			if (!block.isHatBlock()) {
-				initCode = Blockly.Lua.indent(0,'thread.start(function()') + "\n";
-				initCode += Blockly.Lua.indent(1,'-- Wait until board is started') + "\n";
-				initCode += Blockly.Lua.indent(1,'_eventBoardStarted:wait()') + "\n\n";
-				initCode += Blockly.Lua.indent(1,line);
-				initCode += Blockly.Lua.indent(0,'end)') + "\n";
+				// Skip, this is test code
+				//initCode = Blockly.Lua.indent(0,'thread.start(function()') + "\n";
+				//initCode += Blockly.Lua.indent(1,'-- Wait until board is started') + "\n";
+				//initCode += Blockly.Lua.indent(1,'_eventBoardStarted:wait()') + "\n\n";
+				//initCode += Blockly.Lua.indent(1,line);
+				//initCode += Blockly.Lua.indent(0,'end)') + "\n";
 				
-				line = initCode;
+				//line = initCode;
+			} else {
+				// Put code in it's section
+				codeSection[section].push(line);	
 			}
-
-			// Put code in it's section
-			codeSection[section].push(line);
 		}
 	}
 
