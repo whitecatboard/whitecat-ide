@@ -127,5 +127,12 @@
 		"BH1721FVC": "wiki/Sensor:-BH1721FVC-SENSOR",
 		"BDE0600G": "wiki/Sensor:-BDE0600G-SENSOR",
 		"ML8511": "wiki/Sensor:-ML8511-SENSOR"
+	},
+	
+	"ui" : {
+		"trashButton": "wiki/Toolbar:-delete",
+		"switchToBlocks": "wiki/Toolbar:-change-the-programming-model",
+		"switchToCode": "wiki/Toolbar:-change-the-programming-model",
+		"loadButton": "wiki/Toolbar:-load-program"
 	}
 }

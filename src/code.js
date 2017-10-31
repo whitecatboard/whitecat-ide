@@ -586,7 +586,7 @@ Code.renderContent = function() {
 	jQuery.contextMenu({
 	    selector: "[role='treeitem']",
 	    items: {
-	        remove: {name: Blockly.Msg.HELP + " ...", callback: function(key, opt) { 
+	        help: {name: Blockly.Msg.HELP + " ...", callback: function(key, opt) { 
 				var target = jQuery(this);
 				var id = target[0].id;
 
@@ -620,7 +620,23 @@ Code.renderContent = function() {
 			}}
 	    }
 	});
-	
+
+
+	jQuery.contextMenu({
+	    selector: '.btn-toolbar > .btn-group > [type="button"]',
+	    items: {
+	        help: {name: Blockly.Msg.HELP + " ...", callback: function(key, opt) { 
+				var target = jQuery(this);
+				var id = target[0].id;
+
+				if (id != "") {
+					Code.Help.show("ui", id);
+				}
+			}}
+	    },
+		zIndex: 999999
+	});
+		
 	window.dispatchEvent(new Event('resize'));
 };
 
@@ -2446,7 +2462,7 @@ Code.switchToBlocks = function() {
 	}
 
 	bootbox.dialog({
-		title: MSG['informatiom'],
+		title: MSG['information'],
 		message: MSG['switchToBlocksWarning'],
 		buttons: {
 			danger: {
