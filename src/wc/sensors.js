@@ -360,7 +360,7 @@ Blockly.Sensors.I2CSelection = function(index, id, block, edit) {
 	var i2cSelect = "";
 
 	for (var key in Code.status.maps.i2cUnits) {
-		i2c.push([Code.status.maps.i2cUnits[key][0], key]);
+		i2c.push([Code.status.maps.i2cUnits[key][1], key]);
 	}
 
 	var i2cSelect = '<select id="interface'+index+'_unit" name="interface'+index+'_unit">';
@@ -392,7 +392,7 @@ Blockly.Sensors.UARTSelection = function(index, id, block, edit) {
 	var uartSelect = "";
 
 	for (var key in Code.status.maps.uartUnits) {
-		uart.push([Code.status.maps.uartUnits[key][0], key]);
+		uart.push([Code.status.maps.uartUnits[key][1], key]);
 	}
 	
 	var uartSelect = '<select id="interface'+index+'_unit" name="interface'+index+'_unit">';
