@@ -100,7 +100,9 @@ Blockly.Blocks.io.helper = {
 		var units = [];
 
 		for (var key in Code.status.maps.externalAdcUnits) {
-			units.push([Code.status.maps.externalAdcUnits[key][0], key]);
+			if (Code.status.externalADC[Code.status.maps.externalAdcUnits[key][0]]) {
+				units.push([Code.status.maps.externalAdcUnits[key][0], key]);
+			}
 		}
 
 		return units;
@@ -111,7 +113,9 @@ Blockly.Blocks.io.helper = {
 		var i;		
 		
 		for(i=0; i < Code.status.maps.externalAdcUnits[unit][1];i++) {
-			channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
+			if (Code.status.externalADC[Code.status.maps.externalAdcUnits[unit][0]]) {
+				channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
+			}
 		}
 		
 		return channels;
@@ -243,7 +247,8 @@ Blockly.Blocks['external_analog_channels'] = {
 	module: "adc",
 	init: function() {
 		var thisInstance = this;
-		var channels = Blockly.Blocks.io.helper.getExternalAdcChannels(2);
+		var units = Blockly.Blocks.io.helper.getExternalAdcUnits();
+		var channels = Blockly.Blocks.io.helper.getExternalAdcChannels(units[0][1]);
 
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)

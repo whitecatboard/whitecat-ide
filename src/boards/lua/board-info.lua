@@ -218,11 +218,23 @@ do
 		io.write("],")
 	end
 	
+	function __externalADC()
+		prev_mod = false
+	    io.write("\"externalADC\": ")
+		io.write("{")
+	    __m_ena("MCP3008",adc.MCP3008)
+	    __m_ena("MCP3208",adc.MCP3208)
+	    __m_ena("ADS1115",adc.ADS1115)
+	    __m_ena("ADS1015",adc.ADS1015)
+		io.write("},")
+	end
+	
     io.write("{");
     __mods()
 	__m_pin_maps()
     __cpu()
     __sensors()
+	__externalADC()
     __status()
     io.write("}")
 	
@@ -230,6 +242,7 @@ do
 	__mods = nil
 	__cpu = nil
 	__sensors = nil
+	__externalADC = nil
 	__status = nil
 	
 	print("")

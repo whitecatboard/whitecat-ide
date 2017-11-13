@@ -753,6 +753,38 @@ Blockly.Workspace.prototype.migratePinField = function(xml) {
 	return xml;
 }
 
+Blockly.Workspace.prototype.migrateExternalADC = function(xml) {
+	var childCount = xml.childNodes.length;
+	
+    for (var i = 0; i < childCount; i++) {
+      var xmlChild = xml.childNodes[i];
+      var name = xmlChild.nodeName.toLowerCase(); 	
+	  
+	  if (name == "field") {
+	  	var aName = xmlChild.getAttribute('name');
+		if (aName == 'UNIT') {
+/*			var value = goog.dom.createDom('value');
+			value.setAttribute('name', 'PIN');
+
+			var shadow = goog.dom.createDom('shadow');
+			shadow.setAttribute('type', 'output_digital_pin');
+			
+			var field = goog.dom.createDom('field');
+			field.setAttribute('name', 'PIN');
+			field.innerText = xmlChild.innerText;
+			
+			shadow.appendChild(field);
+			value.appendChild(shadow);
+			
+			xml.childNodes[i].outerHTML = value.outerHTML;
+			*/
+		}
+	  }  
+    }
+	
+	return xml;
+}
+
 Blockly.Workspace.prototype.migrateTimeField = function(xml) {
 	var childCount = xml.childNodes.length;
 	
@@ -820,6 +852,19 @@ Blockly.Workspace.prototype.migrateMutation = function(xml) {
 			  xmlChild.removeAttribute("pin");
 			  xmlChild.removeAttribute("unit");
 			  xmlChild.removeAttribute("device");
+		  } else if (xmlChild.getAttribute("interface") == "ADC") {
+		  	  var unit = xmlChild.getAttribute("interface0_unit");
+		  	  var channel = xmlChild.getAttribute("interface0_subunit");
+			  var units = Blockly.Blocks.io.helper.getExternalAdcUnits();
+			  var channels = Blockly.Blocks.io.helper.getExternalAdcChannels(units[0][1]);
+			  
+			  if (units[0][1] != units) {
+			  	xmlChild.setAttribute("interface0_unit", units[0][1]);
+			  }
+			  
+			  if (channel > channels.length) {
+			  	xmlChild.setAttribute("interface0_subunit", 0);
+			  }
 		  }
 	  }  
     }
@@ -850,6 +895,9 @@ Blockly.Workspace.prototype.migrate = function(xml) {
 		  xmlChild = this.migrate(xmlChild);
 	  } else if ((type == 'sensor_read') || (type == 'sensor_set') || (type == 'sensor_when')) {
 		  xmlChild = this.migrateMutation(xmlChild);
+		  xmlChild = this.migrate(xmlChild);
+	  } else if (type == 'getexternalanalogchannel') {
+		  xmlChild = this.migrateExternalADC(xmlChild);
 		  xmlChild = this.migrate(xmlChild);
 	  } else {
 		  xmlChild = this.migrate(xmlChild);
