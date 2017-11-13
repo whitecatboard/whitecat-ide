@@ -149,7 +149,7 @@ Code.currentFile = {
 	storage: StorageType.Computer,
 	changes: false
 };
-
+    
 Code.settings = {
 	"language": "en",
 	"board": "N1ESP32",

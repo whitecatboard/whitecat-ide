@@ -105,6 +105,8 @@ Help.prototype._addHandlers = function() {
 			window.open(href,"_blank")
 		} else {
 			// Open in dialog
+			href = href.replace("wiki/", "wiki/" + Code.settings.language + "/");
+			
 			thisInstance._show(href);
 		}
 		
@@ -149,6 +151,8 @@ Help.prototype.getUrl = function(type, id) {
 		url = '';
 	}				
 	
+	url = url.replace("wiki/", "wiki/" + Code.settings.language + "/");
+
 	return url;
 };
 

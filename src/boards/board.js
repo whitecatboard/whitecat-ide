@@ -35,6 +35,7 @@ function board() {
 	// List of supported boards
 	thisInstance.list = [
 		{id: "N1ESP32", desc: "Whitecat N1 ESP32"},
+		{id: "N1ESP32-DEVKIT", desc: "Whitecat N1 ESP32 DEVKIT"},
 		{id: "ESP32THING", desc: "ESP32 Thing"},
 		{id: "ESP32COREBOARD", desc: "ESP32 Core Board"},
 	];

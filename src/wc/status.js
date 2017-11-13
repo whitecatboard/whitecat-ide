@@ -57,6 +57,7 @@ Status.messages["Corrupted firmware"] = {tag: "corruptedFirmware", type: statusT
 Status.messages["Flash error"] = {tag: "flashError", type: statusType.Alert, zone: "statusBar1"};
 
 Status.messages["Whitecat N1 ESP32"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
+Status.messages["Whitecat N1 ESP32 DEVKIT"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
 Status.messages["ESP32 Thing"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
 Status.messages["ESP32 Core Board"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
 

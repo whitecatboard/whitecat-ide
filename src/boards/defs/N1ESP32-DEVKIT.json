@@ -1,0 +1,66 @@
+{
+	"id": "N1ESP32-DEVKIT",
+	"desc": "Whitecat N1 ESP32 DEVKIT",
+	"digitalPins": {
+		"32":  ["GPIO32", true, true , "P1"  ],
+		"33":  ["GPIO33", true, true , "P2"  ],
+		"34":  ["GPIO34", true, false, "P3"  ],
+		"35":  ["GPIO35", true, false, "P4"  ],
+		"25":  ["GPIO25", true, true , "P5"  ],
+		"26":  ["GPIO26", true, true , "P6"  ],
+		"14":  ["GPIO14", true, true , "P7"  ],
+		"12":  ["GPIO12", true, true , "P8"  ],
+		"13":  ["GPIO13", true, true , "P9"  ],
+		"15":  ["GPIO15", true, true , "P10" ],
+		"2":   ["GPIO2" , true, true , "P11" ],
+		"4" :  ["GPIO4" , true, true , "DI0" ],
+		"16":  ["GPIO16", true, true , "DI1" ],
+		"17":  ["GPIO17", true, true , "DI2" ],
+		"5" :  ["GPIO5" , true, true , "NSS" ],
+		"18":  ["GPIO18", true, true , "SCK" ],
+		"22":  ["GPIO22", true, true , "P12" ],
+		"21":  ["GPIO21", true, true , "P13" ]
+	},
+	"analogPins": {
+		"32": ["GPIO32", "P1"],
+		"33": ["GPIO33", "P2"],
+		"34": ["GPIO34", "P3"],
+		"35": ["GPIO35", "P4"]	 	
+	},
+	"pwmPins": {
+		"32": ["GPIO32", "P1"  ],
+		"33": ["GPIO33", "P2"  ],
+		"34": ["GPIO34", "P3"  ],
+		"35": ["GPIO35", "P4"  ],
+		"25": ["GPIO25", "P5"  ],
+		"26": ["GPIO26", "P6"  ],
+		"14": ["GPIO14", "P7"  ],
+		"12": ["GPIO12", "P8"  ],
+		"13": ["GPIO13", "P9"  ],
+		"15": ["GPIO15", "P10" ],
+		"2" : ["GPIO2" , "P11" ],
+		"22": ["GPIO22", "P12" ],
+		"21": ["GPIO21", "P13" ]
+	},
+	"externalAdcUnits": {
+		"2": ["MCP3008", 8, 10],
+		"3": ["MCP3208", 8, 12],
+		"4": ["ADS1115", 4, 15]
+	},
+	"i2cUnits": {
+		"0": ["I2C0"],
+		"1": ["I2C1"]
+	},
+	"canUnits": {
+		"0": ["CAN0"]
+	},
+	"spiUnits": {
+		"2": ["SPI2"],
+		"3": ["SPI3"]
+	},
+	"uartUnits": {
+		"0": ["UART0"],
+		"1": ["UART1"],
+		"2": ["UART2"]
+	}
+}
