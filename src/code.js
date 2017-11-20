@@ -81,7 +81,7 @@ Code.blockAbstraction = blockAbstraction.High;
 
 Code.storage = {};
 
-Code.minAgentVersion = "1.7";
+Code.minAgentVersion = "1.8";
 Code.checkNewFirmwareVersion = true;
 Code.checkNewAgentVersion = true;
 Code.showCode = false;
