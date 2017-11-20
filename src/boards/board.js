@@ -34,11 +34,36 @@ function board() {
 	
 	// List of supported boards
 	thisInstance.list = [
-		{id: "N1ESP32", desc: "Whitecat N1 ESP32"},
-		{id: "N1ESP32-DEVKIT", desc: "Whitecat N1 ESP32 DEVKIT"},
-		{id: "ESP32THING", desc: "ESP32 Thing"},
-		{id: "ESP32COREBOARD", desc: "ESP32 Core Board"},
+		{id: "N1ESP32", desc: "Whitecat N1 ESP32"}
 	];
+	
+	// Get the supported boards
+	jQuery.ajax({
+		url: "https://raw.githubusercontent.com/whitecatboard/Lua-RTOS-ESP32/master/boards/boards.json",
+		success: function(result) {
+			var boards = JSON.parse(result);
+			
+			thisInstance.list = [];
+			
+			boards.forEach(function(element, index) {
+				var id = "";
+				
+				if (element.brand != "") {
+					id = element.brand + "-";
+				}
+				
+				id = id + element.type;
+				
+				if (element.subtype != "") {
+					id = id + "-" + element.subtype ;
+				}
+
+				thisInstance.list.push({id: id, desc: element.description});
+			});
+		},
+		error: function() {
+		}
+	});	
 }
 
 // Get the board description identified by this id
