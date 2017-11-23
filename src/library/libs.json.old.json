@@ -1,0 +1,264 @@
+{
+  "name": "actuators",
+  "blocks": [
+    {
+      "category": "catActuators",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9ImB7K2d0Sz0qaFJOZ24wQlcpZkNsIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9Ik5BTUUiPmFjdHVhdG9yX3NldF9idXp6ZXI8L2ZpZWxkPjxmaWVsZCBuYW1lPSJJTkxJTkUiPkFVVE88L2ZpZWxkPjxmaWVsZCBuYW1lPSJDT05ORUNUSU9OUyI+Qk9USDwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJJTlBVVFMiPjxibG9jayB0eXBlPSJpbnB1dF9kdW1teSIgaWQ9InglRytTcSpkMHJPPUojazhIZkR1Ij48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iJVpsKGAwVytub2VMTi8uLV06cS8iPjxmaWVsZCBuYW1lPSJURVhUIj5zZXQgYnV6emVyPC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfZHJvcGRvd24iIGlkPSIlY3wpfEB2RlAlRzJ1U2sxYDZlayI+PG11dGF0aW9uIG9wdGlvbnM9IlsmcXVvdDt0ZXh0JnF1b3Q7XSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iRklFTEROQU1FIj5QSU48L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+R1BJTzI2PC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMCI+MjY8L2ZpZWxkPjxuZXh0PjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJWQlpqL1B8OUNrLC1Le0lHJCRsRSI+PGZpZWxkIG5hbWU9IlRFWFQiPnRvPC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfbnVtYmVyIiBpZD0iQiFofSVmNl0qbm4taGNAR3tFc2YiPjxmaWVsZCBuYW1lPSJWQUxVRSI+MDwvZmllbGQ+PGZpZWxkIG5hbWU9IkZJRUxETkFNRSI+VkFMVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJNSU4iPjA8L2ZpZWxkPjxmaWVsZCBuYW1lPSJNQVgiPjIwMDwvZmllbGQ+PGZpZWxkIG5hbWU9IlBSRUNJU0lPTiI+MDwvZmllbGQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9ImlZLSp+TS0pWEB9aFE/elBoSiFCIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkpAP2k3QCNmeTNqUDVDOC9WXlQhIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJUT1BUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IiwzOHJ9IWl1dUtlKSowbUFSY0ZxIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJCT1RUT01UWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IiVCNU1DWF1Gbn1ANTkwUzsoYEg/Ij48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0iWiFyK3N2dlglfE1YaVAoXXdjL08iPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "actuator_set_buzzer",
+        "message0": "",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": "Blockly.Blocks.io.helper.getPwmPins()"
+          },
+          {
+            "type": "input_value",
+            "name": "VALUE",
+            "check": "Number"
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": "Blockly.Blocks.actuators.HUE",
+        "inputsInline": true
+      },
+      "shadow": {
+        "VALUE": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "msg": {
+        "en": {
+          "message0": "set buzzer %1 to %2"
+        },
+        "ca": {
+          "message0": "estableix buzzer %1 a %2"
+        },
+        "es": {
+          "message0": "establece buzzer %1 a %2"
+        }
+      },
+      "interactiveFields": [
+        "VALUE",
+        "NUM"
+      ],
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "code": "LS0gc2V0IGJ1enplciBhdHRhY2hlZCBvbiB7e0NvZGUuc3RhdHVzLm1hcHMucHdtUGluc1skJFBJTiQkXVswXX19DQp0cnkoDQoJZnVuY3Rpb24oKQ0KCQktLSBBdHRhY2ggYnV6emVyIG9uIHt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdWzBdfX0sIHVzaW5nIGEgUFdNIGNoYW5uZWwNCgkJaWYgKF9idXp6ZXJ7e0NvZGUuc3RhdHVzLm1hcHMucHdtUGluc1skJFBJTiQkXVswXX19ID09IG5pbCkgdGhlbg0KCQkgICAgX2J1enplcnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdWzBdfX0gPSBwd20uYXR0YWNoKHBpby57e0NvZGUuc3RhdHVzLm1hcHMucHdtUGluc1skJFBJTiQkXVswXX19LCAxMDAwLCAwKQ0KCQkJX2J1enplcnt7Q29kZS5zdGF0dXMubWFwcy5wd21QaW5zWyQkUElOJCRdWzBdfX06c3RhcnQoKQ0KCQllbmQNCg0KCQktLSBVcGRhdGUgZHV0eSBjeWNsZQ0KCQlfYnV6emVye3tDb2RlLnN0YXR1cy5tYXBzLnB3bVBpbnNbJCRQSU4kJF1bMF19fTpzZXRkdXR5KChAQFZBTFVFQEApICogMC4wMSkNCgllbmQsDQoJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJd2NCbG9jay5ibG9ja0Vycm9yKCIlJWlkJSUiLCBlcnIsIG1lc3NhZ2UpDQoJZW5kDQop"
+    },
+    {
+      "category": "catActuators",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9ImB7K2d0Sz0qaFJOZ24wQlcpZkNsIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9Ik5BTUUiPmFjdHVhdG9yX2xlZF9vbjwvZmllbGQ+PGZpZWxkIG5hbWU9IklOTElORSI+QVVUTzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNPTk5FQ1RJT05TIj5CT1RIPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IklOUFVUUyI+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0iNEB+KExgXTpwTH5CYDFQLUFifVAiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJLTSUyL0B4VUJjX0JDYGRbbWhqLCI+PGZpZWxkIG5hbWU9IlRFWFQiPmxlZCBvbjwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0iVS9gUk9yW08rLzNLSDpGcl44ODoiPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90O10iPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkZJRUxETkFNRSI+UElOPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjAiPkdQSU8yNjwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTAiPjI2PC9maWVsZD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iaVktKn5NLSlYQH1oUT96UGhKIUIiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iSkA/aTdAI2Z5M2pQNUM4L1ZeVCEiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iLDM4cn0haXV1S2UpKjBtQVJjRnEiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iJUI1TUNYXUZufUA1OTBTOyhgSD8iPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJaIXIrc3Z2WCV8TVhpUChdd2MvTyI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "spec": {
+        "type": "actuator_led_on",
+        "message0": "",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": "Blockly.Blocks.io.helper.getOutputDigitalPins()"
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": "Blockly.Blocks.actuators.HUE",
+        "inputsInline": true
+      },
+      "msg": {
+        "en": {
+          "message0": "turn on led %1"
+        },
+        "ca": {
+          "message0": "encén led %1"
+        },
+        "es": {
+          "message0": "enciende led %1"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "code": "LS0gdHVybiBvbiBsZWQgYXQge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0NCnRyeSgNCglmdW5jdGlvbigpDQoJCXBpby5waW4uc2V0ZGlyKHBpby5PVVRQVVQsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXRwdWxsKHBpby5OT1BVTEwsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMSwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQkNCgllbmQsDQoJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJd2NCbG9jay5ibG9ja0Vycm9yKCIlJWlkJSUiLCBlcnIsIG1lc3NhZ2UpDQoJZW5kDQop"
+    },
+    {
+      "category": "catActuators",
+      "spec": {
+        "type": "actuator_led_off",
+        "message0": "",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": "Blockly.Blocks.io.helper.getOutputDigitalPins()"
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": "Blockly.Blocks.actuators.HUE",
+        "inputsInline": true
+      },
+      "whatcher": false,
+      "msg": {
+        "en": {
+          "message0": "turn off led %1"
+        },
+        "ca": {
+          "message0": "apaga led %1"
+        },
+        "es": {
+          "message0": "apaga led %1"
+        }
+      },
+      "dependency": [
+        "block"
+      ],
+      "code": "LS0gdHVybiBvZmYgbGVkIGF0IHt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19DQp0cnkoDQoJZnVuY3Rpb24oKQ0KCQlwaW8ucGluLnNldGRpcihwaW8uT1VUUFVULCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pDQoJCXBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pDQoJCXBpby5waW4uc2V0dmFsKDAsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkJDQoJZW5kLA0KCWZ1bmN0aW9uKHdoZXJlLCBsaW5lLCBlcnIsIG1lc3NhZ2UpDQoJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCWVuZA0KKQ=="
+    },
+    {
+      "category": "catActuators",
+      "spec": {
+        "type": "actuator_relay_on",
+        "message0": "",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": "Blockly.Blocks.io.helper.getOutputDigitalPins()"
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": "Blockly.Blocks.actuators.HUE",
+        "inputsInline": true
+      },
+      "msg": {
+        "en": {
+          "message0": "turn on relay %1"
+        },
+        "ca": {
+          "message0": "encén relé %1"
+        },
+        "es": {
+          "message0": "enciende relé %1"
+        }
+      },
+      "dependency": [
+        "block"
+      ],
+      "code": "LS0gdHVybiBvbiByZWxheSBhdCB7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fQ0KdHJ5KA0KCWZ1bmN0aW9uKCkNCgkJcGlvLnBpbi5zZXRkaXIocGlvLk9VVFBVVCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQ0KCQlwaW8ucGluLnNldHB1bGwocGlvLk5PUFVMTCwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQ0KCQlwaW8ucGluLnNldHZhbCgwLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pCQ0KCWVuZCwNCglmdW5jdGlvbih3aGVyZSwgbGluZSwgZXJyLCBtZXNzYWdlKQ0KCQl3Y0Jsb2NrLmJsb2NrRXJyb3IoIiUlaWQlJSIsIGVyciwgbWVzc2FnZSkNCgllbmQNCik7"
+    },
+    {
+      "category": "catActuators",
+      "spec": {
+        "type": "actuator_relay_off",
+        "message0": "",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": "Blockly.Blocks.io.helper.getOutputDigitalPins()"
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": "Blockly.Blocks.actuators.HUE",
+        "inputsInline": true
+      },
+      "msg": {
+        "en": {
+          "message0": "turn off relay %1"
+        },
+        "ca": {
+          "message0": "apaga relé %1"
+        },
+        "es": {
+          "message0": "apaga relé %1"
+        }
+      },
+      "dependency": [
+        "block"
+      ],
+      "code": "LS0gdHVybiBvZmYgcmVsYXkgYXQge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0NCnRyeSgNCglmdW5jdGlvbigpDQoJCXBpby5waW4uc2V0ZGlyKHBpby5PVVRQVVQsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXRwdWxsKHBpby5OT1BVTEwsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMSwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQkNCgllbmQsDQoJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJd2NCbG9jay5ibG9ja0Vycm9yKCIlJWlkJSUiLCBlcnIsIG1lc3NhZ2UpDQoJZW5kDQop"
+    },
+    {
+      "category": "catActuators",
+      "spec": {
+        "type": "actuator_move_stepper",
+        "message0": "",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "DIRECTION",
+            "options": "Blockly.Blocks.io.helper.getOutputDigitalPins()"
+          },
+          {
+            "type": "field_dropdown",
+            "name": "STEP",
+            "options": "Blockly.Blocks.io.helper.getOutputDigitalPins()"
+          },
+          {
+            "type": "input_value",
+            "name": "UNITS",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "SPEED",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "ACCEL",
+            "check": "Number"
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": "Blockly.Blocks.actuators.HUE",
+        "tooltip": "",
+        "helpUrl": "",
+        "inputsInline": true
+      },
+      "shadow": {
+        "UNITS": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "SPEED": {
+          "value": "60",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "ACCEL": {
+          "value": "2",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "msg": {
+        "en": {
+          "message0": "move stepper d. %1, s. %2 by %3 units, speed %4, accel %5"
+        },
+        "ca": {
+          "message0": "mou stepper d. %1, p. %2 en %3 unitats, vel %4, accel %5"
+        },
+        "es": {
+          "message0": "mueve stepper d. %1, p. %2 en %3 unidades, vel %4, accel %5"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "code": "LS0gbW92ZSBzdGVwcGVyIG9uIGRpcmVjdGlvbiBwaW4ge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkRElSRUNUSU9OJCRdWzBdfX0sIHN0ZXAgcGluIHt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fQ0KdHJ5KA0KCWZ1bmN0aW9uKCkNCgkJLS0gQXR0YWNoIHN0ZXBwZXINCgkJaWYgKF9zdGVwcGVye3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkU1RFUCQkXVswXX19ID09IG5pbCkgdGhlbg0KCQkJX3N0ZXBwZXJ7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0gPSBzdGVwcGVyLmF0dGFjaChwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkRElSRUNUSU9OJCRdWzBdfX0sIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0pDQoJCWVuZA0KCQlfc3RlcHBlcnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFNURVAkJF1bMF19fTptb3ZlKEBAVU5JVFNAQCwgQEBTUEVFREBALCBAQEFDQ0VMQEApDQoJCXN0ZXBwZXIuc3RhcnQoX3N0ZXBwZXJ7e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRTVEVQJCRdWzBdfX0pDQoJZW5kLA0KCWZ1bmN0aW9uKHdoZXJlLCBsaW5lLCBlcnIsIG1lc3NhZ2UpDQoJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCWVuZA0KKQ=="
+    }
+  ]
+}

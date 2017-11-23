@@ -4,7 +4,7 @@
  * Block library framework
  *
  * Copyright (C) 2015 - 2016
- * IBEROXARXA SERVICIOS INTEGRALES, S.L. & CSS IBÉRICA, S.L.
+ * IBEROXARXA SERVICIOS INTEGRALES, S.L.
  *
  * Author: Jaume Olivé (jolive@iberoxarxa.com / jolive@whitecatboard.org)
  *
@@ -30,14 +30,38 @@
  */
 
 function blockLibrary() {
-	this.id = "";
-	this.def = {};
-	this.workDef = {};
+	var thisInstance = this
+	
+	thisInstance.libs = [];
+	
+	thisInstance.id = "";
+	thisInstance.def = {};
+	thisInstance.workDef = {};
+
+	// Load libraries
+	if ((typeof require != "undefined") && (typeof require('nw.gui') != "undefined")) {
+	    var fs = require("fs");
+	    var path = require('path');
+
+	    var dir = 'library/defs';
+	    var dirPath = path.join(process.cwd(), dir);  
+
+		var files = fs.readdirSync(dirPath);
+		files.forEach(function(file, index) {
+			if (/^.+\.json$/.test(file)) {
+				 // Read library
+				 var libraryPath = path.join(dirPath, file);  
+				 
+				 var def = JSON.parse(fs.readFileSync(libraryPath, "utf8"));
+				 thisInstance.libs.push(def);
+			}			
+		});
+	}	
 }
 
 blockLibrary.prototype.load = function(id, callback) {
 	var thisInstance = this;
-	
+
 	if (thisInstance.id == id) return;
 	
 	if ((typeof require != "undefined") && (typeof require('nw.gui') != "undefined")) {
@@ -46,6 +70,11 @@ blockLibrary.prototype.load = function(id, callback) {
 
 	    var file = 'library/defs/' + id + '.json';
 	    var filePath = path.join(process.cwd(), file);  
+
+		// Test that file exists, and if not, create an empty library
+		if (!fs.existsSync(filePath)) {
+			fs.writeFileSync(filePath, '{"name": "'+id+'","blocks": []}');
+		}
 
 		try {
 			thisInstance.def = JSON.parse(fs.readFileSync(filePath, "utf8"));			
@@ -81,7 +110,7 @@ blockLibrary.prototype.update = function() {
 	    var fs = require('fs');
 	    var path = require('path');
 
-		var file = 'library/defs/' + thisInstance.id + '.json';
+		var file = 'library/defs/' + thisInstance.def.name + '.json';
 	    var filePath = path.join(process.cwd(), file);  
 
 	    fs.writeFileSync(filePath, JSON.stringify(thisInstance.def, function(k, v){
@@ -115,13 +144,27 @@ blockLibrary.prototype.replace = function(template, char1, char2, block) {
 											code = code + block[id];
 											break;
 										} else if (char2 == "$") {
-											code = code + "'" + eval("block.getFieldValue('"+id+"')") + "'";
+											var val = eval("block.getFieldValue('"+id+"')");
+											
+											if (val == null) {
+												val = Blockly.Lua.valueToCode(block, id, Blockly.Lua.ORDER_NONE) || '\'\'';
+												code = code + val;
+											} else {
+												code = code + "'" + val + "'";												
+											}
+
 											break;
 										} else if (char2 == "@") {
 											code = code + eval("Blockly.Lua.valueToCode(block, id, Blockly.Lua.ORDER_NONE)");
 											break;
 										} else if (char2 == "}") {
-											code = code + eval(id);
+											var val = eval(id);
+											
+											if (typeof val == "object") {
+												code = code + "[" + val + "]";												
+											} else {
+												code = code + val;												
+											}
 											break;
 										}
 									} else {
@@ -163,7 +206,9 @@ blockLibrary.prototype.create = function(xml, block) {
 			for (var field in block.interactiveFields) {
 				this.updateBoardAtFieldChange(block.interactiveFields[field]);
 			}
-		}
+		},
+		
+		hasWatcher: block.whatcher
 	};
 	
 	// Generator
@@ -192,6 +237,7 @@ blockLibrary.prototype.create = function(xml, block) {
 	
 	// Create shadow values, if needed
 	// Parse each block
+
 	for (var prop in block.spec) {
 		if (/args[0-9]*/.test(prop)) {
 			for (var arg in block.spec[prop]) {
@@ -216,62 +262,64 @@ blockLibrary.prototype.create = function(xml, block) {
 	}
 
 	var toolBar = jQuery('<toolbar>' + xml + '</toolbar>');
-	toolBar.find("category[id='"+block.category+"']").append(jQuery(newBlock)).html()
+	var parentCat = toolBar.find("category[id='cat"+block.parentCategory+"']");
+	var cat = toolBar.find("category[id='cat"+block.category+"']");
 	
+	if (cat.length == 0) {
+		// Create the category
+		cat = jQuery('<category id="cat' + block.category + '" colour="'+Blockly.Blocks.actuators.HUE+'" name="'+block.category +'"></category>');
+		
+		parentCat.append(cat);
+	} 
+
+	cat.append(newBlock);
+
 	return toolBar.html();
 }
 
-blockLibrary.prototype.get = function(xml, id, callback) {
+blockLibrary.prototype.get = function(xml, callback) {
 	var thisInstance = this;
-	
-	
-	if (typeof require != "undefined") {
-		if (typeof require('nw.gui') != "undefined") {
-			this.load(id, function() {
-				// Parse each block
-				var blocks = thisInstance.workDef.blocks;
 
-				for(var i=0;i < blocks.length;i++) {
-					var block = blocks[i];
-			
-					// Get the json spec for block
-					var spec = block.spec;
-			
-					// Translate messages
-					for (var prop in spec) {
-						if (/message[0-9]*/.test(prop)) {
-							block.spec[prop] = block.msg[Code.settings.language][prop];
-						}
-					}
-			
-					// Search into arguments
-					//
-					// If argument is field_dropdown and value is not an array evaluate firts
-					for (var prop in spec) {
-						if (/args[0-9]*/.test(prop)) {
-							for (var arg in spec[prop]) {
-								if ((spec[prop][arg].type == 'field_dropdown') && (!jQuery.isArray(spec[prop][arg].options))) {
-									spec[prop][arg].options = eval(spec[prop][arg].options);
-								}
+	// Parse each lirary block
+	thisInstance.libs.forEach(function(lib, idx) {
+		lib.blocks.forEach(function(block, idx) {
+			// Get the json spec for block
+
+			var spec = block.spec;
+
+			// Translate messages
+			for (var prop in spec) {
+				if (/message[0-9]*/.test(prop)) {
+					block.spec[prop] = block.msg[Code.settings.language][prop];
+				}
+			}
+
+			// Search into arguments
+			//
+			// If argument is field_dropdown and value is not an array evaluate firts
+			for (var prop in spec) {
+				if (/args[0-9]*/.test(prop)) {
+					for (var arg in spec[prop]) {
+						if ((spec[prop][arg].type == 'field_dropdown') && (jQuery.isArray(spec[prop][arg].options))) {
+							var opt = spec[prop][arg].options[0][0];
+							
+							if (opt == "output_pins") {
+								spec[prop][arg].options = Blockly.Blocks.io.helper.getOutputDigitalPins();							
 							}
 						}
 					}
-			
-					// If colour in spec is not an integer, evaluate
-					if (isNaN(parseInt(spec.colour))) {
-						spec.colour = eval(spec.colour);
-					}
-						
-					// Create block
-					xml = thisInstance.create(xml, block);
 				}
+			}
 
-				callback(xml);		
-			});
-		} else {
-			callback(xml);		
-		}
-	} else {
-		callback(xml);		
-	}
+			// If colour in spec is not an integer, evaluate
+			if (isNaN(parseInt(spec.colour))) {
+				spec.colour = eval(spec.colour);
+			}
+
+			// Create block
+			xml = thisInstance.create(xml, block);			
+		});
+	});
+	
+	callback(xml);		
 }

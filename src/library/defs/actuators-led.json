@@ -1,0 +1,87 @@
+{
+  "name": "actuators-led",
+  "blocks": [
+    {
+      "parentCategory": "Actuators",
+      "category": "Led",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9ImB7K2d0Sz0qaFJOZ24wQlcpZkNsIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+QVVUTzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNPTk5FQ1RJT05TIj5CT1RIPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IklOUFVUUyI+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0iNEB+KExgXTpwTH5CYDFQLUFifVAiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJLTSUyL0B4VUJjX0JDYGRbbWhqLCI+PGZpZWxkIG5hbWU9IlRFWFQiPmxlZCBvbjwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0iVS9gUk9yW08rLzNLSDpGcl44ODoiPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90O10iPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkZJRUxETkFNRSI+UElOPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjAiPm91dHB1dF9waW5zPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMCI+Y3VzdG9tPC9maWVsZD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iaVktKn5NLSlYQH1oUT96UGhKIUIiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iSkA/aTdAI2Z5M2pQNUM4L1ZeVCEiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iLDM4cn0haXV1S2UpKjBtQVJjRnEiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iJUI1TUNYXUZufUA1OTBTOyhgSD8iPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJaIXIrc3Z2WCV8TVhpUChdd2MvTyI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "spec": {
+        "type": "actuator_led_on",
+        "message0": "led on %1",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": [
+              [
+                "output_pins",
+                "custom"
+              ]
+            ]
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "led on %1"
+        },
+        "ca": {
+          "message0": "led on %1"
+        },
+        "es": {
+          "message0": "led on %1"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "code": "LS0gdHVybiBvbiBsZWQgYXQge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0NCnRyeSgNCglmdW5jdGlvbigpDQoJCXBpby5waW4uc2V0ZGlyKHBpby5PVVRQVVQsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXRwdWxsKHBpby5OT1BVTEwsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMSwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQkNCgllbmQsDQoJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJd2NCbG9jay5ibG9ja0Vycm9yKCIlJWlkJSUiLCBlcnIsIG1lc3NhZ2UpDQoJZW5kDQop"
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Led",
+      "spec": {
+        "type": "actuator_led_off",
+        "message0": "turn off led %1",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": [
+              [
+                "output_pins",
+                "custom"
+              ]
+            ]
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 230,
+        "inputsInline": true
+      },
+      "whatcher": false,
+      "msg": {
+        "en": {
+          "message0": "turn off led %1"
+        },
+        "ca": {
+          "message0": "apaga led %1"
+        },
+        "es": {
+          "message0": "apaga led %1"
+        }
+      },
+      "dependency": [
+        "block"
+      ],
+      "code": "LS0gdHVybiBvZmYgbGVkIGF0IHt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19DQp0cnkoDQoJZnVuY3Rpb24oKQ0KCQlwaW8ucGluLnNldGRpcihwaW8uT1VUUFVULCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pDQoJCXBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pDQoJCXBpby5waW4uc2V0dmFsKDAsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkJDQoJZW5kLA0KCWZ1bmN0aW9uKHdoZXJlLCBsaW5lLCBlcnIsIG1lc3NhZ2UpDQoJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCWVuZA0KKQ=="
+    }
+  ]
+}

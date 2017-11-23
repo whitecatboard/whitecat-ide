@@ -1158,8 +1158,8 @@ Code.buildToolBox = function(callback) {
 	//	xml += '<category id="catTFT"colour="20">';
 	//	xml += '</category>';
 	//}
-
-	Code.lib.get(xml, "libs", function(xml) {
+	
+	Code.lib.get(xml, function(xml) {
 		var toolbox = document.getElementById('toolbox');
 		toolbox.innerHTML = xml;
 
@@ -1815,11 +1815,43 @@ Code.save = function() {
 		code = Code.workspace.editor.getValue();
 	} else if (Code.workspace.type == 'block_editor') {
 		var type = jQuery("#content_block_editor_type").val();
-		code = btoa(Code.workspace.block_editorCode.getValue());
-
+		
 		for (var block in Code.lib.def.blocks) {
 			if (Code.lib.def.blocks[block].spec.type == type) {
+				var rootBlock = FactoryUtils.getRootBlock(BlockFactory.mainWorkspace);
+				
+				var xmlSpec = btoa(Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(BlockFactory.mainWorkspace)));
+				var jsonSpec = JSON.parse(FactoryUtils.getBlockDefinition(type, rootBlock, 'JSON', BlockFactory.mainWorkspace));
+	
+				code = btoa(Code.workspace.block_editorCode.getValue());
+
 				Code.lib.def.blocks[block].code = code;
+				Code.lib.def.blocks[block].xmlSpec = xmlSpec;
+				Code.lib.def.blocks[block].spec = jsonSpec;
+				
+				Code.lib.def.blocks[block].whatcher = (rootBlock.getFieldValue('WHATCHER') == "TRUE");
+				
+				Code.lib.def.blocks[block].msg.en = {"message0": Code.lib.def.blocks[block].spec.message0};
+				Code.lib.def.blocks[block].msg.ca = {"message0": Code.lib.def.blocks[block].spec.message0};
+				Code.lib.def.blocks[block].msg.es = {"message0": Code.lib.def.blocks[block].spec.message0};
+				  
+				var contentsBlock = rootBlock.getInputTargetBlock('INPUTS');
+				
+			    while (contentsBlock) {
+				  if (contentsBlock.type == "input_value") {
+					  if (contentsBlock.getFieldValue("SHADOW") == "TRUE") {
+						  Code.lib.def.blocks[block].shadow[contentsBlock.getFieldValue("INPUTNAME")] = {
+					          "value": "0",
+					          "name": "NUM",
+					          "type": "math_number"						  	
+						  };		  		  
+					  }
+				  }
+				  
+			      contentsBlock = contentsBlock.nextConnection &&
+			          contentsBlock.nextConnection.targetBlock();
+			    }
+				
 				Code.lib.update();
 				break;
 			}
@@ -2689,10 +2721,10 @@ window.addEventListener('load', function() {
 		}
 	});
 
-	Code.Help = new Help();
+	Code.Help  = new Help();
 	Code.agent = new agent();
 	Code.board = new board();
-	Code.lib = new blockLibrary();
+	Code.lib   = new blockLibrary();
 
 	Code.blocklyFactory = null;
 	if (typeof require != "undefined") {

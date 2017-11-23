@@ -29,7 +29,7 @@ Blockly.Blocks['factory_base'] = {
     this.setColour(120);
     this.appendDummyInput()
         .appendField('name')
-        .appendField(new Blockly.FieldTextInput('block_type'), 'NAME');
+        .appendField('', 'NAME');
     this.appendStatementInput('INPUTS')
         .setCheck('Input')
         .appendField('inputs');
@@ -164,13 +164,18 @@ Blockly.Blocks['input_value'] = {
   // Value input.
   init: function() {
     this.jsonInit({
-      "message0": "value input %1 %2",
+      "message0": "value input %1 shadow %2 %3",
       "args0": [
         {
           "type": "field_input",
           "name": "INPUTNAME",
           "text": "NAME"
         },
+	    {
+	      "type": "field_checkbox",
+	      "name": "SHADOW",
+	      "checked": false
+	    },
         {
           "type": "input_dummy"
         }

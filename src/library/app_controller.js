@@ -40,6 +40,39 @@ AppController = function() {
 	this.inited = false;
 	this.toolWidth = 500;
 	this.previewHeight = 70;
+	
+	this.defaultBlockSpec  = '{';
+	this.defaultBlockSpec += '   "parentCategory": "",';
+	this.defaultBlockSpec += '   "category": "",';
+	this.defaultBlockSpec += '   "xmlSpec": "",';
+	this.defaultBlockSpec += '   "spec": {';
+	this.defaultBlockSpec += '      "type": "",';
+	this.defaultBlockSpec += '      "message0": "",';
+	this.defaultBlockSpec += '      "args0": [';
+	this.defaultBlockSpec += '      ],';
+	this.defaultBlockSpec += '      "previousStatement": null,';
+	this.defaultBlockSpec += '      "nextStatement": null,';
+	this.defaultBlockSpec += '      "colour": "",';
+	this.defaultBlockSpec += '      "inputsInline": true';
+	this.defaultBlockSpec += '   },';
+	this.defaultBlockSpec += '   "msg": {';
+	this.defaultBlockSpec += '      "en": {';
+	this.defaultBlockSpec += '         "message0": ""';
+	this.defaultBlockSpec += '      },';
+	this.defaultBlockSpec += '      "ca": {';
+	this.defaultBlockSpec += '         "message0": ""';
+	this.defaultBlockSpec += '      },';
+	this.defaultBlockSpec += '      "es": {';
+	this.defaultBlockSpec += '         "message0": ""';
+	this.defaultBlockSpec += '      }';
+	this.defaultBlockSpec += '   },';
+	this.defaultBlockSpec += '   "whatcher": false,';
+	this.defaultBlockSpec += '   "dependency": [';
+	this.defaultBlockSpec += '      "block"';
+	this.defaultBlockSpec += '   ],';
+	this.defaultBlockSpec += '   "shadow": {},';
+	this.defaultBlockSpec += '   "code": ""';
+	this.defaultBlockSpec += '}';
 };
 
 /**
@@ -48,7 +81,7 @@ AppController = function() {
 AppController.prototype.addBlockFactoryEventListeners = function() {
   // Update code on changes to block being edited.
   BlockFactory.mainWorkspace.addChangeListener(BlockFactory.updateLanguage);
-
+  
   // Disable blocks not attached to the factory_base block.
   BlockFactory.mainWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 };
@@ -110,53 +143,205 @@ AppController.prototype.onresize = function(event) {
 	editor.style.width = (bBox.width - previewLeft) + 'px';
 };
 
+AppController.prototype.updateBlockList = function() {
+    var self = this;
+    var html = '';
+	
+
+    if (Code.lib.def.blocks.length == 0) {
+  	  html += '<option value="new-library">Choose one ...</option>'  	
+    }
+
+	Code.lib.def.blocks.forEach(function(block, index) {
+		html += '<option '+(index==0?"selected":"")+' value="'+block.spec.type+'">'+block.spec.type+'</option>'
+	});
+
+	html += '<option value="new-block">New block ...</option>'
+
+	jQuery("#content_block_editor_type").html(html);
+	
+	if (Code.lib.def.blocks.length == 0) {
+		// No blocks in library
+		if (BlockFactory.mainWorkspace) {
+			// Clear all
+			BlockFactory.mainWorkspace.clear();
+			BlockFactory.previewWorkspace.clear();
+			Code.workspace.block_editorCode.setValue("", -1);
+		}	
+	} else {
+		// Show fisrt bock
+		jQuery("#content_block_editor_type").trigger("change");		
+	}
+
+    jQuery("#content_block_editor_type").unbind('change').on('change', function() {
+	  	var type = jQuery(this.selectedOptions).val();
+		
+		if (type == "new-block") {
+			var dialogForm = "";
+			
+			dialogForm  = '<form id="new_block">';
+			dialogForm += '<div>';
+			dialogForm += '<label for="block_name">Name:&nbsp;&nbsp;</label>';
+			dialogForm += '<input id="block_name" name="block_name" value="">';
+			dialogForm += '</div>';
+			dialogForm += '</form>';
+			dialogForm += '<span class="error-msg" id="errors"></span>';
+			
+			bootbox.dialog({
+				title: "New block",
+				message: dialogForm,
+				buttons: {
+					danger: {
+						label: "Cancel",
+						classensor: "btn-danger",
+						callback: function() {}
+					},
+					main: {
+						label: "Create",
+						callback: function() {
+							var form = jQuery("#new_block");
+							jQuery("#errors").html("");
+							
+							var name = form.find("#block_name").val();
+							
+							if (name == "") {
+								jQuery("#errors").html("Block name missing");
+								return false;
+							}
+							
+							// Create a default block
+							var def = JSON.parse(self.defaultBlockSpec);
+							
+							def.spec.type = name;
+							
+							// Add this block to the library
+							Code.lib.def.blocks.push(def);
+							
+							// Update block list
+							self.updateBlockList();
+							
+							// Show the block
+							var xml = '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" deletable="false" movable="false" x="10" y="15"><mutation connections="BOTH"></mutation><field name="NAME">'+name+'</field><field name="INLINE">AUTO</field><field name="CONNECTIONS">BOTH</field><statement name="INPUTS"></statement><value name="TOOLTIP"><block type="text" deletable="false" movable="false"><field name="TEXT"></field></block></value><value name="HELPURL"><block type="text" deletable="false" movable="false"><field name="TEXT"></field></block></value><value name="TOPTYPE"><shadow type="type_null"></shadow></value><value name="BOTTOMTYPE"><shadow type="type_null"></shadow></value><value name="COLOUR"><block type="colour_hue"><mutation colour="#5b67a5"></mutation><field name="HUE">230</field></block></value></block></xml>';
+							
+							BlockFactory.mainWorkspace.clear();
+							Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), BlockFactory.mainWorkspace);
+							
+				  			Code.workspace.block_editorCode.setValue("", -1);
+						}
+					},
+				},
+				closable: false,
+				onEscape: true
+			});
+		} else {
+		  	for (var block in Code.lib.def.blocks) {
+		  		if (Code.lib.def.blocks[block].spec.type == type) {
+		  			var spec = "";
+		  			var code = "";
+		
+		  			if (typeof Code.lib.def.blocks[block].xmlSpec != "undefined") {
+		  				spec = atob(Code.lib.def.blocks[block].xmlSpec);
+		  			}
+		
+		  			if (typeof Code.lib.def.blocks[block].code != "undefined") {
+		  				code = atob(Code.lib.def.blocks[block].code);
+		  			}
+		
+		  			Code.workspace.block_editorCode.setValue(code, -1);
+		  			Code.workspace.block_editorCode.focus();		
+	
+		  			if (spec != "") {
+		  				if (BlockFactory.mainWorkspace) {
+		  					BlockFactory.mainWorkspace.clear();
+		  				    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(spec), BlockFactory.mainWorkspace);					
+		  				}			
+		  			}					
+		  		}
+		  	}							
+		}
+    });	
+};
+
 /**
  * Initialize Blockly and layout.  Called on page load.
  */
 AppController.prototype.init = function() {
   var self = this;
+  var html = '';
 
   if (this.inited) return;
   this.inited = true;
   
-  var html = '';
-  var i = 0;
-  for (var block in Code.lib.def.blocks) {
-	html += '<option '+(i==0?"selected":"")+'value="'+Code.lib.def.blocks[block].spec.type+'">'+Code.lib.def.blocks[block].spec.type+'</option>'
-	i++;
+  // Populate list of libraries
+  var libs = Code.lib.libs;
+  
+  html = '';
+ 
+  if (libs.length == 0) {
+	  html += '<option value="new-library">Choose one ...</option>'  	
   }
+  
+  libs.forEach(function(library, index) {
+	html += '<option '+(index==0?"selected":"")+' value="'+library.name+'">'+library.name+'</option>'
+  });
 
-  jQuery("#content_block_editor_type").html(html);
-
-  jQuery("#content_block_editor_type").on('change', function() {
-	var type = jQuery(this.selectedOptions).val();
-
-	for (var block in Code.lib.def.blocks) {
-		if (Code.lib.def.blocks[block].spec.type == type) {
-			var spec = "";
-			var code = "";
-			
-			if (typeof Code.lib.def.blocks[block].xmlSpec != "undefined") {
-				spec = atob(Code.lib.def.blocks[block].xmlSpec);
-			}
-			
-			if (typeof Code.lib.def.blocks[block].code != "undefined") {
-				code = atob(Code.lib.def.blocks[block].code);
-			}
-			
-			Code.workspace.block_editorCode.setValue(code, -1);
-			Code.workspace.block_editorCode.focus();		
+  html += '<option value="new-library">New library ...</option>'
+  
+  jQuery("#content_block_editor_library").html(html);
+  jQuery("#content_block_editor_library").unbind('change').on('change', function(e) {
+	  var target = jQuery(e.target);
+	  var libraryName = target.val();
+	  
+	  if (libraryName == "new-library") {
+		var dialogForm = "";
 		
-			if (spec != "") {
-				if (BlockFactory.mainWorkspace) {
-					BlockFactory.mainWorkspace.clear();
-				    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(spec), BlockFactory.mainWorkspace);					
-				}			
-			}
-		}
-	}
-  });		
+		dialogForm  = '<form id="new_library">';
+		dialogForm += '<div>';
+		dialogForm += '<label for="library_name">Name:&nbsp;&nbsp;</label>';
+		dialogForm += '<input id="library_name" name="library_name" value="">';
+		dialogForm += '</div>';
+		dialogForm += '</form>';
+		dialogForm += '<span class="error-msg" id="errors"></span>';
 
+		bootbox.dialog({
+			title: "New library",
+			message: dialogForm,
+			buttons: {
+				danger: {
+					label: "Cancel",
+					classensor: "btn-danger",
+					callback: function() {}
+				},
+				main: {
+					label: "Create",
+					callback: function() {
+						var form = jQuery("#new_library");
+						jQuery("#errors").html("");
+						
+						var name = form.find("#library_name").val();
+						
+						if (name == "") {
+							jQuery("#errors").html("Library name missing");
+							return false;
+						}
+					}
+				},
+			},
+			closable: false,
+			onEscape: true
+		});	  	
+	  } else {
+		  // Change current library
+		  libs.forEach(function(library, index) {
+			  if (library.name == libraryName) {
+				  Code.lib.def = JSON.parse(JSON.stringify(library));		  	
+			  }
+		  });
+		  
+		  self.updateBlockList();
+	  }
+  });
+  
   this.onresize();
   window.addEventListener('resize', function() {
     self.onresize();
@@ -172,10 +357,10 @@ AppController.prototype.init = function() {
 
   // Create the root block on Block Factory main workspace.
   if ('BlocklyStorage' in window && window.location.hash.length > 1) {
-    BlocklyStorage.retrieveXml(window.location.hash.substring(1),
-                               BlockFactory.mainWorkspace);
+//    BlocklyStorage.retrieveXml(window.location.hash.substring(1),
+//                               BlockFactory.mainWorkspace);
   } else {	  
-    BlockFactory.showStarterBlock();
+  //  BlockFactory.showStarterBlock();
   }
   
   BlockFactory.mainWorkspace.clearUndo();
@@ -184,5 +369,6 @@ AppController.prototype.init = function() {
   this.addBlockFactoryEventListeners();
 
   // Show first block in library
+  jQuery("#content_block_editor_library").trigger("change");
   jQuery("#content_block_editor_type").trigger("change");
 };

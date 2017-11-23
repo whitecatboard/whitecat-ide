@@ -76,7 +76,10 @@ Blockly.Lua.io.helper = {
 
 	nameDigital: function(block) {
 		var pin = Blockly.Lua.statementToCodeNoIndent(block,'PIN')[0];
-
+		if (typeof pin == "undefined") {
+			pin = block.getFieldValue("PIN");
+		}
+		
 		if (pin.indexOf("pio.") === 0) {
 			pin = pin.replace("pio.","");
 		}

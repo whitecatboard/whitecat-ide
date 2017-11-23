@@ -1,0 +1,318 @@
+{
+  "name": "actuators-neopixel",
+  "blocks": [
+    {
+      "parentCategory": "Actuators",
+      "category": "Neopixel",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9Iml5P0guU1NyVmhPXVMkRV5Ia11TIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJYPWtCcWVgVmNeOU1YQDdVajNPJSI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9ImZCMFsvRy5yIWdeRjI7Q0Bxdm1aIj48ZmllbGQgbmFtZT0iVEVYVCI+bmVvIHBpeGVsPC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfZHJvcGRvd24iIGlkPSJka3pnK01IQThmMUVVQmplNmg6dSI+PG11dGF0aW9uIG9wdGlvbnM9IlsmcXVvdDt0ZXh0JnF1b3Q7XSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iRklFTEROQU1FIj5QSU48L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+b3V0cHV0X3BpbnM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUwIj5jdXN0b208L2ZpZWxkPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iXjRNKnw2OTBCbztyYmpuXiVQMzYiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPlBJWEVMPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5UUlVFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0ifTk2fnd5IzdHMiRIeTRbMERRLWIiPjxmaWVsZCBuYW1lPSJURVhUIj5waXhlbDwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJva3FvO141eEFoYWc/cXkvMmNeZSI+PC9zaGFkb3c+PC92YWx1ZT48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSJlVnVLV1N4XltwUmFyfGJlKH02QSI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+Q09MT1I8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPlRSVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJnT0k/aVhePVBKOT1NZlQkSVQrNiI+PGZpZWxkIG5hbWU9IlRFWFQiPnRvIGNvbG9yPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IixtWnQ2NXFhUWlSMGJwaDYtVF0/Ij48L3NoYWRvdz48L3ZhbHVlPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iTGU9SmQ4KypSKChwelI5I0BZVWkiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iW1l8QjcpfiFjKUh1X359XykjVUciIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iLSlNNywkL2dOdzQ7JTBTRHhkJGciPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iZ3ZIOTFdYCtOODtsYW1OeV0qb0wiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJ2YT9IQ3E6UXpHTFRQaHhZITAjdSI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "spec": {
+        "type": "neopixel_set_pixel",
+        "message0": "neo pixel %1 %2 pixel %3 to color %4",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": [
+              [
+                "IO0 - GPIO0",
+                "0"
+              ],
+              [
+                "IO2 - GPIO2",
+                "2"
+              ],
+              [
+                "IO5 - GPIO5",
+                "5"
+              ],
+              [
+                "IO12 - GPIO12",
+                "12"
+              ],
+              [
+                "IO13 - GPIO13",
+                "13"
+              ],
+              [
+                "IO14 - GPIO14",
+                "14"
+              ],
+              [
+                "IO18 - GPIO18",
+                "18"
+              ],
+              [
+                "IO19 - GPIO19",
+                "19"
+              ],
+              [
+                "IO21 - GPIO21",
+                "21"
+              ],
+              [
+                "IO22 - GPIO22",
+                "22"
+              ],
+              [
+                "IO23 - GPIO23",
+                "23"
+              ],
+              [
+                "IO25 - GPIO25",
+                "25"
+              ],
+              [
+                "IO26 - GPIO26",
+                "26"
+              ],
+              [
+                "IO27 - GPIO27",
+                "27"
+              ],
+              [
+                "IO32 - GPIO32",
+                "32"
+              ],
+              [
+                "IO33 - GPIO33",
+                "33"
+              ]
+            ]
+          },
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "PIXEL"
+          },
+          {
+            "type": "input_value",
+            "name": "COLOR"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "neo pixel %1 %2 pixel %3 to color %4"
+        },
+        "ca": {
+          "message0": "neo pixel %1 %2 pixel %3 to color %4"
+        },
+        "es": {
+          "message0": "neo pixel %1 %2 pixel %3 to color %4"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "COLOR": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "PIXEL": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "code": "bG9jYWwgciwgZywgYiA9ICQkQ09MT1IkJAoKX25lb3t7QmxvY2tseS5MdWEuaW8uaGVscGVyLmluc3RhbmNlRGlnaXRhbChibG9jayl9fTpzZXRQaXhlbCgkJFBJWEVMJCQsIHIsIGcsIGIp"
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Neopixel",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9Iml5P0guU1NyVmhPXVMkRV5Ia11TIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkxFRlQiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSI9RVcudlIjYlNwY3sjKj9YTSsySSI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+UjwvZmllbGQ+PGZpZWxkIG5hbWU9IlNIQURPVyI+VFJVRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9IkBfbTt1Zm50S0J2PVJwRUhzR21HIj48ZmllbGQgbmFtZT0iVEVYVCI+KCBSPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IkRzcl5JTUsuJU41KSRNQjNvdzR9Ij48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSI6TjtRc0dZcFBjKEU0K0BZfHQqXSI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9ImYoPXY2Zn1Iam1kN006VX1+Ym0qIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5HPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5UUlVFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iV0pOP15gdFQ3fXFpaDddRjp+TWMiPjxmaWVsZCBuYW1lPSJURVhUIj4sIEc8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iRHNyXklNSy4lTjUpJE1CM293NH0iPjwvc2hhZG93PjxibG9jayB0eXBlPSJ0eXBlX251bWJlciIgaWQ9Il9ocVNbIXF1c3g/dTkxQ1VwMyMuIj48L2Jsb2NrPjwvdmFsdWU+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iKlQ5NFdrMEQjLi9abHFPQjVudHYiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPkI8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPlRSVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJnRjFxY1kkUUpTc21zYzhBJW18OSI+PGZpZWxkIG5hbWU9IlRFWFQiPiwgQjwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJEc3JeSU1LLiVONSkkTUIzb3c0fSI+PC9zaGFkb3c+PGJsb2NrIHR5cGU9InR5cGVfbnVtYmVyIiBpZD0iTyErNS9PKWAtcnwoKXgqdWBiUisiPjwvYmxvY2s+PC92YWx1ZT48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSIpUzdNM11zJSNJQX0obFNKJSxlNyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9ImAzIU1YV15sdElwK15saSVWMGxrIj48ZmllbGQgbmFtZT0iVEVYVCI+KTwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkxlPUpkOCsqUigocHpSOSNAWVVpIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IltZfEI3KX4hYylIdV9+fV8pI1VHIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJPVVRQVVRUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IkhIYjslLCE5blVHdUJnRmF1ezB5Ij48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0idmE/SENxOlF6R0xUUGh4WSEwI3UiPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "neopixel_color",
+        "message0": "( R %1 , G %2 , B %3 )",
+        "args0": [
+          {
+            "type": "input_value",
+            "name": "R",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "G",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "B",
+            "check": "Number"
+          }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "( R %1 , G %2 , B %3 )"
+        },
+        "ca": {
+          "message0": "( R %1 , G %2 , B %3 )"
+        },
+        "es": {
+          "message0": "( R %1 , G %2 , B %3 )"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "R": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "G": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "B": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "code": "e3tbJCRSJCQsICQkRyQkLCAkJEIkJCwgQmxvY2tseS5MdWEuT1JERVJfSElHSF19fQ=="
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Neopixel",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9IilQfSFSI2pfTlprTDJ2dkwsNlVPIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJla24oQTVzfG5KSmEvZGlgV1grKyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9IklbWGxqO2QqPUpuSjBzcDkvZXNNIj48ZmllbGQgbmFtZT0iVEVYVCI+bmVvIHBpeGVsPC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfZHJvcGRvd24iIGlkPSJzLCN0by8tW09YVXVoV15JfX4qKyI+PG11dGF0aW9uIG9wdGlvbnM9IlsmcXVvdDt0ZXh0JnF1b3Q7XSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iRklFTEROQU1FIj5QSU48L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+b3V0cHV0X3BpbnM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUwIj5jdXN0b208L2ZpZWxkPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iYVZ4bEBDdXt+LUBRLHFZOWJ4YzsiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPlBJWEVMUzwvZmllbGQ+PGZpZWxkIG5hbWU9IlNIQURPVyI+VFJVRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9Im9SZ09qXitTeUNDN2RTL05bVmlNIj48ZmllbGQgbmFtZT0iVEVYVCI+aGFzPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9Ilc0KWZHWXQpTWQzclpHJUM5WUVTIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSJ1QEVsRSg1NVNkbyQ9aEQhLmYhdCI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF9kdW1teSIgaWQ9ImpzS01pe3JXS0ZueV5aQDJjVCF0Ij48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iVDB5KzRgMDAvUFlhaUNdMlVTQUEiPjxmaWVsZCBuYW1lPSJURVhUIj5waXhlbHM8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVE9PTFRJUCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJ0Yy84cnNqKX1DdndlQGZpMkdfLiIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iSEVMUFVSTCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJZLCxiM3szRnZES20zciVZRlNBZyIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iVE9QVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJoS19DNGg7WDF6b28lclJDK2hFOCI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQk9UVE9NVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSIzTDk4bWYzdmV2dEltaFVbJEA4SCI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9Ims9Yk84SHcscXJDWCkzbzB2Zl8sIj48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "neopixel_set_pixels",
+        "message0": "neo pixel %1 %2 has %3 pixels",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "PIN",
+            "options": [
+              [
+                "IO0 - GPIO0",
+                "0"
+              ],
+              [
+                "IO2 - GPIO2",
+                "2"
+              ],
+              [
+                "IO5 - GPIO5",
+                "5"
+              ],
+              [
+                "IO12 - GPIO12",
+                "12"
+              ],
+              [
+                "IO13 - GPIO13",
+                "13"
+              ],
+              [
+                "IO14 - GPIO14",
+                "14"
+              ],
+              [
+                "IO18 - GPIO18",
+                "18"
+              ],
+              [
+                "IO19 - GPIO19",
+                "19"
+              ],
+              [
+                "IO21 - GPIO21",
+                "21"
+              ],
+              [
+                "IO22 - GPIO22",
+                "22"
+              ],
+              [
+                "IO23 - GPIO23",
+                "23"
+              ],
+              [
+                "IO25 - GPIO25",
+                "25"
+              ],
+              [
+                "IO26 - GPIO26",
+                "26"
+              ],
+              [
+                "IO27 - GPIO27",
+                "27"
+              ],
+              [
+                "IO32 - GPIO32",
+                "32"
+              ],
+              [
+                "IO33 - GPIO33",
+                "33"
+              ]
+            ]
+          },
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "PIXELS",
+            "check": "Number"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "neo pixel %1 %2 has %3 pixels"
+        },
+        "ca": {
+          "message0": "neo pixel %1 %2 has %3 pixels"
+        },
+        "es": {
+          "message0": "neo pixel %1 %2 has %3 pixels"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "NAME": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "PIXELS": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "code": "aWYgKF9uZW97e0Jsb2NrbHkuTHVhLmlvLmhlbHBlci5pbnN0YW5jZURpZ2l0YWwoYmxvY2spfX0gPT0gbmlsKSB0aGVuDQogICAgX25lb3t7QmxvY2tseS5MdWEuaW8uaGVscGVyLmluc3RhbmNlRGlnaXRhbChibG9jayl9fSA9IG5lb3BpeGVsLnNldHVwKG5lb3BpeGVsLldTMjgxMkIsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSwgJCRQSVhFTFMkJCkNCmVuZA=="
+    }
+  ]
+}
