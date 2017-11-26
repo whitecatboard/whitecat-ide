@@ -1,8 +1,11 @@
 // Code sections
 var codeSection = [];
+var codeSectionBlock = [];
+
 codeSection["require"] = [];
 codeSection["events"] = [];
 codeSection["functions"] = [];
+codeSectionBlock["functions"] = [];
 codeSection["declaration"] = [];
 codeSection["start"] = [];
 codeSection["afterStart"] = [];
@@ -18,9 +21,52 @@ codeSectionOrder.push("default");
 codeSectionOrder.push("start");
 codeSectionOrder.push("afterStart");
 
-
 // Whe indent using a tab
 Blockly.Generator.prototype.INDENT = '\t';
+
+// Add a fragment of code to a section
+Blockly.Generator.prototype.addCodeToSection = function(section, code, block) {
+	var include = true;
+
+	section = goog.string.trim(section);
+	code = goog.string.trim(code);
+	
+	if (section == "functions") {
+		include = (codeSectionBlock["functions"].indexOf(block.type) == -1);
+		codeSectionBlock["functions"].push(block.type);
+	}
+
+	if (include) {
+		codeSection[section].push(code + "\n");
+	}
+};
+
+// Add a lua library dependency needed for the generated code
+Blockly.Generator.prototype.addDependency = function(library, block) {
+	library = goog.string.trim(library);
+
+	if ((library == "") || (library == "0")) return;
+	
+	if (codeSection["require"].indexOf('require("'+library+'")') == -1) {
+		codeSection["require"].push('require("'+library+'")');
+	}
+};
+
+Blockly.Generator.prototype.postFormat = function(code, block) {
+	// Trim code
+	// This clean spaces and new lines at the begin and at the end
+	code = goog.string.trim(code);
+	
+	// Add new line
+	code = code + "\n";
+	
+	// If block is connected to other block, add a new line
+	if (block.nextConnection && block.nextConnection.isConnected()) {
+		code = code + "\n";
+	}
+	
+	return code;
+};
 
 Blockly.Generator.prototype.statementToCodeNoIndent = function(block, name) {
 	var targetBlock = block.getInputTargetBlock(name);
@@ -53,6 +99,10 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		codeSection[key] = [];
 	}
 
+	for (key in codeSectionBlock) {
+		codeSectionBlock[key] = [];
+	}
+	
 	var initCode = '';
 	
 	initCode = Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";

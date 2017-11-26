@@ -652,5 +652,10 @@
 	"CLOSE": "Tancar",
 
 	"WARNING_RAISE_ERROR_AGAIN_NOT_ALLOWED_HERE": "Advertència: Aquest bloc només es pot utilitzar dins un bloc 'prova captura finalment' en la seva part captura.",
-	"WARNING_CATCH_ERROR_NOT_ALLOWED_HERE": "Advertència: Aquest bloc només es pot utilitzar dins un bloc 'quan l'error és capturat'."	
+	"WARNING_CATCH_ERROR_NOT_ALLOWED_HERE": "Advertència: Aquest bloc només es pot utilitzar dins un bloc 'quan l'error és capturat'.",
+
+	"OUTPUT_PINS": "pin de sortida",
+	"INPUT_PINS": "pin de entrada",
+	"ANALOG_PINS": "pin analògic",
+	"PWM_PINS": "pin pwm"
 }

@@ -110,17 +110,17 @@ Blockly.Blocks.io.helper = {
 
 	getExternalAdcChannels: function(unit) {
 		var channels = [];
-		var i;		
-		
-		for(i=0; i < Code.status.maps.externalAdcUnits[unit][1];i++) {
+		var i;
+
+		for (i = 0; i < Code.status.maps.externalAdcUnits[unit][1]; i++) {
 			if (Code.status.externalADC[Code.status.maps.externalAdcUnits[unit][0]]) {
 				channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
 			}
 		}
-		
+
 		return channels;
 	},
-	
+
 	getPwmPins: function() {
 		var pins = [];
 
@@ -151,6 +151,26 @@ Blockly.Blocks['output_digital_pin'] = {
 	}
 };
 
+Blockly.Blocks['output_digital_pin_sel'] = {
+	module: "pio",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getOutputDigitalPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.OUTPUT_PINS)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+	}
+};
+
 Blockly.Blocks['input_digital_pin'] = {
 	module: "pio",
 	init: function() {
@@ -159,6 +179,26 @@ Blockly.Blocks['input_digital_pin'] = {
 
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+	}
+};
+
+Blockly.Blocks['input_digital_pin_sel'] = {
+	module: "pio",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getInputDigitalPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.INPUT_PINS)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
 		this.setOutput(true, null);
@@ -189,6 +229,26 @@ Blockly.Blocks['pwm_pins'] = {
 	}
 };
 
+Blockly.Blocks['pwm_pins_sel'] = {
+	module: "pwm",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getPwmPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.PWM_PINS)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+	}
+};
+
 Blockly.Blocks['analog_pins'] = {
 	module: "adc",
 	init: function() {
@@ -197,6 +257,26 @@ Blockly.Blocks['analog_pins'] = {
 
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+	}
+};
+
+Blockly.Blocks['analog_pins_sel'] = {
+	module: "adc",
+	init: function() {
+		var thisInstance = this;
+		var pins = Blockly.Blocks.io.helper.getAnalogPins();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.ANALOG_PINS)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
 		this.setOutput(true, null);
@@ -229,17 +309,17 @@ Blockly.Blocks['external_analog_units'] = {
 		if (!this.workspace.isDragging || this.workspace.isDragging()) {
 			return;
 		}
-		
+
 		if (e.name != "UNIT") return;
-		
+
 		var unit = this.getFieldValue("UNIT");
 		if (unit) {
 			var drop = this.parentBlock_.childBlocks_[1].getField("CHANNEL");
-			
-			drop.menuGenerator_ = Blockly.Blocks.io.helper.getExternalAdcChannels(unit);	
+
+			drop.menuGenerator_ = Blockly.Blocks.io.helper.getExternalAdcChannels(unit);
 			drop.setText("channel0");
-			drop.setValue("0");				
-		}		
+			drop.setValue("0");
+		}
 	},
 };
 
@@ -344,7 +424,7 @@ Blockly.Blocks['invertdigitalpin'] = {
 		this.appendValueInput("PIN")
 			.setCheck('Number');
 
-			this.setInputsInline(true);
+		this.setInputsInline(true);
 		this.setPreviousStatement(true, null);
 		this.setNextStatement(true, null);
 		this.setColour(Blockly.Blocks.io.HUE);

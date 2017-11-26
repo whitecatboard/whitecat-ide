@@ -38,9 +38,7 @@ Blockly.Lua['when_board_starts'] = function(block) {
 	var initCode = '';
 
 	if (statement != '') {
-		if (codeSection["require"].indexOf('require("block")') == -1) {
-			codeSection["require"].push('require("block")');
-		}
+		Blockly.Lua.addDependency("block", block);
 
 		code += Blockly.Lua.indent(0, '-- when board starts') + "\n";
 		code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";
@@ -50,24 +48,19 @@ Blockly.Lua['when_board_starts'] = function(block) {
 		code += Blockly.Lua.blockEnd(1, block) + "\n";
 
 		code += Blockly.Lua.indent(1,'-- board is started, broadcast to threads that are waiting') + "\n";
-		code += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(true)') + "\n\n";
+		code += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(false)') + "\n";
 
-		code += Blockly.Lua.indent(1,'-- destroy _eventBoardStarted event') + "\n";
-		code += Blockly.Lua.indent(1,'_eventBoardStarted = nil') + "\n";
-
-		code += Blockly.Lua.indent(0, 'end)') + "\n\n";
+		code += Blockly.Lua.indent(0, 'end)');
 	}
 
-	return code;
+	return Blockly.Lua.postFormat(code, block);
 }
 
 Blockly.Lua['thread'] = function(block) {
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var code = '';
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 
 	code += Blockly.Lua.indent(0, '-- thread') + "\n";
 	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";
@@ -79,9 +72,9 @@ Blockly.Lua['thread'] = function(block) {
 	code += Blockly.Lua.indent(1, 'end') + "\n";
 	code += Blockly.Lua.blockEnd(1, block);
 
-	code += Blockly.Lua.indent(0, 'end)') + "\n";
+	code += Blockly.Lua.indent(0, 'end)');
 
-	return code;
+	return Blockly.Lua.postFormat(code, block);
 }
 
 Blockly.Lua['when_i_receive'] = function(block) {
@@ -92,13 +85,12 @@ Blockly.Lua['when_i_receive'] = function(block) {
 	var initCode = '';
 	var tryCode = '';
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 
 	initCode += Blockly.Lua.indent(0, '-- event "' + when + '" declaration') + "\n";
 	initCode += Blockly.Lua.indent(0, '_event' + eventId + ' = event.create()') + "\n";
-	codeSection["events"].push(initCode);
+	
+	Blockly.Lua.addCodeToSection("events", initCode, block);
 
 	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
@@ -122,9 +114,9 @@ Blockly.Lua['when_i_receive'] = function(block) {
 
 	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";	
 	code += Blockly.Lua.tryBlock(1, block,tryCode);	
-	code += Blockly.Lua.indent(0, 'end)') + "\n";	
+	code += Blockly.Lua.indent(0, 'end)');
 
-	return code;
+	return Blockly.Lua.postFormat(code, block);
 }
 
 Blockly.Lua['execute_every'] = function(block) {
@@ -137,9 +129,7 @@ Blockly.Lua['execute_every'] = function(block) {
 	var timerId = 0;
 	var blockId = Blockly.Lua.blockIdToNum(block.id);
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 
 	// Convert time to milliseconds if needed
 	if (units == "seconds") {
@@ -163,9 +153,9 @@ Blockly.Lua['execute_every'] = function(block) {
 	code += Blockly.Lua.indent(2, 'tmr.delayms(' + every[0] + ')') + "\n";
 	code += Blockly.Lua.indent(1, 'end') + "\n";
 
-	code += Blockly.Lua.indent(0, 'end)') + "\n";
+	code += Blockly.Lua.indent(0, 'end)');
 
-	return code;
+	return Blockly.Lua.postFormat(code, block);
 }
 
 Blockly.Lua['broadcast'] = function(block) {
@@ -173,13 +163,11 @@ Blockly.Lua['broadcast'] = function(block) {
 	var eventId = this.workspace.eventIndexOf(when);
 	var code = '';
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 
-	code += Blockly.Lua.indent(0, '_event' + eventId + ':broadcast(false)' + '  -- boardcast "' + when + '"') + "\n";
+	code += Blockly.Lua.indent(0, '_event' + eventId + ':broadcast(false)' + '  -- boardcast "' + when + '"');
 
-	return code;
+	return Blockly.Lua.postFormat(code, block);
 }
 
 Blockly.Lua['broadcast_and_wait'] = function(block) {
@@ -187,22 +175,18 @@ Blockly.Lua['broadcast_and_wait'] = function(block) {
 	var eventId = this.workspace.eventIndexOf(when);
 	var code = '';
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 
-	code += Blockly.Lua.indent(0, '_event' + eventId + ':broadcast(true)' + '  -- boardcast and wait "' + when + '"') + "\n";
+	code += Blockly.Lua.indent(0, '_event' + eventId + ':broadcast(true)' + '  -- boardcast and wait "' + when + '"');
 
-	return code;
+	return Blockly.Lua.postFormat(code, block);
 }
 
 Blockly.Lua['event_is_being_processed'] = function(block) {
 	var when = block.getFieldValue('WHEN');
 	var eventId = this.workspace.eventIndexOf(when);
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 
 	return ['_event' + eventId + ':pending()', Blockly.Lua.ORDER_HIGH];
 }

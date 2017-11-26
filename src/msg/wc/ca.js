@@ -2,10 +2,10 @@ var MSG = {
   title: "Codi",
   blocks: "Blocs",
   linkTooltip: "Desa i enllaça als blocs.",
-  runTooltip: "Executa el programa definit pels blocs de l'àrea de treball.",
+  runTooltip: "Executa el programa",
   badCode: "Error de programa:\n %1",
   timeout: "S'ha superat el nombre màxim d'iteracions d'execució.",
-  trashTooltip: "Descarta tots els blocs.",
+  trashTooltip: "Descarta tots els blocs",
   catLogic: "Lògica",
   catLoops: "Bucles",
   catMath: "Matemàtiques",
@@ -22,8 +22,11 @@ var MSG = {
   xmlError: "No s'ha pogut carregar el teu fitxer desat.  Potser va ser creat amb una versió diferent de Blockly?",
   badXml: "Error d'anàlisi XML:\n%1\n\nSeleccioneu 'Acceptar' per abandonar els vostres canvis, o 'Cancel·lar' per continuar editant l'XML.",
 
-
   // WHITECAT
+  blockEditorTooltip: "Editor de blocs",
+  previewButtonTooltip: "Veure el codi generat",
+  developerModeTooltipOn: "Activa el mode de desenvolupador",
+  developerModeTooltipOff: "Desactiva el mode de desenvolupador",
   catIO: "Entrada / Sortida",
   catControl: "Control",
   catExceptions: "Excepcions",

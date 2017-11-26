@@ -323,5 +323,9 @@ Blockly.Lua.blockIdToNum = function(id) {
 }
 
 Blockly.Lua.numToBlockId = function(num) {
-	return Blockly.Lua.blockId[num];
+	try {
+		return Blockly.Lua.blockId[num];		 
+	} catch (e){
+		return null;
+	}
 }

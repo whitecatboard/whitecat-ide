@@ -136,12 +136,17 @@ Blockly.Blocks['factory_base'] = {
   }
 };
 
-var FIELD_MESSAGE = 'fields %1 %2';
+var FIELD_MESSAGE = 'fields %1 %2 %3';
 var FIELD_ARGS = [
   {
     "type": "field_dropdown",
     "name": "ALIGN",
     "options": [['left', 'LEFT'], ['right', 'RIGHT'], ['centre', 'CENTRE']],
+  },
+  {
+    "type": "field_dropdown",
+    "name": "SUBTYPE",
+    "options": [['Free', 'free'], ['Output Pins', 'output_pins'], ['Input Pins', 'input_pins'], ['Neopixel color', 'neopixel_color_sel'], ['Display color', 'display_color_sel'], ['Text','text']],
   },
   {
     "type": "input_statement",

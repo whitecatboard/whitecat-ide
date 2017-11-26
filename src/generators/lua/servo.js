@@ -66,7 +66,7 @@ Blockly.Lua.servo.helper = {
 		
 		if (!Blockly.Lua.servo.helper.hasAncestors(block)) {
 			code += Blockly.Lua.indent(0,'if ('+Blockly.Lua.servo.helper.instance(block)+' == nil) then') + "\n";
-			code += Blockly.Lua.indent(1,Blockly.Lua.servo.helper.instance(block) + " = servo.attach("+Blockly.Lua.io.helper.prefixDigital(block)+Blockly.Lua.io.helper.nameDigital(block)+")") + "\n";
+			code += Blockly.Lua.indent(1,Blockly.Lua.servo.helper.instance(block) + " = servo.attach("+Blockly.Lua.io.helper.nameDigital(block)+")") + "\n";
 			code += Blockly.Lua.indent(0,'end') + "\n\n";				
 		}
 		

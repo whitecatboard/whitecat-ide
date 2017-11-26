@@ -81,7 +81,7 @@ Code.blockAbstraction = blockAbstraction.High;
 
 Code.storage = {};
 
-Code.minAgentVersion = "1.8";
+Code.minAgentVersion = "1.9";
 Code.checkNewFirmwareVersion = true;
 Code.checkNewAgentVersion = true;
 Code.showCode = false;
@@ -475,71 +475,11 @@ Code.getBBox_ = function(element) {
  */
 Code.TABS_ = ['program'];
 
-Code.selected = 'program';
-
-/**
- * Switch the visible pane when a tab is clicked.
- * @param {string} clickedName Name of tab clicked.
- */
-Code.tabClick = function(clickedName) {
-	if (document.getElementById('tab_program').className == 'tabon') {
-		jQuery("#content_editor").css('visibility', 'hidden');
-		jQuery(".blocklyWidgetDiv").css('visibility', 'hidden');
-		jQuery(".blocklyTooltipDiv").css('visibility', 'hidden');
-		jQuery(".blocklyToolboxDiv").css('visibility', 'hidden');
-		jQuery("#content_blocks").css('visibility', 'hidden');
-
-		Code.workspace.blocks.setVisible(false);
-	}
-
-	// Deselect all tabs and hide all panes.
-	for (var i = 0; i < Code.TABS_.length; i++) {
-		var name = Code.TABS_[i];
-		document.getElementById('tab_' + name).className = 'taboff';
-
-		jQuery("#" + 'content_' + name).css('visibility', 'hidden');
-	}
-
-	// Select the active tab.
-	Code.selected = clickedName;
-	document.getElementById('tab_' + clickedName).className = 'tabon';
-
-	// Show the selected pane.
-	jQuery("#" + 'content_' + clickedName).css('visibility', 'visible');
-
-	if (Code.workspace.type == 'blocks') {
-		jQuery("#tab_program").text(MSG['blocks']);
-	} else {
-		jQuery("#tab_program").text(MSG['editor']);
-	}
-
-	Code.renderContent();
-
-	jQuery("#tab_board").text(MSG['board']);
-
-	jQuery("#" + 'tab_' + clickedName).trigger('click');
-
-	if (Code.selected == 'program') {
-		if (Code.workspace.type == 'blocks') {
-			jQuery("#content_editor").hide();
-		} else if (Code.workspace.type == 'editor') {
-			jQuery("#content_editor").show();
-		} else if (Code.workspace.type == 'block_editor') {
-			jQuery("#content_block_editor").show();
-		}
-	} else {
-		jQuery("#content_editor").hide();
-		jQuery("#content_block_editor").hide();
-	}
-
-	window.dispatchEvent(new Event('resize'));
-};
-
 /**
  * Populate the currently selected pane with content generated from the blocks.
  */
 Code.renderContent = function() {
-	var content = document.getElementById('content_' + Code.selected);
+	var content = document.getElementById('content_program');
 
 	Code.tabRefresh();
 
@@ -1005,16 +945,19 @@ Code.buildToolBox = function(callback) {
 				'</shadow>' +
 				'</value>' +
 				'</block>';
-			xml += '<block type="getexternalanalogchannel">' +
-				'<value name="UNIT">' +
-				'<shadow type="external_analog_units">' +
-				'</shadow>' +
-				'</value>' +
-				'<value name="CHANNEL">' +
-				'<shadow type="external_analog_channels">' +
-				'</shadow>' +
-				'</value>' +
-				'</block>';
+				
+			if (Code.status.connected) {				
+				xml += '<block type="getexternalanalogchannel">' +
+					'<value name="UNIT">' +
+					'<shadow type="external_analog_units">' +
+					'</shadow>' +
+					'</value>' +
+					'<value name="CHANNEL">' +
+					'<shadow type="external_analog_channels">' +
+					'</shadow>' +
+					'</value>' +
+					'</block>';
+			}
 		}
 
 		if (Code.status.modules.pwm) {
@@ -1036,6 +979,12 @@ Code.buildToolBox = function(callback) {
 				'</value>' +
 				'</block>';
 		}
+		
+		xml += '<block type="output_digital_pin_sel"></block>';
+		xml += '<block type="input_digital_pin_sel"></block>';
+		xml += '<block type="input_digital_pin_sel"></block>';
+		xml += '<block type="pwm_pins_sel"></block>';
+		xml += '<block type="analog_pins_sel"></block>';
 
 		xml += '</category>';
 	}
@@ -1193,11 +1142,11 @@ Code.updateToolBox = function() {
 		if (Code.workspace.type == 'block_editor') {
 			toolbox = document.getElementById('block_editortoolbox');
 			workSpace = Code.workspace.block_editor;
-		} else {
+		} else if (Code.workspace.type == 'blocks') {
 			toolbox = document.getElementById('toolbox');
 			workSpace = Code.workspace.blocks;
 		}
-
+		
 		if (workSpace) {
 			workSpace.updateToolbox(toolbox);
 		}		
@@ -1321,8 +1270,6 @@ Code.init = function() {
 		BlocklyStorage.backupOnUnload(Code.workspace.blocks);
 	}
 
-	//Code.tabClick(Code.selected);
-
 	Code.bindClick('trashButton',
 		function() {
 			Code.discard();
@@ -1420,6 +1367,20 @@ Code.initLanguage = function() {
 	document.getElementById('stopButton').title = MSG['stopButtonTooltip'];
 	document.getElementById('runButton').title = MSG['runTooltip'];
 	document.getElementById('trashButton').title = MSG['trashTooltip'];
+
+	if (jQuery("#blockEditorButton").length > 0) {
+		document.getElementById('blockEditorButton').title = MSG['blockEditorTooltip'];
+	}
+	
+	if (jQuery("#developerMode").length > 0) {
+		document.getElementById('previewButton').title = MSG['previewButtonTooltip'];
+
+		if (Blockly.Lua.developerMode) {
+			document.getElementById('developerMode').title = MSG['developerModeTooltipOff'];
+		} else {
+			document.getElementById('developerMode').title = MSG['developerModeTooltipOn'];			
+		}
+	}
 
 	var categories = [];
 
@@ -1634,6 +1595,8 @@ Code.loadFile = function(storage, path, entry, id) {
 
 		Code.tabRefresh();
 		Code.renderContent();
+		
+		Code.workspace.blocks.scrollCenter();
 	}
 
 	Code.showProgress(MSG['downloadingFile'] + " " + file + " ...");
@@ -1815,6 +1778,7 @@ Code.save = function() {
 		code = Code.workspace.editor.getValue();
 	} else if (Code.workspace.type == 'block_editor') {
 		var type = jQuery("#content_block_editor_type").val();
+		var section = jQuery("#content_block_editor_code_section").val();
 		
 		for (var block in Code.lib.def.blocks) {
 			if (Code.lib.def.blocks[block].spec.type == type) {
@@ -1825,15 +1789,17 @@ Code.save = function() {
 	
 				code = btoa(Code.workspace.block_editorCode.getValue());
 
-				Code.lib.def.blocks[block].code = code;
+				Code.lib.def.blocks[block].code[section] = code;
 				Code.lib.def.blocks[block].xmlSpec = xmlSpec;
 				Code.lib.def.blocks[block].spec = jsonSpec;
 				
 				Code.lib.def.blocks[block].whatcher = (rootBlock.getFieldValue('WHATCHER') == "TRUE");
 				
-				Code.lib.def.blocks[block].msg.en = {"message0": Code.lib.def.blocks[block].spec.message0};
-				Code.lib.def.blocks[block].msg.ca = {"message0": Code.lib.def.blocks[block].spec.message0};
-				Code.lib.def.blocks[block].msg.es = {"message0": Code.lib.def.blocks[block].spec.message0};
+				if (Code.lib.def.blocks[block].spec.message0 == "") {
+					Code.lib.def.blocks[block].msg.en = {"message0": Code.lib.def.blocks[block].spec.message0};					
+					Code.lib.def.blocks[block].msg.ca = {"message0": Code.lib.def.blocks[block].spec.message0};
+					Code.lib.def.blocks[block].msg.es = {"message0": Code.lib.def.blocks[block].spec.message0};
+				}
 				  
 				var contentsBlock = rootBlock.getInputTargetBlock('INPUTS');
 				
@@ -1846,6 +1812,8 @@ Code.save = function() {
 					          "type": "math_number"						  	
 						  };		  		  
 					  }
+					  
+					  Code.lib.def.blocks[block].subtype[contentsBlock.getFieldValue("INPUTNAME")] = contentsBlock.getFieldValue("SUBTYPE");
 				  }
 				  
 			      contentsBlock = contentsBlock.nextConnection &&
@@ -2367,33 +2335,38 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 };
 
 Code.tabRefresh = function() {
-	if ((Code.selected == 'program') && (Code.workspace.type == 'blocks')) {
-		jQuery("#developerMode, #switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+	if (Code.workspace.type == 'blocks') {
+		jQuery("#blockEditorButton, #developerMode, #switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToBlocks").addClass("disabled");
-	} else if ((Code.selected == 'program') && (Code.workspace.type == 'editor')) {
-		jQuery("developerMode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
-		jQuery("#switchToCode").addClass("disabled");
-	} else if ((Code.selected == 'program') && (Code.workspace.type == 'block_editor')) {
-		jQuery("#trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
-		jQuery("#developerMode, #switchToCode, #switchToBlocks").addClass("disabled");
-	} else if (Code.selected == 'board') {
-		jQuery("#developerMode, #switchToCode, #switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
+	} else if (Code.workspace.type == 'editor') {
+		jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");		
+		jQuery("#developerMode,#previewButton, #blockEditorButton, #switchToCode").addClass("disabled");
+	} else if (Code.workspace.type == 'block_editor') {
+		jQuery("#blockEditorButton, #saveButton").removeClass("disabled");
+		jQuery("#trashButton, #loadButton, #previewButton, #developerMode, #switchToCode, #switchToBlocks, #saveAsButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
 	}
 
 	if (!Code.status.connected) {
-		jQuery("#stopButton, #runButton, #tab_board, #rebootButton").addClass("disabled");
-		//jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #tab_board, #rebootButton").addClass("disabled");
+		jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #rebootButton").addClass("disabled");
 	} else {
-		jQuery("#stopButton, #runButton, #rebootButton").removeClass("disabled");
+		if (Code.workspace.type != 'block_editor') {
+			jQuery("#stopButton, #runButton, #rebootButton").removeClass("disabled");
+		}
 	}
 
-	if (Code.workspace.type == 'block_editor') {
-		jQuery("#saveButton").removeClass("disabled");
-	}
-	
 	if (Code.showCode) {
+		jQuery("#developerMode").removeClass("disabled");
+		jQuery("#previewButton").removeClass("disabled");
 		jQuery("#saveButton").addClass("disabled");
 		jQuery("#saveAsButton").addClass("disabled");
+		jQuery("#rebootButton").addClass("disabled");
+		jQuery("#stopButton").addClass("disabled");
+		jQuery("#runButton").addClass("disabled");
+		jQuery("#loadButton").addClass("disabled");
+		jQuery("#blockEditorButton").addClass("disabled");
+		jQuery("#trashButton").addClass("disabled");
+		jQuery("#switchToBlocks").addClass("disabled");
+		jQuery("#switchToCode").addClass("disabled");
 	}
 }
 
@@ -2603,22 +2576,30 @@ Code.setup = function() {
 	Code.agent.addListener("blockStart", function(id, info) {
 		if (Code.workspace.type == "blocks") {
 			var block = atob(info.block).replace(/\0/g, '');
-			var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
 
-			if ((obj.type == "cpu_sleep") || (obj.type == "when_board_starts")) {
-				Blockly.mainWorkspace.removeStarts();
+			var id = Blockly.Lua.numToBlockId(block);
+			if (id) {
+				var obj = Blockly.mainWorkspace.getBlockById(id);
+
+				if ((obj.type == "cpu_sleep") || (obj.type == "when_board_starts")) {
+					Blockly.mainWorkspace.removeStarts();
+				}
+
+				obj.addStart();				
 			}
-
-			obj.addStart();
 		}
 	});
 
 	Code.agent.addListener("blockEnd", function(id, info) {
 		if (Code.workspace.type == "blocks") {
 			var block = atob(info.block).replace(/\0/g, '');;
-			var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
 
-			obj.removeStart();
+			var id = Blockly.Lua.numToBlockId(block);
+			if (id) {
+				var obj = Blockly.mainWorkspace.getBlockById(id);
+
+				obj.removeStart();
+			}
 		}
 	});
 
@@ -2628,11 +2609,15 @@ Code.setup = function() {
 			Blockly.mainWorkspace.removeErrors();
 
 			var block = atob(info.block).replace(/\0/g, '');
-			var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
-			var error = atob(info.error);
 
-			obj.addError();
-			obj.setWarningText(error);
+			var id = Blockly.Lua.numToBlockId(block);
+			if (id) {
+				var obj = Blockly.mainWorkspace.getBlockById(Blockly.Lua.numToBlockId(block));
+				var error = atob(info.error);
+
+				obj.addError();
+				obj.setWarningText(error);
+			}
 		}
 	});
 

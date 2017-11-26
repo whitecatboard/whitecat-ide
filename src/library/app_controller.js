@@ -40,6 +40,7 @@ AppController = function() {
 	this.inited = false;
 	this.toolWidth = 500;
 	this.previewHeight = 70;
+	this.section = "default";
 	
 	this.defaultBlockSpec  = '{';
 	this.defaultBlockSpec += '   "parentCategory": "",';
@@ -71,7 +72,11 @@ AppController = function() {
 	this.defaultBlockSpec += '      "block"';
 	this.defaultBlockSpec += '   ],';
 	this.defaultBlockSpec += '   "shadow": {},';
-	this.defaultBlockSpec += '   "code": ""';
+	this.defaultBlockSpec += '   "subtype": {},';
+	this.defaultBlockSpec += '   "code": {';
+	this.defaultBlockSpec += '      "default": "",';
+	this.defaultBlockSpec += '      "functions": ""';
+	this.defaultBlockSpec += '   }';
 	this.defaultBlockSpec += '}';
 };
 
@@ -93,6 +98,7 @@ AppController.prototype.onresize = function(event) {
 	var optionsTop = 0;
 	var optionsHeight = 32;
 	var previewTop = 0;
+	var previewWidth = 0;
 	var sepWidth = 4;
 	var previewLeft;
 	var editorTop;
@@ -131,16 +137,110 @@ AppController.prototype.onresize = function(event) {
 	preview.style.left = (bBox.x + this.toolWidth + sepWidth - 1) + 'px';
 	
 	preview.style.height = this.previewHeight + 'px';
-	preview.style.width = (bBox.width - parseInt(preview.style.left.replace("px",""))) + 'px';
+	
+	previewWidth = (bBox.width - parseInt(preview.style.left.replace("px","")));
+	preview.style.width = previewWidth + 'px';
 	
 
+	var h_sep = document.getElementById('block_editor_h_sep');
+	
+	h_sep.style.top = optionsHeight + this.previewHeight + 'px';
+	h_sep.style.left = (previewLeft) + 'px';
+
+	h_sep.style.height = sepWidth + 'px';
+	h_sep.style.width = previewWidth + sepWidth + 'px';
+
+	var options = document.getElementById('block_editor_code_options');
+	optionsTop = optionsHeight + this.previewHeight;
+	
+	options.style.top = optionsTop + 'px';
+	options.style.left = (bBox.x + this.toolWidth) + 'px';
+	options.style.height = (optionsHeight) + 'px';
+	options.style.width = previewWidth + sepWidth + 'px';
+	
 	var editor = document.getElementById('block_editor_code');
 
-	editorTop = optionsHeight + this.previewHeight;
+	editorTop = optionsTop + optionsHeight;
 	editor.style.top = (editorTop) + 'px';
 	editor.style.left = (bBox.x + this.toolWidth + sepWidth - 1) + 'px';
 	editor.style.height = (bBox.height - editorTop) + 'px';
 	editor.style.width = (bBox.width - previewLeft) + 'px';
+};
+
+AppController.prototype.updateLibraryList = function() {
+	var self = this;
+	
+    // Populate list of libraries
+    var libs = Code.lib.libs;
+  
+    html = '';
+ 
+    if (libs.length == 0) {
+  	  html += '<option value="new-library">Choose one ...</option>'  	
+    }
+  
+    libs.forEach(function(library, index) {
+  	html += '<option '+(index==0?"selected":"")+' value="'+library.name+'">'+library.name+'</option>'
+    });
+
+    html += '<option value="new-library">New library ...</option>'
+  
+    jQuery("#content_block_editor_library").html(html);
+    jQuery("#content_block_editor_library").unbind('change').on('change', function(e) {
+  	  var target = jQuery(e.target);
+  	  var libraryName = target.val();
+	  
+  	  if (libraryName == "new-library") {
+  		var dialogForm = "";
+		
+  		dialogForm  = '<form id="new_library">';
+  		dialogForm += '<div>';
+  		dialogForm += '<label for="library_name">Name:&nbsp;&nbsp;</label>';
+  		dialogForm += '<input id="library_name" name="library_name" value="">';
+  		dialogForm += '</div>';
+  		dialogForm += '</form>';
+  		dialogForm += '<span class="error-msg" id="errors"></span>';
+
+  		bootbox.dialog({
+  			title: "New library",
+  			message: dialogForm,
+  			buttons: {
+  				danger: {
+  					label: "Cancel",
+  					classensor: "btn-danger",
+  					callback: function() {}
+  				},
+  				main: {
+  					label: "Create",
+  					callback: function() {
+  						var form = jQuery("#new_library");
+  						jQuery("#errors").html("");
+						
+  						var name = form.find("#library_name").val();
+						
+  						if (name == "") {
+  							jQuery("#errors").html("Library name missing");
+  							return false;
+  						}
+						
+  						Code.lib.create(name);
+  					}
+  				},
+  			},
+  			closable: false,
+  			onEscape: true
+  		});	  	
+  	  } else {
+  		  // Change current library
+  		  libs.forEach(function(library, index) {
+  			  if (library.name == libraryName) {
+  				  Code.lib.def = JSON.parse(JSON.stringify(library));		  	
+  			  }
+  		  });
+		  
+  		  self.updateBlockList();
+  	  };
+  });
 };
 
 AppController.prototype.updateBlockList = function() {
@@ -163,11 +263,14 @@ AppController.prototype.updateBlockList = function() {
 	if (Code.lib.def.blocks.length == 0) {
 		// No blocks in library
 		if (BlockFactory.mainWorkspace) {
-			// Clear all
 			BlockFactory.mainWorkspace.clear();
+		}
+		
+		if (BlockFactory.previewWorkspace) {
 			BlockFactory.previewWorkspace.clear();
-			Code.workspace.block_editorCode.setValue("", -1);
-		}	
+		}
+
+		Code.workspace.block_editorCode.setValue("", -1);
 	} else {
 		// Show fisrt bock
 		jQuery("#content_block_editor_type").trigger("change");		
@@ -180,6 +283,14 @@ AppController.prototype.updateBlockList = function() {
 			var dialogForm = "";
 			
 			dialogForm  = '<form id="new_block">';
+			dialogForm += '<div>';
+			dialogForm += '<label for="block_parent_category">Parent category:&nbsp;&nbsp;</label>';
+			dialogForm += '<input id="block_parent_category" name="block_parent_category" value="">';
+			dialogForm += '</div>';
+			dialogForm += '<div>';
+			dialogForm += '<label for="block_category">Category:&nbsp;&nbsp;</label>';
+			dialogForm += '<input id="block_category" name="block_category" value="">';
+			dialogForm += '</div>';
 			dialogForm += '<div>';
 			dialogForm += '<label for="block_name">Name:&nbsp;&nbsp;</label>';
 			dialogForm += '<input id="block_name" name="block_name" value="">';
@@ -201,9 +312,21 @@ AppController.prototype.updateBlockList = function() {
 						callback: function() {
 							var form = jQuery("#new_block");
 							jQuery("#errors").html("");
-							
+
+							var parent_category = form.find("#block_parent_category").val();
+							var category = form.find("#block_category").val();
 							var name = form.find("#block_name").val();
 							
+							if (parent_category == "") {
+								jQuery("#errors").html("Block parent category missing");
+								return false;
+							}
+
+							if (category == "") {
+								jQuery("#errors").html("Block category missing");
+								return false;
+							}
+
 							if (name == "") {
 								jQuery("#errors").html("Block name missing");
 								return false;
@@ -212,6 +335,8 @@ AppController.prototype.updateBlockList = function() {
 							// Create a default block
 							var def = JSON.parse(self.defaultBlockSpec);
 							
+							def.parentCategory = parent_category;
+							def.category = category;
 							def.spec.type = name;
 							
 							// Add this block to the library
@@ -227,6 +352,8 @@ AppController.prototype.updateBlockList = function() {
 							Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), BlockFactory.mainWorkspace);
 							
 				  			Code.workspace.block_editorCode.setValue("", -1);
+							
+							jQuery("#content_block_editor_type").val(name);
 						}
 					},
 				},
@@ -234,6 +361,8 @@ AppController.prototype.updateBlockList = function() {
 				onEscape: true
 			});
 		} else {
+			var codeSection = jQuery("#content_block_editor_code_section").val();
+			
 		  	for (var block in Code.lib.def.blocks) {
 		  		if (Code.lib.def.blocks[block].spec.type == type) {
 		  			var spec = "";
@@ -243,8 +372,8 @@ AppController.prototype.updateBlockList = function() {
 		  				spec = atob(Code.lib.def.blocks[block].xmlSpec);
 		  			}
 		
-		  			if (typeof Code.lib.def.blocks[block].code != "undefined") {
-		  				code = atob(Code.lib.def.blocks[block].code);
+		  			if (typeof Code.lib.def.blocks[block].code[codeSection] != "undefined") {
+		  				code = atob(Code.lib.def.blocks[block].code[codeSection]);
 		  			}
 		
 		  			Code.workspace.block_editorCode.setValue(code, -1);
@@ -260,6 +389,35 @@ AppController.prototype.updateBlockList = function() {
 		  	}							
 		}
     });	
+	
+	jQuery("#content_block_editor_code_section").unbind('change').on('change', function() {
+		var self = this;
+		
+		var type = jQuery("#content_block_editor_type").val();		
+		var section = jQuery(this.selectedOptions).val();
+		var code = "";
+		
+		Code.lib.def.blocks.forEach(function(block, idx){
+			if (block.spec.type == type) {
+				// Save current code in its section
+				code = btoa(Code.workspace.block_editorCode.getValue());
+				block.code[self.section] = code;
+				
+				// Get new code section and display
+				code = "";
+
+	  			if (typeof block.code[section] != "undefined") {
+	  				code = atob(block.code[section]);
+	  			}				
+
+	  			Code.workspace.block_editorCode.setValue(code, -1);
+	  			Code.workspace.block_editorCode.focus();
+				
+				// Change current section
+				self.section = section;
+			}
+		});
+	});
 };
 
 /**
@@ -272,77 +430,93 @@ AppController.prototype.init = function() {
   if (this.inited) return;
   this.inited = true;
   
-  // Populate list of libraries
-  var libs = Code.lib.libs;
-  
+  // Populate list of code sections
+  // Code sections
+  var codeSection = ["default", "functions"];
+
   html = '';
- 
-  if (libs.length == 0) {
-	  html += '<option value="new-library">Choose one ...</option>'  	
-  }
-  
-  libs.forEach(function(library, index) {
-	html += '<option '+(index==0?"selected":"")+' value="'+library.name+'">'+library.name+'</option>'
+
+  codeSection.forEach(function(section, index) {
+	html += '<option '+(index==0?"selected":"")+' value="'+section+'">'+section+'</option>'  	
   });
 
-  html += '<option value="new-library">New library ...</option>'
+  jQuery("#content_block_editor_code_section").html(html);
   
-  jQuery("#content_block_editor_library").html(html);
-  jQuery("#content_block_editor_library").unbind('change').on('change', function(e) {
-	  var target = jQuery(e.target);
-	  var libraryName = target.val();
-	  
-	  if (libraryName == "new-library") {
-		var dialogForm = "";
-		
-		dialogForm  = '<form id="new_library">';
-		dialogForm += '<div>';
-		dialogForm += '<label for="library_name">Name:&nbsp;&nbsp;</label>';
-		dialogForm += '<input id="library_name" name="library_name" value="">';
-		dialogForm += '</div>';
-		dialogForm += '</form>';
-		dialogForm += '<span class="error-msg" id="errors"></span>';
+  // Update library list
+  self.updateLibraryList();
+  
+  jQuery("#content_block_editor_translate").unbind('click').on('click', function(e) {
+	var dialogForm = "";
+	var block;
+	
+	dialogForm  = '<form id="translate_block">';
+	
+	var type = jQuery("#content_block_editor_type").val();
+	Code.lib.def.blocks.forEach(function(b) {
+		if (b.spec.type == type) {
+			block = b;
+		}
+	});
+	
+	if (block.msg.en.message0 == "") {
+		block.msg.en.message0 = block.spec.message0;
+	}
 
-		bootbox.dialog({
-			title: "New library",
-			message: dialogForm,
-			buttons: {
-				danger: {
-					label: "Cancel",
-					classensor: "btn-danger",
-					callback: function() {}
-				},
-				main: {
-					label: "Create",
-					callback: function() {
-						var form = jQuery("#new_library");
-						jQuery("#errors").html("");
-						
-						var name = form.find("#library_name").val();
-						
-						if (name == "") {
-							jQuery("#errors").html("Library name missing");
-							return false;
-						}
-					}
-				},
+	if (block.msg.ca.message0 == "") {
+		block.msg.ca.message0 = block.spec.message0;
+	}
+
+	if (block.msg.es.message0 == "") {
+		block.msg.es.message0 = block.spec.message0;
+	}
+	
+	dialogForm += '<div>';
+	dialogForm += '<label for="message_en">English:&nbsp;&nbsp;</label>';
+	dialogForm += '<input id="message_en" name="library_name" style="width:100%" value="'+block.msg.en.message0+'">';
+	dialogForm += '</div>';			
+	dialogForm += '<br>';		
+	
+	dialogForm += '<div>';
+	dialogForm += '<label for="message_ca">Català:&nbsp;&nbsp;</label>';
+	dialogForm += '<input id="message_ca" name="library_name" style="width:100%" value="'+block.msg.ca.message0+'">';
+	dialogForm += '</div>';			
+	dialogForm += '<br>';		
+
+	dialogForm += '<div>';
+	dialogForm += '<label for="message_es">Español:&nbsp;&nbsp;</label>';
+	dialogForm += '<input id="message_es" name="library_name" style="width:100%" value="'+block.msg.es.message0+'">';
+	dialogForm += '</div>';			
+	
+	dialogForm += '</form>';
+	dialogForm += '<span class="error-msg" id="errors"></span>';
+
+	bootbox.dialog({
+		title: "Translate block",
+		message: dialogForm,
+		buttons: {
+			danger: {
+				label: "Cancel",
+				classensor: "btn-danger",
+				callback: function() {}
 			},
-			closable: false,
-			onEscape: true
-		});	  	
-	  } else {
-		  // Change current library
-		  libs.forEach(function(library, index) {
-			  if (library.name == libraryName) {
-				  Code.lib.def = JSON.parse(JSON.stringify(library));		  	
-			  }
-		  });
-		  
-		  self.updateBlockList();
-	  }
+			main: {
+				label: "Update",
+				callback: function() {
+					var en = jQuery("#message_en").val();
+					var ca = jQuery("#message_ca").val();
+					var es = jQuery("#message_es").val();
+					
+					block.msg.en.message0 = en;
+					block.msg.ca.message0 = ca;
+					block.msg.es.message0 = es;
+				}
+			},
+		},
+		closable: false,
+		onEscape: true
+	});	  	
   });
-  
-  this.onresize();
+
   window.addEventListener('resize', function() {
     self.onresize();
   });

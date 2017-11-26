@@ -1,0 +1,5 @@
+gdisplay.attach(gdisplay.ST7735G_18, gdisplay.LANDSCAPE_FLIP, false)
+gdisplay.settransp(false)
+gdisplay.clear()
+gdisplay.setfont(gdisplay.FONT_7SEG)
+gdisplay.write({0,0},'1234')

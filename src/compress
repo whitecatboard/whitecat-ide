@@ -46,7 +46,7 @@ rm -f /Users/jaumeolivepetrus/whitecat-ide/src/boards/prerequisites.zip
 
 cp -f -r ./../fonts ./
 cp -f -r ./../lib ./
-cp -f -r ./../library/defs/libs.json ./library/defs
+cp -f -r ./../library/defs/*.json ./library/defs
 cp -f -r ./../media ./
 cp -f -r ./../msg/js/* ./msg/js
 cp -f -r ./../msg/wc/* ./msg/wc

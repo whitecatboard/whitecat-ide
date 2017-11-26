@@ -38,6 +38,8 @@ Blockly.Lua['wait_for'] = function(block) {
 	
 	var code = '';
 	
+	code += Blockly.Lua.indent(0, '-- wait some time') + "\n";
+
 	switch (units) {
 		case 'microseconds':
 			code += "tmr.delayus(math.floor(" + time + "))\r\n";break;
@@ -47,7 +49,7 @@ Blockly.Lua['wait_for'] = function(block) {
 			code += "tmr.delay(math.floor(" + time  + "))\r\n";break;
 	}
 	
-	return code;
+	return Blockly.Lua.postFormat(code, block);
 };
 
 Blockly.Lua['cpu_sleep'] = function(block) {
@@ -57,6 +59,9 @@ Blockly.Lua['cpu_sleep'] = function(block) {
 
 	code += Blockly.Lua.blockStart(0, block);
 
+	code += Blockly.Lua.indent(0, '-- sleep cpu some time') + "\n";
+
 	code += 'os.sleep(math.floor(' + time + '))';	
-	return code;
+	
+	return Blockly.Lua.postFormat(code, block);
 };

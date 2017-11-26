@@ -716,5 +716,10 @@
 	"CLOSE": "Close",
 
 	"WARNING_RAISE_ERROR_AGAIN_NOT_ALLOWED_HERE": "Warning: This block may only be used within a 'try catch finally' block in its catch part.",
-	"WARNING_CATCH_ERROR_NOT_ALLOWED_HERE": "Warning: This block may only be used within a 'when error is catched' block."
+	"WARNING_CATCH_ERROR_NOT_ALLOWED_HERE": "Warning: This block may only be used within a 'when error is catched' block.",
+	
+	"OUTPUT_PINS": "output pin",
+	"INPUT_PINS": "input pin",
+	"ANALOG_PINS": "analog pin",
+	"PWM_PINS": "pwm pin"
 }

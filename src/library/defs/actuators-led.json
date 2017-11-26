@@ -4,22 +4,21 @@
     {
       "parentCategory": "Actuators",
       "category": "Led",
-      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9ImB7K2d0Sz0qaFJOZ24wQlcpZkNsIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+QVVUTzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNPTk5FQ1RJT05TIj5CT1RIPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IklOUFVUUyI+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0iNEB+KExgXTpwTH5CYDFQLUFifVAiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJLTSUyL0B4VUJjX0JDYGRbbWhqLCI+PGZpZWxkIG5hbWU9IlRFWFQiPmxlZCBvbjwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0iVS9gUk9yW08rLzNLSDpGcl44ODoiPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90O10iPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkZJRUxETkFNRSI+UElOPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjAiPm91dHB1dF9waW5zPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMCI+Y3VzdG9tPC9maWVsZD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iaVktKn5NLSlYQH1oUT96UGhKIUIiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iSkA/aTdAI2Z5M2pQNUM4L1ZeVCEiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iLDM4cn0haXV1S2UpKjBtQVJjRnEiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iJUI1TUNYXUZufUA1OTBTOyhgSD8iPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJaIXIrc3Z2WCV8TVhpUChdd2MvTyI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9ImB7K2d0Sz0qaFJOZ24wQlcpZkNsIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSI0QH4oTGBdOnBMfkJgMVAtQWJ9UCI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJLTSUyL0B4VUJjX0JDYGRbbWhqLCI+PGZpZWxkIG5hbWU9IlRFWFQiPmxlZCBvbjwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSJNfHNLMlBuaT1VMFNMc3dvYHZjfCI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+UElOPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5GQUxTRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+b3V0cHV0X3BpbnM8L2ZpZWxkPjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IlZjWkhJISMuMF8lTlZ9dExGbyEpIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSJeQCk9VVN+S3tmalcwaVRJaF01aCI+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iaVktKn5NLSlYQH1oUT96UGhKIUIiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iSkA/aTdAI2Z5M2pQNUM4L1ZeVCEiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iLDM4cn0haXV1S2UpKjBtQVJjRnEiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iJUI1TUNYXUZufUA1OTBTOyhgSD8iPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJaIXIrc3Z2WCV8TVhpUChdd2MvTyI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
       "spec": {
         "type": "actuator_led_on",
-        "message0": "led on %1",
+        "message0": "encèn led %1 %2",
         "args0": [
           {
-            "type": "field_dropdown",
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
             "name": "PIN",
-            "options": [
-              [
-                "output_pins",
-                "custom"
-              ]
-            ]
+            "check": "Number"
           }
         ],
+        "inputsInline": true,
         "previousStatement": null,
         "nextStatement": null,
         "colour": 230,
@@ -28,60 +27,72 @@
       },
       "msg": {
         "en": {
-          "message0": "led on %1"
+          "message0": "led on %1 %2"
         },
         "ca": {
-          "message0": "led on %1"
+          "message0": "encèn led %1 %2"
         },
         "es": {
-          "message0": "led on %1"
+          "message0": "enciende led %1 %2"
         }
+      },
+      "subtype": {
+        "PIN": "output_pins",
+        "PIN2": "output_pins"
       },
       "whatcher": false,
       "dependency": [
         "block"
       ],
-      "code": "LS0gdHVybiBvbiBsZWQgYXQge3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0NCnRyeSgNCglmdW5jdGlvbigpDQoJCXBpby5waW4uc2V0ZGlyKHBpby5PVVRQVVQsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXRwdWxsKHBpby5OT1BVTEwsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkNCgkJcGlvLnBpbi5zZXR2YWwoMSwgcGlvLnt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19KQkNCgllbmQsDQoJZnVuY3Rpb24od2hlcmUsIGxpbmUsIGVyciwgbWVzc2FnZSkNCgkJd2NCbG9jay5ibG9ja0Vycm9yKCIlJWlkJSUiLCBlcnIsIG1lc3NhZ2UpDQoJZW5kDQop"
+      "code": {
+        "default": "LS0gdHVybiBvbiBsZWQgYXQgcGlvLnsoQmxvY2tseS5MdWEuaW8uaGVscGVyLm5hbWVEaWdpdGFsKGJsb2NrKSl9DQpwaW8ucGluLnNldGRpcihwaW8uT1VUUFVULCB7KEJsb2NrbHkuTHVhLmlvLmhlbHBlci5uYW1lRGlnaXRhbChibG9jaykpfSkNCnBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCB7KEJsb2NrbHkuTHVhLmlvLmhlbHBlci5uYW1lRGlnaXRhbChibG9jaykpfSkNCnBpby5waW4uc2V0dmFsKDEsIHsoQmxvY2tseS5MdWEuaW8uaGVscGVyLm5hbWVEaWdpdGFsKGJsb2NrKSl9KQ=="
+      }
     },
     {
       "parentCategory": "Actuators",
       "category": "Led",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9ImB7K2d0Sz0qaFJOZ24wQlcpZkNsIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSI0QH4oTGBdOnBMfkJgMVAtQWJ9UCI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJLTSUyL0B4VUJjX0JDYGRbbWhqLCI+PGZpZWxkIG5hbWU9IlRFWFQiPmxlZCBvZmY8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iTXxzSzJQbmk9VTBTTHN3b2B2Y3wiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPlBJTjwvZmllbGQ+PGZpZWxkIG5hbWU9IlNIQURPVyI+RkFMU0U8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPm91dHB1dF9waW5zPC9maWVsZD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJWY1pISSEjLjBfJU5WfXRMRm8hKSI+PC9zaGFkb3c+PGJsb2NrIHR5cGU9InR5cGVfbnVtYmVyIiBpZD0iXkApPVVTfkt7ZmpXMGlUSWhdNWgiPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9ImlZLSp+TS0pWEB9aFE/elBoSiFCIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkpAP2k3QCNmeTNqUDVDOC9WXlQhIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJUT1BUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IiwzOHJ9IWl1dUtlKSowbUFSY0ZxIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJCT1RUT01UWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IiVCNU1DWF1Gbn1ANTkwUzsoYEg/Ij48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0iWiFyK3N2dlglfE1YaVAoXXdjL08iPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
       "spec": {
         "type": "actuator_led_off",
-        "message0": "turn off led %1",
+        "message0": "led off %1 %2",
         "args0": [
           {
-            "type": "field_dropdown",
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
             "name": "PIN",
-            "options": [
-              [
-                "output_pins",
-                "custom"
-              ]
-            ]
+            "check": "Number"
           }
         ],
+        "inputsInline": true,
         "previousStatement": null,
         "nextStatement": null,
         "colour": 230,
-        "inputsInline": true
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "subtype": {
+        "PIN": "output_pins"
       },
       "whatcher": false,
       "msg": {
         "en": {
-          "message0": "turn off led %1"
+          "message0": "led off %1 %2"
         },
         "ca": {
-          "message0": "apaga led %1"
+          "message0": "apaga led %1 %2"
         },
         "es": {
-          "message0": "apaga led %1"
+          "message0": "apaga led %1 %2"
         }
       },
       "dependency": [
         "block"
       ],
-      "code": "LS0gdHVybiBvZmYgbGVkIGF0IHt7Q29kZS5zdGF0dXMubWFwcy5kaWdpdGFsUGluc1skJFBJTiQkXVswXX19DQp0cnkoDQoJZnVuY3Rpb24oKQ0KCQlwaW8ucGluLnNldGRpcihwaW8uT1VUUFVULCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pDQoJCXBpby5waW4uc2V0cHVsbChwaW8uTk9QVUxMLCBwaW8ue3tDb2RlLnN0YXR1cy5tYXBzLmRpZ2l0YWxQaW5zWyQkUElOJCRdWzBdfX0pDQoJCXBpby5waW4uc2V0dmFsKDAsIHBpby57e0NvZGUuc3RhdHVzLm1hcHMuZGlnaXRhbFBpbnNbJCRQSU4kJF1bMF19fSkJDQoJZW5kLA0KCWZ1bmN0aW9uKHdoZXJlLCBsaW5lLCBlcnIsIG1lc3NhZ2UpDQoJCXdjQmxvY2suYmxvY2tFcnJvcigiJSVpZCUlIiwgZXJyLCBtZXNzYWdlKQ0KCWVuZA0KKQ=="
+      "code": {
+        "default": "LS0gdHVybiBvZmYgbGVkIGF0IHBpby57KEJsb2NrbHkuTHVhLmlvLmhlbHBlci5uYW1lRGlnaXRhbChibG9jaykpfQ0KcGlvLnBpbi5zZXRkaXIocGlvLk9VVFBVVCwgeyhCbG9ja2x5Lkx1YS5pby5oZWxwZXIubmFtZURpZ2l0YWwoYmxvY2spKX0pDQpwaW8ucGluLnNldHB1bGwocGlvLk5PUFVMTCwgeyhCbG9ja2x5Lkx1YS5pby5oZWxwZXIubmFtZURpZ2l0YWwoYmxvY2spKX0pDQpwaW8ucGluLnNldHZhbCgwLCB7KEJsb2NrbHkuTHVhLmlvLmhlbHBlci5uYW1lRGlnaXRhbChibG9jaykpfSk="
+      }
     }
   ]
 }

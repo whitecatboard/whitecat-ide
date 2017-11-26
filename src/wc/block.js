@@ -1,5 +1,9 @@
 'use strict';
 
+Blockly.Block.prototype.isReporterBlock = function() {
+	return ((this.outputConnection != null) && (this.outputConnection));
+}
+
 Blockly.Block.prototype.isSensorBlock = function() {
 	var hatBlocks = [
 		'sensor_read', 'sensor_set', 'sensor_when'

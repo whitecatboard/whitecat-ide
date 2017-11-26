@@ -682,5 +682,10 @@
 	"CLOSE": "Cerrar",
 
 	"WARNING_RAISE_ERROR_AGAIN_NOT_ALLOWED_HERE": "ADVERTENCIA: Este bloque puede usarse sólo dentro de un bloque 'prueba captura finalmente' en la parte captura.",
-	"WARNING_CATCH_ERROR_NOT_ALLOWED_HERE": "ADVERTENCIA: Este bloque puede usarse sólo dentro de un bloque 'cuando el error es capturado'."	
+	"WARNING_CATCH_ERROR_NOT_ALLOWED_HERE": "ADVERTENCIA: Este bloque puede usarse sólo dentro de un bloque 'cuando el error es capturado'.",
+
+	"OUTPUT_PINS": "pin de salida",
+	"INPUT_PINS": "pin de entrada",
+	"ANALOG_PINS": "pin analógico",
+	"PWM_PINS": "pin pwm"
 }

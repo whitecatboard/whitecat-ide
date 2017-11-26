@@ -2,10 +2,10 @@ var MSG = {
   title: "Código",
   blocks: "Bloques",
   linkTooltip: "Guarda conexión a los bloques.",
-  runTooltip: "Ejecute el programa definido por los bloques en el área de trabajo.",
+  runTooltip: "Ejecuta el programa",
   badCode: "Error del programa:\n%1",
   timeout: "Se excedio el máximo de iteraciones ejecutadas permitidas.",
-  trashTooltip: "Descartar todos los bloques.",
+  trashTooltip: "Descartar todos los bloques",
   catLogic: "Lógica",
   catLoops: "Secuencias",
   catMath: "Matemáticas",
@@ -23,6 +23,10 @@ var MSG = {
   badXml: "Error de análisis XML:\n%1\n\nSelecciona OK para abandonar tus cambios o Cancelar para seguir editando el XML.",
 	
   // WHITECAT	
+  blockEditorTooltip: "Editor de bloques",
+  previewButtonTooltip: "Ver el código generado",
+  developerModeTooltipOn: "Activa el modo desarrollador",
+  developerModeTooltipOff: "Desactiva el modo desarrollador",
   editor: "Lua",
   board: "Placa",
   console: "Consola",	

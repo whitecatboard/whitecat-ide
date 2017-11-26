@@ -30,13 +30,10 @@
  */
 
 function blockLibrary() {
-	var thisInstance = this
+	var self = this
 	
-	thisInstance.libs = [];
-	
-	thisInstance.id = "";
-	thisInstance.def = {};
-	thisInstance.workDef = {};
+	self.libs = []; // Loaded libraries
+	self.def = {};  // Current library 
 
 	// Load libraries
 	if ((typeof require != "undefined") && (typeof require('nw.gui') != "undefined")) {
@@ -52,72 +49,33 @@ function blockLibrary() {
 				 // Read library
 				 var libraryPath = path.join(dirPath, file);  
 				 
-				 var def = JSON.parse(fs.readFileSync(libraryPath, "utf8"));
-				 thisInstance.libs.push(def);
+				 self.libs.push(JSON.parse(fs.readFileSync(libraryPath, "utf8")));				 
 			}			
 		});
 	}	
 }
 
-blockLibrary.prototype.load = function(id, callback) {
-	var thisInstance = this;
-
-	if (thisInstance.id == id) return;
-	
-	if ((typeof require != "undefined") && (typeof require('nw.gui') != "undefined")) {
-	    var fs = require("fs");
-	    var path = require('path');
-
-	    var file = 'library/defs/' + id + '.json';
-	    var filePath = path.join(process.cwd(), file);  
-
-		// Test that file exists, and if not, create an empty library
-		if (!fs.existsSync(filePath)) {
-			fs.writeFileSync(filePath, '{"name": "'+id+'","blocks": []}');
-		}
-
-		try {
-			thisInstance.def = JSON.parse(fs.readFileSync(filePath, "utf8"));			
-			thisInstance.workDef = JSON.parse(fs.readFileSync(filePath, "utf8"));	
-			thisInstance.id = id;		
-			callback();
-		} catch (error) {
-			callback();			
-			return;
-		}
-	} else {
-		jQuery.ajax({
-			url: Code.folder + "/library/defs/" + id + ".json",
-			success: function(result) {
-				thisInstance.def = result;
-				thisInstance.workDef = result;
-				thisInstance.id = id;
-				callback();
-				return;
-			},
-	
-			error: function() {
-				callback();			
-			}
-		});				
-	}
-}
-
 blockLibrary.prototype.update = function() {
-	var thisInstance = this;
+	var self = this;
 
 	if ((typeof require != "undefined") && (typeof require('nw.gui') != "undefined")) {
 	    var fs = require('fs');
 	    var path = require('path');
 
-		var file = 'library/defs/' + thisInstance.def.name + '.json';
+		var file = 'library/defs/' + self.def.name + '.json';
 	    var filePath = path.join(process.cwd(), file);  
 
-	    fs.writeFileSync(filePath, JSON.stringify(thisInstance.def, function(k, v){
+	    fs.writeFileSync(filePath, JSON.stringify(self.def, function(k, v){
 	    	return v;
 	    },2));
 		
-		thisInstance.id = "";
+		self.libs.forEach(function(lib, idx) {
+			if (lib.name == self.def.name) {
+				self.libs[idx] = JSON.parse(JSON.stringify(self.def));
+			}
+		});
+		
+		Code.updateToolBox();
 	}	
 }
 
@@ -194,10 +152,89 @@ blockLibrary.prototype.replace = function(template, char1, char2, block) {
 	return code;
 }
 
-blockLibrary.prototype.create = function(xml, block) {
-	var thisInstance = this;
+blockLibrary.prototype.evalTemplate = function(block, pos, op, open, template) {
+	var self = this;
+	var code = "";	
+	var id = "";
+	var prev = "";
 	
-	// Block def
+	var begin_ops = ["$","{"];
+	var end_ops = ["$","}"];
+	var ops = ["FIELD","FUNC"];
+	
+	var i = 0;
+
+	while (i < template.length) {
+		if (begin_ops.indexOf(template.charAt(i)) != -1) {
+			var newOp = ops[begin_ops.indexOf(template.charAt(i))];
+			if (i + 1 < template.length) {
+				if (template.charAt(i + 1) == "(") {
+					var newPos = {
+						val: 0
+					};
+					
+					code = code + self.evalTemplate(block, newPos, newOp, 1, template.substring(i + 2));					
+					i = i + newPos.val;
+				} else {
+					code = code + template.charAt(i);
+					i++
+				}
+			} else {
+				code = code + template.charAt(i);
+				i++;
+			}
+		} else if (template.charAt(i) == ")") {
+			if (i + 1 < template.length) {
+				if (end_ops.indexOf(template.charAt(i + 1)) != -1) {
+					if (open > 0) {
+						open--;
+				
+						if (open == 0) {
+							var val = "";
+							var id = template.substring(0, i);
+							pos.val = i + 4;
+							
+							try {
+								if (op == "FUNC") {
+									val = eval(self.evalTemplate(block, newPos, "", 0, id));
+								} else if (op == "FIELD") {
+									val = eval("block.getFieldValue('"+id+"')");
+							
+									if (val == null) {
+										val = Blockly.Lua.valueToCode(block, id, Blockly.Lua.ORDER_NONE) || '\'\'';
+									}																	
+								}								
+							} catch (e) {
+								val = eval(self.evalTemplate(block, newPos, "", 0, id));
+							}
+							
+							return val;
+						}
+					} else {
+						code = code + template.charAt(i);
+						i++;													
+					}		
+				} else {
+					code = code + template.charAt(i);
+					i++;
+				}
+			} else {
+				code = code + template.charAt(i);
+				i++;
+			}			
+		} else {
+			code = code + template.charAt(i);
+			i++;
+		}
+	}
+	
+	return code;
+}
+
+blockLibrary.prototype.createBlocks = function(xml, block) {
+	var self = this;
+	
+	// Block
 	Blockly.Blocks[block.spec.type] = {
 		init: function() {
 			this.jsonInit(block.spec);
@@ -213,36 +250,111 @@ blockLibrary.prototype.create = function(xml, block) {
 	
 	// Generator
 	Blockly.Lua[block.spec.type] = function(b) {
-		var template = atob(block.code);
 		var code = "";
+		var newCode = "";
 
 		// Add dependencies
-		for (var module in block.dependency) {
-			if (codeSection["require"].indexOf('require("'+block.dependency[module]+'")') == -1) {
-				codeSection["require"].push('require("'+block.dependency[module]+'")');
+		for (var library in block.dependency) {
+			Blockly.Lua.addDependency(library, b);
+		}
+
+		// Generate function code for block
+		if (typeof block.code.functions != "undefined") {
+			code = atob(block.code.functions);
+			
+			while (true) {
+				var pos = {
+					val: 0
+				};
+	
+				newCode = self.evalTemplate(b, pos, "", 0, code);
+				if (newCode != code) {
+					code = newCode;
+				} else {
+					break;
+				}
+			}
+						
+			if (code != "") {
+				Blockly.Lua.addCodeToSection("functions", code + "\n", b);
 			}
 		}
 		
-		code = thisInstance.replace(template, "$", "$", b);
-		code = thisInstance.replace(code, "%", "%", b);
-		code = thisInstance.replace(code, "@", "@", b);
-		code = thisInstance.replace(code, "{", "}", b);
+		// Generate default code for block
+		code = "";
+		newCode = "";
+		
+		if (typeof block.code['default'] != "undefined") {
+			code = atob(block.code['default']);			
 
-		return code + "\n";	
+			while (true) {
+				var pos = {
+					val: 0
+				};
+	
+				newCode = self.evalTemplate(b, pos, "", 0, code);
+				if (newCode != code) {
+					code = newCode;
+				} else {
+					break;
+				}
+			}		
+		}
+		
+		// A reporter block must return a tuple
+		if (!b.isReporterBlock()) {
+			return Blockly.Lua.postFormat(code, b);	
+		} else {
+			return [code, Blockly.Lua.ORDER_HIGH];
+		}
 	};
 	
 	// Insert block into it's categpry
 	var newBlock = goog.dom.createDom('block');
 	newBlock.setAttribute('type', block.spec.type);	
 	
-	// Create shadow values, if needed
-	// Parse each block
-
+	// Create shadow values, if required
 	for (var prop in block.spec) {
 		if (/args[0-9]*/.test(prop)) {
 			for (var arg in block.spec[prop]) {
 				if (block.spec[prop][arg].type == 'input_value') {
-					if (typeof block.shadow[block.spec[prop][arg].name] != "undefined") {
+					if (block.subtype[block.spec[prop][arg].name] == "output_pins") {
+						var shadow = goog.dom.createDom('shadow');
+						shadow.setAttribute('type', 'output_digital_pin');
+
+						var value = goog.dom.createDom('value');
+						value.setAttribute('name', 'PIN');
+						value.appendChild(shadow);
+					
+						newBlock.appendChild(value);						
+					} else if (block.subtype[block.spec[prop][arg].name] == "display_color_sel") {
+						var shadow = goog.dom.createDom('shadow');
+						shadow.setAttribute('type', 'display_color_sel');
+
+						var value = goog.dom.createDom('value');
+						value.setAttribute('name', 'COLOR');
+						value.appendChild(shadow);
+					
+						newBlock.appendChild(value);						
+					} else if (block.subtype[block.spec[prop][arg].name] == "text") {
+						var shadow = goog.dom.createDom('shadow');
+						shadow.setAttribute('type', 'text');
+
+						var value = goog.dom.createDom('value');
+						value.setAttribute('name', 'TEXT');
+						value.appendChild(shadow);
+					
+						newBlock.appendChild(value);						
+					} else if (block.subtype[block.spec[prop][arg].name] == "neopixel_color_sel") {
+						var shadow = goog.dom.createDom('shadow');
+						shadow.setAttribute('type', 'neopixel_color_sel');
+
+						var value = goog.dom.createDom('value');
+						value.setAttribute('name', 'COLOR');
+						value.appendChild(shadow);
+					
+						newBlock.appendChild(value);						
+					} else if (typeof block.shadow[block.spec[prop][arg].name] != "undefined") {
 						var field = goog.dom.createDom('field', null, block.shadow[block.spec[prop][arg].name].value);
 						field.setAttribute('name', block.shadow[block.spec[prop][arg].name].name);
 
@@ -278,48 +390,85 @@ blockLibrary.prototype.create = function(xml, block) {
 }
 
 blockLibrary.prototype.get = function(xml, callback) {
-	var thisInstance = this;
+	var self = this;
+	
+	function insert(libContent) {
+		if (libContent) {
+			libContent = JSON.parse(libContent);
 
-	// Parse each lirary block
-	thisInstance.libs.forEach(function(lib, idx) {
-		lib.blocks.forEach(function(block, idx) {
-			// Get the json spec for block
+			libContent.forEach(function(lib) {
+				self.libs.push(lib);				
+			});
+		}
+		
+		// Parse each lirary block
+		self.libs.forEach(function(lib, idx) {
+			lib.blocks.forEach(function(block, idx) {
+				// Get the json spec for block
 
-			var spec = block.spec;
+				var spec = block.spec;
 
-			// Translate messages
-			for (var prop in spec) {
-				if (/message[0-9]*/.test(prop)) {
-					block.spec[prop] = block.msg[Code.settings.language][prop];
-				}
-			}
-
-			// Search into arguments
-			//
-			// If argument is field_dropdown and value is not an array evaluate firts
-			for (var prop in spec) {
-				if (/args[0-9]*/.test(prop)) {
-					for (var arg in spec[prop]) {
-						if ((spec[prop][arg].type == 'field_dropdown') && (jQuery.isArray(spec[prop][arg].options))) {
-							var opt = spec[prop][arg].options[0][0];
-							
-							if (opt == "output_pins") {
-								spec[prop][arg].options = Blockly.Blocks.io.helper.getOutputDigitalPins();							
-							}
+				// Translate messages
+				for (var prop in spec) {
+					if (/message[0-9]*/.test(prop)) {
+						if (block.msg[Code.settings.language][prop] != "") {
+							block.spec[prop] = block.msg[Code.settings.language][prop];
 						}
 					}
 				}
-			}
 
-			// If colour in spec is not an integer, evaluate
-			if (isNaN(parseInt(spec.colour))) {
-				spec.colour = eval(spec.colour);
-			}
+				// If colour in spec is not an integer, evaluate
+				if (isNaN(parseInt(spec.colour))) {
+					spec.colour = eval(spec.colour);
+				}
 
-			// Create block
-			xml = thisInstance.create(xml, block);			
+				// Create block
+				xml = self.createBlocks(xml, block);			
+			});
 		});
-	});
+
+		callback(xml);
+	}
+
+	if ((typeof require != "undefined") && (typeof require('nw.gui') != "undefined")) {
+		insert(null);
+	} else {
+		jQuery.ajax({
+			url: Code.folder + "/?libraries",
+			success: function(result) {
+				insert(result);
+				return;
+			},
 	
-	callback(xml);		
+			error: function() {
+				callback();			
+			}
+		});				
+	}
+}
+
+/**
+ * Create a new empty library.
+ */
+blockLibrary.prototype.create = function(name) {
+	if ((typeof require != "undefined") && (typeof require('nw.gui') != "undefined")) {
+	    var fs = require("fs");
+	    var path = require('path');
+
+		// Get library path file
+	    var file = 'library/defs/' + name + '.json';
+	    var filePath = path.join(process.cwd(), file);  
+
+		// Create the library only if doesn't exists
+		if (!fs.existsSync(filePath)) {
+			fs.writeFileSync(filePath, '{"name": "'+name+'","blocks": []}');
+			
+			// Add library to workspace
+			try {
+				self.libs.push(JSON.parse(fs.readFileSync(filePath, "utf8")));
+			} catch (error) {
+				return;
+			}
+		}
+	}	
 }

@@ -117,6 +117,7 @@
   
   <style type="text/css">
 	  .blocklyWsDragSurface{ overflow: visible !important;}	  
+	  
   </style>
 </head>
 
@@ -136,6 +137,8 @@
 	  <button id="blockEditorButton" type="button" class="btn btn-default" aria-label="Left Align">
 	    <span class="icon icon-design" aria-hidden="true"></span>
 	  </button>
+    </div>
+	<div class="btn-group">
 	  <button id="trashButton" type="button" class="btn btn-default" aria-label="Left Align">
 	    <span class="icon icon-bin" aria-hidden="true"></span>
 	  </button>
@@ -145,12 +148,8 @@
 	  <button id="switchToCode" type="button" class="btn btn-default" aria-label="Left Align">
 	    <span class="icon icon-code" aria-hidden="true"></span>
 	  </button>
-	  <button id="previewButton" type="button" class="btn btn-default" aria-label="Left Align">
-	    <span class="icon icon-eye" aria-hidden="true"></span>
-	  </button>
-	  <button id="developerMode" type="button" class="on btn btn-default" aria-label="Left Align">
-	    <span class="icon icon-bug2" aria-hidden="true"></span>
-	  </button>
+     </div>
+	<div class="btn-group">
 	  <button id="loadButton" type="button" class="btn btn-default" aria-label="Left Align">
 	    <span class="icon icon-folder-open" aria-hidden="true"></span>
 	  </button>
@@ -160,6 +159,8 @@
 	  <button id="saveAsButton" type="button" class="btn btn-default" aria-label="Left Align">
 	    <span class="icon icon-floppy-disks" aria-hidden="true"></span>
 	  </button>
+	</div>
+	<div class="btn-group">
 	  <button id="rebootButton"type="button" class="btn btn-default disabled" aria-label="Left Align">
 	    <span class="icon icon-spinner11" aria-hidden="true"></span>
 	  </button>
@@ -168,6 +169,14 @@
 	  </button>
 	  <button id="runButton" type="button" class="btn btn-default disabled" aria-label="Left Align">
 	    <span class="icon icon-play4" aria-hidden="true"></span>
+	  </button>
+	</div>
+	<div class="btn-group">
+	  <button id="previewButton" type="button" class="btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-eye" aria-hidden="true"></span>
+	  </button>
+	  <button id="developerMode" type="button" class="on btn btn-default" aria-label="Left Align">
+	    <span class="icon icon-bug2" aria-hidden="true"></span>
 	  </button>
 	</div>
 </div>
@@ -187,12 +196,17 @@
       	<div id="block_editor_tool"></div>
 		<a id="block_editor_v_sep" href="javascript:void(0)" style="cursor:col-resize;position:absolute;text-decoration:none;background:#ddd;">&nbsp;</a>
       	<div id="block_editor_options" style="position: absolute; margin-left: 5px;margin-bottom: 5px; margin-top:5px;">
-      		Library:&nbsp;<select id="content_block_editor_library"></select>&nbsp;&nbsp;
-      		Block:&nbsp;<select id="content_block_editor_type"></select>
+      		<div style="float: left;margin-right:5px;">Library:&nbsp;<select id="content_block_editor_library"></select></div>
+      		<div style="float: left;margin-right:5px;">Block:&nbsp;<select id="content_block_editor_type"></select></div>
+			<div style="float: left;"><button type="button" id="content_block_editor_translate">Translate ...</button></div>
       	</div>
       	<div id="preview" style="position: absolute;"></div>
-		<a id="block_editor_h_sep" href="javascript:void(0)" style="cursor:col-resize;position:absolute;text-decoration:none;background:#ddd;">&nbsp;</a>
-      	<div id="block_editor_code" style="position: absolute;"></div>			
+		<a id="block_editor_h_sep" href="javascript:void(0)" style="cursor:row-resize;position:absolute;text-decoration:none;background:#ddd;">&nbsp;</a>
+      	<div id="block_editor_code_options" style="position: absolute; margin-left: 4px;margin-bottom: 5px; margin-top:4px;background: #f0f0f0;">
+      		&nbsp;&nbsp;Code section:&nbsp;<select id="content_block_editor_code_section"></select>&nbsp;&nbsp;
+      	</div>
+      	<div id="block_editor_code" style="position: absolute;">
+      	</div>			
 	    <div id="modalShadow"></div>
 	    <xml id="blockfactory_toolbox" class="toolbox"  style="display: none">
 	      <category name="Input">
