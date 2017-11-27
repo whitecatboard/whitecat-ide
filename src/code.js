@@ -1103,11 +1103,6 @@ Code.buildToolBox = function(callback) {
 		xml += '</category>';
 	}
 
-	//if (Code.status.modules.tft) {
-	//	xml += '<category id="catTFT"colour="20">';
-	//	xml += '</category>';
-	//}
-	
 	Code.lib.get(xml, function(xml) {
 		var toolbox = document.getElementById('toolbox');
 		toolbox.innerHTML = xml;
@@ -1123,7 +1118,6 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catCan").attr("colour", Blockly.Blocks.io.HUE);
 		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);
-		//jQuery("#catTFT").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catNET").attr("colour", Blockly.Blocks.lora.HUE);
 		jQuery("#catWIFI").attr("colour", Blockly.Blocks.lora.HUE);
 		jQuery("#catMQTT").attr("colour", Blockly.Blocks.lora.HUE);

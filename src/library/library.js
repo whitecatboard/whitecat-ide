@@ -382,9 +382,11 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 		cat = jQuery('<category id="cat' + block.category + '" colour="'+Blockly.Blocks.actuators.HUE+'" name="'+block.category +'"></category>');
 		
 		parentCat.append(cat);
-	} 
-
-	cat.append(newBlock);
+	} 	
+	if (cat.find("block[type='"+block.spec.type+"']").length == 0) {
+		// Add block
+		cat.append(newBlock);
+	}
 
 	return toolBar.html();
 }
