@@ -1070,6 +1070,7 @@ Code.buildToolBox = function(callback) {
 
 	if (Code.status.modules.servo) {
 		xml += '<category id="catActuators">';
+		xml += '<category id="catServo">';
 		xml += '<block type="servo_move">' +
 			'<value name="PIN">' +
 			'<shadow type="output_digital_pin">' +
@@ -1081,6 +1082,7 @@ Code.buildToolBox = function(callback) {
 			'</shadow>' +
 			'</value>' +
 			'</block>';
+			xml += '</category>';
 	}
 	xml += '</category>';
 
@@ -1117,6 +1119,7 @@ Code.buildToolBox = function(callback) {
 		jQuery("#catI2C").attr("colour", Blockly.Blocks.io.HUE);
 		jQuery("#catCan").attr("colour", Blockly.Blocks.io.HUE);
 		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
+		jQuery("#catServo").attr("colour", Blockly.Blocks.actuators.HUE);
 		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);
 		jQuery("#catNET").attr("colour", Blockly.Blocks.lora.HUE);
 		jQuery("#catWIFI").attr("colour", Blockly.Blocks.lora.HUE);
@@ -1389,6 +1392,7 @@ Code.initLanguage = function() {
 	}
 
 	categories.push('catActuators');
+	categories.push('catServo');
 
 	if (Code.status.modules.i2c || Code.status.modules.can) {
 		categories.push('catComm');
