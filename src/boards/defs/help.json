@@ -133,6 +133,13 @@
 		"trashButton": "wiki/Toolbar:-delete",
 		"switchToBlocks": "wiki/Toolbar:-change-the-programming-model",
 		"switchToCode": "wiki/Toolbar:-change-the-programming-model",
-		"loadButton": "wiki/Toolbar:-load-program"
+		"loadButton": "wiki/Toolbar:-load-program",
+		"stopButton": "wiki/Toolbar:-stop-the-program",
+		"runButton": "wiki/Toolbar:-run-the-program",
+		"rebootButton": "wiki/Toolbar:-reboot-board",
+		"saveButton": "wiki/Toolbar:-save-program",
+		"saveAsButton": "wiki/Toolbar:-save-program-as",		
+		"previewButton": "wiki/Toolbar:-preview-generated-code",		
+		"developerMode": "wiki/Toolbar:-disable-or-enable-developer-mode"
 	}
 }

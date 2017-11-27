@@ -541,3 +541,13 @@ body.modal-open .modal .modal-dialog {
     max-height: calc(100vh - 100px);
     overflow-y: auto;
 }
+
+kbd {
+	background-color: #ffffff !important;
+	border: 0px !important;
+	display: initial !important;
+}
+
+kbd > img {
+	border: solid black 1px !important;
+}
