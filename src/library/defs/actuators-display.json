@@ -1,5 +1,13 @@
 {
   "name": "actuators-display",
+  "messages": [
+    {
+ 		"msgid": "catDisplay",
+        "en": "Graphic display",
+        "ca": "Display gràfic",
+        "es": "Display gráfico"
+    }
+  ],
   "blocks": [
     {
       "parentCategory": "Actuators",

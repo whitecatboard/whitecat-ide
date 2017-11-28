@@ -384,8 +384,14 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 	var cat = toolBar.find("category[id='cat"+block.category+"']");
 	
 	if (cat.length == 0) {
+		var catName = block.category;
+		
+		if (typeof MSG['cat' + block.category] != "undefined") {			
+			catName = MSG['cat' + block.category];
+		}
+		
 		// Create the category
-		cat = jQuery('<category id="cat' + block.category + '" colour="'+parentCat.attr("colour")+'" name="'+block.category +'"></category>');
+		cat = jQuery('<category id="cat' + block.category + '" colour="'+parentCat.attr("colour")+'" name="'+ catName +'"></category>');
 		
 		parentCat.append(cat);
 	} 	
@@ -434,7 +440,18 @@ blockLibrary.prototype.get = function(xml, callback) {
 				// Create block
 				xml = self.createBlocks(xml, block);			
 			});
+			
+			// Add translations
+			if (typeof lib.messages != "undefined") {
+				lib.messages.forEach(function(message) {
+					if (typeof message[Code.settings.language] != "undefined") {
+						MSG[message.msgid] = message[Code.settings.language];
+					}
+				});				
+			}
 		});
+		
+		
 
 		callback(xml);
 	}
