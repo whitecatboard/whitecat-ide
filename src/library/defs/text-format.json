@@ -1,0 +1,69 @@
+{
+  "name": "text-format",
+  "blocks": [
+    {
+      "parentCategory": "Operators",
+      "category": "OperatorsText",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9InE1cGQkciFFMzhJdFokMXRTYF51IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkxFRlQiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJxWWwzU3ZafVt0MjhvMVg6S1BTTiI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJmb3RYMGVvMVcsLVc6bFUzJXhmYiI+PGZpZWxkIG5hbWU9IlRFWFQiPmZvcm1hdDwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSJ4RGpUczNyTks4RUFuZklLWkdScSI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+VkFMVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPlRSVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9ImNaYC5wUnBRLWpUTyFhL1RyY31RIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSJXenQqVW1MT1Jlbi5uME1tO0h6ayI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9ImN3YU0/KzlSMiUpcGJhd2c2WTgpIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5QTEFDRVM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPlRSVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iKWZ1fm4xXUJZI2d3ZT1ecEBBbzkiPjxmaWVsZCBuYW1lPSJURVhUIj53aXRoPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9ImNaYC5wUnBRLWpUTyFhL1RyY31RIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSJyKGNZZF1ge0xZUWg2KHhdPT1kaiI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF9kdW1teSIgaWQ9ImJgWVp9ezgufnwyTklSWn4qbDtGIj48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9ImZoSnoyLlg2dFFNQT8uISMsZSh8Ij48ZmllbGQgbmFtZT0iVEVYVCI+ZGVjaW1hbCBwbGFjZXM8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVE9PTFRJUCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJtMkM4cUo5LFN4IW5IUXRibmhgbiIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iSEVMUFVSTCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJHeFJLOW1qLUJMUHtPJE9edHZBcSIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iT1VUUFVUVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJqKjRdLCk3ZipKLClsXis5KDBHUCI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9IjosYyFSekdrPWZfQ2hgYytXOVBfIj48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "text_format_number",
+        "message0": "format %1 %2 with %3 decimal places",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "VALUE",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "PLACES",
+            "check": "Number"
+          }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "format %1 %2 with %3 decimal places"
+        },
+        "ca": {
+          "message0": "formata %1 %2 amb %3 decimals"
+        },
+        "es": {
+          "message0": "formata %1 %2 con %3 decimals"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "VALUE": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "PLACES": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "VALUE": "free",
+        "PLACES": "free"
+      },
+      "code": {
+        "default": "c3RyaW5nLmZvcm1hdCgiJS4kKFBMQUNFUykkZiIsICQoVkFMVUUpJCk=",
+        "functions": ""
+      }
+    }
+  ]
+}

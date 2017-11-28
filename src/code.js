@@ -584,7 +584,7 @@ Code.buildToolBox = function(callback) {
 	var xml = '';
 
 	xml += '' +
-		'<category id="catEvents">' +
+		'<category id="catEvents" colour="'+Blockly.Blocks.events.HUE+'">' +
 		'<block type="when_board_starts"></block>' +
 		'<block type="thread"></block>' +
 		'<block type="execute_every">' + 
@@ -598,7 +598,7 @@ Code.buildToolBox = function(callback) {
 		'<block type="broadcast_and_wait"></block>' +
 		'<block type="event_is_being_processed"></block>' +
 		'</category>' +
-		'<category id="catControl">' +
+		'<category id="catControl" colour="'+Blockly.Blocks.control.HUE+'">' +
 		'<category id="catLoops">' +
 		'<block type="controls_repeat_ext">' +
 		'<value name="TIMES">' +
@@ -655,7 +655,7 @@ Code.buildToolBox = function(callback) {
 		'</category>';
 
 	xml += '' +
-		'<category id="catOperators">' +
+		'<category id="catOperators" colour="'+Blockly.Blocks.operators.HUE+'">' +
 		'<category id="catOperatorsNumeric">' +
 		'<block type="math_arithmetic">' +
 		'<value name="A">' +
@@ -854,7 +854,7 @@ Code.buildToolBox = function(callback) {
 		'</block>' +
 		'</category>' +
 		'</category>' +
-		'<category id="catLists" colour="260">' +
+		'<category id="catLists" colour="'+Blockly.Blocks.lists.HUE+'">' +
 		'<block type="lists_create_with">' +
 		'<mutation items="0"></mutation>' +
 		'</block>' +
@@ -904,12 +904,12 @@ Code.buildToolBox = function(callback) {
 		'</value>' +
 		'</block>' +
 		'</category>' +
-		'<category id="catVariables" colour="330" custom="VARIABLE"></category>' +
+		'<category id="catVariables" colour="'+Blockly.Blocks.variables.HUE+'" custom="VARIABLE"></category>' +
 		'<category id="catFunctions" colour="290" custom="PROCEDURE"></category>' +
 		'<sep gap="32"></sep>';
 
 	if (Code.status.modules.pio || Code.status.modules.adc || Code.status.modules.pwm) {
-		xml += '<category id="catIO" colour="20">';
+		xml += '<category id="catIO" colour="'+Blockly.Blocks.io.HUE+'">';
 
 		if (Code.status.modules.pio) {
 			xml += '<block type="when_digital_pin">' +
@@ -990,11 +990,11 @@ Code.buildToolBox = function(callback) {
 	}
 
 	if (Code.status.modules.i2c || Code.status.modules.can) {
-		xml += '<category id="catComm" colour="20">';
+		xml += '<category id="catComm" colour="'+Blockly.Blocks.io.HUE+'">';
 
 		if (Code.status.modules.can) {
 			xml += '' +
-				'<category id="catCan">' +
+				'<category id="catCan" colour="'+Blockly.Blocks.io.HUE+'">' +
 				'<block type="cansetspeed">' +
 				'<value name="SPEED">' +
 				'<shadow type="math_number">' +
@@ -1030,7 +1030,7 @@ Code.buildToolBox = function(callback) {
 		
 		if (Code.status.modules.i2c) {
 			xml += '' +
-				'<category id="catI2C">' +
+				'<category id="catI2C" colour="'+Blockly.Blocks.io.HUE+'">' +
 				'<block type="i2csetspeed">' +
 				'<value name="SPEED">' +
 				'<shadow type="math_number">' +
@@ -1063,14 +1063,14 @@ Code.buildToolBox = function(callback) {
 	}
 
 	if (Code.status.modules.sensor) {
-		xml += '<category id="catSensor" custom="SENSOR" colour="20">';
+		xml += '<category id="catSensor" custom="SENSOR" colour="'+Blockly.Blocks.sensor.HUE+'">';
 		xml += '<button function="expand(1)">Expand section</button>';
 		xml += '</category>';
 	}
 
 	if (Code.status.modules.servo) {
-		xml += '<category id="catActuators">';
-		xml += '<category id="catServo">';
+		xml += '<category id="catActuators" colour="'+Blockly.Blocks.actuators.HUE+'">';
+		xml += '<category id="catServo" colour="'+Blockly.Blocks.actuators.HUE+'">';
 		xml += '<block type="servo_move">' +
 			'<value name="PIN">' +
 			'<shadow type="output_digital_pin">' +
@@ -1087,8 +1087,8 @@ Code.buildToolBox = function(callback) {
 	xml += '</category>';
 
 	if (Code.status.modules.net) {
-		xml += '<category id="catNET" colour="20">';
-		xml += '<category id="catWIFI" custom="WIFI" colour="20">';
+		xml += '<category id="catNET" colour="'+Blockly.Blocks.lora.HUE+'">';
+		xml += '<category id="catWIFI" custom="WIFI" colour="'+Blockly.Blocks.lora.HUE+'">';
 		xml += '</category>';
 		xml += '</category>';
 	}
@@ -1100,7 +1100,7 @@ Code.buildToolBox = function(callback) {
 	}
 
 	if (Code.status.modules.mqtt) {
-		xml += '<category id="catMQTT" custom="MQTT"colour="20">';
+		xml += '<category id="catMQTT" custom="MQTT"colour="'+Blockly.Blocks.lora.HUE+'">';
 		xml += '<button function="expand(1)">Expand section</button>';
 		xml += '</category>';
 	}
@@ -1108,22 +1108,6 @@ Code.buildToolBox = function(callback) {
 	Code.lib.get(xml, function(xml) {
 		var toolbox = document.getElementById('toolbox');
 		toolbox.innerHTML = xml;
-
-		jQuery("#catVariables").attr("colour", Blockly.Blocks.variables.HUE);
-		jQuery("#catLists").attr("colour", Blockly.Blocks.lists.HUE);
-		jQuery("#catIO").attr("colour", Blockly.Blocks.io.HUE);
-		jQuery("#catControl").attr("colour", Blockly.Blocks.control.HUE);
-		jQuery("#catEvents").attr("colour", Blockly.Blocks.events.HUE);
-		jQuery("#catSensor").attr("colour", Blockly.Blocks.sensor.HUE);
-		jQuery("#catComm").attr("colour", Blockly.Blocks.io.HUE);
-		jQuery("#catI2C").attr("colour", Blockly.Blocks.io.HUE);
-		jQuery("#catCan").attr("colour", Blockly.Blocks.io.HUE);
-		jQuery("#catActuators").attr("colour", Blockly.Blocks.actuators.HUE);
-		jQuery("#catServo").attr("colour", Blockly.Blocks.actuators.HUE);
-		jQuery("#catOperators").attr("colour", Blockly.Blocks.operators.HUE);
-		jQuery("#catNET").attr("colour", Blockly.Blocks.lora.HUE);
-		jQuery("#catWIFI").attr("colour", Blockly.Blocks.lora.HUE);
-		jQuery("#catMQTT").attr("colour", Blockly.Blocks.lora.HUE);
 
 		callback();
 	});

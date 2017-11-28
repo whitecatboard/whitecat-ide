@@ -245,6 +245,10 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 			for (var field in block.interactiveFields) {
 				this.updateBoardAtFieldChange(block.interactiveFields[field]);
 			}
+			
+			// Set color to same as parent category
+			var parentCat = toolBar.find("category[id='cat"+block.parentCategory+"']");
+			this.setColour(parentCat.attr("colour"));
 		},
 		
 		hasWatcher: block.whatcher
@@ -381,10 +385,11 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 	
 	if (cat.length == 0) {
 		// Create the category
-		cat = jQuery('<category id="cat' + block.category + '" colour="'+Blockly.Blocks.actuators.HUE+'" name="'+block.category +'"></category>');
+		cat = jQuery('<category id="cat' + block.category + '" colour="'+parentCat.attr("colour")+'" name="'+block.category +'"></category>');
 		
 		parentCat.append(cat);
 	} 	
+	
 	if (cat.find("block[type='"+block.spec.type+"']").length == 0) {
 		// Add block
 		cat.append(newBlock);
