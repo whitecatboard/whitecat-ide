@@ -2334,7 +2334,7 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 
 Code.tabRefresh = function() {
 	if (Code.workspace.type == 'blocks') {
-		jQuery("#blockEditorButton, #developerMode, #switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+		jQuery("#blockEditorButton, #previewButton, #developerMode, #switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
 		jQuery("#switchToBlocks").addClass("disabled");
 	} else if (Code.workspace.type == 'editor') {
 		jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");		

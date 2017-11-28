@@ -158,9 +158,9 @@ blockLibrary.prototype.evalTemplate = function(block, pos, op, open, template) {
 	var id = "";
 	var prev = "";
 	
-	var begin_ops = ["$","{"];
-	var end_ops = ["$","}"];
-	var ops = ["FIELD","FUNC"];
+	var begin_ops = ["$","{","@"];
+	var end_ops = ["$","}","@"];
+	var ops = ["FIELD","FUNC","CODE"];
 	
 	var i = 0;
 
@@ -203,6 +203,8 @@ blockLibrary.prototype.evalTemplate = function(block, pos, op, open, template) {
 									if (val == null) {
 										val = Blockly.Lua.valueToCode(block, id, Blockly.Lua.ORDER_NONE) || '\'\'';
 									}																	
+								} else if (op == "CODE") {
+									val = eval("Blockly.Lua.statementToCodeNoIndent(block,'"+id+"')");
 								}								
 							} catch (e) {
 								val = eval(self.evalTemplate(block, newPos, "", 0, id));
@@ -323,7 +325,7 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 						shadow.setAttribute('type', 'output_digital_pin');
 
 						var value = goog.dom.createDom('value');
-						value.setAttribute('name', 'PIN');
+						value.setAttribute('name', block.spec[prop][arg].name);
 						value.appendChild(shadow);
 					
 						newBlock.appendChild(value);						

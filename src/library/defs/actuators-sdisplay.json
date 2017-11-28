@@ -1,0 +1,164 @@
+{
+  "name": "actuators-sdisplay",
+  "blocks": [
+    {
+      "parentCategory": "Actuators",
+      "category": "SegmentDisplay",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9IkoyLE5ULV9fR3AuQVpYSFIjR2hJIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJINkJ1UWNjRzg/Wz91bjVHRllgLSI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSI/aHo1JHBkOWItZG9dOG57Rm9qVCI+PGZpZWxkIG5hbWU9IlRFWFQiPndpdGg8L2ZpZWxkPjxuZXh0PjxibG9jayB0eXBlPSJmaWVsZF9kcm9wZG93biIgaWQ9ImNlel1UN1FndWUpUlphUDtFdlU3Ij48bXV0YXRpb24gb3B0aW9ucz0iWyZxdW90O3RleHQmcXVvdDtdIj48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJGSUVMRE5BTUUiPkNISVBTRVQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+VE0xNjM3PC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMCI+c2Rpc3BsYXkuVE0xNjM3PC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iOHo7V090TURvVTFXSTFsUW0yW3wiPjxmaWVsZCBuYW1lPSJURVhUIj5kaXNwbGF5IHdpdGg8L2ZpZWxkPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0ibmN9Z2VgJDR7dkdGRDJiakZDTUIiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPkRJR0lUUzwvZmllbGQ+PGZpZWxkIG5hbWU9IlNIQURPVyI+VFJVRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0icSR4M3BJdWJSZihPWSN8bVRJLHMiPjwvc2hhZG93PjxibG9jayB0eXBlPSJ0eXBlX251bWJlciIgaWQ9IkJgJUNVUi1JNTFNUDJCZmdYWkItIj48L2Jsb2NrPjwvdmFsdWU+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0iM2pKbjVEVkV2Y0daQyhoMWRabSgiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iWVR8KCVwcy5ydzdUP2dEWzIpTjciPjxmaWVsZCBuYW1lPSJURVhUIj5kaWdpdHMgYXR0YWNoZWQgYXQgQ0xLPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50PjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9Ii1zRl5qMlE5PT93I2dSKHNSV2UpIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5QSU4xPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5GQUxTRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+b3V0cHV0X3BpbnM8L2ZpZWxkPjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9InEkeDNwSXViUmYoT1kjfG1USSxzIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSIpNmgucmBRdDtrSSpMUChNalpGSCI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9IlssUU9zKnlNLnVUW3VKa3s1VmQwIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5QSU4yPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5GQUxTRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+b3V0cHV0X3BpbnM8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0ibHhxVEZ6cy8tUjQ3Sy94V3EySU4iPjxmaWVsZCBuYW1lPSJURVhUIj5ESU88L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0icSR4M3BJdWJSZihPWSN8bVRJLHMiPjwvc2hhZG93PjxibG9jayB0eXBlPSJ0eXBlX251bWJlciIgaWQ9Ii1xV3Y0WC9QNWI2L2M0IzV1YzBeIj48L2Jsb2NrPjwvdmFsdWU+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3N0YXRlbWVudCIgaWQ9Ij8qZjlsRU5deGQzTVpgMjd7b1lCIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5TVEFURU1FTlRTPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9InA7VFR1VHkwUnshKGgpV3s5e0lQIj48ZmllbGQgbmFtZT0iVEVYVCI+ZG88L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0id05RLF9lPUNbKDBCXiovWFZDWCUiPjwvc2hhZG93PjwvdmFsdWU+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVE9PTFRJUCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJxLz1XeE5Hd2N9WjpBLF06K1UwYiIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iSEVMUFVSTCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJXOjEvXjVqQUJMbntzekFWNUg2SyIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iVE9QVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJsa3lgNCokcnFaQ2hQcWNWPzZrXiI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQk9UVE9NVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJkWTdjP2xAVz1BZWl+cCFHOy57NyI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9Ik1qPTA6KEA0cWBuUV17PyFDdHhvIj48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "sdisplay_init",
+        "message0": "with %1 display with %2 %3 digits attached at CLK %4 %5 DIO %6 do %7",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "CHIPSET",
+            "options": [
+              [
+                "TM1637",
+                "sdisplay.TM1637"
+              ]
+            ]
+          },
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "DIGITS",
+            "check": "Number"
+          },
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "PIN1",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "PIN2",
+            "check": "Number"
+          },
+          {
+            "type": "input_statement",
+            "name": "STATEMENTS"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "with %1 display with %2 %3 digits attached at CLK %4 %5 DIO %6 do %7"
+        },
+        "ca": {
+          "message0": "amb %1 display amb %2 %3 digits connectat a CLK %4 %5 DIO %6 fer %7"
+        },
+        "es": {
+          "message0": "con %1 display con %2 %3 dígitos conectado a CLK %4 %5 DIO %6 hacer %7"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "DIGITS": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "CLK": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "DIO": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "DIGITS": "free",
+        "CLK": "output_pins",
+        "DIO": "output_pins",
+        "PIN": "output_pins",
+        "PIN1": "output_pins",
+        "PIN2": "output_pins"
+      },
+      "code": {
+        "default": "bG9jYWwgX2N1cnJlbnRfc2Rpc3BsYXkKCi0tIGluaXQgc2VnbWVudCBkaXNwbGF5CmlmIChfc2Rpc3BsYXl7KEJsb2NrbHkuTHVhLmlvLmhlbHBlci5pbnN0YW5jZURpZ2l0YWwoYmxvY2ssICJQSU4xIikpfSA9PSBuaWwpIHRoZW4KICAgIF9zZGlzcGxheXsoQmxvY2tseS5MdWEuaW8uaGVscGVyLmluc3RhbmNlRGlnaXRhbChibG9jaywgIlBJTjEiKSl9ID0gc2Rpc3BsYXkuYXR0YWNoKCQoQ0hJUFNFVCkkLCAkKFBJTjEpJCwgJChQSU4yKSQsICQoRElHSVRTKSQpCmVuZAoKX2N1cnJlbnRfc2Rpc3BsYXkgPSBfc2Rpc3BsYXl7KEJsb2NrbHkuTHVhLmlvLmhlbHBlci5pbnN0YW5jZURpZ2l0YWwoYmxvY2ssICJQSU4xIikpfQoKQChTVEFURU1FTlRTKUA=",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "SegmentDisplay",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9Ilo6MklkQ05MMF85Uk49cEszUXM5IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJmfnp5dyRPQz8jfE8kLiRnbCxiViI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSI3I0ZxdFVPZDl7elVpJEBEXn1EdyI+PGZpZWxkIG5hbWU9IlRFWFQiPndyaXRlPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50PjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9Im5JRjQwXXtxejprWk1VTy0wN3lDIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5URVhUPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5UUlVFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJAUj84b0d6eDI6aEZxXyRfQy1UXSI+PC9zaGFkb3c+PGJsb2NrIHR5cGU9InR5cGVfZ3JvdXAiIGlkPSJZfn1HciR1OmdYRyxjUWR2Nzk6PSI+PG11dGF0aW9uIHR5cGVzPSIyIj48L211dGF0aW9uPjx2YWx1ZSBuYW1lPSJUWVBFMCI+PGJsb2NrIHR5cGU9InR5cGVfbnVtYmVyIiBpZD0ieEZ5Lm1Mc09KdXpxdz1BOVpnOE0iPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iVFlQRTEiPjxibG9jayB0eXBlPSJ0eXBlX3N0cmluZyIgaWQ9InZNbFFyai9nQmItM0ZIUXxgP2loIj48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iYTJCVSNsY3ZFW1djUW15UjVBMDQiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iQ19HcjY4aXFzMjBMRDEtRTUoNFoiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iWE1JIWhJV2E0LWgwMWxoMFFkIV4iPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iOW93JFNET3NSUDFPM0U7MTZSP3YiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJZSmFDVzI7RElKRnArRjEjLFp3WiI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "spec": {
+        "type": "sdisplay_write",
+        "message0": "write %1 %2",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "TEXT",
+            "check": [
+              "Number",
+              "String"
+            ]
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "write %1 %2"
+        },
+        "ca": {
+          "message0": "escriu %1 %2"
+        },
+        "es": {
+          "message0": "escribe %1 %2"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "NAME": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "TEXT": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "NAME": "free",
+        "TEXT": "free"
+      },
+      "code": {
+        "default": "LS0gd3JpdGUgdGV4dApfY3VycmVudF9zZGlzcGxheTp3cml0ZSgkKFRFWFQpJCk=",
+        "functions": ""
+      }
+    }
+  ]
+}
