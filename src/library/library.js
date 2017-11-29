@@ -393,7 +393,31 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 		// Create the category
 		cat = jQuery('<category id="cat' + block.category + '" colour="'+parentCat.attr("colour")+'" name="'+ catName +'"></category>');
 		
-		parentCat.append(cat);
+		// Append the category in order
+		var inserted = false;
+		
+		parentCat.children().each(function(index, subCat) {
+			subCat = jQuery(subCat);
+			
+			var subCatName = subCat.attr("name");
+			
+			if (typeof subCatName == "undefined") {
+				if (typeof MSG[subCat.attr("id")] != "undefined") {
+					subCatName = MSG[subCat.attr("id")];
+				} else {
+					subCatName = subCat.attr("id");
+				}
+			}
+			
+			if ((catName < subCatName) && !inserted) {
+				cat.insertBefore(subCat);
+				inserted = true;
+			}
+		});
+		
+		if (!inserted) {
+			parentCat.append(cat);			
+		}
 	} 	
 	
 	if (cat.find("block[type='"+block.spec.type+"']").length == 0) {
