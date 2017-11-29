@@ -456,6 +456,7 @@ Blockly.Msg.NEW_SENSOR_TITLE = "New sensor ...";
 Blockly.Msg.NEW_VARIABLE = "Create variable...";
 Blockly.Msg.NEW_VARIABLE_TITLE = "New variable name:";
 Blockly.Msg.NO = "No";
+Blockly.Msg.ONLY_ALLOWED_WITHIN_BLOCK = "Warning: This block may only be used within a \"%1\" block";
 Blockly.Msg.ON_EVERY_RECEIVED_LORA_FRAME = "a LoRa WAN frame is received";
 Blockly.Msg.ORDINAL_NUMBER_SUFFIX = "";
 Blockly.Msg.OUTPUT = "output";

@@ -456,6 +456,7 @@ Blockly.Msg.NEW_SENSOR_TITLE = "New sensor ...";  // untranslated
 Blockly.Msg.NEW_VARIABLE = "Izveidot mainīgo...";
 Blockly.Msg.NEW_VARIABLE_TITLE = "Jaunā mainīgā vārds:";
 Blockly.Msg.NO = "No";  // untranslated
+Blockly.Msg.ONLY_ALLOWED_WITHIN_BLOCK = "Warning: This block may only be used within a \"%1\" block";  // untranslated
 Blockly.Msg.ON_EVERY_RECEIVED_LORA_FRAME = "a LoRa WAN frame is received";  // untranslated
 Blockly.Msg.ORDINAL_NUMBER_SUFFIX = "";  // untranslated
 Blockly.Msg.OUTPUT = "output";  // untranslated

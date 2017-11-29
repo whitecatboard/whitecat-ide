@@ -657,5 +657,7 @@
 	"OUTPUT_PINS": "pin de sortida",
 	"INPUT_PINS": "pin de entrada",
 	"ANALOG_PINS": "pin analògic",
-	"PWM_PINS": "pin pwm"
+	"PWM_PINS": "pin pwm",
+	
+	"ONLY_ALLOWED_WITHIN_BLOCK": "Advertència: aquest bloc només es pot utilitzar dins d'un bloc \"%1\""
 }

@@ -1333,19 +1333,27 @@ Blockly.Lua.io.helper = {
 		return false;
 	},
 	
-	nameDigital: function(block) {
-		var pin = Blockly.Lua.statementToCodeNoIndent(block,'PIN')[0];
+	nameDigital: function(block, name) {
+		if (typeof name == "undefined") {
+			name = "PIN";
+		}
+		
+		var pin = Blockly.Lua.statementToCodeNoIndent(block,name)[0];
 		if (typeof pin == "undefined") {
-			pin = block.getFieldValue("PIN");
+			pin = block.getFieldValue(name);
 		}
 		
 		return pin;
 	},
 	
-	instanceDigital: function(block) {
-		var pin = Blockly.Lua.statementToCodeNoIndent(block,'PIN')[0];
+	instanceDigital: function(block, name) {
+		if (typeof name == "undefined") {
+			name = "PIN";
+		}
+
+		var pin = Blockly.Lua.statementToCodeNoIndent(block,name)[0];
 		if (typeof pin == "undefined") {
-			pin = block.getFieldValue("PIN");
+			pin = block.getFieldValue(name);
 		}
 		
 		if (pin.indexOf("pio.") === 0) {
