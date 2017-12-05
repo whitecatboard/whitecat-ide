@@ -130,6 +130,16 @@ Blockly.Blocks.io.helper = {
 
 		return pins;
 	},
+
+	getUARTUnits: function() {
+		var units = [];
+
+		for (var key in Code.status.maps.uartUnits) {
+			units.push([Code.status.maps.uartUnits[key][0], key]);
+		}
+
+		return units;
+	},
 };
 
 Blockly.Blocks['output_digital_pin'] = {
@@ -278,6 +288,25 @@ Blockly.Blocks['analog_pins_sel'] = {
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(Blockly.Msg.ANALOG_PINS)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
+
+		this.setOutput(true, null);
+		this.setInputsInline(true);
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.io.HUE);
+		this.setTooltip('');
+	}
+};
+
+Blockly.Blocks['uart_units'] = {
+	module: "uart",
+	init: function() {
+		var thisInstance = this;
+		var units = Blockly.Blocks.io.helper.getUARTUnits();
+
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(new Blockly.FieldDropdown(units), "UNIT");
 
 		this.setOutput(true, null);
 		this.setInputsInline(true);

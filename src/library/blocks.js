@@ -166,6 +166,7 @@ var FIELD_ARGS = [{
 		['Free', 'free'],
 		['Output Pins', 'output_pins'],
 		['Input Pins', 'input_pins'],
+		['UART units', 'uart_units'],
 		['Neopixel color', 'neopixel_color_sel'],
 		['Display color', 'display_color_sel'],
 		['Text', 'text']

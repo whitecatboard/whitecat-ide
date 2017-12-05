@@ -56,19 +56,19 @@
 		"5": ["ADS1015", 4, 12]
 	},	
 	"i2cUnits": {
-		"0": ["I2C0", "I2C0 SDA=IO33, SCL=IO32"],
-		"1": ["I2C1", "I2C1 SDA=IO15, SCL=IO2"]
+		"0": ["I2C0 SDA=IO33, SCL=IO32","I2C0"],
+		"1": ["I2C1 SDA=IO15, SCL=IO2","I2C1"]
 	},
 	"canUnits": {
 		"0": ["CAN0"]
 	},
 	"spiUnits": {
-		"2": ["SPI2", "SPI2 MISO=IO12, MOSI=IO13, CLK=IO14"],
-		"3": ["SPI3", "SPI3 MISO=IO19, MOSI=IO23, CLK=IO18"]
+		"2": ["SPI2 MISO=IO12, MOSI=IO13, CLK=IO14","SPI2"],
+		"3": ["SPI3 MISO=IO19, MOSI=IO23, CLK=IO18","SPI3"]
 	},
 	"uartUnits": {
-		"0": ["UART0","UART0 (RX=U0RX, TX=U0TX)"],
-		"1": ["UART1","UART1 (RX=IO26, TX=IO25)"],
-		"2": ["UART2","UART2 (RX=IO2,  TX=IO15)"]
+		"0": ["UART0 (RX=U0RX, TX=U0TX)","UART0"],
+		"1": ["UART1 (RX=IO26, TX=IO25)","UART1"],
+		"2": ["UART2 (RX=IO2,  TX=IO15)","UART2"]
 	}
 }

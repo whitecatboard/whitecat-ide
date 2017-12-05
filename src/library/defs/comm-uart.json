@@ -1,0 +1,431 @@
+{
+  "name": "comm-uart",
+  "blocks": [
+    {
+      "parentCategory": "Comm",
+      "category": "UART",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9InB5IUQ5OWZjTCQtaUNlXS5EfFlMIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJpdEpiTGFoY0ZCa1dpOW9aI31GSyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJCXj1NQTNXLyljdHV4LyElYGZ+UCI+PGZpZWxkIG5hbWU9IlRFWFQiPmF0dGFjaDwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSIyUTViQTI4ZHVVKy1dSjFQV0YhVSI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+VUFSVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNIQURPVyI+RkFMU0U8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPnVhcnRfdW5pdHM8L2ZpZWxkPjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IjVZX3hScXBSQE44UTtyMVFJW25yIj48L3NoYWRvdz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF9kdW1teSIgaWQ9IiNHOkRMZEt5ajlqNzp2dCgvY0lUIj48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9ImtpUVFCMFdwOz1kU3R7Lk1IIyguIj48ZmllbGQgbmFtZT0iVEVYVCI+d2l0aDwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0ifERFWzBzTVRmU1ExaHRMLXdmbmIiPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDtdIj48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJGSUVMRE5BTUUiPkJBVUQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+NDgwMCBicHM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUwIj40ODAwPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjEiPjk2MDAgYnBzPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMSI+OTYwMDwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIyIj4xOTIwMCBicHM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUyIj4xOTIwMDwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIzIj4zODQwMCBicHM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUzIj4zODQwMDwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI0Ij41NzYwMCBicHM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFU0Ij41NzYwMDwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI1Ij4xMTUyMDAgYnBzPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVNSI+MTE1MjAwPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjYiPjIzMDQwMCBicHM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFU2Ij4yMzA0MDA8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSNyI+NDYwODAwIGJwczwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTciPjQ2MDgwMDwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI4Ij45MjE2MDAgYnBzPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVOCI+OTIxNjAwPC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfZHJvcGRvd24iIGlkPSIuLT81flloUmkvQG9uQk0hSlN9dCI+PG11dGF0aW9uIG9wdGlvbnM9IlsmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDtdIj48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJGSUVMRE5BTUUiPkJJVFM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+NyBkYXRhIGJpdHM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUwIj43PC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjEiPjggZGF0YSBiaXRzPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMSI+ODwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0ie1NjayFhUilRb2Q2OzktLC13SHAiPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDtdIj48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJGSUVMRE5BTUUiPlBBUklUWTwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIwIj5ub25lIHBhcml0eTwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTAiPnVhcnQuUEFSTk9ORTwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIxIj5ldmVuIHBhcml0eTwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTEiPnVhcnQuUEFSRVZFTjwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIyIj5vZGQgcGFyaXR5PC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMiI+dWFydC5QQVJPREQ8L2ZpZWxkPjxuZXh0PjxibG9jayB0eXBlPSJmaWVsZF9kcm9wZG93biIgaWQ9IkhLO0A7WXhRJSNwZlthXm4lYXcqIj48bXV0YXRpb24gb3B0aW9ucz0iWyZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90O10iPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkZJRUxETkFNRSI+U1RPUDwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIwIj4xIHN0b3AgYml0czwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTAiPjE8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMSI+MiBzdG9wIGJpdHM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUxIj4yPC9maWVsZD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50PjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iKGddI15FU1UrIUBNLnxaYUJVOysiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0ibnReOGpMaTpXXVArXUMvcU5aLnUiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0ibzthKyUwMChsI1h0fGdCSDZ7PT8iPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iaG1QV3xZeVpuMWMwZC47WjNbcWgiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJWREZsSVBFQmQ3IVQ0Sm4lVjlaQyI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "spec": {
+        "type": "comm_uart_attach",
+        "message0": "connectar %1 %2 amb %3 %4 %5 %6",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "UART"
+          },
+          {
+            "type": "field_dropdown",
+            "name": "BAUD",
+            "options": [
+              [
+                "4800 bps",
+                "4800"
+              ],
+              [
+                "9600 bps",
+                "9600"
+              ],
+              [
+                "19200 bps",
+                "19200"
+              ],
+              [
+                "38400 bps",
+                "38400"
+              ],
+              [
+                "57600 bps",
+                "57600"
+              ],
+              [
+                "115200 bps",
+                "115200"
+              ],
+              [
+                "230400 bps",
+                "230400"
+              ],
+              [
+                "460800 bps",
+                "460800"
+              ],
+              [
+                "921600 bps",
+                "921600"
+              ]
+            ]
+          },
+          {
+            "type": "field_dropdown",
+            "name": "BITS",
+            "options": [
+              [
+                "7 data bits",
+                "7"
+              ],
+              [
+                "8 data bits",
+                "8"
+              ]
+            ]
+          },
+          {
+            "type": "field_dropdown",
+            "name": "PARITY",
+            "options": [
+              [
+                "none parity",
+                "uart.PARNONE"
+              ],
+              [
+                "even parity",
+                "uart.PAREVEN"
+              ],
+              [
+                "odd parity",
+                "uart.PARODD"
+              ]
+            ]
+          },
+          {
+            "type": "field_dropdown",
+            "name": "STOP",
+            "options": [
+              [
+                "1 stop bits",
+                "1"
+              ],
+              [
+                "2 stop bits",
+                "2"
+              ]
+            ]
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "attach %1 %2 with %3 %4 %5 %6"
+        },
+        "ca": {
+          "message0": "connectar %1 %2 amb %3 %4 %5 %6"
+        },
+        "es": {
+          "message0": "conectar %1 %2 con %3 %4 %5 %6"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {},
+      "subtype": {
+        "NAME": "free",
+        "UART": "uart_units"
+      },
+      "code": {
+        "default": "LS0gYXR0YWNoIHVhcnQKdWFydC5hdHRhY2goJChVQVJUKSQsJChCQVVEKSQsJChCSVRTKSQsJChQQVJJVFkpJCwkKFNUT1ApJCk=",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "Comm",
+      "category": "UART",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9Ino5N2dgSmR1YG1CWUtZPUdGZFg3IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSIzUEhAck9qfmNdOk1qQ14pOHl7aiI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJtaSk0IyM4X3t4YWsqbi96X0I2UiI+PGZpZWxkIG5hbWU9IlRFWFQiPndyaXRlIGJ5dGU8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iK3syeS0uLFczNnZgOGRUVEgrYFEiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPkJZVEU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPlRSVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IlIvJCpyNShiSGIkWEkyUnkvV1NJIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSJVeGNiTl83OW9HLHJmaXMrfS93aiI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9IjJRNWJBMjhkdVUrLV1KMVBXRiFVIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5VQVJUPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5GQUxTRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+dWFydF91bml0czwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJsUWlkclBfQ24vTVpjK29ddUUvdiI+PGZpZWxkIG5hbWU9IlRFWFQiPnRvPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IjVZX3hScXBSQE44UTtyMVFJW25yIj48L3NoYWRvdz48L3ZhbHVlPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0icyU3bkx5P2N8Qm1IdCkzLCR7VjMiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iamJkVylXP2dNMzlPSFluNnw9ci8iIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iNncwYlRPUTdVXmdgKW5RQUlTMXciPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iMkkocSlpXlRMQ1ZGT2MsMixeM3MiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJeLmdMV0MsKzhkXjMuRkh8W1VuLiI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "spec": {
+        "type": "comm_uart_write_byte",
+        "message0": "escriure byte %1 %2 a %3",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "BYTE",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "UART"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "write byte %1 %2 to %3"
+        },
+        "ca": {
+          "message0": "escriure byte %1 %2 a %3"
+        },
+        "es": {
+          "message0": "escribir byte %1 %2 a %3"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "BYTE": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "BYTE": "free",
+        "UART": "uart_units"
+      },
+      "code": {
+        "default": "LS0gd3JpdGUgYnl0ZQp1YXJ0LndyaXRlKCQoVUFSVCkkLE1hdGguZmxvb3IoJChCWVRFKSQpICYgMHhmZik=",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "Comm",
+      "category": "UART",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9IltoQ3c9VWwuLUN4ZEBybTc3K3h+IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSIqWEtLRkNkQDY1Wik5fUc6R3NYZyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJeQGJmeVBiPVN6U0VkW1l9YjRJRSI+PGZpZWxkIG5hbWU9IlRFWFQiPndyaXRlIHRleHQ8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iNW97MUx8KE9KOzglM0FXc1F3MnQiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPlRFWFQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPlRSVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPnRleHQ8L2ZpZWxkPjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9Ikg/P2wlLHliQTB7bWJnaXMtaTZZIj48L3NoYWRvdz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9IjJRNWJBMjhkdVUrLV1KMVBXRiFVIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5VQVJUPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5GQUxTRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+dWFydF91bml0czwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJvKXx1SGU/eiVjZmRTSkViOH1scyI+PGZpZWxkIG5hbWU9IlRFWFQiPnRvPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IjVZX3hScXBSQE44UTtyMVFJW25yIj48L3NoYWRvdz48L3ZhbHVlPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iJGgvQyRCM3svP09ncngvZlstP0QiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0ibmU1MSNfKjZJLklwLW5QVnZyRX0iIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IlRPUFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iej8kTGJWQkE/MVlXXnlYaHdMSjQiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkJPVFRPTVRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iXyFbXlIkUiRuSmQ9VGt3c1diKi0iPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJxP0NSXlpNMmByaVN5ZHdrWT97fSI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "spec": {
+        "type": "comm_uart_write_text",
+        "message0": "escriure text %1 %2 a %3",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "TEXT"
+          },
+          {
+            "type": "input_value",
+            "name": "UART"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "write text %1 %2 to %3"
+        },
+        "ca": {
+          "message0": "escriure text %1 %2 a %3"
+        },
+        "es": {
+          "message0": "escribir texto %1 %2 a %3"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "TEXT": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "VALUE": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "TEXT": "text",
+        "VALUE": "text",
+        "UART": "uart_units"
+      },
+      "code": {
+        "default": "LS0gd3JpdGUgdGV4dAp1YXJ0LndyaXRlKCQoVUFSVCkkLCQoVEVYVCkkKQ==",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "Comm",
+      "category": "UART",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9IlYoT21uWztmb2R3YTMtQlJhW3hjIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJAYnNGQGBEeGtJYW1CV2sjel1QZSI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJgP11YOFljM21PZHl5bndVUz0xdSI+PGZpZWxkIG5hbWU9IlRFWFQiPmNvbnN1bWUgYWxsIGZyb208L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0ia0k4aUVFZFgwU3tFIz11M2AsfVoiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPlVBUlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPkZBTFNFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj51YXJ0X3VuaXRzPC9maWVsZD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJ+TEE4OVg2RmpgdytiSWw2Wk9LYSI+PC9zaGFkb3c+PC92YWx1ZT48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9ImBefm5nQ28kO2JjITFoc3B9fUxqIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkQ0c2t6MSN+OmZ3OkJPLGIzOzVSIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJUT1BUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IkpaU34tZF9oTWw2VX5nP3lzRipIIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJCT1RUT01UWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IlhgX19hdy4jSlNgRlBhSFlzPVp8Ij48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0iMXY0IUY6UiRfbGVYJGdAQEMxN1QiPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "comm_uart_consume",
+        "message0": "consumir contingut de %1 %2",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "UART"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "consume all from %1 %2"
+        },
+        "ca": {
+          "message0": "consumir contingut de %1 %2"
+        },
+        "es": {
+          "message0": "consumir contenido de %1 %2"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {},
+      "subtype": {
+        "UART": "uart_units"
+      },
+      "code": {
+        "default": "LS0gY29uc3VtZSBhbGwgYnl0ZXMKdWFydC5jb25zdW1lKCQoVUFSVCkkKQ==",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "Comm",
+      "category": "UART",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9ImtPP1JINFh3O11laGEhak9zZmJMIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkxFRlQiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSItW0g7K2ZvVXVrXmpaLEB+fHwjOCI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJxJEZOLXlpb1tDdjZ5fiUrbjVeQyI+PGZpZWxkIG5hbWU9IlRFWFQiPnJlYWQgYnl0ZSBmcm9tPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50PjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9IndkMztbQlIkVGlJTjFUfW9wczQkIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5VQVJUPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5GQUxTRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+dWFydF91bml0czwvZmllbGQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0ic1RUfi45eEwrOn5PZWVUWiowJEEiPjwvc2hhZG93PjwvdmFsdWU+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iS15oLSN3cDs0biRrXTAoYXU2I2IiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPlRJTUVPVVQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPlRSVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iJDlGOjAvNEMzb2g3SjghLDFJJDAiPjxmaWVsZCBuYW1lPSJURVhUIj53aXRoIHRpbWVvdXQgb2Y8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iWUZUPUl1Zkg0bDlneFN6Wk0hRTciPjwvc2hhZG93PjxibG9jayB0eXBlPSJ0eXBlX251bWJlciIgaWQ9Imd+a2NJISVRMGtoTHJjcGk2KUR+Ij48L2Jsb2NrPjwvdmFsdWU+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0icmlpPThSQSlwckczWCpMa10hKisiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iOGg5UUxtTmFvdytALjUrLWoubkIiPjxmaWVsZCBuYW1lPSJURVhUIj5taWxsaXNlY29uZHM8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVE9PTFRJUCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSIwVGQxM1t9bWJLe1lCPX5AciRWPyIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iSEVMUFVSTCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSIhWjRIUGBER3pffD98Xk9PTmklVSIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iT1VUUFVUVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSIjUldbdlpoa1R5WSRCfHJmO3QldSI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9IlV6VSohak1yaVIoX1JoKD9xOTU9Ij48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "comm_uart_read_byte",
+        "message0": "llegir byte des de %1 %2 amb temps d'espera de %3 milisegons",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "UART"
+          },
+          {
+            "type": "input_value",
+            "name": "TIMEOUT",
+            "check": "Number"
+          }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "read byte from %1 %2 with timeout of %3 milliseconds"
+        },
+        "ca": {
+          "message0": "llegir byte des de %1 %2 amb temps d'espera de %3 milisegons"
+        },
+        "es": {
+          "message0": "leer byte desde %1 %2 con tiempo de espera de %3 milisegundos"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "TIMEOUT": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "UART": "uart_units",
+        "TIMEOUT": "free"
+      },
+      "code": {
+        "default": "dWFydC5yZWFkKCQoVUFSVCkkLCAiKmMiLCAkKFRJTUVPVVQpJCk=",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "Comm",
+      "category": "UART",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9IkxAbmVDaC02dmNWVU8uaDd9IWt8IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkxFRlQiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJ0K2BVUF9sYVlvM3tzViModjpjXyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJHVTAhe1svNyMySkgpUjIoQmRxaCI+PGZpZWxkIG5hbWU9IlRFWFQiPnJlYWQgbGluZSBmcm9tPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50PjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9IipaKE9VM1FvdTVCOi9EPUBrem1ZIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5VQVJUPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5GQUxTRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+dWFydF91bml0czwvZmllbGQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0ieURHXjFFTS5YUDluRjhOLl4wT0wiPjwvc2hhZG93PjwvdmFsdWU+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iS15oLSN3cDs0biRrXTAoYXU2I2IiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPlRJTUVPVVQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTSEFET1ciPlRSVUU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iJDlGOjAvNEMzb2g3SjghLDFJJDAiPjxmaWVsZCBuYW1lPSJURVhUIj53aXRoIHRpbWVvdXQgb2Y8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iWUZUPUl1Zkg0bDlneFN6Wk0hRTciPjwvc2hhZG93PjxibG9jayB0eXBlPSJ0eXBlX251bWJlciIgaWQ9Imd+a2NJISVRMGtoTHJjcGk2KUR+Ij48L2Jsb2NrPjwvdmFsdWU+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0icmlpPThSQSlwckczWCpMa10hKisiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iOGg5UUxtTmFvdytALjUrLWoubkIiPjxmaWVsZCBuYW1lPSJURVhUIj5taWxsaXNlY29uZHM8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVE9PTFRJUCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSI1Mkddc0c0OkQ4cDosKixAeS83YiIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iSEVMUFVSTCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJgPVR9YCpaRDdtWyhtMTcvO0BhUyIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iT1VUUFVUVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJyOmRkIUZ6V1ReT2lYYnIlbldKMCI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9InVvIVdxUVlpUlFyLHAve19GKEZsIj48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "comm_uart_read_line",
+        "message0": "read line from %1 %2 with timeout of %3 milliseconds",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "UART"
+          },
+          {
+            "type": "input_value",
+            "name": "TIMEOUT",
+            "check": "Number"
+          }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "read line from %1 %2 with timeout of %3 milliseconds"
+        },
+        "ca": {
+          "message0": "llegir línia des de %1 %2 amb temps d'espera de %3 milisegons"
+        },
+        "es": {
+          "message0": "leer linea desde %1 %2 con tiempo de espera de %3 milisegundos"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "TIMEOUT": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "UART": "uart_units",
+        "TIMEOUT": "free"
+      },
+      "code": {
+        "default": "dWFydC5yZWFkKCQoVUFSVCkkLCAiKmwiLCAkKFRJTUVPVVQpJCk=",
+        "functions": ""
+      }
+    }
+  ]
+}

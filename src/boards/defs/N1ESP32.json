@@ -55,12 +55,12 @@
 		"0": ["CAN0"]
 	},
 	"spiUnits": {
-		"2": ["SPI2"],
-		"3": ["SPI3"]
+		"2": ["SPI2","SPI2"],
+		"3": ["SPI3","SPI3"]
 	},
 	"uartUnits": {
-		"0": ["UART0"],
-		"1": ["UART1"],
-		"2": ["UART2"]
+		"0": ["UART0","UART0"],
+		"1": ["UART1","UART1"],
+		"2": ["UART2","UART2"]
 	}
 }

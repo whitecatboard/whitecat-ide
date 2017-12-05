@@ -328,6 +328,15 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 						value.appendChild(shadow);
 
 						newBlock.appendChild(value);
+					} else if (block.subtype[block.spec[prop][arg].name] == "uart_units") {
+						var shadow = goog.dom.createDom('shadow');
+						shadow.setAttribute('type', 'uart_units');
+
+						var value = goog.dom.createDom('value');
+						value.setAttribute('name', block.spec[prop][arg].name);
+						value.appendChild(shadow);
+
+						newBlock.appendChild(value);						
 					} else if (block.subtype[block.spec[prop][arg].name] == "display_color_sel") {
 						var shadow = goog.dom.createDom('shadow');
 						shadow.setAttribute('type', 'display_color_sel');
