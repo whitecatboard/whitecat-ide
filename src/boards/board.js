@@ -59,6 +59,8 @@ function board() {
 				}
 
 				thisInstance.list.push({id: id, desc: element.description});
+				
+				Status.messages[element.description] =  {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
 			});
 		},
 		error: function() {

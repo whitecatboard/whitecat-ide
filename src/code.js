@@ -131,6 +131,10 @@ Code.devices = [{
 	"productId": "0x6001",
 	"vendor": "FTDI"
 }, {
+	"vendorId": "0x403",
+	"productId": "0x6010",
+	"vendor": "FTDI"
+}, {
 	"vendorId": "0x1a86",
 	"productId": "0x7523",
 	"vendor": "CH340"
@@ -947,16 +951,20 @@ Code.buildToolBox = function(callback) {
 				'</block>';
 				
 			if (Code.status.connected) {				
-				xml += '<block type="getexternalanalogchannel">' +
-					'<value name="UNIT">' +
-					'<shadow type="external_analog_units">' +
-					'</shadow>' +
-					'</value>' +
-					'<value name="CHANNEL">' +
-					'<shadow type="external_analog_channels">' +
-					'</shadow>' +
-					'</value>' +
-					'</block>';
+				var units = Blockly.Blocks.io.helper.getExternalAdcUnits();
+				
+				if (units.length > 0) {
+					xml += '<block type="getexternalanalogchannel">' +
+						'<value name="UNIT">' +
+						'<shadow type="external_analog_units">' +
+						'</shadow>' +
+						'</value>' +
+						'<value name="CHANNEL">' +
+						'<shadow type="external_analog_channels">' +
+						'</shadow>' +
+						'</value>' +
+						'</block>';					
+				}
 			}
 		}
 

@@ -1721,6 +1721,13 @@ Blockly.Lua['analog_pins_sel'] = function(block) {
 	return ['pio.' + pinName, Blockly.Lua.ORDER_HIGH];
 };
 
+Blockly.Lua['uart_units'] = function(block) {
+	var unit = block.getFieldValue('UNIT');
+	var unitName = Code.status.maps.uartUnits[unit][1];
+	
+	return ['uart.' + unitName, Blockly.Lua.ORDER_HIGH];
+};
+
 Blockly.Lua['external_analog_units'] = function(block) {
 	var unit = block.getFieldValue('UNIT');
 	var unitName = Code.status.maps.externalAdcUnits[unit][0];

@@ -1,6 +1,6 @@
 {
-	"id": "ESP32COREBOARD",
-	"desc": "ESP32 Core Board",
+	"id": "ESP32-GATEWAY",
+	"desc": "Olimex ESP32-Gateway",
 	"digitalPins": {
 		"15":  ["GPIO15", true , true , "IO15" ],
 		"2":   ["GPIO2" , true , true , "IO2"  ],
