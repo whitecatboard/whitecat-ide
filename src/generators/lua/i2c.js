@@ -65,7 +65,7 @@ Blockly.Lua.i2c.helper = {
 	name: function(block) {
 		var module = block.getFieldValue('MODULE');
 		
-		return  Code.status.maps.i2cUnits[module];
+		return  Code.status.maps.i2cUnits[module][1];
 	},
 	
 	instance: function(block) {

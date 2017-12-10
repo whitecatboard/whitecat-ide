@@ -1141,7 +1141,7 @@ Blockly.Lua.i2c.helper = {
 	name: function(block) {
 		var module = block.getFieldValue('MODULE');
 		
-		return  Code.status.maps.i2cUnits[module];
+		return  Code.status.maps.i2cUnits[module][1];
 	},
 	
 	instance: function(block) {
@@ -3691,10 +3691,10 @@ Blockly.Lua.sensors.helper = {
 				}
 			} else if (interfaces[i] == 'I2C') {
 				if (int != "") int = int + ", ";
-				int += 'i2c.' + Code.status.maps.i2cUnits[block['interface'+i+'_unit']][0] + ', 0';
+				int += 'i2c.' + Code.status.maps.i2cUnits[block['interface'+i+'_unit']][1] + ', 0';
 			} else if (interfaces[i] == 'UART') {
 				if (int != "") int = int + ", ";
-				int += 'uart.' + Code.status.maps.uartUnits[block['interface'+i+'_unit']][0];
+				int += 'uart.' + Code.status.maps.uartUnits[block['interface'+i+'_unit']][1];
 			} else if (interfaces[i] == '1-WIRE') {
 				if (int != "") int = int + ", ";
 				int += 'pio.' + Code.status.maps.digitalPins[block['interface'+i+'_unit']][0] + ', ' + block['interface'+i+'_device'];
