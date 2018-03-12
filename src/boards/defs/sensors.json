@@ -29,7 +29,8 @@
 		{"id": "BH1721FVC"},
 		{"id": "BDE0600G"},
 		{"id": "ML8511"},
-		{"id": "INTERNAL_HALL"}
+		{"id": "INTERNAL_HALL"},
+		{"id": "LM35"}
 	],
 	"categories": [
 		{"id": "air_quality", "sensors": [
@@ -87,6 +88,7 @@
 			{"id": "DHT22"},
 			{"id": "DHT23"},
 			{"id": "DS1820"},
+			{"id": "LM35"},
 			{"id": "TMP36"}
 		]},
 		{"id": "uv", "sensors": [
