@@ -28,7 +28,8 @@
 		{"id": "BH1620FVC"},
 		{"id": "BH1721FVC"},
 		{"id": "BDE0600G"},
-		{"id": "ML8511"}
+		{"id": "ML8511"},
+		{"id": "INTERNAL_HALL"}
 	],
 	"categories": [
 		{"id": "air_quality", "sensors": [
@@ -54,7 +55,8 @@
 			{"id": "ML8511"}
 		]},
 		{"id": "magnetic_field", "sensors": [
-			{"id": "A49E"}
+			{"id": "A49E"},
+			{"id": "INTERNAL_HALL"}
 		]},
 		{"id": "potentiometers", "sensors": [
 			{"id": "LINEAR_POT"}

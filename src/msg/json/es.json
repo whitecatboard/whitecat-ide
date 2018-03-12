@@ -689,5 +689,6 @@
 	"ANALOG_PINS": "pin analógico",
 	"PWM_PINS": "pin pwm",
 
-	"ONLY_ALLOWED_WITHIN_BLOCK": "Atención: este bloque solo se puede utilizar dentro de un bloque \"%1\""
+	"ONLY_ALLOWED_WITHIN_BLOCK": "Atención: este bloque solo se puede utilizar dentro de un bloque \"%1\"",
+	"INTERNAL_HALL": "Sensor de efecto Hall interno"
 }

@@ -659,5 +659,6 @@
 	"ANALOG_PINS": "pin analògic",
 	"PWM_PINS": "pin pwm",
 	
-	"ONLY_ALLOWED_WITHIN_BLOCK": "Advertència: aquest bloc només es pot utilitzar dins d'un bloc \"%1\""
+	"ONLY_ALLOWED_WITHIN_BLOCK": "Advertència: aquest bloc només es pot utilitzar dins d'un bloc \"%1\"",
+	"INTERNAL_HALL": "Sensor d'efecte Hall intern"
 }

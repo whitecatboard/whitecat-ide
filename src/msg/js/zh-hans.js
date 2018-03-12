@@ -211,6 +211,7 @@ Blockly.Msg.IN = "in";  // untranslated
 Blockly.Msg.INLINE_INPUTS = "单行输入";
 Blockly.Msg.INPUT = "input";  // untranslated
 Blockly.Msg.INPUT_PINS = "input pin";  // untranslated
+Blockly.Msg.INTERNAL_HALL = "Sensor de efecto Hall interno";  // untranslated
 Blockly.Msg.Khz = "Khz";  // untranslated
 Blockly.Msg.LINEAR_POT = "Linear pot";  // untranslated
 Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://github.com/google/blockly/wiki/Lists#create-empty-list";

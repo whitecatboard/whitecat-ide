@@ -723,5 +723,6 @@
 	"ANALOG_PINS": "analog pin",
 	"PWM_PINS": "pwm pin",
 
-	"ONLY_ALLOWED_WITHIN_BLOCK": "Warning: This block may only be used within a \"%1\" block"
+	"ONLY_ALLOWED_WITHIN_BLOCK": "Warning: This block may only be used within a \"%1\" block",
+	"INTERNAL_HALL": "Internal Hall effect sensot"
 }

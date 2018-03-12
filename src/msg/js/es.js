@@ -211,6 +211,7 @@ Blockly.Msg.IN = "en";
 Blockly.Msg.INLINE_INPUTS = "Entradas en línea";
 Blockly.Msg.INPUT = "entrada";
 Blockly.Msg.INPUT_PINS = "pin de entrada";
+Blockly.Msg.INTERNAL_HALL = "Sensor de efecto Hall interno";
 Blockly.Msg.Khz = "Khz";
 Blockly.Msg.LINEAR_POT = "Potenciómetro lineal";
 Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://github.com/google/blockly/wiki/Lists#create-empty-list";  // untranslated
