@@ -103,15 +103,9 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		codeSectionBlock[key] = [];
 	}
 	
-	var initCode = '';
-	
-	initCode = Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";
-	initCode += Blockly.Lua.indent(0,'-- that must wait for this situation') + "\n";
-	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n";
-	codeSection["events"].push(initCode);
-
-	// Begin
+	// Check if code use some type of blocks
 	var hasBoardStart = false;
+	var hasMQTT = false;
 	
 	this.init(workspace);
 	var blocks = workspace.getTopBlocks(true);
@@ -119,7 +113,27 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		if ((block.type == 'when_board_starts') && (!block.disabled)) {
 			hasBoardStart = true;
 		}
-		
+
+		if (((block.type == 'mqtt_publish') && (!block.disabled)) || ((block.type == 'mqtt_subscribe') && (!block.disabled))) {
+			hasMQTT = true;
+		}
+	}
+	
+	// Initialization code
+	var initCode = '';
+
+	if (hasMQTT) {
+		initCode += Blockly.Lua.indent(0,'-- this event is for sync the mqtt client connection') + "\n";
+		initCode += Blockly.Lua.indent(0,'_mqtt_lock = thread.createmutex()') + "\n\n";		
+	}
+	
+	initCode += Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";
+	initCode += Blockly.Lua.indent(0,'-- that must wait for this situation') + "\n";
+	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n";
+	codeSection["events"].push(initCode);
+
+	// Begin
+	for (var x = 0, block; block = blocks[x]; x++) {		
 		// Put code in default section
 		section = "default";
 
