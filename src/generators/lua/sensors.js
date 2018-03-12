@@ -75,7 +75,7 @@ Blockly.Lua.sensors.helper = {
 		var int = Blockly.Lua.sensors.helper.getInterface(block);	
 		
 		code += Blockly.Lua.indent(0,'if (_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+' == nil) then') + "\n";
-		code += Blockly.Lua.indent(1,'_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+' = sensor.attach("'+block.sid+'", '+int+')') + "\n";
+		code += Blockly.Lua.indent(1,'_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+' = sensor.attach("'+block.sid+'"'+(int!=""?", ":"")+int+')') + "\n";
 		code += Blockly.Lua.indent(0,'end') + "\n\n";
 		
 		return code;
