@@ -853,18 +853,18 @@ Blockly.Workspace.prototype.migrateMutation = function(xml) {
 			  xmlChild.removeAttribute("unit");
 			  xmlChild.removeAttribute("device");
 		  } else if (xmlChild.getAttribute("interface") == "ADC") {
-		  	  var unit = xmlChild.getAttribute("interface0_unit");
-		  	  var channel = xmlChild.getAttribute("interface0_subunit");
-			  var units = Blockly.Blocks.io.helper.getExternalAdcUnits();
-			  var channels = Blockly.Blocks.io.helper.getExternalAdcChannels(units[0][1]);
+		  	  //var unit = xmlChild.getAttribute("interface0_unit");
+		  	  //var channel = xmlChild.getAttribute("interface0_subunit");
+			  //var units = Blockly.Blocks.io.helper.getExternalAdcUnits();
+			  //var channels = Blockly.Blocks.io.helper.getExternalAdcChannels(units[0][1]);
 			  
-			  if (units[0][1] != units) {
-			  	xmlChild.setAttribute("interface0_unit", units[0][1]);
-			  }
+			  //if (units[0][1] != units) {
+			  //	xmlChild.setAttribute("interface0_unit", units[0][1]);
+			  //}
 			  
-			  if (channel > channels.length) {
-			  	xmlChild.setAttribute("interface0_subunit", 0);
-			  }
+			  //if (channel > channels.length) {
+			  //	xmlChild.setAttribute("interface0_subunit", 0);
+			  //}
 		  }
 	  }  
     }
