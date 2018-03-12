@@ -175,8 +175,9 @@ Blockly.MQTT.configure = function(workspace, opt_callback, block) {
 					var host = form.find("#host").val().trim();
 					var port = form.find("#port").val().trim();
 					var secure = form.find("#secure").val();
-					var username = form.find("#username").val().trim();
-					var password = form.find("#password").val().trim();
+					
+					var username = (secure=="true"?form.find("#username").val().trim():"");
+					var password = (secure=="true"?form.find("#password").val().trim():"");
 
 					var error = false;
 					form.find("#errors").html("");
@@ -234,7 +235,7 @@ Blockly.MQTT.configure = function(workspace, opt_callback, block) {
 		  onLabel: '<span class="glyphicon glyphicon-ok">',
 		}).on('change', function() {
 			var form = jQuery("#MQTT_form");
-			
+						
 			form.find("#secure").val(this.checked);
 			
 			if (this.checked) {
