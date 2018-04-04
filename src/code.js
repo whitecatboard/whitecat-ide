@@ -81,7 +81,7 @@ Code.blockAbstraction = blockAbstraction.High;
 
 Code.storage = {};
 
-Code.minAgentVersion = "1.9";
+Code.minAgentVersion = 2;
 Code.checkNewFirmwareVersion = true;
 Code.checkNewAgentVersion = true;
 Code.showCode = false;
@@ -2510,14 +2510,14 @@ Code.setup = function() {
 			Code.renderContent();			
 		});
 
-		if ((Code.agent.version == "") || (parseFloat(Code.agent.version) < parseFloat(Code.minAgentVersion))) {
+		if ((Code.agent.version == "") || (Code.agent.version < Code.minAgentVersion)) {
 			if (Code.checkNewAgentVersion) {
 				Code.showAlert(MSG['pleaseUpgradeAgent']);
 			}
 			
 			Code.checkNewAgentVersion = false;
 		} else {
-			if (Code.agent.version > "1.2") {
+			if (Code.agent.version > 1.2) {
 				if (info.newBuild) {
 					Code.newFirmware();
 				}
@@ -2533,9 +2533,9 @@ Code.setup = function() {
 		if (!info.hasOwnProperty("agent-version")) {
 			Code.showAlert(MSG['pleaseUpgradeAgent']);
 		} else {
-			Code.agent.version = info["agent-version"];
+			Code.agent.version = parseFloat(info["agent-version"]);
 
-			if (Code.agent.version > "1.2") {
+			if (Code.agent.version > 1.2) {
 				Code.agent.consoleUpSocketConnect();
 				Code.agent.consoleDownSocketConnect();
 			}
@@ -2622,7 +2622,7 @@ Code.setup = function() {
 		Blockly.mainWorkspace.removeErrors();
 		Blockly.mainWorkspace.removeStarts();
 
-		if (Code.agent.version > "1.2") {
+		if (Code.agent.version > 1.2) {
 			info.what = atob(info.what);
 		}
 

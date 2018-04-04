@@ -159,7 +159,7 @@ Status.show = function(message) {
 					jQuery("#cloudConsole").hide();
 					jQuery("#cloudConsole").attr("data-visibe","false");
 					
-					if (Code.agent.version > "1.2") {
+					if (Code.agent.version > 1.2) {
 						var visible = jQuery("#boardConsole").attr("data-visibe");
 						if (typeof visible == "undefined") {
 							visible = false;

@@ -78,7 +78,12 @@ Blockly.Lua['servo_move'] = function(block) {
 	var pin = block.getFieldValue('PIN');
 	var pioName = Code.status.maps.pwmPins[pin];
 	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE) || '\'\'';
-	var code='', tryCode = '';	
+	var code='', tryCode = '', initCode = '';	
+	
+	initCode += Blockly.Lua.indent(0, '-- servos') + "\n";
+	initCode += Blockly.Lua.indent(0, '_servo_pio = {}') + "\n";
+	
+	Blockly.Lua.addCodeToSection("declaration", initCode, block);
 	
 	Blockly.Lua.require("block");
 	
