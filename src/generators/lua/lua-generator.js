@@ -108,18 +108,20 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	var hasMQTT = false;
 	
 	this.init(workspace);
-	var blocks = workspace.getTopBlocks(true);
+	var blocks = workspace.getAllBlocks();
 	for (var x = 0, block; block = blocks[x]; x++) {
 		if ((block.type == 'when_board_starts') && (!block.disabled)) {
 			hasBoardStart = true;
 		}
 
-		if (((block.type == 'mqtt_publish') && (!block.disabled)) || ((block.type == 'mqtt_subscribe') && (!block.disabled))) {
+		if ((((block.type == 'mqtt_publish') && (!block.disabled)) || ((block.type == 'mqtt_subscribe') && (!block.disabled))) && (block.isInHatBlock())) {
 			hasMQTT = true;
 		}
 	}
 	
 	// Initialization code
+	blocks = workspace.getTopBlocks(true);
+	
 	var initCode = '';
 
 	if (hasMQTT) {
