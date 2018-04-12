@@ -183,6 +183,7 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 
 		hasWatcher: block.whatcher,
 
+/*
 		onchange: function(e) {
 			if (!this.workspace.isDragging || this.workspace.isDragging()) {
 				return;
@@ -247,6 +248,7 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 				}
 			}
 		}
+		*/
 	};
 
 	// Generator
@@ -300,6 +302,21 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 					break;
 				}
 			}
+			
+			if (Blockly.Lua.developerMode) {
+				var tryCode = "";
+	
+				tryCode += Blockly.Lua.indent(0,"try(") + "\n";
+				tryCode += Blockly.Lua.indent(1,"function()") + "\n";
+				tryCode += Blockly.Lua.indent(2,code) + "\n";
+				tryCode += Blockly.Lua.indent(1,"end,") + "\n";
+				tryCode += Blockly.Lua.indent(1,"function(where, line, err, message)") + "\n";
+				tryCode += Blockly.Lua.blockError(2, this);
+				tryCode += Blockly.Lua.indent(1,"end") + "\n";
+				tryCode += Blockly.Lua.indent(0,")") + "\n";
+			
+				code = tryCode;
+			} 
 		}
 
 		// A reporter block must return a tuple
