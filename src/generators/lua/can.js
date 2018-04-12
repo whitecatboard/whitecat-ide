@@ -118,7 +118,7 @@ Blockly.Lua.can.helper = {
 			code += Blockly.Lua.indent(0, '-- attach can bus at ' + speed + ' khz') + "\n";
 			code += Blockly.Lua.indent(0, 'if (' + Blockly.Lua.can.helper.instance(block) + ' == nil) then') + "\n";
 			code += Blockly.Lua.indent(1, Blockly.Lua.can.helper.instance(block) + ' = true') + "\n";
-			code += Blockly.Lua.indent(1, 'can.attach(can.' + Blockly.Lua.can.helper.name(block) + ', ' + speed + ')') + "\n";
+			code += Blockly.Lua.indent(1, 'can.attach(can.' + Blockly.Lua.can.helper.name(block) + ', ' + speed + ' * 1000)') + "\n";
 			code += Blockly.Lua.indent(0, 'end') + "\n";			
 		}
 
