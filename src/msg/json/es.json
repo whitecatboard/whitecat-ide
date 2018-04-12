@@ -571,7 +571,10 @@
 	"switches":"Conmutadores",
 	"temperature":"Temperatura",
 	"magnetic_field":"Campo magnético",
-
+	"soil_moisture":"Humedad del suelo",
+	"liquid_flow":"Flujo de líquido",
+	"HALL_FLOW": "Flujo de líquido por efecto hall",
+	
 	"SENSOR_WHEN_HELPURL": "",
 	"SENSOR_WHEN_TOOLTIP": "Este bloque se activa cuando hay una variación en la magnitud.",
 	"SENSOR_WHEN1": "cuando ",
@@ -690,5 +693,5 @@
 	"PWM_PINS": "pin pwm",
 
 	"ONLY_ALLOWED_WITHIN_BLOCK": "Atención: este bloque solo se puede utilizar dentro de un bloque \"%1\"",
-	"INTERNAL_HALL": "Sensor de efecto Hall interno"
+	"INTERNAL_HALL": "Sensor de efecto hall interno"
 }

@@ -545,6 +545,9 @@
 	"switches":"Commutadors",
 	"temperature":"Temperatura",
 	"magnetic_field":"Camp magnètic",
+	"soil_moisture":"Humitat del sol",
+	"liquid_flow":"Flux de líquid",
+	"HALL_FLOW": "Flux de líquid per efecte hall",
 
 	"SENSOR_WHEN_HELPURL": "",
 	"SENSOR_WHEN_TOOLTIP": "Aquest bloc s'activa quan hi ha una variació en la magnitud.",
@@ -660,5 +663,5 @@
 	"PWM_PINS": "pin pwm",
 	
 	"ONLY_ALLOWED_WITHIN_BLOCK": "Advertència: aquest bloc només es pot utilitzar dins d'un bloc \"%1\"",
-	"INTERNAL_HALL": "Sensor d'efecte Hall intern"
+	"INTERNAL_HALL": "Sensor d'efecte hall intern"
 }

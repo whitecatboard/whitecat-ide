@@ -610,7 +610,10 @@
 	"switches":"Switches",
 	"temperature":"Temperature",
 	"magnetic_field":"Magnetic field",
-
+	"soil_moisture":"Soil moisture",
+	"liquid_flow":"Liquid flow",
+	"HALL_FLOW": "Flow by hall effect",
+	
 	"SENSOR_WHEN_HELPURL": "",
 	"SENSOR_WHEN_TOOLTIP": "This block is invoked when the magnitude changes.",
 	"SENSOR_WHEN1": "when ",
@@ -724,5 +727,5 @@
 	"PWM_PINS": "pwm pin",
 
 	"ONLY_ALLOWED_WITHIN_BLOCK": "Warning: This block may only be used within a \"%1\" block",
-	"INTERNAL_HALL": "Internal Hall effect sensot"
+	"INTERNAL_HALL": "Internal hall effect sensor"
 }

@@ -30,7 +30,9 @@
 		{"id": "BDE0600G"},
 		{"id": "ML8511"},
 		{"id": "INTERNAL_HALL"},
-		{"id": "LM35"}
+		{"id": "LM35"},
+		{"id": "VH400"},
+		{"id": "HALL_FLOW"}
 	],
 	"categories": [
 		{"id": "air_quality", "sensors": [
@@ -43,6 +45,9 @@
 		]},
 		{"id": "geopos", "sensors": [
 			{"id": "GPS"}
+		]},
+		{"id": "liquid_flow", "sensors": [
+			{"id": "HALL_FLOW"}
 		]},
 		{"id": "humidity", "sensors": [
 			{"id": "BME280"},
@@ -58,6 +63,9 @@
 		{"id": "magnetic_field", "sensors": [
 			{"id": "A49E"},
 			{"id": "INTERNAL_HALL"}
+		]},
+		{"id": "soil_moisture", "sensors": [
+			{"id": "VH400"}
 		]},
 		{"id": "potentiometers", "sensors": [
 			{"id": "LINEAR_POT"}
