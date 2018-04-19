@@ -55,6 +55,8 @@ var MSG = {
   downloadingFirmware: 'Downloafing firmware',
   rebooting: 'Rebooting ...',
   newFirmware: 'A new firmware version is available for your board. Do you want to upgrade?',
+  newFirmwareInstructions: 'Please, remove any hardware attached to your board before upgrading the firmware.<br><br>This is required because some boards exposes the strapping pins, which are special pins that can be interfere in the upgrade process if they not have the expected logical value when the board is reset.',
+	upgrade: 'Upgrade ...',
   firmwareNoNewVersion: 'No new version available. Your board is up to date.',
   boardBadFirmwareTitle: 'Bad firmware',
   boardBadFirmware: 'It seems that your board has not a valid firmware, or firmware is corrupted.<br><br>' +

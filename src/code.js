@@ -2075,9 +2075,36 @@ Code.showError = function(title, err, callback) {
 	//Code.showAlert("Error: " + err);
 }
 
+Code.newFirmwareInfo = function() {
+	Code.closeDialogs();
+
+	bootbox.dialog({
+		message: MSG['newFirmwareInstructions'],
+		title: MSG['alert'],
+		buttons: {
+			success: {
+				label: MSG['upgrade'],
+				className: "btn-primary",
+				callback: function() {
+					Code.agent.send({
+						command: "boardUpgrade",
+						arguments: {}
+					}, function(id, info) {
+						Code.showProgress(MSG['downloadingFirmware']);
+					});
+				}
+			},
+		},
+		closable: false,
+		onEscape: true
+	});
+}
+
 Code.newFirmware = function() {
 	if (!Code.checkNewFirmwareVersion) return;
-
+	
+	Code.closeDialogs();
+	
 	bootbox.dialog({
 		message: MSG['newFirmware'],
 		buttons: {
@@ -2092,13 +2119,7 @@ Code.newFirmware = function() {
 				label: MSG['installNow'],
 				className: "btn-primary",
 				callback: function() {
-					Code.agent.send({
-						command: "boardUpgrade",
-						arguments: {}
-					}, function(id, info) {
-						Code.showProgress(MSG['downloadingFirmware']);
-					});
-
+					setTimeout(Code.newFirmwareInfo, 500);					
 				}
 			},
 		},

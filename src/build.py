@@ -190,7 +190,6 @@ class Gen_compressed(threading.Thread):
         ("output_info", "statistics"),
       ]
 
-    print("core")
     code = ""
     closureCode = ""
     # Read in all the source files.
@@ -212,7 +211,7 @@ class Gen_compressed(threading.Thread):
     f.write(closureCode + code)
     f.close()
 
-    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --js tmp.js')
+    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --jscomp_off=uselessCode --js tmp.js')
     
     #self.do_compile(params, target_filename, filenames, "")
 
@@ -246,7 +245,7 @@ class Gen_compressed(threading.Thread):
     f.write(code)
     f.close()
 
-    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --js tmp.js')
+    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --jscomp_off=uselessCode --js tmp.js')
 
     f = open(target_filename)
     code = "".join(f.readlines());
@@ -291,7 +290,7 @@ class Gen_compressed(threading.Thread):
     f.write(code)
     f.close()
     
-    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --js tmp.js')
+    os.system('java -jar ./../closure-compiler-v20170124.jar --js_output_file=' + target_filename + ' --jscomp_off=uselessCode --js tmp.js')
 
     f = open(target_filename)
     code = "".join(f.readlines());
