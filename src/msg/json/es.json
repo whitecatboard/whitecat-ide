@@ -693,5 +693,10 @@
 	"PWM_PINS": "pin pwm",
 
 	"ONLY_ALLOWED_WITHIN_BLOCK": "Atención: este bloque solo se puede utilizar dentro de un bloque \"%1\"",
-	"INTERNAL_HALL": "Sensor de efecto hall interno"
+	"INTERNAL_HALL": "Sensor de efecto hall interno",
+
+	"EVENT_WHEN_WIFI_IS_CONNECTED": "cuando la Wi-Fi esté conectada",
+	"EVENT_WHEN_WIFI_IS_CONNECTED_TOOLTIP": "Este bloque se activará cuando la Wi-Fi se conecte.",
+	"EVENT_WHEN_WIFI_IS_DISCONNECTED": "cuando la Wi-Fi esté desconectada",
+	"EVENT_WHEN_WIFI_IS_DISCONNECTED_TOOLTIP": "Este bloque se activará cuando la Wi-Fi se desconecte."
 }

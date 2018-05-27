@@ -78,6 +78,34 @@ Blockly.Wifi.flyoutCategory = function(workspace) {
 		xmlList.push(block);
 	}
 
+	if (Blockly.Blocks['when_wifi_is_conneted']) {
+		var mutation = goog.dom.createDom('mutation', '');
+		mutation.setAttribute('wtype', Wifi.wtype);
+		mutation.setAttribute('ssid', Wifi.ssid);
+		mutation.setAttribute('password', Wifi.password);
+
+		var block = goog.dom.createDom('block');
+		block.setAttribute('type', 'when_wifi_is_conneted');
+
+		block.appendChild(mutation);
+
+		xmlList.push(block);
+	}
+
+	if (Blockly.Blocks['when_wifi_is_disconneted']) {
+		var mutation = goog.dom.createDom('mutation', '');
+		mutation.setAttribute('wtype', Wifi.wtype);
+		mutation.setAttribute('ssid', Wifi.ssid);
+		mutation.setAttribute('password', Wifi.password);
+
+		var block = goog.dom.createDom('block');
+		block.setAttribute('type', 'when_wifi_is_disconneted');
+
+		block.appendChild(mutation);
+
+		xmlList.push(block);
+	}
+
 	return xmlList;
 };
 

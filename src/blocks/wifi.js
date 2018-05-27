@@ -93,3 +93,129 @@ Blockly.Blocks['wifi_stop'] = {
 	domToMutation: Blockly.Blocks['wifi_start'].domToMutation,
 	updateShape_: Blockly.Blocks['wifi_start'].updateShape_,
 };
+
+Blockly.Blocks['when_wifi_is_conneted'] = {
+	module: "event",
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.EVENT_WHEN_WIFI_IS_CONNECTED);
+
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_WHEN_WIFI_IS_CONNECTED_TOOLTIP);
+	},
+	onchange: function(e) {
+		if (!this.workspace.isDragging || this.workspace.isDragging()) {
+			return;
+		}
+
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
+				this.disabledByUser = e.newValue;
+			}
+		}
+
+		var instances = 0;
+		var blocks = this.workspace.getTopBlocks(true);
+		for (var x = 0, block; block = blocks[x]; x++) {
+			if (blocks[x].type == this.type) {
+				instances++;
+			}
+		}
+
+		if (instances > 1) {
+			this.setWarningText(Blockly.Msg.WARNING_ONLY_ONE_INSTANCE_ALLOWED);
+			if (!this.isInFlyout) {
+				this.setDisabled(true);
+			}
+		} else {
+			var wasInWarning = (this.warning != null);
+			
+			this.setWarningText(null);
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
+				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
+			}
+		}
+	},
+	section: function() {
+		return 'start';
+	}
+};
+
+Blockly.Blocks['when_wifi_is_disconneted'] = {
+	module: "event",
+	init: function() {
+		this.appendDummyInput()
+			.appendField(Blockly.Msg.EVENT_WHEN_WIFI_IS_DISCONNECTED);
+
+		this.appendStatementInput('DO')
+			.appendField(Blockly.Msg.DO).setAlign(Blockly.ALIGN_RIGHT);
+
+		this.setPreviousStatement(false, null);
+		this.setNextStatement(false, null);
+		this.setColour(Blockly.Blocks.events.HUE);
+		this.setTooltip(Blockly.Msg.EVENT_WHEN_WIFI_IS_DISCONNECTED_TOOLTIP);
+	},
+	onchange: function(e) {
+		if (!this.workspace.isDragging || this.workspace.isDragging()) {
+			return;
+		}
+
+		if ((typeof e.element != "undefined") && (this.warning != null) && (e.element == "disabled")) {
+			if (e.blockId == this.id) {
+				this.setDisabled(true);
+				return;
+			}
+		}
+
+		if ((typeof e.element != "undefined") && (e.element == "disabled")) {
+			if ((e.newValue != e.oldValue) && (e.blockId == this.id)) {
+				this.disabledByUser = e.newValue;
+			}
+		}
+
+		var instances = 0;
+		var blocks = this.workspace.getTopBlocks(true);
+		for (var x = 0, block; block = blocks[x]; x++) {
+			if (blocks[x].type == this.type) {
+				instances++;
+			}
+		}
+
+		if (instances > 1) {
+			this.setWarningText(Blockly.Msg.WARNING_ONLY_ONE_INSTANCE_ALLOWED);
+			if (!this.isInFlyout) {
+				this.setDisabled(true);
+			}
+		} else {
+			var wasInWarning = (this.warning != null);
+			
+			this.setWarningText(null);
+			if (!this.isInFlyout && wasInWarning & (typeof this.disabledByUser == "undefined"?true:(!this.disabledByUser))) {
+				this.setDisabled(false);
+			} else {
+				if (typeof this.disabledByUser != "undefined") {
+					this.setDisabled(this.disabledByUser);
+				}	
+			}
+		}
+	},
+	section: function() {
+		return 'start';
+	}
+};
