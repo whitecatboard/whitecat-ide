@@ -35,8 +35,8 @@ goog.require('Blockly.Lua');
 
 Blockly.Lua['wifi_start'] = function(block) {
 	var code = '';
-
 	var tryCode = '';
+	
 	tryCode += Blockly.Lua.blockStart(0, block);
 	tryCode += Blockly.Lua.indent(0, 'net.wf.setup(net.wf.mode.'+block.wtype+', "'+block.ssid+'","'+block.password+'")') + "\n";
 	tryCode += Blockly.Lua.indent(0, 'net.wf.start(false)') + "\n";
@@ -50,8 +50,8 @@ Blockly.Lua['wifi_start'] = function(block) {
 
 Blockly.Lua['wifi_stop'] = function(block) {
 	var code = '';
-
 	var tryCode = '';
+	
 	tryCode += Blockly.Lua.indent(0, 'net.wf.setup(net.wf.mode.'+block.wtype+', "'+block.ssid+'","'+block.password+'")') + "\n";
 	tryCode += Blockly.Lua.indent(0, 'net.wf.stop()') + "\n";
 		
@@ -63,17 +63,18 @@ Blockly.Lua['wifi_stop'] = function(block) {
 
 Blockly.Lua['when_wifi_is_conneted'] = function(block) {
 	var code = '';
+	var tryCode = '';
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
-
+	
+	tryCode += Blockly.Lua.blockStart(0, block);
+	if (statement != "") {
+		tryCode += Blockly.Lua.indent(0,statement);
+	}
+	tryCode += Blockly.Lua.blockEnd(0, block);
+	
 	code += Blockly.Lua.indent(0,'-- when Wi-Fi is connected') + "\n";
 	code += Blockly.Lua.indent(0,'_network_callback_wifi_connected = function()') + "\n";
-	
-	if (statement != "") {
-		code += Blockly.Lua.indent(1,'thread.start(function()') + "\n";
-		code += Blockly.Lua.indent(2,statement);
-		code += Blockly.Lua.indent(1,'end)') + "\n";
-	}
-	
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
 	code += Blockly.Lua.indent(0,'end') + "\n";
 
 	codeSection["declaration"].push(code);
@@ -83,17 +84,18 @@ Blockly.Lua['when_wifi_is_conneted'] = function(block) {
 
 Blockly.Lua['when_wifi_is_disconneted'] = function(block) {
 	var code = '';
+	var tryCode = '';
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
-
+	
+	tryCode += Blockly.Lua.blockStart(0, block);
+	if (statement != "") {
+		tryCode += Blockly.Lua.indent(0,statement);
+	}
+	tryCode += Blockly.Lua.blockEnd(0, block);
+	
 	code += Blockly.Lua.indent(0,'-- when Wi-Fi is disconnected') + "\n";
 	code += Blockly.Lua.indent(0,'_network_callback_wifi_disconnected = function()') + "\n";
-	
-	if (statement != "") {
-		code += Blockly.Lua.indent(1,'thread.start(function()') + "\n";
-		code += Blockly.Lua.indent(2,statement);
-		code += Blockly.Lua.indent(1,'end)') + "\n";
-	}
-	
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
 	code += Blockly.Lua.indent(0,'end') + "\n";
 
 	codeSection["declaration"].push(code);
