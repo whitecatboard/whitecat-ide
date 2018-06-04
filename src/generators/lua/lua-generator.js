@@ -106,16 +106,25 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	// Check if code use some type of blocks
 	var hasBoardStart = false;
 	var hasMQTT = false;
+	var hasNetwork = false;
 	
 	this.init(workspace);
 	var blocks = workspace.getAllBlocks();
 	for (var x = 0, block; block = blocks[x]; x++) {
-		if ((block.type == 'when_board_starts') && (!block.disabled)) {
+		if (block.disabled || block.getInheritedDisabled()) {
+			continue;
+			
+		}
+		if (block.type == 'when_board_starts') {
 			hasBoardStart = true;
 		}
 
-		if ((((block.type == 'mqtt_publish') && (!block.disabled)) || ((block.type == 'mqtt_subscribe') && (!block.disabled))) && (block.isInHatBlock())) {
+		if ((block.type == 'mqtt_publish') || ((block.type == 'mqtt_subscribe') && block.isInHatBlock())) {
 			hasMQTT = true;
+		}
+
+		if ((block.type == 'wifi_start') || ((block.type == 'wifi_stop') && block.isInHatBlock())) {
+			hasNetwork = true;
 		}
 	}
 	
@@ -123,15 +132,33 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	blocks = workspace.getTopBlocks(true);
 	
 	var initCode = '';
-
-	if (hasMQTT) {
-		initCode += Blockly.Lua.indent(0,'-- this event is for sync the mqtt client connection') + "\n";
-		initCode += Blockly.Lua.indent(0,'_mqtt_lock = thread.createmutex()') + "\n\n";		
-	}
 	
 	initCode += Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";
 	initCode += Blockly.Lua.indent(0,'-- that must wait for this situation') + "\n";
-	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n";
+	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n\n";
+	
+	if (hasMQTT) {
+		initCode += Blockly.Lua.indent(0,'-- this lock is for protect the mqtt client connection') + "\n";
+		initCode += Blockly.Lua.indent(0,'_mqtt_lock = thread.createmutex()') + "\n\n";		
+	}
+
+	if (hasNetwork) {		
+		initCode += Blockly.Lua.indent(0,'-- network callback') + "\n";
+		initCode += Blockly.Lua.indent(0, 'net.callback(function(event)') +  "\n";
+		initCode += Blockly.Lua.indent(1, 'if ((event.interface == "wf") and (event.type == "up")) then') + "\n";
+		initCode += Blockly.Lua.indent(2, '-- call user callbacks') + "\n";
+		initCode += Blockly.Lua.indent(2, 'if (not (_network_callback_wifi_connected == nil)) then') + "\n";
+		initCode += Blockly.Lua.indent(3, '_network_callback_wifi_connected()') +  "\n";
+		initCode += Blockly.Lua.indent(2, 'end') +  "\n";
+		initCode += Blockly.Lua.indent(1, 'elseif ((event.interface == "wf") and (event.type == "down")) then') + "\n";
+		initCode += Blockly.Lua.indent(2, '-- call user callbacks') + "\n";
+		initCode += Blockly.Lua.indent(2, 'if (not (_network_callback_wifi_disconnected == nil)) then') + "\n";
+		initCode += Blockly.Lua.indent(3, '_network_callback_wifi_disconnected()') +  "\n";
+		initCode += Blockly.Lua.indent(2, 'end') +  "\n";
+		initCode += Blockly.Lua.indent(1, 'end') +  "\n";
+		initCode += Blockly.Lua.indent(0, 'end)') +  "\n";
+	}
+	
 	codeSection["events"].push(initCode);
 
 	// Begin

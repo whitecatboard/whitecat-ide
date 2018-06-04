@@ -2627,7 +2627,7 @@ Code.setup = function() {
 				var error = atob(info.error);
 
 				obj.addError();
-				obj.setWarningText(error);
+				obj.setWarningText("Error: " + error, 2);
 			}
 		}
 	});

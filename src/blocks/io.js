@@ -577,28 +577,13 @@ Blockly.Blocks['when_digital_pin'] = {
 		this.setTooltip(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN_TOOLTIP);
 	},
 	onchange: function(e) {
-		if (!this.workspace.isDragging || this.workspace.isDragging()) {
-			return;
-		}
-
-		var uses = 0;
-		var blocks = this.workspace.getTopBlocks(true);
-		for (var x = 0, block; block = blocks[x]; x++) {
-			if ((blocks[x].getFieldValue('PIN') == this.getFieldValue('PIN')) && (blocks[x].type == this.type)) {
-				uses++;
-			}
-		}
-
-		if (uses > 1) {
-			this.setWarningText(Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);
-			if (!this.isInFlyout && !this.getInheritedDisabled()) {
-				this.setDisabled(true);
-			}
-		} else {
-			this.setWarningText(null);
-			if (!this.isInFlyout) {
-				this.setDisabled(false);
-			}
-		}
+		var self = this;
+		
+		this.checkUses(e, function(block) {
+			return (
+				(Blockly.Lua.valueToCode(block, 'PIN', Blockly.Lua.ORDER_NONE) == Blockly.Lua.valueToCode(self, 'PIN', Blockly.Lua.ORDER_NONE)) &&
+				(block.getFieldValue('WHEN') == self.getFieldValue('WHEN'))
+			);
+		}, Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);		
 	},
 };

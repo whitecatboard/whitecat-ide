@@ -225,3 +225,37 @@ Blockly.Block.prototype.updateBoardAtBlockCreate = function() {
 		});
 	}
 }
+
+Blockly.Block.prototype.checkUses = function(e, checkF, msg) {
+	this.disabledByUser = ((typeof this.disabledByUser != "undefined")?this.disabledByUser:false);
+
+	if (!this.workspace.isDragging || this.workspace.isDragging()) {
+		return;
+	}
+	
+	var uses = 0;
+	var blocks = this.workspace.getTopBlocks(true);
+	for (var x = 0, block; block = blocks[x]; x++) {
+		if (!block.disabledByUser && checkF(block) && (block.type == this.type)) {
+			uses++;
+		}
+	}
+	
+	Blockly.Events.disable();
+	if (uses > 1) {
+		this.setWarningText(Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK,1);
+		if (!this.isInFlyout) {
+			this.setWarningText(null,2);
+			this.disabledByIde = true;
+			this.setDisabled(true);
+		}
+		
+	} else {
+		this.setWarningText(null,1);		
+		if (!this.isInFlyout) {
+			this.disabledByIde = false;
+			this.setDisabled(this.disabledByUser);
+		}
+	}
+	Blockly.Events.enable();
+}

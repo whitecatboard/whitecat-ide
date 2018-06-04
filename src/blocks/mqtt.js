@@ -126,30 +126,12 @@ Blockly.Blocks['mqtt_subscribe'] = {
 		this.setColour(Blockly.Blocks.MQTT.HUE);
 		this.setTooltip('');
 	},
-	onchange: function(e) {
-		if (!this.workspace.isDragging || this.workspace.isDragging()) {
-			return;
-		}
-
-		var uses = 0;
-		var blocks = this.workspace.getTopBlocks(true);
-		for (var x = 0, block; block = blocks[x]; x++) {
-			if ((Blockly.Lua.valueToCode(blocks[x], 'TOPIC', Blockly.Lua.ORDER_NONE) == Blockly.Lua.valueToCode(this, 'TOPIC', Blockly.Lua.ORDER_NONE)) && (blocks[x].type == this.type)) {
-				uses++;
-			}
-		}
-
-		if (uses > 1) {
-			this.setWarningText(Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);
-			if (!this.isInFlyout && !this.getInheritedDisabled()) {
-				this.setDisabled(true);
-			}
-		} else {
-			this.setWarningText(null);
-			if (!this.isInFlyout) {
-				this.setDisabled(false);
-			}
-		}
+	onchange: function(e) {	
+		var self = this;
+		
+		this.checkUses(e, function(block) {
+			return (Blockly.Lua.valueToCode(block, 'TOPIC', Blockly.Lua.ORDER_NONE) == Blockly.Lua.valueToCode(self, 'TOPIC', Blockly.Lua.ORDER_NONE));
+		}, Blockly.Msg.WARNING_EVENTS_CAN_ONLY_PROCESSED_IN_ONE_EVENT_BLOCK);		
 	},
 	section: function() {
 		return 'default';

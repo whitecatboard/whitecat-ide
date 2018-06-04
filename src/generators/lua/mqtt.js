@@ -29,6 +29,7 @@
 'use strict';
 
 goog.provide('Blockly.Lua.MQTT');
+goog.provide('Blockly.Lua.MQTT.helper');
 
 goog.require('Blockly.Lua');
 
@@ -42,17 +43,16 @@ Blockly.Lua['mqtt_publish'] = function(block) {
 		codeSection["require"].push('require("block")');
 	}
 	
-	var tryCode = '';	
-	tryCode += Blockly.Lua.blockStart(0, block);
-
+	var tryCode = "";
+	
 	tryCode += Blockly.Lua.indent(0,'-- create the MQTT client and connect, if needed') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_mqtt_lock:lock()') + "\n";
 	tryCode += Blockly.Lua.indent(0,'if (_mqtt == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(1,'_mqtt = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', '+block.secure+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'_mqtt = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', false, nil, ' + ((qos > 0)?"true":"false") + ')') + "\n";
 	tryCode += Blockly.Lua.indent(1,'_mqtt:connect("'+block.username+'","'+block.password+'")') + "\n";
 	tryCode += Blockly.Lua.indent(0,'end') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_mqtt_lock:unlock()') + "\n\n";
-
+	
 	tryCode += Blockly.Lua.indent(0,'-- publish to topic') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_mqtt:publish('+topic+', '+payload+', mqtt.QOS'+qos+')') + "\n";;
 
@@ -75,17 +75,15 @@ Blockly.Lua['mqtt_subscribe'] = function(block) {
 	}
 	
 	var tryCode = '';	
-	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start, where') + "\n";
-	tryCode += Blockly.Lua.indent(0,'-- network must be configured an started') + "\n";
-	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+
 	tryCode += Blockly.Lua.indent(0,'-- create the MQTT client and connect, if needed') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_mqtt_lock:lock()') + "\n";
 	tryCode += Blockly.Lua.indent(0,'if (_mqtt == nil) then') + "\n";
-	tryCode += Blockly.Lua.indent(1,'_mqtt = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', '+block.secure+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,'_mqtt = mqtt.client("'+block.clientid+'", "'+block.host+'", '+block.port+', false, nil, ' + ((qos > 0)?"true":"false") + ')') + "\n";
 	tryCode += Blockly.Lua.indent(1,'_mqtt:connect("'+block.username+'","'+block.password+'")') + "\n";
 	tryCode += Blockly.Lua.indent(0,'end') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_mqtt_lock:unlock()') + "\n\n";
-
+	
 	tryCode += Blockly.Lua.indent(0,'-- subscribe to topic') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_mqtt:subscribe('+topic+', mqtt.QOS'+qos+', function(length, payload)') + "\n";
 	tryCode += Blockly.Lua.indent(1,'-- a new message is available in length / payload arguments') + "\n";
@@ -101,6 +99,7 @@ Blockly.Lua['mqtt_subscribe'] = function(block) {
 	code += Blockly.Lua.indent(0,'-- subscribe to MQTT topic ' + topic) + "\n";
 	
 	code += Blockly.Lua.indent(0,'thread.start(function()') + "\n";
+	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n\n";
 	code += Blockly.Lua.tryBlock(1, block, tryCode);
 	code += Blockly.Lua.indent(0,'end)') + "\n";
 		

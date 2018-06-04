@@ -43,7 +43,10 @@ Blockly.Lua['exception_try'] = function(block) {
    code += Blockly.Lua.indent(1, tryStatement);
    code += Blockly.Lua.indent(1, 'end, ') + "\n";
    code += Blockly.Lua.indent(1, 'function(where, line, errCode, msg)') + "\n";
-   code += Blockly.Lua.indent(1, catchStatement);
+   
+   if (catchStatement != '') {
+	   code += Blockly.Lua.indent(1, catchStatement);   	
+   }
    code += Blockly.Lua.blockErrorCatched(2, block);
 
    if (finallyStatement != '') {

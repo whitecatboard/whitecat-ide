@@ -412,6 +412,7 @@ Blockly.Xml.domToBlock = function(xmlBlock, workspace) {
   Blockly.Events.disable();
   try {
     var topBlock = Blockly.Xml.domToBlockHeadless_(xmlBlock, workspace);
+	
     if (workspace.rendered) {
       // Hide connections to speed up assembly.
       topBlock.setConnectionsHidden(true);
@@ -432,6 +433,7 @@ Blockly.Xml.domToBlock = function(xmlBlock, workspace) {
         }
       }, 1);
       topBlock.updateDisabled();
+	  	  
       // Allow the scrollbars to resize and move based on the new contents.
       // TODO(@picklesrus): #387. Remove when domToBlock avoids resizing.
       workspace.resizeContents();
@@ -592,6 +594,7 @@ Blockly.Xml.domToBlockHeadless_ = function(xmlBlock, workspace) {
   var disabled = xmlBlock.getAttribute('disabled');
   if (disabled) {
     block.setDisabled(disabled == 'true');
+	block.disabledByUser = disabled;
   }
   var deletable = xmlBlock.getAttribute('deletable');
   if (deletable) {

@@ -710,7 +710,7 @@ Blockly.WorkspaceSvg.prototype.removeErrors = function() {
 	
     for (var i = 0; i < blocks.length; i++) {
 		blocks[i].removeError();
-		blocks[i].setWarningText(null);
+		blocks[i].setWarningText(null, 2);
 	}
 }
 
@@ -883,7 +883,7 @@ Blockly.Workspace.prototype.migrate = function(xml) {
 	  if (typeof xmlChild.getAttribute == "function") {
 		  type = xmlChild.getAttribute('type');
 	  }
-  
+
 	  if (
 		  (type == 'setdigitalpin') || (type == 'getdigitalpin') || (type == 'getanalogpin') || (type == 'setpwmpin') || (type == 'when_digital_pin') ||
 		   (type == 'servo_move')
