@@ -73,6 +73,7 @@ Blockly.Lua.io.helper = {
 			pin = block.getFieldValue(name);
 		}
 		
+		console.log(pin);
 		return pin;
 	},
 	
@@ -317,7 +318,7 @@ Blockly.Lua['getdigitalpin'] = function(block) {
 	tryCode += Blockly.Lua.io.helper.attachDigital(block, false);
 	tryCode += Blockly.Lua.indent(0, 'val = pio.pin.getval(' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
 
-	getCode += Blockly.Lua.indent(0, "function _getDigitalPin_" + Blockly.Lua.io.helper.nameDigital(block) + "()") + "\n";
+	getCode += Blockly.Lua.indent(0, "function _getDigitalPin" + Blockly.Lua.io.helper.instanceDigital(block) + "()") + "\n";
 	getCode += Blockly.Lua.indent(1, "local val") + "\n\n";
 
 	getCode += Blockly.Lua.indent(1, Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
@@ -327,7 +328,7 @@ Blockly.Lua['getdigitalpin'] = function(block) {
 
 	codeSection["functions"].push(getCode);
 
-	code += Blockly.Lua.indent(0, "_getDigitalPin_" + Blockly.Lua.io.helper.nameDigital(block) + "()");
+	code += Blockly.Lua.indent(0, "_getDigitalPin" + Blockly.Lua.io.helper.instanceDigital(block) + "()");
 
 	return [code, Blockly.Lua.ORDER_HIGH];
 };
