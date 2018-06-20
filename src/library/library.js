@@ -303,7 +303,7 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 				}
 			}
 			
-			if (Blockly.Lua.developerMode) {
+			if (Blockly.Lua.developerMode && !b.isReporterBlock()) {
 				var tryCode = "";
 	
 				tryCode += Blockly.Lua.indent(0,"try(") + "\n";
