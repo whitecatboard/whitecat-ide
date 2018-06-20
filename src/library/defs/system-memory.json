@@ -1,0 +1,47 @@
+{
+  "name": "system-memory",
+  "messages": [
+    {
+      "msgid": "catMemory",
+      "en": "Memory",
+      "ca": "Memòria",
+      "es": "Memoria"
+    }
+  ],
+  "blocks": [
+    {
+      "parentCategory": "System",
+      "category": "Memory",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9Iih+NW44XlRGRyE7X189dnU6NXF3IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkxFRlQiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+QVVUTzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNPTk5FQ1RJT05TIj5MRUZUPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IklOUFVUUyI+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0iZ31odngwSm45MEttV04tZHo6VGgiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0ifWFWdnMsMXBSe2JDTmxBaF9OW14iPjxmaWVsZCBuYW1lPSJURVhUIj5mcmVlIG1lbW9yeTwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IjdDNFtgRDY5aHIhTVgqJVVFZ0ZAIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkYoX0dbOFFrSUFaPUREQzY7IStDIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJPVVRQVVRUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IlhkLjBEP35zVHZ7JUhIYiRKOFZRIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0iLHZRNyhsbGIzcFtvLS1IRWlhT34iPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "free_memory",
+        "message0": "free memory",
+        "output": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "free memory"
+        },
+        "ca": {
+          "message0": "memòria lliure"
+        },
+        "es": {
+          "message0": "memoria libre"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {},
+      "subtype": {},
+      "code": {
+        "default": "b3Muc3RhdHMoIm1lbSIp",
+        "functions": ""
+      }
+    }
+  ]
+}

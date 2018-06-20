@@ -117,6 +117,7 @@ var MSG = {
   catWIFI: "Wi-Fi",
   catNET: "Red",
   catMQTT: "MQTT",
+  catSystem: "Sistema",
   attachBoardForUseThisOption: "Por favor, conecta una placa antes de utilizar esta opción.",
   alert: "Atención",
   pleaseUpgradeAgent: "Hay una nueva versión de The Whitecat Create Agent. Por favor, actualice a la nueva versión, para asegurar el correcto funcionamiento de The Whitecat IDE.<br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"wiki/alerts/How-to-update\">Abrir las instrucciones para actualizar ...</button>",

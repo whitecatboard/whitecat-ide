@@ -1113,6 +1113,9 @@ Code.buildToolBox = function(callback) {
 		xml += '</category>';
 	}
 
+	xml += '<category id="catSystem" colour="'+Blockly.Blocks.actuators.HUE+'">';
+	xml += '</category>';
+
 	Code.lib.get(xml, function(xml) {
 		var toolbox = document.getElementById('toolbox');
 		toolbox.innerHTML = xml;
@@ -1394,6 +1397,8 @@ Code.initLanguage = function() {
 	if (Code.status.modules.i2c) categories.push('catI2C');
 	if (Code.status.modules.can) categories.push('catCan');
 	if (Code.status.modules.lora) categories.push('catLora');
+	if (Code.status.modules.lora) categories.push('catSystem');
+	
 	//if (Code.status.modules.lora) categories.push('catLoraOTAA');
 	//if (Code.status.modules.lora) categories.push('catLoraABP');
 
