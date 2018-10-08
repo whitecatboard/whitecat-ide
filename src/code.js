@@ -2105,9 +2105,37 @@ Code.newFirmwareInfo = function() {
 	});
 }
 
-Code.newFirmware = function() {
-	if (!Code.checkNewFirmwareVersion) return;
+Code.newFirmwareWarning = function(info, msg) {
+	if (typeof msg[Code.settings.language] == "undefined") {
+		msg = msg.en;
+	} else {
+		msg = msg[Code.settings.language];
+	}
 	
+	bootbox.dialog({
+		message: msg,
+		buttons: {
+			danger: {
+				label: MSG['notNow'],
+				className: "btn-default",
+				callback: function() {
+					Code.checkNewFirmwareVersion = false;
+				}
+			},
+			success: {
+				label: MSG['installNow'],
+				className: "btn-primary",
+				callback: function() {
+					setTimeout(Code.newFirmwareInfo, 500);					
+				}
+			},
+		},
+		closable: false,
+		onEscape: true
+	});		
+}
+
+Code.newFirmwareOk = function(info) {
 	Code.closeDialogs();
 	
 	bootbox.dialog({
@@ -2130,7 +2158,39 @@ Code.newFirmware = function() {
 		},
 		closable: false,
 		onEscape: true
-	});
+	});	
+}
+
+Code.newFirmware = function(info) {
+	if (!Code.checkNewFirmwareVersion) return;
+	
+	var firmware = "";
+
+	if (info.info.brand != "") {
+		firmware = info.info.brand + "-";
+	}
+	
+	firmware = firmware + info.info.board;
+
+	if (info.info.subtype != "") {
+		firmware = firmware + '-' + info.info.subtype;
+	}
+	
+	jQuery.ajax({
+		url: Code.server + "?firmwareCheck&firmware=" + firmware + "&commit=" + info.info.commit,
+		success: function(result) {
+			if (result.status == "refuse") {
+				return;
+			} else if (result.status == "warning") {
+				Code.newFirmwareWarning(info, result.msg);
+			} else if (result.status == "ok") {
+				Code.newFirmwareOk(info);
+			}
+		},
+		error: function(error) {
+			console.log(error);
+		}
+	});	
 }
 
 Code.listDirectoriesUpdate = function(container, storage, path, entries, extension) {
@@ -2545,7 +2605,7 @@ Code.setup = function() {
 		} else {
 			if (Code.agent.version > 1.2) {
 				if (info.newBuild) {
-					Code.newFirmware();
+					Code.newFirmware(info);
 				}
 			}	
 		}
