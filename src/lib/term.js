@@ -270,8 +270,6 @@ Term.write = function(text) {
 	var c = '';
 	var prevC = '';
 	
-	console.log(text);
-	
 	for(var i = 0;i < text.length;i++) {
 		prevC = c;
 		c = text.charAt(i);
