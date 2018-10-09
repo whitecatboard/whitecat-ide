@@ -44,7 +44,8 @@ function agent() {
 		"blockErrorCatched",
 		"boardUpdate",
 		"boardConsoleOut",
-		"boardRuntimeError"
+		"boardRuntimeError",
+    "invalidFirmware"
 	];
 
 	// Board commands
@@ -60,7 +61,8 @@ function agent() {
 		"boardWriteFile",
 		"boardRunProgram",
 		"boardRunCommand",
-		"boardRemoveFile"
+		"boardRemoveFile",
+    "boardInstall"
 	];
 	
 	thisInstance.version = "";

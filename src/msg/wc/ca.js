@@ -50,7 +50,7 @@ var MSG = {
   boardInBootloaderMode: 'La placa està arrancant i encara no disposa d\'un firmware. Vols instal·lar ara el firmware?',
   firmwareUpgraded: 'El firmware s\'ha actualitzat',
   installNow: 'Si, actualitza ara',
-  newFirmwareInstructions: 'Si us plau, desconecteu qualsevol maquinari connectat a la vostra placa abans d\'actualitzar el firmware.<br><br>Això és necessari perquè algunes plaques exposen els strapping pins, que són pins especials que poden interferir en el procés d\'actualització si no tenen el valor lògic esperat quan es reinicia la placa.',
+  newFirmwareInstructions: 'Si us plau, desconecta qualsevol maquinari connectat a la placa abans d\'actualitzar el firmware.<br><br>Això és necessari perquè algunes plaques exposen els strapping pins, que són pins especials que poden interferir en el procés d\'actualització si no tenen el valor lògic esperat quan es reinicia la placa.',
 	upgrade: 'Actualitzar ...',
   notNow: 'Ara no',	
   downloadingFirmware: 'Descarregant el firmware',
@@ -137,5 +137,9 @@ var MSG = {
   cannotConnectToAgent: "No es pot connectar a l'agent",
   corruptedFirmware: "Firmware corrupte",
   flashError: "Error a la flash",
-  cloudConsoleOn: "Núvol"
+  cloudConsoleOn: "Núvol",
+  invalidFirmware: "Sembla que la teva placa no té instal·lat un firmware de Lua RTOS vàlid.<br><br>Vols instal·lar un firmware de Lua RTOS vàlid?.",
+  selFirmware: "Seleccioneu el firmware que vols instal·lar a la placa:",
+  installThisFirmware: "Instal·lar aquest firmware",
+  invalidFirmwareInstructions: 'Si us plau, desconecteu qualsevol maquinari connectat a la placa abans d\'instal·lar el firmware.<br><br>Això és necessari perquè algunes plaques exposen els strapping pins, que són pins especials que poden interferir en el procés d\'instal·lació si no tenen el valor lògic esperat quan es reinicia la placa.'
 };

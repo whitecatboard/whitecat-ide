@@ -132,5 +132,9 @@ var MSG = {
   connectABoard: "Connect a board",
   pleaseUpgradeAgent: "A new version of The Whitecat Create Agent is available. Please, upgrade it to ensure the correct operation of The Whitecat IDE. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"wiki/alerts/How-to-update\">Open upgrade instructions ...</button>",
   thisFuntionRequiresUpdateAgent: "This function requires to update The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"wiki/alerts/How-to-update\">Open upgrade instructions ...</button>",
-  cloudConsoleOn: "Cloud"
+  cloudConsoleOn: "Cloud",
+  invalidFirmware: "It seems that your board hasn't a valid Lua RTOS firmware installed on it.<br><br>Do you want to install a valid Lua RTOS firmware?.",
+  selFirmware: "Select the firmware to install on your board:",
+  installThisFirmware: "Install this firmware",
+  invalidFirmwareInstructions: 'Please, remove any hardware attached to your board before installing the firmware.<br><br>This is required because some boards exposes the strapping pins, which are special pins that can be interfere with the install process if they not have the expected logical value when the board is reset.'
 };

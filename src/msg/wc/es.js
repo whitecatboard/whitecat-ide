@@ -50,7 +50,7 @@ var MSG = {
   boardInBootloaderMode: 'Tu placa está se está reiniciando y aún no tiene un firmware. ¿Deseas instalar el firmware ahora?',
   firmwareUpgraded: 'Firmware actualizado',
   installNow: 'Si, actualiza ahora',
-  newFirmwareInstructions: 'Por favor, desconecte cualquier hardware conectado a su placa antes de actualizar el firmware.<br><br>Esto es necesario porque algunas placas exponen los strapping pins, que son pins especiales que pueden interferir en el proceso de actualización si no tienen el valor lógico esperado cuando la placa se reinicia.',
+  newFirmwareInstructions: 'Por favor, desconecta cualquier hardware conectado a tu placa antes de actualizar el firmware.<br><br>Esto es necesario porque algunas placas exponen los strapping pins, que son pins especiales que pueden interferir en el proceso de actualización si no tienen el valor lógico esperado cuando la placa se reinicia.',
 	upgrade: 'Actualizar ...',
   notNow: 'Ahora no',	
   downloadingFirmware: 'Descargando el firmware',
@@ -137,5 +137,9 @@ var MSG = {
   cannotConnectToAgent: "No se puede conectar con el agente",
   corruptedFirmware: "Firmware corrupto",
   flashError: "Error en la flash",
-  cloudConsoleOn: "Nube"
+  cloudConsoleOn: "Nube",
+  invalidFirmware: "Parece que tu placa no tiene instalado un firmware de Lua RTOS válido.<br><br>¿Quieres instalar un firmware de Lua RTOS válido?.",
+  selFirmware: "Selecciona el firmware que quieres instalar en la placa:",
+  installThisFirmware: "Instalar este firmware",
+  invalidFirmwareInstructions: 'Por favor, desconecta cualquier hardware conectado a tu placa antes de instalar el firmware.<br><br>Esto es necesario porque algunas placas exponen los strapping pins, que son pins especiales que pueden interferir en el proceso de instalación si no tienen el valor lógico esperado cuando la placa se reinicia.'
 };

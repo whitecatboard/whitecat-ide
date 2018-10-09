@@ -2161,6 +2161,97 @@ Code.newFirmwareOk = function(info) {
 	});	
 }
 
+Code.invalidFirmwareInfo = function(firmware) {
+	Code.closeDialogs();
+
+	bootbox.dialog({
+		message: MSG['invalidFirmwareInstructions'],
+		title: MSG['alert'],
+		buttons: {
+			success: {
+				label: MSG['installNow'],
+				className: "btn-primary",
+				callback: function() {
+					Code.agent.send({
+						command: "boardInstall",
+						arguments: {
+						  firmware: firmware
+						}
+					}, function(id, info) {
+						Code.showProgress(MSG['downloadingFirmware']);
+					});
+				}
+			},
+		},
+		closable: false,
+		onEscape: true
+	});
+}
+
+Code.selectFirmware = function() {
+	Code.closeDialogs();
+  
+  var html = '<div class="form-group">' + 
+             '<label for="selBoard">'+MSG['selFirmware']+'</label>' +
+             '<select class="form-control" id="selBoard">';
+	
+	Code.board.list.forEach(function(board) {
+    html += '<option value="'+board.id+'">'+ board.desc +'</option>';
+  });
+  
+  html += '</select></div>';
+
+	bootbox.dialog({
+		message: html,
+		buttons: {
+			danger: {
+				label: MSG['cancel'],
+				className: "btn-default",
+				callback: function() {
+				}
+			},
+			success: {
+				label: MSG['installThisFirmware'],
+				className: "btn-primary",
+				callback: function() {
+          var firmware = jQuery("#selBoard").val();
+          
+					setTimeout(function() {
+            Code.invalidFirmwareInfo(firmware);			  
+					}, 500);					
+				}
+			},
+		},
+		closable: false,
+		onEscape: true
+	});	
+}
+
+Code.invalidFirmware = function() {
+	Code.closeDialogs();
+	
+	bootbox.dialog({
+		message: MSG['invalidFirmware'],
+		buttons: {
+			danger: {
+				label: MSG['notNow'],
+				className: "btn-default",
+				callback: function() {
+				}
+			},
+			success: {
+				label: MSG['installNow'],
+				className: "btn-primary",
+				callback: function() {
+					setTimeout(Code.selectFirmware, 500);					
+				}
+			},
+		},
+		closable: false,
+		onEscape: true
+	});	
+}
+
 Code.newFirmware = function(info) {
 	if (!Code.checkNewFirmwareVersion) return;
 	
@@ -2575,6 +2666,10 @@ Code.setup = function() {
 		});
 		Code.renderContent();
 	});
+  
+	Code.agent.addListener("invalidFirmware", function(id, info) {
+    Code.invalidFirmware();
+  });
 
 	Code.agent.addListener("boardAttached", function(id, info) {
 		Blockly.mainWorkspace.removeErrors();
