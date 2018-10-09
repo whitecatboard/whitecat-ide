@@ -55,7 +55,7 @@ var MSG = {
   downloadingFirmware: 'Downloafing firmware',
   rebooting: 'Rebooting ...',
   newFirmware: 'A new firmware version is available for your board. Do you want to upgrade?',
-  newFirmwareInstructions: 'Please, remove any hardware attached to your board before upgrading the firmware.<br><br>This is required because some boards exposes the strapping pins, which are special pins that can be interfere in the upgrade process if they not have the expected logical value when the board is reset.',
+  newFirmwareInstructions: 'Please, remove any attached hardware to your board before upgrade the firmware.<br><br>This is required because some boards exposes the strapping pins, which are special pins that can be interfere in the upgrade process if they not have the expected logical value when the board is reset.',
 	upgrade: 'Upgrade ...',
   firmwareNoNewVersion: 'No new version available. Your board is up to date.',
   boardBadFirmwareTitle: 'Bad firmware',
@@ -136,5 +136,5 @@ var MSG = {
   invalidFirmware: "It seems that your board hasn't a valid Lua RTOS firmware installed on it.<br><br>Do you want to install a valid Lua RTOS firmware?.",
   selFirmware: "Select the firmware to install on your board:",
   installThisFirmware: "Install this firmware",
-  invalidFirmwareInstructions: 'Please, remove any hardware attached to your board before installing the firmware.<br><br>This is required because some boards exposes the strapping pins, which are special pins that can be interfere with the install process if they not have the expected logical value when the board is reset.'
+  invalidFirmwareInstructions: 'Please, remove any attached hardware to your board before install the firmware.<br><br>This is required because some boards exposes the strapping pins, which are special pins that can be interfere with the install process if they not have the expected logical value when the board is reset.'
 };

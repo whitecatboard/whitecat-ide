@@ -70,11 +70,13 @@ function agent() {
 	// Create a listener array for each board envent
 	for(var i = 0;i < thisInstance.boardEvents.length;i++) {
 		thisInstance[thisInstance.boardEvents[i] + 'Listeners'] = [];
+		thisInstance[thisInstance.boardEvents[i] + 'ListenersOne'] = [];
 	}
 	
 	// Create a listener array for each board command
 	for(var i = 0;i < thisInstance.boardCommands.length;i++) {
 		thisInstance[thisInstance.boardCommands[i] + 'Listeners'] = [];
+		thisInstance[thisInstance.boardCommands[i] + 'ListenersOne'] = [];
 	}
 	
 	// Control socket
@@ -247,20 +249,21 @@ agent.prototype.consoleDownSocketConnect = function() {
 // (can be a command or an event)
 agent.prototype.callListeners = function(id, data) {
 	var thisInstance = this;
-	var called = [];
 
 	if (thisInstance.hasOwnProperty(id + 'Listeners')) {
 		for(var i=0;i < thisInstance[id + 'Listeners'].length;i++) {
-			called.push(i);
-			
 			thisInstance[id + 'Listeners'][i](id, data);
-		}	
+		}			
+	}
+
+	if (thisInstance.hasOwnProperty(id + 'ListenersOne')) {
+		thisInstance[id + 'ListenersOne'] = thisInstance[id + 'ListenersOne'].filter(function(e){return e}); 
 		
-		for(var i=0; i < called.length;i++) {
-			if (thisInstance.boardEvents.indexOf(id) == -1) {
-				thisInstance[id + 'Listeners'].splice(i, 1);
-			}
-		}	
+		for(var i=0;i < thisInstance[id + 'ListenersOne'].length;i++) {
+			thisInstance[id + 'ListenersOne'][i](id, data);
+			
+			thisInstance[id + 'ListenersOne'][i] = null;
+		}			
 	}
 };
 
@@ -275,6 +278,18 @@ agent.prototype.addListener = function(id, callback) {
 	thisInstance[id + 'Listeners'].push(callback);
 	
 	return thisInstance[id + 'Listeners'].length;
+};
+
+agent.prototype.addListenerOne = function(id, callback) {
+	var thisInstance = this;
+	
+	if (!thisInstance.hasOwnProperty(id + 'ListenersOne')) {
+		throw "missingListener:" + id;
+	}
+	
+	thisInstance[id + 'ListenersOne'].push(callback);
+	
+	return thisInstance[id + 'ListenersOne'].length;
 };
 
 // Send a command to the agent, when response is received callback is
