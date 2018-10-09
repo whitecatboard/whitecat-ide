@@ -490,6 +490,7 @@ Code.renderContent = function() {
 	if (Code.workspace.type == 'blocks') {
 		jQuery("#content_block_editor").css('visibility', 'hidden');
 		jQuery("#content_editor").css('visibility', 'hidden');
+		jQuery(".ace_print-margin").css('visibility', 'hidden');
 		jQuery("#content_blocks").css('visibility', 'visible');
 
 		jQuery("#content_blocks").find(".injectionDiv").css('visibility', 'visible');
@@ -503,6 +504,7 @@ Code.renderContent = function() {
 	} else if (Code.workspace.type == 'editor') {
 		jQuery("#content_blocks").css('visibility', 'hidden');
 		jQuery("#content_editor").css('visibility', 'visible');
+		jQuery(".ace_print-margin").css('visibility', 'visible');
 		jQuery("#content_block_editor").css('visibility', 'hidden');
 
 		if (Code.workspace.blocks) {
@@ -513,6 +515,7 @@ Code.renderContent = function() {
 
 		jQuery("#content_blocks").css('visibility', 'hidden');
 		jQuery("#content_editor").css('visibility', 'hidden');
+		jQuery(".ace_print-margin").css('visibility', 'hidden');
 		jQuery("#content_block_editor").css('visibility', 'visible');
 
 		jQuery("#content_blocks").find(".injectionDiv").css('visibility', 'hidden');
