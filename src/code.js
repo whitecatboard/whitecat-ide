@@ -121,23 +121,28 @@ Code.defaultStatus = {
 Code.devices = [{
     "vendorId": "0x10c4",
     "productId": "0xea60",
-    "vendor": "Silicon Labs"
+    "vendor": "Silicon Labs",
+	"maxBauds": "921600"
 }, {
     "vendorId": "0x403",
     "productId": "0x6015",
-    "vendor": "FTDI"
+    "vendor": "FTDI",
+	"maxBauds": "921600"
 }, {
     "vendorId": "0x403",
     "productId": "0x6001",
-    "vendor": "FTDI"
+    "vendor": "FTDI",
+	"maxBauds": "921600"
 }, {
     "vendorId": "0x403",
     "productId": "0x6010",
-    "vendor": "FTDI"
+    "vendor": "FTDI",
+	"maxBauds": "921600"
 }, {
     "vendorId": "0x1a86",
     "productId": "0x7523",
-    "vendor": "CH340"
+    "vendor": "CH340",
+	"maxBauds": "115200"
 }];
 
 Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
