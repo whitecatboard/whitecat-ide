@@ -137,7 +137,7 @@ Code.devices = [{
     "vendorId": "0x403",
     "productId": "0x6010",
     "vendor": "FTDI",
-	"maxBauds": "921600"
+	"maxBauds": "2000000"
 }, {
     "vendorId": "0x1a86",
     "productId": "0x7523",
