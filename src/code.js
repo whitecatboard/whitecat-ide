@@ -1400,7 +1400,6 @@ Code.initLanguage = function() {
     if (Code.status.modules.i2c) categories.push('catI2C');
     if (Code.status.modules.can) categories.push('catCan');
     if (Code.status.modules.lora) categories.push('catLora');
-    if (Code.status.modules.lora) categories.push('catSystem');
     
     //if (Code.status.modules.lora) categories.push('catLoraOTAA');
     //if (Code.status.modules.lora) categories.push('catLoraABP');
@@ -1433,7 +1432,9 @@ Code.initLanguage = function() {
     categories.push('catLists');
     categories.push('catVariables');
     categories.push('catFunctions');
-
+    
+    categories.push('catSystem');
+    
     for (var i = 0, cat; cat = categories[i]; i++) {
         try {
             document.getElementById(cat).setAttribute('name', MSG[cat]);
