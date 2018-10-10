@@ -145,6 +145,7 @@ agent.prototype.controlSocketConnect = function() {
 		}
 
 		thisInstance.controlSocketConnected = false;
+		thisInstance.consoleUpSocketConnected = false;
 
 		// Reeschelude the connection in a while
 		setTimeout(function() {
@@ -192,6 +193,10 @@ agent.prototype.consoleUpSocketConnect = function() {
     socket.addEventListener("close", function(event) {
 		thisInstance.consoleUpSocket = undefined;
 		thisInstance.consoleUpSocketConnected = false;
+		hisInstance.consoleDownSocketConnected = false;
+		thisInstance.consoleUpSocket = undefined;
+		thisInstance.consoleDownSocket = undefined;
+		
 
 		// Reeschelude the connection in a while
 		setTimeout(function() {
