@@ -38,7 +38,7 @@ goog.require('goog.ui.ColorPicker');
  */
 AppController = function() {
 	this.inited = false;
-	this.toolWidth = 500;
+	this.toolWidth = 700;
 	this.previewHeight = 70;
 	this.section = "default";
 	
