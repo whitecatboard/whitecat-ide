@@ -1,0 +1,79 @@
+{
+	"id": "ESP32COREBOARD",
+	"desc": "ESP32 Core Board",
+	"digitalPins": {
+		"15":  ["GPIO15", true , true , "IO15" ],
+		"2":   ["GPIO2" , true , true , "IO2"  ],
+		"0":   ["GPIO0" , true , true , "IO0"  ],
+		"4":   ["GPIO4" , true , true , "IO4"  ],
+		"16":  ["GPIO16", true , true , "IO16" ],		
+		"17":  ["GPIO17", true , true , "IO17" ],
+		"5":   ["GPIO5 ", true , true , "IO5"  ],
+		"8":   ["GPIO8 ", true , true , "IO8"  ],
+		"19":  ["GPIO19", true , true , "IO19" ],
+		"21":  ["GPIO22", true , true , "IO21" ],
+		"22":  ["GPIO22", true , true , "IO22" ],
+		"23":  ["GPIO23", true , true , "IO23" ],
+		"13":  ["GPIO13", true , true , "IO13" ],
+		"12":  ["GPIO12", true , true , "IO12" ],
+		"14":  ["GPIO14", true , true , "IO14" ],
+		"27":  ["GPIO27", true , true , "IO27" ],
+		"26":  ["GPIO26", true , true , "IO26" ],
+		"25":  ["GPIO25", true , true , "IO25" ],
+		"33":  ["GPIO33", true , true , "IO33" ],
+		"32":  ["GPIO32", true , true , "IO32" ],
+		"35":  ["GPIO35", true , false, "IO35" ],
+		"34":  ["GPIO34", true , false, "IO34" ]
+	},
+	"analogPins": {
+		"32": ["GPIO32", "IO32" ],	 	
+		"33": ["GPIO33", "IO33" ],	 	
+		"34": ["GPIO34", "IO34" ],	 	
+		"35": ["GPIO35", "IO35" ]
+	},
+	"pwmPins": {
+		"15":  ["GPIO15", "IO15" ],
+		"2":   ["GPIO2" , "IO2"  ],
+		"0":   ["GPIO0" , "IO0"  ],
+		"4":   ["GPIO4" , "IO4"  ],
+		"16":  ["GPIO16", "IO16" ],		
+		"17":  ["GPIO17", "IO17" ],
+		"5":   ["GPIO5 ", "IO5"  ],
+		"8":   ["GPIO8 ", "IO8"  ],
+		"19":  ["GPIO19", "IO19" ],
+		"21":  ["GPIO22", "IO21" ],
+		"22":  ["GPIO22", "IO22" ],
+		"23":  ["GPIO23", "IO23" ],
+		"13":  ["GPIO13", "IO13" ],
+		"12":  ["GPIO12", "IO12" ],
+		"14":  ["GPIO14", "IO14" ],
+		"27":  ["GPIO27", "IO27" ],
+		"26":  ["GPIO26", "IO26" ],
+		"25":  ["GPIO25", "IO25" ],
+		"33":  ["GPIO33", "IO33" ],
+		"32":  ["GPIO32", "IO32" ],
+		"35":  ["GPIO35", "IO35" ],
+		"34":  ["GPIO34", "IO34" ]
+	},
+	"externalAdcUnits": {
+		"2": ["MCP3008", 8, 10],
+		"3": ["MCP3208", 8, 12],
+		"4": ["ADS1115", 4, 15]
+	},
+	"i2cUnits": {
+		"0": ["I2C0","I2C0"],
+		"1": ["I2C1","I2C0"]
+	},
+	"canUnits": {
+		"0": ["CAN0","CAN0"]
+	},
+	"spiUnits": {
+		"2": ["SPI2","SPI2"],
+		"3": ["SPI3","SPI3"]
+	},
+	"uartUnits": {
+		"0": ["UART0","UART0"],
+		"1": ["UART1","UART1"],
+		"2": ["UART2","UART2"]
+	}
+}

@@ -96,7 +96,15 @@ board.prototype.get = function(id, callback) {
 			try {
 				var data = fs.readFileSync(filePath, "utf8");
 			} catch (error) {
-				return;
+        // Use the generic pin map
+		    var file = 'boards/defs/GENERIC.json';
+		    var filePath = path.join(process.cwd(), file);  
+
+  			try {
+  				var data = fs.readFileSync(filePath, "utf8");
+  			} catch (error) {
+  				return;
+  			}
 			}
 
 			try {
@@ -115,7 +123,18 @@ board.prototype.get = function(id, callback) {
 				},
 		
 				error: function() {
-					callback(JSON.parse("{}"));			
+          // Use the generic pin map
+    			jQuery.ajax({
+    				url: Code.folder + "/boards/defs/GENERIC.json",
+    				success: function(result) {
+    					callback(result);
+    					return;
+    				},
+		
+    				error: function() {
+    					callback(JSON.parse("{}"));			
+    				}
+    			});		
 				}
 			});		
 		}
@@ -127,7 +146,18 @@ board.prototype.get = function(id, callback) {
 				return;
 			},
 			error: function() {
-				callback(JSON.parse("{}"));			
+        // Use the generic pin map
+  			jQuery.ajax({
+  				url: Code.folder + "/boards/defs/GENERIC.json",
+  				success: function(result) {
+  					callback(result);
+  					return;
+  				},
+	
+  				error: function() {
+  					callback(JSON.parse("{}"));			
+  				}
+  			});		
 			}
 		});				
 	}
