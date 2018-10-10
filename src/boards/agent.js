@@ -162,6 +162,10 @@ agent.prototype.consoleUpSocketConnect = function() {
 	var thisInstance = this;
 	var socket;
 	
+	if (typeof thisInstance.consoleUpSocket != "undefined") {
+		return;
+	}
+	
 	// Extracted from https://www.websocket.org/js/echo.js
 	if (window.MozWebSocket) {
 		window.WebSocket = window.MozWebSocket;
@@ -203,6 +207,10 @@ agent.prototype.consoleUpSocketConnect = function() {
 agent.prototype.consoleDownSocketConnect = function() {
 	var thisInstance = this;
 	var socket;
+	
+	if (typeof thisInstance.consoleDownSocket != "undefined") {
+		return;
+	}
 	
 	// Extracted from https://www.websocket.org/js/echo.js
 	if (window.MozWebSocket) {
