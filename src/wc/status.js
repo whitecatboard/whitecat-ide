@@ -51,6 +51,7 @@ Status.messages["Can't connect to agent"] = {tag: "cannotConnectToAgent", type: 
 Status.messages["Connect a board"] = {tag: "connectABoard", type: statusType.Alert, zone: "statusBar1"};
 Status.messages["Corrupted firmware"] = {tag: "corruptedFirmware", type: statusType.Alert, zone: "statusBar1"};
 Status.messages["Flash error"] = {tag: "flashError", type: statusType.Alert, zone: "statusBar1"};
+Status.messages["Invalid prerequisites"] = {tag: "invalidPrerequisites", type: statusType.Alert, page: "wiki/Errors:-Invalid-prerequisites", zone: "statusBar1"};
 
 Status.messages["Whitecat N1 ESP32"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
 Status.messages["Whitecat N1 ESP32 DEVKIT"] = {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};

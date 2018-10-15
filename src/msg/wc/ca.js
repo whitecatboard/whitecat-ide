@@ -124,6 +124,7 @@ var MSG = {
   thisFuntionRequiresUpdateAgent: "Aquesta funció requereix una nova versió de The Whitecat Create Agent. <br><br><button type=\"button\" class=\"btn btn-success btn-alert-instructions\" data-url=\"wiki/alerts/How-to-update\">Obrir les instruccions per actualitzar ...</button>",
   connectABoard: "Connecta una placa",
   downloadingPrerequisites: "Descarregant prerequisits",
+  invalidPrerequisites: "Els prerequisits no són vàlids",
   uploadingFramework: "Pujant prerequisits",
   downloadingEsptool: "Descarregant esptool",
   unpackingEsptool: "Desempaquetant esptool",

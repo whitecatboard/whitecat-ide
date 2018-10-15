@@ -2586,10 +2586,23 @@ Code.setup = function() {
     });
   
     Code.agent.addListener("invalidFirmware", function(id, info) {
-		Status.hide();
+        Status.hide();
         Dialog.invalidFirmware();
     });
 
+    Code.agent.addListener("invalidPrerequisites", function(id, info) {
+      Blockly.mainWorkspace.removeErrors();
+      Blockly.mainWorkspace.removeStarts();
+      
+      Status.show("Invalid prerequisites");
+
+      Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
+      Code.board.getMaps(Code.settings.board, function(maps) {
+          Code.status.maps = maps;
+          Code.renderContent();
+      });
+    });
+    
     Code.agent.addListener("boardAttached", function(id, info) {
         if (typeof info.info == "undefined") {
             return;

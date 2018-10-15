@@ -45,7 +45,8 @@ function agent() {
 		"boardUpdate",
 		"boardConsoleOut",
 		"boardRuntimeError",
-    "invalidFirmware"
+    "invalidFirmware",
+    "invalidPrerequisites"
 	];
 
 	// Board commands
