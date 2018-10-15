@@ -107,7 +107,9 @@ Term.init = function() {
 	Term.div.keypress(function(event) {
    		var charCode = (event.which)?event.which:event.keyCode;
 		var str = String.fromCharCode(charCode);
-		Code.agent.consoleDownSocket.send(str);
+    try {
+      Code.agent.consoleDownSocket.send(str);
+    } catch (e){}
 	});
 
 	Term.div.keydown(function(event) {

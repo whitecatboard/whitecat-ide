@@ -193,7 +193,7 @@ agent.prototype.consoleUpSocketConnect = function() {
     socket.addEventListener("close", function(event) {
 		thisInstance.consoleUpSocket = undefined;
 		thisInstance.consoleUpSocketConnected = false;
-		hisInstance.consoleDownSocketConnected = false;
+		thisInstance.consoleDownSocketConnected = false;
 		thisInstance.consoleUpSocket = undefined;
 		thisInstance.consoleDownSocket = undefined;
 		
