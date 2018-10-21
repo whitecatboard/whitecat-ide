@@ -46,22 +46,22 @@ Blockly.Lua.io.helper = {
 		}
 	},
 	
-	hasAncestorsDigital: function(block, output) {
-		var previous = block.previousConnection;
-
-		while (previous) {
-			previous = previous.targetBlock();
-			if (previous) {
-				if (Blockly.Lua.io.helper.isDigital(block, previous, output)) {
-					return true;
-				}
-			
-				previous = previous.previousConnection;				
-			}
-		}
-		
-		return false;
-	},
+//	hasAncestorsDigital: function(block, output) {
+//		var previous = block.previousConnection;
+//
+//		while (previous) {
+//			previous = previous.targetBlock();
+//			if (previous) {
+//				if (Blockly.Lua.io.helper.isDigital(block, previous, output)) {
+//					return true;
+//				}
+//			
+//				previous = previous.previousConnection;				
+//			}
+//		}
+//		
+//		return false;
+//	},
 	
 	nameDigital: function(block, name) {
 		if (typeof name == "undefined") {
@@ -97,20 +97,20 @@ Blockly.Lua.io.helper = {
 	attachDigital: function(block, output) {
 		var code = '';
 
-		if (!Blockly.Lua.io.helper.hasAncestorsDigital(block, output)) {
-			code += Blockly.Lua.indent(0,'if (('+Blockly.Lua.io.helper.instanceDigital(block)+' == nil) or ('+Blockly.Lua.io.helper.instanceDigital(block)+' == ' + (output?"pio.INPUT":"pio.OUTPUT")+')) then') + "\n";
-			code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instanceDigital(block) + " = ") + (output?"pio.OUTPUT":"pio.INPUT") + "\n";
-			
-			if (output) {
-				code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.OUTPUT, ' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
-				code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.NOPULL, '+ Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
-				code += Blockly.Lua.indent(0,'end') + "\n\n";
-			} else {
-				code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.INPUT, ' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
-				code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.PULLUP, '+ Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
-				code += Blockly.Lua.indent(0,'end') + "\n\n";				
-			}
+		//if (!Blockly.Lua.io.helper.hasAncestorsDigital(block, output)) {
+		code += Blockly.Lua.indent(0,'if (('+Blockly.Lua.io.helper.instanceDigital(block)+' == nil) or ('+Blockly.Lua.io.helper.instanceDigital(block)+' == ' + (output?"pio.INPUT":"pio.OUTPUT")+')) then') + "\n";
+		code += Blockly.Lua.indent(1,Blockly.Lua.io.helper.instanceDigital(block) + " = ") + (output?"pio.OUTPUT":"pio.INPUT") + "\n";
+		
+		if (output) {
+			code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.OUTPUT, ' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+			code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.NOPULL, '+ Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+			code += Blockly.Lua.indent(0,'end') + "\n\n";
+		} else {
+			code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.INPUT, ' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+			code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.PULLUP, '+ Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+			code += Blockly.Lua.indent(0,'end') + "\n\n";				
 		}
+		//}
 
 		return code;
 	},
