@@ -497,7 +497,7 @@
 	"MQTT_PUBLISH": "publicar",
 	"MQTT_TO_TOPIC": "al tòpic",
 	"MQTT_QOS": "amb",
-	"MQTT_SUBSCRIBE": "quen es rebi un missatge del tòpic",
+	"MQTT_SUBSCRIBE": "quan es rebi un missatge del tòpic",
 	"MQTT_GET_LEN": "llegir la mida del missatge rebut",
 	"MQTT_GET_PAYLOAD": "llegir el missatge rebut",
 	"EVENT_IS_BEING_PROCESSED_P": "",
