@@ -10,10 +10,12 @@ codeSection["declaration"] = [];
 codeSection["start"] = [];
 codeSection["afterStart"] = [];
 codeSection["default"] = [];
+codeSection["globals"] = [];
 
 // Order of code sections
 var codeSectionOrder = [];
 codeSectionOrder.push("require");
+codeSectionOrder.push("globals");
 codeSectionOrder.push("events");
 codeSectionOrder.push("functions");
 codeSectionOrder.push("declaration");
@@ -160,6 +162,31 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	}
 	
 	codeSection["events"].push(initCode);
+	
+	// Initialize global variables
+	var initGlobals = '';
+	
+	var variables = Code.workspace.blocks.variableList;
+	
+	for (var x = 0, variable; variable = variables[x]; x++) {
+		var uses = Code.workspace.blocks.getVariableUses(variable);
+		
+		if (typeof uses != "undefined") {
+			for (var y = 0, use; use = uses[x]; x++) {
+				if (use.useNumber()) {
+					initGlobals += variable + " = 0\n";
+					break;
+				}
+			}
+		}
+	}
+	
+	
+	if (initGlobals != "") {
+		initGlobals = Blockly.Lua.indent(0,'-- global variables initialisation') + "\n" + initGlobals;
+	}
+
+	codeSection["globals"].push(initGlobals);	
 
 	// Begin
 	for (var x = 0, block; block = blocks[x]; x++) {		

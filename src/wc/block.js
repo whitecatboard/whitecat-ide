@@ -40,6 +40,26 @@ Blockly.Block.prototype.isInHatBlock = function() {
 	return false;
 }
 
+Blockly.Block.prototype.useNumber = function() {
+	var blocks = [
+		"math_arithmetic", "math_single", "math_trig", "math_constant", "math_change", "math_round", "math_modulo",
+		"math_constrain", "math_random_int", "math_number_property"
+	];
+	
+	
+	var block = this;
+	do {
+		if (!block.disabled && !block.getInheritedDisabled() && block.isInHatBlock() && blocks.indexOf(block.type) != -1) {
+			return true;
+			
+			break;
+		}
+		block = block.getSurroundParent();
+	} while (block);
+		
+	return false;
+}
+
 Blockly.Block.prototype.checkIsInHatBlock = function(e) {
 	if (!this.workspace.isDragging || this.workspace.isDragging()) {
 		return;
