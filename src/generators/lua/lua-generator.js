@@ -115,7 +115,6 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	for (var x = 0, block; block = blocks[x]; x++) {
 		if (block.disabled || block.getInheritedDisabled()) {
 			continue;
-			
 		}
 		if (block.type == 'when_board_starts') {
 			hasBoardStart = true;
@@ -181,7 +180,6 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		}
 	}
 	
-	
 	if (initGlobals != "") {
 		initGlobals = Blockly.Lua.indent(0,'-- global variables initialisation') + "\n" + initGlobals;
 	}
@@ -189,7 +187,12 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	codeSection["globals"].push(initGlobals);	
 
 	// Begin
-	for (var x = 0, block; block = blocks[x]; x++) {		
+	for (var x = 0, block; block = blocks[x]; x++) {
+    if (!block.isHatBlock()) {
+      // Don't include code for blocks that are outside a hat block
+      continue;
+    }	
+    
 		// Put code in default section
 		section = "default";
 
@@ -212,19 +215,8 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 				line = this.scrubNakedValue(line);
 			}
 
-			if (!block.isHatBlock()) {
-				// Skip, this is test code
-				//initCode = Blockly.Lua.indent(0,'thread.start(function()') + "\n";
-				//initCode += Blockly.Lua.indent(1,'-- Wait until board is started') + "\n";
-				//initCode += Blockly.Lua.indent(1,'_eventBoardStarted:wait()') + "\n\n";
-				//initCode += Blockly.Lua.indent(1,line);
-				//initCode += Blockly.Lua.indent(0,'end)') + "\n";
-				
-				//line = initCode;
-			} else {
-				// Put code in it's section
-				codeSection[section].push(line);	
-			}
+			// Put code in its section
+		  codeSection[section].push(line);	
 		}
 	}
 
