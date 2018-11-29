@@ -100,7 +100,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 	tryCode += Blockly.Lua.indent(0,'value = _'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+':read("'+magnitude+'")') + "\n";
 
 	getCode += Blockly.Lua.indent(1, 'local value\n') + "\n";
-	getCode += Blockly.Lua.indent(1, tryCode) + "\n";
+	getCode += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(1, block, tryCode)) + "\n";
 	getCode += Blockly.Lua.indent(1, 'return value\n');
 	getCode += Blockly.Lua.indent(0, 'end\n');
 		
