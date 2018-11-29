@@ -166,15 +166,16 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	var initGlobals = '';
 	
 	var variables = Code.workspace.blocks.variableList;
+  var initedVars = [];
 	
 	for (var x = 0, variable; variable = variables[x]; x++) {
 		var uses = Code.workspace.blocks.getVariableUses(variable);
 		
 		if (typeof uses != "undefined") {
-			for (var y = 0, use; use = uses[x]; x++) {
-				if (use.useNumber()) {
+			for (var y = 0, use; use = uses[y]; y++) {
+				if (use.useNumber() && (initedVars.indexOf(variable) == -1)) {
 					initGlobals += variable + " = 0\n";
-					break;
+          initedVars.push(variable);
 				}
 			}
 		}
