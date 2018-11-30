@@ -998,7 +998,6 @@ Code.buildToolBox = function(callback) {
         
         xml += '<block type="output_digital_pin_sel"></block>';
         xml += '<block type="input_digital_pin_sel"></block>';
-        xml += '<block type="input_digital_pin_sel"></block>';
         xml += '<block type="pwm_pins_sel"></block>';
         xml += '<block type="analog_pins_sel"></block>';
 

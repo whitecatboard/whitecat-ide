@@ -73,7 +73,6 @@ Blockly.Lua.io.helper = {
 			pin = block.getFieldValue(name);
 		}
 		
-		console.log(pin);
 		return pin;
 	},
 	
@@ -417,7 +416,7 @@ Blockly.Lua['input_digital_pin'] = function(block) {
 	return ['pio.' + pinName, Blockly.Lua.ORDER_HIGH];
 };
 
-Blockly.Lua['input_digital_pin_Sel'] = function(block) {
+Blockly.Lua['input_digital_pin_sel'] = function(block) {
 	var pin = block.getFieldValue('PIN');
 	var pinName = Code.status.maps.digitalPins[pin][0];
 	
