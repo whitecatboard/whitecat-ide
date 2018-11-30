@@ -36,8 +36,6 @@ Blockly.Lua['bitlogic_msb'] = function(block) {
 	var argument0 = Blockly.Lua.valueToCode(block, 'BOOL',
 		Blockly.Lua.ORDER_UNARY) || 'true';
 		
-	argument0 = 'math.floor(' + argument0 + ')';
-		
 	var code = '((' + argument0 + ' & 0xff00) >> 8)';
 	return [code, Blockly.Lua.ORDER_UNARY];
 };
@@ -45,8 +43,6 @@ Blockly.Lua['bitlogic_msb'] = function(block) {
 Blockly.Lua['bitlogic_lsb'] = function(block) {
 	var argument0 = Blockly.Lua.valueToCode(block, 'BOOL',
 		Blockly.Lua.ORDER_UNARY) || 'true';
-
-	argument0 = 'math.floor(' + argument0 + ')';
 
 	var code = '(' + argument0 + ' & 0x00ff)';
 	return [code, Blockly.Lua.ORDER_UNARY];
@@ -58,23 +54,15 @@ Blockly.Lua['bitwise_op'] = function(block) {
 	var op = block.getFieldValue('OP');
 
 	if (op == 'and') {
-		op1 = 'math.floor(' + op1 + ')';
 		op = "&";
-		op2 = 'math.floor(' + op2 + ')';
 	} else if (op == 'or') {
-		op1 = 'math.floor(' + op1 + ')';
 		op = "|";
-		op2 = 'math.floor(' + op2 + ')';
 	} else if (op == 'lshift') {
-		op1 = 'math.floor(' + op1 + ')';
 		op = "<<";
 	} else if (op == 'rshift') {
-		op1 = 'math.floor(' + op1 + ')';
 		op = ">>";
 	} else if (op == 'xor') {
-		op1 = 'math.floor(' + op1 + ')';
 		op = "~";
-		op2 = 'math.floor(' + op2 + ')';
 	}
 
 	return ['(' + op1 + ' ' + op + ' ' + op2 + ')', Blockly.Lua.ORDER_UNARY];

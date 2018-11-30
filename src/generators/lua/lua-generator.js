@@ -10,12 +10,10 @@ codeSection["declaration"] = [];
 codeSection["start"] = [];
 codeSection["afterStart"] = [];
 codeSection["default"] = [];
-codeSection["globals"] = [];
 
 // Order of code sections
 var codeSectionOrder = [];
 codeSectionOrder.push("require");
-codeSectionOrder.push("globals");
 codeSectionOrder.push("events");
 codeSectionOrder.push("functions");
 codeSectionOrder.push("declaration");
@@ -162,37 +160,12 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	
 	codeSection["events"].push(initCode);
 	
-	// Initialize global variables
-	var initGlobals = '';
-	
-	var variables = Code.workspace.blocks.variableList;
-  var initedVars = [];
-	
-	for (var x = 0, variable; variable = variables[x]; x++) {
-		var uses = Code.workspace.blocks.getVariableUses(variable);
-		
-		if (typeof uses != "undefined") {
-			for (var y = 0, use; use = uses[y]; y++) {
-				if (use.useNumber() && (initedVars.indexOf(variable) == -1)) {
-					initGlobals += variable + " = 0\n";
-          initedVars.push(variable);
-				}
-			}
-		}
-	}
-	
-	if (initGlobals != "") {
-		initGlobals = Blockly.Lua.indent(0,'-- global variables initialisation') + "\n" + initGlobals;
-	}
-
-	codeSection["globals"].push(initGlobals);	
-
 	// Begin
 	for (var x = 0, block; block = blocks[x]; x++) {
-    if (!block.isHatBlock()) {
-      // Don't include code for blocks that are outside a hat block
-      continue;
-    }	
+	    if (!block.isHatBlock()) {
+	      // Don't include code for blocks that are outside a hat block
+	      continue;
+	    }	
     
 		// Put code in default section
 		section = "default";

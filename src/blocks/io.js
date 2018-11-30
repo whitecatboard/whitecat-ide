@@ -152,7 +152,7 @@ Blockly.Blocks['output_digital_pin'] = {
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Pin');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -172,7 +172,7 @@ Blockly.Blocks['output_digital_pin_sel'] = {
 			.appendField(Blockly.Msg.OUTPUT_PINS)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Pin');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -191,7 +191,7 @@ Blockly.Blocks['input_digital_pin'] = {
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Pin');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -211,7 +211,7 @@ Blockly.Blocks['input_digital_pin_sel'] = {
 			.appendField(Blockly.Msg.INPUT_PINS)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Pin');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -230,7 +230,7 @@ Blockly.Blocks['pwm_pins'] = {
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Pin');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -250,7 +250,7 @@ Blockly.Blocks['pwm_pins_sel'] = {
 			.appendField(Blockly.Msg.PWM_PINS)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Pin');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -269,7 +269,7 @@ Blockly.Blocks['analog_pins'] = {
 			.setAlign(Blockly.ALIGN_RIGHT)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Pin');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -289,7 +289,7 @@ Blockly.Blocks['analog_pins_sel'] = {
 			.appendField(Blockly.Msg.ANALOG_PINS)
 			.appendField(new Blockly.FieldDropdown(pins), "PIN");
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Pin');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -383,7 +383,7 @@ Blockly.Blocks['setpwmpin'] = {
 			.appendField(Blockly.Msg.setpwmpin);
 
 		this.appendValueInput("PIN")
-			.setCheck('Number');
+			.setCheck('Pin');
 
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.FREQUENCY);
@@ -420,7 +420,7 @@ Blockly.Blocks['setdigitalpin'] = {
 			.appendField(Blockly.Msg.setdigitalpin)
 
 		this.appendValueInput("PIN")
-			.setCheck('Number');
+			.setCheck('Pin');
 
 		this.appendDummyInput()
 			.appendField(' ' + Blockly.Msg.TO + ' ')
@@ -451,7 +451,7 @@ Blockly.Blocks['invertdigitalpin'] = {
 			.appendField(Blockly.Msg.invertdigitalpin)
 
 		this.appendValueInput("PIN")
-			.setCheck('Number');
+			.setCheck('Pin');
 
 		this.setInputsInline(true);
 		this.setPreviousStatement(true, null);
@@ -474,9 +474,9 @@ Blockly.Blocks['getdigitalpin'] = {
 			.appendField(Blockly.Msg.getdigitalpin);
 
 		this.appendValueInput("PIN")
-			.setCheck('Number');
+			.setCheck('Pin');
 
-		this.setOutput(true, null);
+		this.setOutput(true, 'Number');
 		this.setInputsInline(true);
 		this.setPreviousStatement(false, null);
 		this.setNextStatement(false, null);
@@ -495,7 +495,7 @@ Blockly.Blocks['getanalogpin'] = {
 			.appendField(Blockly.Msg.getanalogpin);
 
 		this.appendValueInput("PIN")
-			.setCheck('Number');
+			.setCheck('Pin');
 
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.IN)
@@ -554,7 +554,7 @@ Blockly.Blocks['when_digital_pin'] = {
 			.appendField(Blockly.Msg.EVENT_WHEN_DIGITAL_PIN);
 
 		this.appendValueInput("PIN")
-			.setCheck('Number');
+			.setCheck('Pin');
 
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.EVENT_WHEN_DIGITAL_CHANGES)

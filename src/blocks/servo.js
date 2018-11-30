@@ -47,7 +47,7 @@ Blockly.Blocks['servo_move'] = {
 			.appendField(Blockly.Msg.SERVO_MOVE);
 
 		this.appendValueInput("PIN")
-			.setCheck('Number');
+			.setCheck('Pin');
 
 
 		this.appendValueInput("VALUE")

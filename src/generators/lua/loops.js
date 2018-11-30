@@ -69,11 +69,7 @@ Blockly.Lua['controls_repeat_ext'] = function(block) {
   // Repeat n times (external number).
   var repeats = Blockly.Lua.valueToCode(block, 'TIMES',
       Blockly.Lua.ORDER_NONE) || '0';
-  if (Blockly.isNumber(repeats)) {
-    repeats = parseInt(repeats, 10);
-  } else {
-    repeats = 'math.floor(' + repeats + ')';
-  }
+
   var branch = Blockly.Lua.statementToCode(block, 'DO') || '\n';
   branch = Blockly.Lua.addContinueLabel(branch);
   var loopVar = Blockly.Lua.variableDB_.getDistinctName(

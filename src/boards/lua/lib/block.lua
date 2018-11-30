@@ -1,12 +1,30 @@
 os.loglevel(os.LOG_ERR)
 
 wcBlock = {
-	developerMode = true,
+    error = {
+        castN = "can't cast value to number",
+    },
+    developerMode = true,
 	reportLimit = 200,
 	mutex = thread.createmutex(),
 	messages = {
 	}
 }
+
+function wcBlock.castN(val, id)
+	local casted
+	
+	if (val == nil) then
+		casted = 0
+	else
+	    casted = tonumber(val)
+	    if (casted == nil) then
+	        wcBlock.blockError(id,0,wcBlock.error.castN)
+	    end
+	end
+	
+	return casted
+end
 
 function wcBlock.blockStart(id)
     wcBlock.mutex:lock()
