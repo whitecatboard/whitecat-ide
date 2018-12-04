@@ -29,17 +29,17 @@ Blockly.Generator.prototype.valueToCode = function(block, name, outerOrder) {
   }
   
   // Need cast?
-  if (!block.workspace.isFlyout) {
-	  var input = block.getInput(name);
-
-	  if (input && input.connection && input.connection.check_ && (input.connection.check_.length == 1)) {
-		  var castType = input.connection.check_[0];
-	  
-		  if (castType == "Number") {
-			  code = 'wcBlock.castN(' + code + ',' + Blockly.Lua.blockIdToNum(targetBlock.id) + ')';
-		  }
-	  }  	
-  }
+  //if (!block.workspace.isFlyout) {
+	//  var input = block.getInput(name);
+  //
+	//  if (input && input.connection && input.connection.check_ && (input.connection.check_.length == 1)) {
+	//	  var castType = input.connection.check_[0];
+	//  
+	//	  if (castType == "Number") {
+	//		  code = 'wcBlock.castN(' + code + ',' + Blockly.Lua.blockIdToNum(targetBlock.id) + ')';
+	//	  }
+	//  }  	
+  //}
   
   // Add parentheses if needed.
   var parensNeeded = false;
