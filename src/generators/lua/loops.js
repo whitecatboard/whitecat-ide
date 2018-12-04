@@ -1,8 +1,8 @@
 /**
  * @license
- * Visual Blocks Editor
+ * Visual Blocks Language
  *
- * Copyright 2012 Google Inc.
+ * Copyright 2016 Google Inc.
  * https://developers.google.com/blockly/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,274 +19,148 @@
  */
 
 /**
- * @fileoverview Loop blocks for Blockly.
- * @author fraser@google.com (Neil Fraser)
+ * @fileoverview Generating Lua for loop blocks.
+ * @author rodrigoq@google.com (Rodrigo Queiro)
  */
 'use strict';
 
-goog.provide('Blockly.Blocks.loops');
+goog.provide('Blockly.Lua.loops');
 
-goog.require('Blockly.Blocks');
+goog.require('Blockly.Lua');
 
 
 /**
- * Common HSV hue for all blocks in this category.
+ * This is the text used to implement a <pre>continue</pre>.
+ * It is also used to recognise <pre>continue</pre>s in generated code so that
+ * the appropriate label can be put at the end of the loop body.
+ * @const {string}
  */
-Blockly.Blocks.loops.HUE = 120;
+Blockly.Lua.CONTINUE_STATEMENT = 'goto continue\n';
 
-Blockly.Blocks['controls_repeat_ext'] = {
-  /**
-   * Block for repeat n times (external number).
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.jsonInit({
-      "message0": Blockly.Msg.CONTROLS_REPEAT_TITLE,
-      "args0": [
-        {
-          "type": "input_value",
-          "name": "TIMES",
-          "check": "Number"
-        }
-      ],
-      "previousStatement": null,
-      "nextStatement": null,
-      "colour": Blockly.Blocks.loops.HUE,
-      "tooltip": Blockly.Msg.CONTROLS_REPEAT_TOOLTIP,
-      "helpUrl": Blockly.Msg.CONTROLS_REPEAT_HELPURL
-    });
-    this.appendStatementInput('DO')
-        .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
+/**
+ * If the loop body contains a "goto continue" statement, add a continue label
+ * to the loop body. Slightly inefficient, as continue labels will be generated
+ * in all outer loops, but this is safer than duplicating the logic of
+ * blockToCode.
+ *
+ * @param {string} branch Generated code of the loop body
+ * @return {string} Generated label or '' if unnecessary
+ */
+Blockly.Lua.addContinueLabel = function(branch) {
+  if (branch.indexOf(Blockly.Lua.CONTINUE_STATEMENT) > -1) {
+    return branch + Blockly.Lua.INDENT + '::continue::\n';
+  } else {
+    return branch;
   }
 };
 
-Blockly.Blocks['controls_repeat'] = {
-  /**
-   * Block for repeat n times (internal number).
-   * The 'controls_repeat_ext' block is preferred as it is more flexible.
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.jsonInit({
-      "message0": Blockly.Msg.CONTROLS_REPEAT_TITLE,
-      "args0": [
-        {
-          "type": "field_number",
-          "name": "TIMES",
-          "value": 10,
-          "min": 0,
-          "precision": 1
-        }
-      ],
-      "previousStatement": null,
-      "nextStatement": null,
-      "colour": Blockly.Blocks.loops.HUE,
-      "tooltip": Blockly.Msg.CONTROLS_REPEAT_TOOLTIP,
-      "helpUrl": Blockly.Msg.CONTROLS_REPEAT_HELPURL
-    });
-    this.appendStatementInput('DO')
-        .appendField(Blockly.Msg.CONTROLS_REPEAT_INPUT_DO);
+Blockly.Lua['controls_repeat'] = function(block) {
+  // Repeat n times (internal number).
+  var repeats = parseInt(block.getFieldValue('TIMES'), 10);
+  var branch = Blockly.Lua.statementToCode(block, 'DO') || '';
+  branch = Blockly.Lua.addContinueLabel(branch);
+  var loopVar = Blockly.Lua.variableDB_.getDistinctName(
+      'count', Blockly.Variables.NAME_TYPE);
+  var code = 'for ' + loopVar + ' = 1, ' + repeats + ' do\n' + branch + 'end\n';
+  return code;
+};
+
+Blockly.Lua['controls_repeat_ext'] = function(block) {
+  // Repeat n times (external number).
+  var repeats = Blockly.Lua.valueToCode(block, 'TIMES',
+      Blockly.Lua.ORDER_NONE) || '0';
+  if (Blockly.isNumber(repeats)) {
+    repeats = parseInt(repeats, 10);
+  } else {
+    repeats = 'math.floor(' + repeats + ')';
   }
+  var branch = Blockly.Lua.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.Lua.addContinueLabel(branch);
+  var loopVar = Blockly.Lua.variableDB_.getDistinctName(
+      'count', Blockly.Variables.NAME_TYPE);
+  var code = 'for ' + loopVar + ' = 1, ' + repeats + ' do\n' +
+      branch + 'end\n';
+  return code;
 };
 
-Blockly.Blocks['controls_whileUntil'] = {
-  /**
-   * Block for 'do while/until' loop.
-   * @this Blockly.Block
-   */
-  init: function() {
-    var OPERATORS =
-        [[Blockly.Msg.CONTROLS_WHILEUNTIL_OPERATOR_WHILE, 'WHILE'],
-         [Blockly.Msg.CONTROLS_WHILEUNTIL_OPERATOR_UNTIL, 'UNTIL']];
-    this.setHelpUrl(Blockly.Msg.CONTROLS_WHILEUNTIL_HELPURL);
-    this.setColour(Blockly.Blocks.loops.HUE);
-    this.appendValueInput('BOOL')
-        .setCheck('Boolean')
-        .appendField(new Blockly.FieldDropdown(OPERATORS), 'MODE');
-    this.appendStatementInput('DO')
-        .appendField(Blockly.Msg.CONTROLS_WHILEUNTIL_INPUT_DO);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    // Assign 'this' to a variable for use in the tooltip closure below.
-    var thisBlock = this;
-    this.setTooltip(function() {
-      var op = thisBlock.getFieldValue('MODE');
-      var TOOLTIPS = {
-        'WHILE': Blockly.Msg.CONTROLS_WHILEUNTIL_TOOLTIP_WHILE,
-        'UNTIL': Blockly.Msg.CONTROLS_WHILEUNTIL_TOOLTIP_UNTIL
-      };
-      return TOOLTIPS[op];
-    });
+Blockly.Lua['controls_whileUntil'] = function(block) {
+  // Do while/until loop.
+  var until = block.getFieldValue('MODE') == 'UNTIL';
+  var argument0 = Blockly.Lua.valueToCode(block, 'BOOL',
+      until ? Blockly.Lua.ORDER_UNARY :
+      Blockly.Lua.ORDER_NONE) || 'false';
+  var branch = Blockly.Lua.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.Lua.addLoopTrap(branch, block.id);
+  branch = Blockly.Lua.addContinueLabel(branch);
+  if (until) {
+    argument0 = 'not ' + argument0;
   }
+  return 'while ' + argument0 + ' do\n' + branch + 'end\n';
 };
 
-Blockly.Blocks['controls_for'] = {
-  /**
-   * Block for 'for' loop.
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.jsonInit({
-      "message0": Blockly.Msg.CONTROLS_FOR_TITLE,
-      "args0": [
-        {
-          "type": "field_variable",
-          "name": "VAR",
-          "variable": null
-        },
-        {
-          "type": "input_value",
-          "name": "FROM",
-          "check": "Number",
-          "align": "RIGHT"
-        },
-        {
-          "type": "input_value",
-          "name": "TO",
-          "check": "Number",
-          "align": "RIGHT"
-        },
-        {
-          "type": "input_value",
-          "name": "BY",
-          "check": "Number",
-          "align": "RIGHT"
-        }
-      ],
-      "inputsInline": true,
-      "previousStatement": null,
-      "nextStatement": null,
-      "colour": Blockly.Blocks.loops.HUE,
-      "helpUrl": Blockly.Msg.CONTROLS_FOR_HELPURL
-    });
-    this.appendStatementInput('DO')
-        .appendField(Blockly.Msg.CONTROLS_FOR_INPUT_DO);
-    // Assign 'this' to a variable for use in the tooltip closure below.
-    var thisBlock = this;
-    this.setTooltip(function() {
-      return Blockly.Msg.CONTROLS_FOR_TOOLTIP.replace('%1',
-          thisBlock.getFieldValue('VAR'));
-    });
-  },
-  /**
-   * Add menu option to create getter block for loop variable.
-   * @param {!Array} options List of menu options to add to.
-   * @this Blockly.Block
-   */
-  customContextMenu: function(options) {
-    if (!this.isCollapsed()) {
-      var option = {enabled: true};
-      var name = this.getFieldValue('VAR');
-      option.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
-      var xmlField = goog.dom.createDom('field', null, name);
-      xmlField.setAttribute('name', 'VAR');
-      var xmlBlock = goog.dom.createDom('block', null, xmlField);
-      xmlBlock.setAttribute('type', 'variables_get');
-      option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
-      options.push(option);
-    }
-  }
-};
-
-Blockly.Blocks['controls_forEach'] = {
-  /**
-   * Block for 'for each' loop.
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.jsonInit({
-      "message0": Blockly.Msg.CONTROLS_FOREACH_TITLE,
-      "args0": [
-        {
-          "type": "field_variable",
-          "name": "VAR",
-          "variable": null
-        },
-        {
-          "type": "input_value",
-          "name": "LIST",
-          "check": "Array"
-        }
-      ],
-      "previousStatement": null,
-      "nextStatement": null,
-      "colour": Blockly.Blocks.loops.HUE,
-      "helpUrl": Blockly.Msg.CONTROLS_FOREACH_HELPURL
-    });
-    this.appendStatementInput('DO')
-        .appendField(Blockly.Msg.CONTROLS_FOREACH_INPUT_DO);
-    // Assign 'this' to a variable for use in the tooltip closure below.
-    var thisBlock = this;
-    this.setTooltip(function() {
-      return Blockly.Msg.CONTROLS_FOREACH_TOOLTIP.replace('%1',
-          thisBlock.getFieldValue('VAR'));
-    });
-  },
-  customContextMenu: Blockly.Blocks['controls_for'].customContextMenu
-};
-
-Blockly.Blocks['controls_flow_statements'] = {
-  /**
-   * Block for flow statements: continue, break.
-   * @this Blockly.Block
-   */
-  init: function() {
-    var OPERATORS =
-        [[Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK, 'BREAK'],
-         [Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE, 'CONTINUE']];
-    this.setHelpUrl(Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL);
-    this.setColour(Blockly.Blocks.loops.HUE);
-    this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown(OPERATORS), 'FLOW');
-    this.setPreviousStatement(true);
-    // Assign 'this' to a variable for use in the tooltip closure below.
-    var thisBlock = this;
-    this.setTooltip(function() {
-      var op = thisBlock.getFieldValue('FLOW');
-      var TOOLTIPS = {
-        'BREAK': Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK,
-        'CONTINUE': Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE
-      };
-      return TOOLTIPS[op];
-    });
-  },
-  /**
-   * Called whenever anything on the workspace changes.
-   * Add warning if this flow block is not nested inside a loop.
-   * @param {!Blockly.Events.Abstract} e Change event.
-   * @this Blockly.Block
-   */
-  onchange: function(e) {
-    if (!this.workspace.isDragging || this.workspace.isDragging()) {
-      return;  // Don't change state at the start of a drag.
-    }
-    var legal = false;
-    // Is the block nested in a loop?
-    var block = this;
-    do {
-      if (this.LOOP_TYPES.indexOf(block.type) != -1) {
-        legal = true;
-        break;
-      }
-      block = block.getSurroundParent();
-    } while (block);
-    if (legal) {
-      this.setWarningText(null);
-      if (!this.isInFlyout) {
-        this.setDisabled(false);
-      }
+Blockly.Lua['controls_for'] = function(block) {
+  // For loop.
+  var variable0 = Blockly.Lua.variableDB_.getName(
+      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  var startVar = Blockly.Lua.valueToCode(block, 'FROM',
+      Blockly.Lua.ORDER_NONE) || '0';
+  var endVar = Blockly.Lua.valueToCode(block, 'TO',
+      Blockly.Lua.ORDER_NONE) || '0';
+  var increment = Blockly.Lua.valueToCode(block, 'BY',
+      Blockly.Lua.ORDER_NONE) || '1';
+  var branch = Blockly.Lua.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.Lua.addLoopTrap(branch, block.id);
+  branch = Blockly.Lua.addContinueLabel(branch);
+  var code = '';
+  var incValue;
+  if (Blockly.isNumber(startVar) && Blockly.isNumber(endVar) &&
+      Blockly.isNumber(increment)) {
+    // All arguments are simple numbers.
+    var up = parseFloat(startVar) <= parseFloat(endVar);
+    var step = Math.abs(parseFloat(increment));
+    incValue = (up ? '' : '-') + step;
+  } else {
+    code = '';
+    // Determine loop direction at start, in case one of the bounds
+    // changes during loop execution.
+    incValue = Blockly.Lua.variableDB_.getDistinctName(
+        variable0 + '_inc', Blockly.Variables.NAME_TYPE);
+    code += incValue + ' = ';
+    if (Blockly.isNumber(increment)) {
+      code += Math.abs(increment) + '\n';
     } else {
-      this.setWarningText(Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING);
-      if (!this.isInFlyout && !this.getInheritedDisabled()) {
-        this.setDisabled(true);
-      }
+      code += 'math.abs(' + increment + ')\n';
     }
-  },
-  /**
-   * List of block types that are loops and thus do not need warnings.
-   * To add a new loop type add this to your code:
-   * Blockly.Blocks['controls_flow_statements'].LOOP_TYPES.push('custom_loop');
-   */
-  LOOP_TYPES: ['controls_repeat', 'controls_repeat_ext', 'controls_forEach',
-      'controls_for', 'controls_whileUntil']
+    code += 'if (' + startVar + ') > (' + endVar + ') then\n';
+    code += Blockly.Lua.INDENT + incValue + ' = -' + incValue + '\n';
+    code += 'end\n';
+  }
+  code += 'for ' + variable0 + ' = ' + startVar + ', ' + endVar +
+      ', ' + incValue;
+  code += ' do\n' + branch + 'end\n';
+  return code;
+};
+
+Blockly.Lua['controls_forEach'] = function(block) {
+  // For each loop.
+  var variable0 = Blockly.Lua.variableDB_.getName(
+      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  var argument0 = Blockly.Lua.valueToCode(block, 'LIST',
+      Blockly.Lua.ORDER_NONE) || '{}';
+  var branch = Blockly.Lua.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.Lua.addContinueLabel(branch);
+  var code = 'for _, ' + variable0 + ' in ipairs(' + argument0 + ') do \n' +
+      branch + 'end\n';
+  return code;
+};
+
+Blockly.Lua['controls_flow_statements'] = function(block) {
+  // Flow statements: continue, break.
+  switch (block.getFieldValue('FLOW')) {
+    case 'BREAK':
+      return 'break\n';
+    case 'CONTINUE':
+      return Blockly.Lua.CONTINUE_STATEMENT;
+  }
+  throw 'Unknown flow statement.';
 };
