@@ -13,12 +13,7 @@ Blockly.Block.prototype.isSensorBlock = function() {
 }
 
 Blockly.Block.prototype.isHatBlock = function() {
-	var hatBlocks = [
-		'when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every', 'thread', 'mqtt_subscribe',
-		'when_wifi_is_conneted', 'when_wifi_is_disconneted'
-	];
-	
-	return (hatBlocks.indexOf(this.type) != -1);
+	return ((this.previousConnection == null) && (this.nextConnection == null));
 }
 
 Blockly.Block.prototype.isInHatBlock = function() {
