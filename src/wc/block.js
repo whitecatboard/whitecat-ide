@@ -17,14 +17,9 @@ Blockly.Block.prototype.isHatBlock = function() {
 }
 
 Blockly.Block.prototype.isInHatBlock = function() {
-	var hatBlocks = [
-		'when_board_starts', 'when_i_receive', 'when_digital_pin', 'when_i_receive_a_lora_frame', 'sensor_when', 'execute_every', 'thread', 'mqtt_subscribe',
-		'when_wifi_is_conneted', 'when_wifi_is_disconneted'
-	];
-	
 	var block = this;
 	do {
-		if (hatBlocks.indexOf(block.type) != -1) {
+		if (block.isHatBlock()) {
 			return true;
 			
 			break;
