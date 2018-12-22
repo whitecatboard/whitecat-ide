@@ -13,7 +13,7 @@ Blockly.Block.prototype.isSensorBlock = function() {
 }
 
 Blockly.Block.prototype.isHatBlock = function() {
-	return ((this.previousConnection == null) && (this.nextConnection == null));
+	return ((this.previousConnection == null) && (this.nextConnection == null) && (this.outputConnection == null));
 }
 
 Blockly.Block.prototype.isInHatBlock = function() {
