@@ -118,36 +118,46 @@ Code.defaultStatus = {
     sensors: []
 };
 
-Code.devices = [{
+Code.devices = [
+{
     "vendorId": "0x10c4",
     "productId": "0xea60",
     "vendor": "Silicon Labs",
 	"maxBauds": "921600"
-}, {
+},
+{
     "vendorId": "0x403",
     "productId": "0x6015",
     "vendor": "FTDI",
 	"maxBauds": "921600"
-}, {
+},
+{
     "vendorId": "0x403",
     "productId": "0x6001",
     "vendor": "FTDI",
 	"maxBauds": "921600"
-}, {
+},
+{
     "vendorId": "0x403",
     "productId": "0x6010",
     "vendor": "FTDI",
 	"maxBauds": "2000000"
-}, {
+},
+{
+    "vendorId": "0x403",
+    "productId": "0x6011",
+    "vendor": "FTDI",
+	"maxBauds": "921600"
+},
+{
     "vendorId": "0x1a86",
     "productId": "0x7523",
     "vendor": "CH340",
 	"maxBauds": "115200"
-}];
+}
+];
 
 Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
-
-Code.platforms = ["MacIntel", "Win32", "Linux x86_64"];
 
 Code.progressDialog = false;
 
