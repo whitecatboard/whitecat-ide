@@ -489,7 +489,7 @@ Blockly.Sensors.ADCSelection = function(index, id, block, edit) {
 	} else {
 		// Get externals channels		
 		for(i=0; i < Code.status.maps.externalAdcUnits[adcUnit][1];i++) {
-			adcChan.push(["channel%1".replace("%1", String(i)), i.toString()]);
+			adcChan.push([Code.status.maps.externalAdcUnits[adcUnit][3] + "%1".replace("%1", String(i)), i.toString()]);
 		}		
 	}
 	
@@ -582,7 +582,7 @@ Blockly.Sensors.adcUnitChanged = function(index) {
 	} else {
 		// Get externals channels		
 		for(i=0; i < Code.status.maps.externalAdcUnits[unit][1];i++) {
-			channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
+			channels.push([Code.status.maps.externalAdcUnits[unit][3] + "%1".replace("%1", String(i)), i.toString()]);
 		}		
 	}
 

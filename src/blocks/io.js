@@ -114,7 +114,7 @@ Blockly.Blocks.io.helper = {
 
 		for (i = 0; i < Code.status.maps.externalAdcUnits[unit][1]; i++) {
 			if (Code.status.externalADC[Code.status.maps.externalAdcUnits[unit][0]]) {
-				channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
+				channels.push([Code.status.maps.externalAdcUnits[unit][3] + "%1".replace("%1", String(i)), i.toString()]);
 			}
 		}
 
@@ -346,7 +346,7 @@ Blockly.Blocks['external_analog_units'] = {
 			var drop = this.parentBlock_.childBlocks_[1].getField("CHANNEL");
 
 			drop.menuGenerator_ = Blockly.Blocks.io.helper.getExternalAdcChannels(unit);
-			drop.setText("channel0");
+			drop.setText(Code.status.maps.externalAdcUnits[0][3] + "0");
 			drop.setValue("0");
 		}
 	},

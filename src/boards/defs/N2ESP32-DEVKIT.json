@@ -4,14 +4,14 @@
 	"digitalPins": {
 		 "0":  ["GPIO0" , true, true , "IO0"   ],
  		 "2":  ["GPIO2" , true, true , "IO2"   ],
- 		 "4":  ["GPIO4" , false,false, "IO4"   ],
+ 		 "4":  ["GPIO4" , true, true,  "IO4"   ],
   		 "5":  ["GPIO5" , true, true , "IO5"   ],
- 		"12":  ["GPIO12", false,true , "IO12"  ],
+   		 "9":  ["GPIO9" , true ,true , "IO9"   ],
+  		"10":  ["GPIO10", true, true , "IO10"  ],
+ 		"12":  ["GPIO12", true, true , "IO12"  ],
  		"13":  ["GPIO13", true, true , "IO13"  ],
  		"14":  ["GPIO14", true, true , "IO14"  ],
- 		"15":  ["GPIO15", true, false, "IO15"  ],
- 		"16":  ["GPIO16", false,false, "IO16"  ],
- 		"17":  ["GPIO17", false,false, "IO17"  ],
+ 		"15":  ["GPIO15", true, true , "IO15"  ],
 		"18":  ["GPIO18", true, true , "IO18"  ],
 		"19":  ["GPIO19", true, true , "IO19"  ],
 		"21":  ["GPIO21", true, true , "IO21"  ],
@@ -23,52 +23,61 @@
 		"32":  ["GPIO32", true, true , "IO32"  ],
 		"33":  ["GPIO33", true, true , "IO33"  ],
 		"34":  ["GPIO34", true, false, "IO34"  ],
-		"35":  ["GPIO35", true, false, "IO35"  ]
+		"35":  ["GPIO35", true, false, "IO35"  ],
+		"36":  ["GPIO36", true, false, "IO36"  ],
+		"37":  ["GPIO37", true, false, "IO37"  ],
+		"38":  ["GPIO38", true, false, "IO38"  ],
+		"39":  ["GPIO39", true, false, "IO39"  ]
 	},
 	"analogPins": {
-		"32": ["GPIO32", "IO32"],
-		"33": ["GPIO33", "IO33"],
-		"34": ["GPIO34", "IO34"],
-		"35": ["GPIO35", "IO35"]	 	
+		"32":  ["GPIO32", "IO32"],
+		"33":  ["GPIO33", "IO33"],
+		"34":  ["GPIO34", "IO34"],
+		"35":  ["GPIO35", "IO35"],	 	
+		"36":  ["GPIO36", "IO36"],
+		"37":  ["GPIO37", "IO37"],
+		"38":  ["GPIO38", "IO38"],
+		"39":  ["GPIO39", "IO39"]
 	},
 	"pwmPins": {
-	    "0":  ["GPIO0",  "IO0"   ],
-	    "2":  ["GPIO2",  "IO2"   ],
-	    "5":  ["GPIO5",  "IO5"   ],
-	   "12":  ["GPIO12", "IO12"  ],
-	   "13":  ["GPIO13", "IO13"  ],
-	   "14":  ["GPIO14", "IO14"  ],
-	   "18":  ["GPIO18", "IO18"  ],
-	   "19":  ["GPIO19", "IO19"  ],
-	   "21":  ["GPIO21", "IO21"  ],
-	   "22":  ["GPIO22", "IO22"  ],
-	   "23":  ["GPIO23", "IO23"  ],
-	   "25":  ["GPIO25", "IO25"  ],
-	   "26":  ["GPIO26", "IO26"  ],
-	   "27":  ["GPIO27", "IO27"  ],
-	   "32":  ["GPIO32", "IO32"  ],
-	   "33":  ["GPIO33", "IO33"  ]
+    	 "0":  ["GPIO0" , "IO0"   ],
+		 "2":  ["GPIO2" , "IO2"   ],
+		 "4":  ["GPIO4" , "IO4"   ],
+ 		 "5":  ["GPIO5" , "IO5"   ],
+  		 "9":  ["GPIO9" , "IO9"   ],
+ 		"10":  ["GPIO10", "IO10"  ],
+		"12":  ["GPIO12", "IO12"  ],
+		"13":  ["GPIO13", "IO13"  ],
+		"14":  ["GPIO14", "IO14"  ],
+		"15":  ["GPIO15", "IO15"  ],
+	    "18":  ["GPIO18", "IO18"  ],
+	    "19":  ["GPIO19", "IO19"  ],
+	    "21":  ["GPIO21", "IO21"  ],
+	    "22":  ["GPIO22", "IO22"  ],
+	    "23":  ["GPIO23", "IO23"  ],
+	    "25":  ["GPIO25", "IO25"  ],
+		"26":  ["GPIO26", "IO26"  ],
+	    "27":  ["GPIO27", "IO27"  ],
+	    "32":  ["GPIO32", "IO32"  ],
+	    "33":  ["GPIO33", "IO33"  ]
 	},
 	"externalAdcUnits": {
-		"2": ["MCP3008", 8, 10],
-		"3": ["MCP3208", 8, 12],
-		"4": ["ADS1115", 4, 15],
-		"5": ["ADS1015", 4, 12]
+		"5": ["ADS1015", 4, 12, "AIN"]
 	},	
 	"i2cUnits": {
 		"0": ["I2C0 SDA=IO33, SCL=IO32","I2C0"],
-		"1": ["I2C1 SDA=IO15, SCL=IO2","I2C1"]
+		"1": ["I2C1 SDA=IO15, SCL=IO2" ,"I2C1"]
 	},
 	"canUnits": {
-		"0": ["CAN0"]
+		"0": ["CAN0 TX=IO25, RX=IO26"]
 	},
 	"spiUnits": {
 		"2": ["SPI2 MISO=IO12, MOSI=IO13, CLK=IO14","SPI2"],
 		"3": ["SPI3 MISO=IO19, MOSI=IO23, CLK=IO18","SPI3"]
 	},
 	"uartUnits": {
-		"0": ["UART0 (RX=U0RX, TX=U0TX)","UART0"],
-		"1": ["UART1 (RX=IO26, TX=IO25)","UART1"],
-		"2": ["UART2 (RX=IO2,  TX=IO15)","UART2"]
+		"0": ["UART0 (RX=U0RX, TX=U0TX)", "UART0"],
+		"1": ["UART1 (RX=IO26, TX=IO25)", "UART1"],
+		"2": ["UART2 (RX=IO2,  TX=IO15)", "UART2"]
 	}
 }
