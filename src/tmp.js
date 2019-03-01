@@ -1361,6 +1361,40 @@ Blockly.Lua.io.helper = {
 		
 		return "_pio_" + pin;
 	},
+	
+	hasPullUp: function(block, name) {
+		if (typeof name == "undefined") {
+			name = "PIN";
+		}
+
+		var pin = Blockly.Lua.statementToCodeNoIndent(block,name)[0];
+		if (typeof pin == "undefined") {
+			pin = block.getFieldValue(name);
+		}
+		
+		if (pin.indexOf("pio.") === 0) {
+			pin = pin.replace("pio.","");
+		}
+		
+		return Blockly.Blocks.io.helper.pinHasPullUp(pin);
+	},
+
+	hasPullDown: function(block, name) {
+		if (typeof name == "undefined") {
+			name = "PIN";
+		}
+
+		var pin = Blockly.Lua.statementToCodeNoIndent(block,name)[0];
+		if (typeof pin == "undefined") {
+			pin = block.getFieldValue(name);
+		}
+		
+		if (pin.indexOf("pio.") === 0) {
+			pin = pin.replace("pio.","");
+		}
+		
+		return Blockly.Blocks.io.helper.pinHasPullDown(pin);
+	},
 
 	attachDigital: function(block, output) {
 		var code = '';
@@ -1371,11 +1405,19 @@ Blockly.Lua.io.helper = {
 		
 		if (output) {
 			code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.OUTPUT, ' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
-			code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.NOPULL, '+ Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+			
+			if (Blockly.Lua.io.helper.hasPullUp(block) | Blockly.Lua.io.helper.hasPullDown(block)) {
+				code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.NOPULL, '+ Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";				
+			}
+			
 			code += Blockly.Lua.indent(0,'end') + "\n\n";
 		} else {
 			code += Blockly.Lua.indent(1,'pio.pin.setdir(pio.INPUT, ' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
-			code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.PULLUP, '+ Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+			
+			if (Blockly.Lua.io.helper.hasPullUp(block)) {
+				code += Blockly.Lua.indent(1,'pio.pin.setpull(pio.PULLUP, '+ Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
+			}
+			
 			code += Blockly.Lua.indent(0,'end') + "\n\n";				
 		}
 		//}

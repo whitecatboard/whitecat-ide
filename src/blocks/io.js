@@ -87,7 +87,7 @@ Blockly.Blocks.io.helper = {
 
 		for (var key in Code.status.maps.digitalPins) {
 			if (Code.status.maps.digitalPins[key][2]) {
-				pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+				pins.push([Code.status.maps.digitalPins[key][5] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 			}
 		}
 
@@ -99,7 +99,7 @@ Blockly.Blocks.io.helper = {
 
 		for (var key in Code.status.maps.digitalPins) {
 			if (Code.status.maps.digitalPins[key][1] && Code.status.maps.digitalPins[key][2]) {
-				pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+				pins.push([Code.status.maps.digitalPins[key][5] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 			}
 		}
 
