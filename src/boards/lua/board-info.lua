@@ -150,6 +150,7 @@ do
 	    __m_ena("sdisplay",sdisplay)
 	    __m_ena("net",net)
 		__m_ena("can",can)
+		__m_ena("vm",vm)
 		io.write("},")
 
 	    io.write("\"exceptions\": ")
