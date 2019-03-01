@@ -323,12 +323,8 @@ Blockly.Sensors.GPIOSelection = function(index, id, block, edit) {
 	var part = "";
 	
 	// Build gpio selection
-	var gpio = [];
+	var gpio = Blockly.Blocks.io.helper.getDigitalPins();
 	var gpioSelect = "";
-
-	for (var key in  Code.status.maps.digitalPins) {
-		gpio.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
-	}
 
 	var gpioSelect = '<select id="interface'+index+'_unit" name="interface'+index+'_unit">';
 	gpio.forEach(function(item) {
@@ -418,15 +414,11 @@ Blockly.Sensors.UARTSelection = function(index, id, block, edit) {
 
 Blockly.Sensors.ONEWIRESelection = function(index, id, block, edit) {
 	var part = "";
-	var gpio = [];
+	var gpio = Blockly.Blocks.io.helper.getDigitalPins();
 
 	// Build 1-wire selection
 	var oneWireSelect = [];
 	var oneWireSelect = "";
-
-	for (var key in  Code.status.maps.digitalPins) {
-		gpio.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
-	}
 
 	var oneWireSelect = '<select id="interface'+index+'_unit" name="interface'+index+'_unit">';
 	gpio.forEach(function(item) {
@@ -489,7 +481,7 @@ Blockly.Sensors.ADCSelection = function(index, id, block, edit) {
 	} else {
 		// Get externals channels		
 		for(i=0; i < Code.status.maps.externalAdcUnits[adcUnit][1];i++) {
-			adcChan.push(["channel%1".replace("%1", String(i)), i.toString()]);
+			adcChan.push([Code.status.maps.externalAdcUnits[adcUnit][3] + "%1".replace("%1", String(i)), i.toString()]);
 		}		
 	}
 	
@@ -582,7 +574,7 @@ Blockly.Sensors.adcUnitChanged = function(index) {
 	} else {
 		// Get externals channels		
 		for(i=0; i < Code.status.maps.externalAdcUnits[unit][1];i++) {
-			channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
+			channels.push([Code.status.maps.externalAdcUnits[unit][3] + "%1".replace("%1", String(i)), i.toString()]);
 		}		
 	}
 

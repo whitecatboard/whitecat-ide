@@ -420,8 +420,7 @@ Blockly.Lua['bitwise_unary_op'] = function(block) {
 	}
 
 	return ['(' + op + op1 + ')', Blockly.Lua.ORDER_UNARY];
-}
-/*
+}/*
  * Whitecat Blocky Environment, can block code generation
  *
  * Copyright (C) 2015 - 2016
@@ -1343,7 +1342,6 @@ Blockly.Lua.io.helper = {
 			pin = block.getFieldValue(name);
 		}
 		
-		console.log(pin);
 		return pin;
 	},
 	
@@ -1687,7 +1685,7 @@ Blockly.Lua['input_digital_pin'] = function(block) {
 	return ['pio.' + pinName, Blockly.Lua.ORDER_HIGH];
 };
 
-Blockly.Lua['input_digital_pin_Sel'] = function(block) {
+Blockly.Lua['input_digital_pin_sel'] = function(block) {
 	var pin = block.getFieldValue('PIN');
 	var pinName = Code.status.maps.digitalPins[pin][0];
 	
@@ -2443,8 +2441,7 @@ Blockly.Lua['controls_flow_statements'] = function(block) {
       return Blockly.Lua.CONTINUE_STATEMENT;
   }
   throw 'Unknown flow statement.';
-};
-/*
+};/*
  * Whitecat Blocky Environment, Lora code generation
  *
  * Copyright (C) 2015 - 2016
@@ -2773,7 +2770,6 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	for (var x = 0, block; block = blocks[x]; x++) {
 		if (block.disabled || block.getInheritedDisabled()) {
 			continue;
-			
 		}
 		if (block.type == 'when_board_starts') {
 			hasBoardStart = true;
@@ -2820,9 +2816,14 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	}
 	
 	codeSection["events"].push(initCode);
-
+	
 	// Begin
-	for (var x = 0, block; block = blocks[x]; x++) {		
+	for (var x = 0, block; block = blocks[x]; x++) {
+	    if (!block.isHatBlock()) {
+	      // Don't include code for blocks that are outside a hat block
+	      continue;
+	    }	
+    
 		// Put code in default section
 		section = "default";
 
@@ -2845,19 +2846,8 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 				line = this.scrubNakedValue(line);
 			}
 
-			if (!block.isHatBlock()) {
-				// Skip, this is test code
-				//initCode = Blockly.Lua.indent(0,'thread.start(function()') + "\n";
-				//initCode += Blockly.Lua.indent(1,'-- Wait until board is started') + "\n";
-				//initCode += Blockly.Lua.indent(1,'_eventBoardStarted:wait()') + "\n\n";
-				//initCode += Blockly.Lua.indent(1,line);
-				//initCode += Blockly.Lua.indent(0,'end)') + "\n";
-				
-				//line = initCode;
-			} else {
-				// Put code in it's section
-				codeSection[section].push(line);	
-			}
+			// Put code in its section
+		  codeSection[section].push(line);	
 		}
 	}
 

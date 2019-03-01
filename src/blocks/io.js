@@ -40,11 +40,31 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.io.HUE = 260;
 
 Blockly.Blocks.io.helper = {
+	pinHasPullUp: function(pin) {
+		for (var key in Code.status.maps.digitalPins) {
+			if ((key == pin) || (Code.status.maps.digitalPins[key][0] == pin)) {
+				return Code.status.maps.digitalPins[key][3];
+			}
+		}
+		
+		return false;
+	},
+
+	pinHasPullDown: function(pin) {
+		for (var key in Code.status.maps.digitalPins) {
+			if ((key == pin) || (Code.status.maps.digitalPins[key][0] == pin)) {
+				return Code.status.maps.digitalPins[key][4];
+			}
+		}
+		
+		return false;
+	},
+	
 	getDigitalPins: function() {
 		var pins = [];
 
 		for (var key in Code.status.maps.digitalPins) {
-			pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+			pins.push([Code.status.maps.digitalPins[key][5] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 		}
 
 		return pins;
@@ -55,7 +75,7 @@ Blockly.Blocks.io.helper = {
 
 		for (var key in Code.status.maps.digitalPins) {
 			if (Code.status.maps.digitalPins[key][1]) {
-				pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+				pins.push([Code.status.maps.digitalPins[key][5] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 			}
 		}
 
@@ -114,7 +134,7 @@ Blockly.Blocks.io.helper = {
 
 		for (i = 0; i < Code.status.maps.externalAdcUnits[unit][1]; i++) {
 			if (Code.status.externalADC[Code.status.maps.externalAdcUnits[unit][0]]) {
-				channels.push(["channel%1".replace("%1", String(i)), i.toString()]);
+				channels.push([Code.status.maps.externalAdcUnits[unit][3] + "%1".replace("%1", String(i)), i.toString()]);
 			}
 		}
 
@@ -346,7 +366,7 @@ Blockly.Blocks['external_analog_units'] = {
 			var drop = this.parentBlock_.childBlocks_[1].getField("CHANNEL");
 
 			drop.menuGenerator_ = Blockly.Blocks.io.helper.getExternalAdcChannels(unit);
-			drop.setText("channel0");
+			drop.setText(Code.status.maps.externalAdcUnits[0][3] + "0");
 			drop.setValue("0");
 		}
 	},
