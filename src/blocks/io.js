@@ -40,11 +40,31 @@ goog.require('Blockly.Blocks');
 Blockly.Blocks.io.HUE = 260;
 
 Blockly.Blocks.io.helper = {
+	pinHasPullUp: function(pin) {
+		for (var key in Code.status.maps.digitalPins) {
+			if ((key == pin) || (Code.status.maps.digitalPins[key][0] == pin)) {
+				return Code.status.maps.digitalPins[key][3];
+			}
+		}
+		
+		return false;
+	},
+
+	pinHasPullDown: function(pin) {
+		for (var key in Code.status.maps.digitalPins) {
+			if ((key == pin) || (Code.status.maps.digitalPins[key][0] == pin)) {
+				return Code.status.maps.digitalPins[key][4];
+			}
+		}
+		
+		return false;
+	},
+	
 	getDigitalPins: function() {
 		var pins = [];
 
 		for (var key in Code.status.maps.digitalPins) {
-			pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+			pins.push([Code.status.maps.digitalPins[key][5] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 		}
 
 		return pins;
@@ -55,7 +75,7 @@ Blockly.Blocks.io.helper = {
 
 		for (var key in Code.status.maps.digitalPins) {
 			if (Code.status.maps.digitalPins[key][1]) {
-				pins.push([Code.status.maps.digitalPins[key][3] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
+				pins.push([Code.status.maps.digitalPins[key][5] + ' - ' + Code.status.maps.digitalPins[key][0].replace(/pio\.P/i, '').replace(/_/i, ''), key]);
 			}
 		}
 
