@@ -49,7 +49,7 @@ Blockly.Lua['text_join'] = function(block) {
         Blockly.Lua.ORDER_CONCATENATION) || '\'\'';
     var element1 = Blockly.Lua.valueToCode(block, 'ADD1',
         Blockly.Lua.ORDER_CONCATENATION) || '\'\'';
-    var code = element0 + ' .. ' + element1;
+    var code = element0 + ' ' + Blockly.Lua.annotateOperator(block,'..') + ' ' + element1;
     return [code, Blockly.Lua.ORDER_CONCATENATION];
   } else {
     var elements = [];
@@ -68,21 +68,21 @@ Blockly.Lua['text_append'] = function(block) {
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
   var value = Blockly.Lua.valueToCode(block, 'TEXT',
       Blockly.Lua.ORDER_CONCATENATION) || '\'\'';
-  return varName + ' = ' + varName + ' .. ' + value + '\n';
+  return varName + ' = ' + varName + ' ' + Blockly.Lua.annotateOperator(block,'..') + ' ' + value + '\n';
 };
 
 Blockly.Lua['text_length'] = function(block) {
   // String or array length.
   var text = Blockly.Lua.valueToCode(block, 'VALUE',
       Blockly.Lua.ORDER_UNARY) || '\'\'';
-  return ['#' + text, Blockly.Lua.ORDER_UNARY];
+  return [Blockly.Lua.annotateOperator(block,'#') + ' ' + text, Blockly.Lua.ORDER_UNARY];
 };
 
 Blockly.Lua['text_isEmpty'] = function(block) {
   // Is the string null or array empty?
   var text = Blockly.Lua.valueToCode(block, 'VALUE',
       Blockly.Lua.ORDER_UNARY) || '\'\'';
-  return ['#' + text + ' == 0', Blockly.Lua.ORDER_RELATIONAL];
+  return [Blockly.Lua.annotateOperator(block,'#') + ' ' + text + ' == 0', Blockly.Lua.ORDER_RELATIONAL];
 };
 
 Blockly.Lua['text_indexOf'] = function(block) {
@@ -117,7 +117,7 @@ Blockly.Lua['text_indexOf'] = function(block) {
          'end']);
   }
   var code = functionName + '(' + text + ', ' + substring + ')';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_charAt'] = function(block) {
@@ -165,7 +165,7 @@ Blockly.Lua['text_charAt'] = function(block) {
       code = functionName + '(' + text + ', ' + start + ')';
     }
   }
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_getSubstring'] = function(block) {
@@ -203,7 +203,7 @@ Blockly.Lua['text_getSubstring'] = function(block) {
     throw 'Unhandled option (text_getSubstring)';
   }
   var code = 'string.sub(' + text + ', ' + start + ', ' + end + ')';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_changeCase'] = function(block) {
@@ -240,7 +240,7 @@ Blockly.Lua['text_changeCase'] = function(block) {
          'end']);
   }
   var code = functionName + '(' + text + ')';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_trim'] = function(block) {
@@ -254,7 +254,7 @@ Blockly.Lua['text_trim'] = function(block) {
   var text = Blockly.Lua.valueToCode(block, 'TEXT',
       Blockly.Lua.ORDER_NONE) || '\'\'';
   var code = 'string.gsub(' + text + ', "' + operator + '", "%1")';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_print'] = function(block) {

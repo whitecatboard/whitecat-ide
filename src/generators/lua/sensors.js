@@ -106,7 +106,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 		
 	codeSection["declaration"].push(getCode);
 
-	return ['_get'+block.name+'_' + magnitude.replace(/\s|-/g, '_') + '()', Blockly.Lua.ORDER_HIGH];	
+	return [Blockly.Lua.annotateFunctionCall(block,'_get'+block.name+'_' + magnitude.replace(/\s|-/g, '_') + '()'), Blockly.Lua.ORDER_HIGH];	
 };
 
 Blockly.Lua['sensor_set'] = function(block) {
@@ -121,7 +121,7 @@ Blockly.Lua['sensor_set'] = function(block) {
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+'"') + "\n\n";
 	tryCode += Blockly.Lua.sensors.helper.attach(block);
-	tryCode += Blockly.Lua.indent(1,'_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+':set("'+property+'", '+value+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,Blockly.Lua.annotateFunctionCall(block, '_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+':set("'+property+'", '+value+')')) + "\n";
 
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block,tryCode)) + "\n";
 	

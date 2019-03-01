@@ -215,19 +215,31 @@ Blockly.Lua.inTryBlock = function(block) {
 }
 
 Blockly.Lua.blockStart = function(indent, block) {
-	if (Blockly.Lua.developerMode) {
-		return Blockly.Lua.indent(indent,'wcBlock.blockStart('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";
+	if (Blockly.Lua.developerMode || !Blockly.Lua.legacyGenCode) {    		
+		if (Blockly.Lua.legacyGenCode) {
+			return Blockly.Lua.indent(indent,'wcBlock.blockStart('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";
+		} else {
+		    var flags = block.isHatBlock()?1:0;
+			
+		    return Blockly.Lua.indent(indent, "--[[bs:" + Blockly.Lua.blockIdToNum(block.id) + ":"+flags+"]]") + "\n";			
+		}    
 	} else {
 		return '';
 	}
 }
 
 Blockly.Lua.blockEnd = function(indent, block) {
-	if (Blockly.Lua.developerMode) {
-		return Blockly.Lua.indent(indent,'wcBlock.blockEnd('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";	
+	if (Blockly.Lua.developerMode || !Blockly.Lua.legacyGenCode) {    		
+		if (Blockly.Lua.legacyGenCode) {
+			return Blockly.Lua.indent(indent,'wcBlock.blockEnd('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";	
+		} else {
+		    var flags = block.isHatBlock()?1:0;
+			
+		    return Blockly.Lua.indent(indent, "--[[be:" + Blockly.Lua.blockIdToNum(block.id) + ":"+flags+"]]") + "\n";		
+		}
 	} else {
 		return '';
-	}
+	};
 }
 
 Blockly.Lua.blockError = function(indent, block) {
@@ -258,6 +270,8 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	var tryCode = '';
 	var blockId = Blockly.Lua.blockIdToNum(block.id);
 
+	if (code == '') return '';
+	
 	if (typeof comment == "undefined") {
 		comment = "";
 	}
@@ -266,7 +280,7 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 		tryCode += "-- begin: " + comment + "\n";
 	}
 
-	if (!Blockly.Lua.developerMode || Blockly.Lua.inTryBlock(block)) {
+	if (!Blockly.Lua.developerMode || Blockly.Lua.inTryBlock(block) || !Blockly.Lua.legacyGenCode) {
 		tryCode += Blockly.Lua.indent(indent, code);
 	} else {
 		tryCode += Blockly.Lua.indent(0, 'try(') + '\n';
@@ -328,4 +342,37 @@ Blockly.Lua.numToBlockId = function(num) {
 	} catch (e){
 		return null;
 	}
+}
+
+Blockly.Lua.annotateOperator = function(block, op) {
+  var annotatedOp = op;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+    annotatedOp = op.replace(/ /g, '');
+    annotatedOp = ' ' + 
+                  '--[[bs:'+Blockly.Lua.blockIdToNum(block.id)+':0]] ' + annotatedOp + ' --[[be:'+Blockly.Lua.blockIdToNum(block.id)+':0]]' +
+                  ' ';
+  }
+  
+  return annotatedOp;
+}
+
+Blockly.Lua.annotateFunctionCall = function(block, code) {
+  var annotatedFunction = code;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+    annotatedFunction = '--[[bs:'+Blockly.Lua.blockIdToNum(block.id)+':0]]' + code + '--[[be:'+Blockly.Lua.blockIdToNum(block.id)+':0]]';
+  }
+  
+  return annotatedFunction;
+}
+
+Blockly.Lua.annotateVariable = function(block, code) {
+  var annotatedVariable = code;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+    annotatedVariable = '--[[bs:'+Blockly.Lua.blockIdToNum(block.id)+':0]]' + code + '--[[be:'+Blockly.Lua.blockIdToNum(block.id)+':0]]';
+  }
+  
+  return annotatedVariable;
 }

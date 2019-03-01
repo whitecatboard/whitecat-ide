@@ -51,8 +51,11 @@ function isChrome() {
     }
 }
 
-// By default, enable developer mode
-Blockly.Lua.developerMode = true;
+// By default, disable developer mode
+Blockly.Lua.developerMode = false;
+
+// By default, disable legacy generator code
+Blockly.Lua.legacyGenCode = false;
 
 /**
  * Create a namespace for the application.
@@ -1275,11 +1278,6 @@ Code.init = function() {
             Code.renderContent();
         });
 
-    if (jQuery("#developerMode").length > 0) {
-        jQuery("#developerMode").removeClass("disabled");
-        Code.bindClick('developerMode', Code.developerMode);
-    }
-
     if (jQuery("#blockEditorButton").length > 0) {
         jQuery("#blockEditorButton").removeClass("disabled");
         Code.bindClick('blockEditorButton', Code.blockEditor);
@@ -1353,10 +1351,6 @@ Code.initLanguage = function() {
         element.text(MSG[element.attr('id').replace('tab_', '')]);
     });
 
-    if (jQuery("#developerMode").length > 0) {
-        document.getElementById('developerMode').title = MSG['developerMode'];
-    }
-
     document.getElementById('switchToBlocks').title = MSG['switchToBlocksTooltip'];
     document.getElementById('switchToCode').title = MSG['switchToCodeTooltip'];
     document.getElementById('loadButton').title = MSG['loadButtonTooltip'];
@@ -1371,16 +1365,6 @@ Code.initLanguage = function() {
         document.getElementById('blockEditorButton').title = MSG['blockEditorTooltip'];
     }
     
-    if (jQuery("#developerMode").length > 0) {
-        document.getElementById('previewButton').title = MSG['previewButtonTooltip'];
-
-        if (Blockly.Lua.developerMode) {
-            document.getElementById('developerMode').title = MSG['developerModeTooltipOff'];
-        } else {
-            document.getElementById('developerMode').title = MSG['developerModeTooltipOn'];            
-        }
-    }
-
     var categories = [];
 
     if (Code.status.modules.pio || Code.status.modules.adc || Code.status.modules.pwm) {
@@ -2420,14 +2404,14 @@ Code.listDirectories = function(container, extension, storageSelectedCallback, f
 
 Code.tabRefresh = function() {
     if (Code.workspace.type == 'blocks') {
-        jQuery("#blockEditorButton, #previewButton, #developerMode, #switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
+        jQuery("#blockEditorButton, #previewButton, #switchToCode, #trashButton, #loadButton, #saveButton,  #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");
         jQuery("#switchToBlocks").addClass("disabled");
     } else if (Code.workspace.type == 'editor') {
         jQuery("#switchToBlocks, #trashButton, #loadButton, #saveButton, #saveAsButton, #rebootButton, #stopButton, #runButton").removeClass("disabled");        
-        jQuery("#developerMode,#previewButton, #blockEditorButton, #switchToCode").addClass("disabled");
+        jQuery("#previewButton, #blockEditorButton, #switchToCode").addClass("disabled");
     } else if (Code.workspace.type == 'block_editor') {
         jQuery("#blockEditorButton, #saveButton").removeClass("disabled");
-        jQuery("#trashButton, #loadButton, #previewButton, #developerMode, #switchToCode, #switchToBlocks, #saveAsButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
+        jQuery("#trashButton, #loadButton, #previewButton, #switchToCode, #switchToBlocks, #saveAsButton, #rebootButton, #stopButton, #runButton").addClass("disabled");
     }
 
     if (!Code.status.connected) {
@@ -2439,7 +2423,6 @@ Code.tabRefresh = function() {
     }
 
     if (Code.showCode) {
-        jQuery("#developerMode").removeClass("disabled");
         jQuery("#previewButton").removeClass("disabled");
         jQuery("#saveButton").addClass("disabled");
         jQuery("#saveAsButton").addClass("disabled");
@@ -2452,22 +2435,6 @@ Code.tabRefresh = function() {
         jQuery("#switchToBlocks").addClass("disabled");
         jQuery("#switchToCode").addClass("disabled");
     }
-}
-
-Code.developerMode = function() {
-    if (jQuery("#developerMode").hasClass("on")) {
-        jQuery("#developerMode").removeClass("on");
-        jQuery("#developerMode").find(".icon").addClass("off");
-        Blockly.Lua.developerMode = false;
-    } else {
-        jQuery("#developerMode").addClass("on");
-        jQuery("#developerMode").find(".icon").removeClass("off");
-        Blockly.Lua.developerMode = true;
-    }
-
-    Code.workspace.editor.setValue(Blockly.Lua.workspaceToCode(Code.workspace.blocks), -1);
-    Code.workspace.editor.focus();
-    Code.renderContent();
 }
 
 Code.blockEditor = function() {

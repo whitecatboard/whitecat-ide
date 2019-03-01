@@ -118,11 +118,11 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 			hasBoardStart = true;
 		}
 
-		if ((block.type == 'mqtt_publish') || ((block.type == 'mqtt_subscribe') && block.isInHatBlock())) {
+		if (((block.type == 'mqtt_publish') && block.isInHatBlock()) || (block.type == 'mqtt_subscribe')) {
 			hasMQTT = true;
 		}
 
-		if ((block.type == 'wifi_start') || ((block.type == 'wifi_stop') && block.isInHatBlock())) {
+		if ((((block.type == 'wifi_start') || (block.type == 'wifi_stop')) && block.isInHatBlock()) || (block.type == 'when_wifi_is_conneted') || (block.type == 'when_wifi_is_disconneted')) {
 			hasNetwork = true;
 		}
 	}

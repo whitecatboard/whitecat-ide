@@ -62,7 +62,7 @@ Blockly.Lua['logic_compare'] = function(block) {
     'GT': '>',
     'GTE': '>='
   };
-  var operator = OPERATORS[block.getFieldValue('OP')];
+  var operator = Blockly.Lua.annotateOperator(block,OPERATORS[block.getFieldValue('OP')]);
   var argument0 = Blockly.Lua.valueToCode(block, 'A',
       Blockly.Lua.ORDER_RELATIONAL) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'B',
@@ -73,7 +73,7 @@ Blockly.Lua['logic_compare'] = function(block) {
 
 Blockly.Lua['logic_operation'] = function(block) {
   // Operations 'and', 'or'.
-  var operator = (block.getFieldValue('OP') == 'AND') ? 'and' : 'or';
+  var operator = Blockly.Lua.annotateOperator(block,(block.getFieldValue('OP') == 'AND') ? 'and' : 'or');
   var order = (operator == 'and') ? Blockly.Lua.ORDER_AND :
       Blockly.Lua.ORDER_OR;
   var argument0 = Blockly.Lua.valueToCode(block, 'A', order);
@@ -100,7 +100,7 @@ Blockly.Lua['logic_negate'] = function(block) {
   // Negation.
   var argument0 = Blockly.Lua.valueToCode(block, 'BOOL',
       Blockly.Lua.ORDER_UNARY) || 'true';
-  var code = 'not ' + argument0;
+  var code = Blockly.Lua.annotateOperator(block,'not') + ' ' + argument0;
   return [code, Blockly.Lua.ORDER_UNARY];
 };
 

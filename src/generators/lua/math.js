@@ -47,7 +47,7 @@ Blockly.Lua['math_arithmetic'] = function(block) {
     POWER: [' ^ ', Blockly.Lua.ORDER_EXPONENTIATION]
   };
   var tuple = OPERATORS[block.getFieldValue('OP')];
-  var operator = tuple[0];
+  var operator = Blockly.Lua.annotateOperator(block,tuple[0]);
   var order = tuple[1];
   var argument0 = Blockly.Lua.valueToCode(block, 'A', order) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'B', order) || '0';
@@ -64,7 +64,7 @@ Blockly.Lua['math_single'] = function(block) {
     // Negation is a special case given its different operator precedence.
     arg = Blockly.Lua.valueToCode(block, 'NUM',
         Blockly.Lua.ORDER_UNARY) || '0';
-    return ['-' + arg, Blockly.Lua.ORDER_UNARY];
+    return [Blockly.Lua.annotateOperator(block,'-') + arg, Blockly.Lua.ORDER_UNARY];
   }
   if (operator == 'SIN' || operator == 'COS' || operator == 'TAN') {
     arg = Blockly.Lua.valueToCode(block, 'NUM',
@@ -75,50 +75,50 @@ Blockly.Lua['math_single'] = function(block) {
   }
   switch (operator) {
     case 'ABS':
-      code = 'math.abs(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.abs(' + arg + ')');
       break;
     case 'ROOT':
-      code = 'math.sqrt(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.sqrt(' + arg + ')');
       break;
     case 'LN':
-      code = 'math.log(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.log(' + arg + ')');
       break;
     case 'LOG10':
-      code = 'math.log(' + arg + ', 10)';
+      code = Blockly.Lua.annotateOperator(block,'math.log(' + arg + ', 10)');
       break;
     case 'EXP':
-      code = 'math.exp(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.exp(' + arg + ')');
       break;
     case 'POW10':
-      code = '10 ^ ' + arg;
+      code = '10 ' + Blockly.Lua.annotateOperator(block,'^') + ' '+ arg;
       break;
     case 'ROUND':
       // This rounds up.  Blockly does not specify rounding direction.
-      code = 'math.floor(' + arg + ' + .5)';
+      code = Blockly.Lua.annotateOperator(block,'math.floor(' + arg + ' + .5)');
       break;
     case 'ROUNDUP':
-      code = 'math.ceil(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.ceil(' + arg + ')');
       break;
     case 'ROUNDDOWN':
-      code = 'math.floor(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.floor(' + arg + ')');
       break;
     case 'SIN':
-      code = 'math.sin(math.rad(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.sin(math.rad(' + arg + '))');
       break;
     case 'COS':
-      code = 'math.cos(math.rad(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.cos(math.rad(' + arg + '))');
       break;
     case 'TAN':
-      code = 'math.tan(math.rad(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.tan(math.rad(' + arg + '))');
       break;
     case 'ASIN':
-      code = 'math.deg(math.asin(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.deg(math.asin(' + arg + '))');
       break;
     case 'ACOS':
-      code = 'math.deg(math.acos(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.deg(math.acos(' + arg + '))');
       break;
     case 'ATAN':
-      code = 'math.deg(math.atan(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.deg(math.atan(' + arg + '))');
       break;
     default:
       throw 'Unknown math operator: ' + operator;
@@ -168,24 +168,24 @@ Blockly.Lua['math_number_property'] = function(block) {
          '  end',
          '  return true',
          'end']);
-    code = functionName + '(' + number_to_check + ')';
+    code = Blockly.Lua.annotateOperator(block,functionName + '(' + number_to_check + ')');
     return [code, Blockly.Lua.ORDER_HIGH];
   }
   switch (dropdown_property) {
     case 'EVEN':
-      code = number_to_check + ' % 2 == 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' 2 == 0';
       break;
     case 'ODD':
-      code = number_to_check + ' % 2 == 1';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' 2 == 1';
       break;
     case 'WHOLE':
-      code = number_to_check + ' % 1 == 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' 1 == 0';
       break;
     case 'POSITIVE':
-      code = number_to_check + ' > 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'>') + ' 0';
       break;
     case 'NEGATIVE':
-      code = number_to_check + ' < 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'<') + ' 0';
       break;
     case 'DIVISIBLE_BY':
       var divisor = Blockly.Lua.valueToCode(block, 'DIVISOR',
@@ -198,7 +198,7 @@ Blockly.Lua['math_number_property'] = function(block) {
       // The normal trick to implement ?: with and/or doesn't work here:
       //   divisor == 0 and nil or number_to_check % divisor == 0
       // because nil is false, so allow a runtime failure. :-(
-      code = number_to_check + ' % ' + divisor + ' == 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' ' + divisor + ' == 0';
       break;
   }
   return [code, Blockly.Lua.ORDER_RELATIONAL];
@@ -392,7 +392,7 @@ Blockly.Lua['math_modulo'] = function(block) {
       Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'DIVISOR',
       Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
-  var code = argument0 + ' % ' + argument1;
+  var code = argument0 + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' ' + argument1;
   return [code, Blockly.Lua.ORDER_MULTIPLICATIVE];
 };
 
@@ -404,8 +404,9 @@ Blockly.Lua['math_constrain'] = function(block) {
       Blockly.Lua.ORDER_NONE) || '-math.huge';
   var argument2 = Blockly.Lua.valueToCode(block, 'HIGH',
       Blockly.Lua.ORDER_NONE) || 'math.huge';
-  var code = 'math.min(math.max(' + argument0 + ', ' + argument1 + '), ' +
-      argument2 + ')';
+  var code = Blockly.Lua.annotateFunctionCall(block,'math.min(math.max(' + argument0 + ', ' + argument1 + '), ' +
+      argument2 + ')');
+	  
   return [code, Blockly.Lua.ORDER_HIGH];
 };
 
@@ -415,7 +416,7 @@ Blockly.Lua['math_random_int'] = function(block) {
       Blockly.Lua.ORDER_NONE) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'TO',
       Blockly.Lua.ORDER_NONE) || '0';
-  var code = 'math.random(' + argument0 + ', ' + argument1 + ')';
+  var code = Blockly.Lua.annotateFunctionCall(block,'math.random(' + argument0 + ', ' + argument1 + ')');
   return [code, Blockly.Lua.ORDER_HIGH];
 };
 

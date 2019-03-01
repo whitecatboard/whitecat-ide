@@ -77,7 +77,7 @@ Blockly.Lua['bitwise_op'] = function(block) {
 		op2 = 'math.floor(' + op2 + ')';
 	}
 
-	return ['(' + op1 + ' ' + op + ' ' + op2 + ')', Blockly.Lua.ORDER_UNARY];
+	return ['(' + op1 + ' ' + Blockly.Lua.annotateOperator(block,op) + ' ' + op2 + ')', Blockly.Lua.ORDER_UNARY];
 }
 
 Blockly.Lua['bitwise_unary_op'] = function(block) {
@@ -88,5 +88,5 @@ Blockly.Lua['bitwise_unary_op'] = function(block) {
 		op = '~';
 	}
 
-	return ['(' + op + op1 + ')', Blockly.Lua.ORDER_UNARY];
+	return ['(' + Blockly.Lua.annotateOperator(block,op) + op1 + ')', Blockly.Lua.ORDER_UNARY];
 }

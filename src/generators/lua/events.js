@@ -37,7 +37,7 @@ Blockly.Lua['when_board_starts'] = function(block) {
 	var code = '';
 	var initCode = '';
 
-	if (statement != '') {
+	//if (statement != '') {
 		Blockly.Lua.addDependency("block", block);
 
 		code += Blockly.Lua.indent(0, '-- when board starts') + "\n";
@@ -51,7 +51,7 @@ Blockly.Lua['when_board_starts'] = function(block) {
 		code += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(false)') + "\n";
 
 		code += Blockly.Lua.indent(0, 'end)');
-	}
+		//}
 
 	return Blockly.Lua.postFormat(code, block);
 }
@@ -149,8 +149,8 @@ Blockly.Lua['execute_every'] = function(block) {
 		code += Blockly.Lua.tryBlock(2, block, tryCode);
 	}
 
-	code += Blockly.Lua.blockEnd(2, block);
 	code += Blockly.Lua.indent(2, 'tmr.delayms(' + every[0] + ')') + "\n";
+	code += Blockly.Lua.blockEnd(2, block);
 	code += Blockly.Lua.indent(1, 'end') + "\n";
 
 	code += Blockly.Lua.indent(0, 'end)');
