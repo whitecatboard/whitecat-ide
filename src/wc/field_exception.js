@@ -147,17 +147,12 @@ Blockly.wc.FieldException.dropdownCreate = function() {
 	var exceptionList = [];
 
 	if (this.sourceBlock_ && this.sourceBlock_.workspace) {
-		var previous = this.sourceBlock_.previousConnection;
-		if (previous) {
-			previous = previous.targetBlock();
-			if (previous) {
-				if (previous.type == "exception_try") {
-					var statement = previous.inputList[0].connection;
-					
-					Blockly.wc.FieldException.find(statement, exceptionList);					
-				}
-			}
-		}
+		if (this.sourceBlock_.isInBlock("exception_try", "CATCH0")) {
+			var statement = this.sourceBlock_.getFieldInParentBlock("exception_try", "TRY0");
+			if (statement) {
+				Blockly.wc.FieldException.find(statement, exceptionList);									
+			} 
+		}		
 	}
 	
 	exceptionList.push("any");

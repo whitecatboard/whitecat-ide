@@ -131,6 +131,30 @@ Blockly.Block.prototype.isInBlock = function(type, field) {
 	return false;	
 }
 
+Blockly.Block.prototype.getFieldInParentBlock = function(type, field) {
+	var block = this;
+	var parentBlock = this;
+	var i;
+	var j;
+	
+	do {
+		if (parentBlock.type == type) {
+			// Find field
+			for(i=0; i < parentBlock.inputList.length;i++) {
+				if (parentBlock.inputList[i].name == field) {
+					return parentBlock.inputList[i].connection;
+				}
+			}				
+			
+			break;
+		}
+		parentBlock = parentBlock.getSurroundParent();
+	} while (parentBlock);
+	
+	return null;	
+}
+
+
 Blockly.Block.prototype.getHelpUrl = function()  {
 	var url;
 	var thisInstance = this;
