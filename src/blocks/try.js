@@ -288,7 +288,7 @@ Blockly.Blocks['exception_raise_again'] = {
 			}
 		}
 
-		if (!this.isInBlock('exception_catch_error')) {
+		if (!this.isInBlock('exception_try', 'CATCH0')) {
 			this.setWarningText(Blockly.Msg.WARNING_RAISE_ERROR_AGAIN_NOT_ALLOWED_HERE);
 			if (!this.isInFlyout) {
 				this.setDisabled(true);
