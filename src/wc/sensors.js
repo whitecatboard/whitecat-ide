@@ -453,8 +453,13 @@ Blockly.Sensors.ADCSelection = function(index, id, block, edit) {
 	var adcUnitSelect = "";
 
 	adcUnit.push(["ADC1","ADC1", 8, 1])
-	for (var key in Code.status.maps.externalAdcUnits) {
-		adcUnit.push([Code.status.maps.externalAdcUnits[key][0], Code.status.maps.externalAdcUnits[key][0], Code.status.maps.externalAdcUnits[key][1], key]);
+
+	var externalAdcUnits = Blockly.Blocks.io.helper.getExternalAdcUnits();
+	
+	for (var key in externalAdcUnits) {
+		var unitId = parseInt(externalAdcUnits[key][1]);
+		
+		adcUnit.push([Code.status.maps.externalAdcUnits[unitId][0], Code.status.maps.externalAdcUnits[unitId][0], Code.status.maps.externalAdcUnits[unitId][1], unitId]);
 	}
 
 	var adcUnitSelect = '<select id="interface'+index+'_unit" name="interface'+index+'_unit" onchange="Blockly.Sensors.adcUnitChanged('+index+')">';
