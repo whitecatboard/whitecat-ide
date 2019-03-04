@@ -1,5 +1,9 @@
 'use strict';
 
+Blockly.Block.helper = {
+	
+};
+
 Blockly.Block.prototype.isReporterBlock = function() {
 	return ((this.outputConnection != null) && (this.outputConnection));
 }
@@ -292,4 +296,59 @@ Blockly.Block.prototype.checkUses = function(e, checkF, msg) {
 		}
 	}
 	Blockly.Events.enable();
+}
+
+Blockly.Block.helper.getField = function(xml, field) {
+	var nodes = xml.childNodes;
+	var nodeCount = nodes.length;
+	var value = null;
+	
+	for (var i = 0; i < nodeCount; i++) {
+		var node = nodes[i];
+		
+		if (typeof node.nodeName != "undefined") {
+	        var nodeName = node.nodeName.toLowerCase();
+			
+			if (nodeName == "field") {
+				var fieldName = node.getAttribute('name');
+				if (fieldName == field) {
+					value = node.textContent;
+				}
+			} else if (nodeName == "value") {
+				value = this.getField(node, field)
+			} else if (nodeName == "shadow") {
+				value = this.getField(node, field);
+			}
+			
+			if (value) {
+				break;
+			}
+		}
+	}
+	
+	return value;
+}
+
+Blockly.Block.helper.setField = function(xml, field, value) {
+	var nodes = xml.childNodes;
+	var nodeCount = nodes.length;
+	
+	for (var i = 0; i < nodeCount; i++) {
+		var node = nodes[i];
+		
+		if (typeof node.nodeName != "undefined") {
+	        var nodeName = node.nodeName.toLowerCase();
+			
+			if (nodeName == "field") {
+				var fieldName = node.getAttribute('name');
+				if (fieldName == field) {
+					node.textContent = value;
+				}
+			} else if (nodeName == "value") {
+				this.setField(node, field, value)
+			} else if (nodeName == "shadow") {
+				this.setField(node, field, value);
+			}
+		}
+	}
 }

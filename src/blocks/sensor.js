@@ -67,7 +67,7 @@ Blockly.Blocks['sensor_attach'] = {
 
 		this.setTooltip(Blockly.Msg.SENSOR_ATTACH_TOOLTIP);
 	},
-
+	
 	mutationToDom: function() {
 		var container = document.createElement('mutation');
 
@@ -147,6 +147,41 @@ Blockly.Blocks['sensor_read'] = {
 			.appendField(Blockly.Msg.SENSOR_READ2, "NAME");
 		this.setOutput(true);
 		this.setTooltip(Blockly.Msg.SENSOR_READ_TOOLTIP);
+	},
+
+	migrate: function(xmlElement) {
+		var nodes = xmlElement.childNodes;
+		var nodeCount = nodes.length;
+		var interfacen = 0;
+	
+		for (var i = 0; i < nodeCount; i++) {
+			var node = nodes[i];
+		
+			if (typeof node.nodeName != "undefined") {
+		        var nodeName = node.nodeName.toLowerCase(); 	 
+			
+				if (nodeName == "mutation") {
+					var interfaceName = node.getAttribute('interface');
+					if (interfaceName == "ADC") {
+						var interfaceUnit = node.getAttribute('interface'+interfacen+'_unit');
+						if (interfaceUnit > 1) {
+							// Unit is external, check if it's supported
+							if (!Blockly.Blocks.io.helper.hasExternalAdcUnit(interfaceUnit)) {
+								// Not supported, change unit for first supported unit
+								var newUnit = Blockly.Blocks.io.helper.getFirstExternalAdcUnit();
+								if (newUnit) {
+									node.setAttribute('interface'+interfacen+'_unit', newUnit);
+								}
+							}							
+						}
+					}
+					
+					interfacen = interfacen + 1;
+				}
+			}
+		}	
+		
+		return xmlElement;
 	},
 
 	mutationToDom: Blockly.Blocks['sensor_attach'].mutationToDom,

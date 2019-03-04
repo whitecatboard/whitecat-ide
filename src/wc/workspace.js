@@ -753,31 +753,73 @@ Blockly.Workspace.prototype.migratePinField = function(xml) {
 	return xml;
 }
 
-Blockly.Workspace.prototype.migrateExternalADC = function(xml) {
+Blockly.Workspace.prototype.migrateExternalADC = function(xml, name) {
+	if (typeof name == "undefined") {
+		name = "";
+	}
+	
+	for (var key in xml.childNodes) {
+		var xmlChild = xml.childNodes[key];
+		
+		if (typeof xmlChild.nodeName != "undefined") {
+			var node = xmlChild.nodeName.toLowerCase(); 
+		
+			if (node != "#text") {
+				var name = xmlChild.getAttribute('name');
+		
+				if ((node == "value") || (node == "field")) {
+					if (name == "UNIT") {
+						this.migrateExternalADC(xmlChild, name);
+					}
+				} else if (node == "shadow") {
+					this.migrateExternalADC(xmlChild, name);			
+				}			
+			} else {
+				if (name == "UNIT") {
+					// Get unit
+					var unit = parseInt(xmlChild.textContent);
+				
+					// Check if unit is supported
+					var units = Blockly.Blocks.io.helper.getExternalAdcUnits();
+					var supported = false;
+				
+					for(var key in units) {
+						var supportedUnit = parseInt(units[key][1]);
+				
+						if (unit == supportedUnit) {
+							supported = true;
+							break;
+						}
+					}
+				
+					// If unit is not supported replace by the first supported
+					if (!supported) {
+						for(var key in units) {
+							// Get first unit
+							xmlChild.textContent = units[key][1];
+							break;
+						}
+				
+					}
+				}
+			}	
+		}		
+	}
+	
+	return xml;
+}
+
+Blockly.Workspace.prototype.migrateExternalADCs = function(xml) {
 	var childCount = xml.childNodes.length;
+	var units = Blockly.Blocks.io.helper.getExternalAdcUnits();
 	
     for (var i = 0; i < childCount; i++) {
       var xmlChild = xml.childNodes[i];
       var name = xmlChild.nodeName.toLowerCase(); 	
 	  
-	  if (name == "field") {
+	  if (name == "value") {
 	  	var aName = xmlChild.getAttribute('name');
 		if (aName == 'UNIT') {
-/*			var value = goog.dom.createDom('value');
-			value.setAttribute('name', 'PIN');
-
-			var shadow = goog.dom.createDom('shadow');
-			shadow.setAttribute('type', 'output_digital_pin');
-			
-			var field = goog.dom.createDom('field');
-			field.setAttribute('name', 'PIN');
-			field.innerText = xmlChild.innerText;
-			
-			shadow.appendChild(field);
-			value.appendChild(shadow);
-			
-			xml.childNodes[i].outerHTML = value.outerHTML;
-			*/
 		}
 	  }  
     }
@@ -872,7 +914,7 @@ Blockly.Workspace.prototype.migrateMutation = function(xml) {
 	return xml;
 }
 
-Blockly.Workspace.prototype.migrate = function(xml) {
+Blockly.Workspace.prototype.migratessss = function(xml) {
 	var childCount = xml.childNodes.length;
 	
     for (var i = 0; i < childCount; i++) {
@@ -899,11 +941,71 @@ Blockly.Workspace.prototype.migrate = function(xml) {
 	  } else if (type == 'getexternalanalogchannel') {
 		  xmlChild = this.migrateExternalADC(xmlChild);
 		  xmlChild = this.migrate(xmlChild);
+	  } else if (type == 'sensor_read') {
 	  } else {
 		  xmlChild = this.migrate(xmlChild);
 	  }	 	  
   	}
   
+	return xml;
+}
+
+Blockly.Workspace.prototype.migrate = function(xml) {
+	var nodes = xml.childNodes;
+	var nodeCount = nodes.length;
+	
+	for (var i = 0; i < nodeCount; i++) {
+		var node = nodes[i];
+		
+		if (typeof node.nodeName != "undefined") {
+	        var nodeName = node.nodeName.toLowerCase(); 	 
+			
+			if (nodeName == "block") {
+				var blockType = node.getAttribute('type');
+				
+				if (typeof Blockly.Blocks[blockType] != "undefined") {
+					if (typeof Blockly.Blocks[blockType].migrate == "function") {							
+						node = Blockly.Blocks[blockType].migrate(node);
+					}
+				}
+			}
+			
+			this.migrate(node);
+		}
+	}	
+	
+/*	var childCount = xml.childNodes.length;
+	
+    for (var i = 0; i < childCount; i++) {
+      var xmlChild = xml.childNodes[i];
+      var name = xmlChild.nodeName.toLowerCase(); 	 
+	  
+	  var type = "";
+	  if (typeof xmlChild.getAttribute == "function") {
+		  type = xmlChild.getAttribute('type');
+	  }
+
+	  if (
+		  (type == 'setdigitalpin') || (type == 'getdigitalpin') || (type == 'getanalogpin') || (type == 'setpwmpin') || (type == 'when_digital_pin') ||
+		   (type == 'servo_move')
+	  ) {
+		  xmlChild = this.migratePinField(xmlChild);
+		  xmlChild = this.migrate(xmlChild);
+	  } else if (type == 'wait_for'){
+		  xmlChild = this.migrateTimeField(xmlChild);
+		  xmlChild = this.migrate(xmlChild);
+	  } else if ((type == 'sensor_read') || (type == 'sensor_set') || (type == 'sensor_when')) {
+		  xmlChild = this.migrateMutation(xmlChild);
+		  xmlChild = this.migrate(xmlChild);
+	  } else if (type == 'getexternalanalogchannel') {
+		  xmlChild = this.migrateExternalADC(xmlChild);
+		  xmlChild = this.migrate(xmlChild);
+	  } else if (type == 'sensor_read') {
+	  } else {
+		  xmlChild = this.migrate(xmlChild);
+	  }	 	  
+  	}
+  */
 	return xml;
 }
 
