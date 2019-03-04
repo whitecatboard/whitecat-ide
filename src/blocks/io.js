@@ -115,13 +115,25 @@ Blockly.Blocks.io.helper = {
 
 		return pins;
 	},
-
+	
 	getExternalAdcUnits: function() {
 		var units = [];
 
 		for (var key in Code.status.maps.externalAdcUnits) {
 			if (Code.status.externalADC[Code.status.maps.externalAdcUnits[key][0]]) {
-				units.push([Code.status.maps.externalAdcUnits[key][0], key]);
+				// Check that board has support for it
+				var has_support = false;
+				
+				for (var supported_unit in Code.status.externalADC) {
+					if (Code.status.maps.externalAdcUnits[key][0] == supported_unit) {
+						has_support = true;
+						break;
+					}
+				}
+				
+				if (has_support) {
+					units.push([Code.status.maps.externalAdcUnits[key][0], key]);
+				}
 			}
 		}
 
