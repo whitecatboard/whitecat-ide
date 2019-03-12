@@ -146,6 +146,44 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 	return xmlList;
 };
 
+Blockly.Lora.bandChanged = function() {
+	var form = jQuery("#lora_form");
+	var workspace = Code.workspace.blocks;
+	var dr = [];
+	
+	// Get selected unit
+	var band = form.find('#band').find(":selected").attr("value");
+	if (band == 868) {
+		dr.push(0);
+		dr.push(1);
+		dr.push(2);
+		dr.push(3);
+		dr.push(4);
+		dr.push(5);
+		dr.push(6);
+		dr.push(7);
+	} else if (band == 915) {
+		dr.push(0);
+		dr.push(1);
+		dr.push(2);
+		dr.push(3);
+		dr.push(4);
+		dr.push(8);
+		dr.push(9);
+		dr.push(10);
+		dr.push(11);
+		dr.push(12);
+		dr.push(13);
+	}
+
+	var options = '';
+	dr.forEach(function(item) {
+		options += '<option data-dr="'+item+'" '+(workspace.lora.dr==item?"selected":"")+' value="'+item+'">'+item+'</option>';
+	});
+	
+	form.find('#dr').html(options);
+};
+
 Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	var dialogForm = "";
 	var edit = false;
@@ -153,9 +191,9 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	if (typeof block != "undefined") edit = true;
 
 	// Build band selection
-	var loraBandSelect = '<select id="band" name="band">';
-	loraBandSelect += '<option data-band="868" '+(workspace.lora.band=="868"?"selected":"")+' value="868">868 (Europe) Mhz</option>';
-	loraBandSelect += '<option data-band="433" '+(workspace.lora.band=="433"?"selected":"")+' value="433">433 (United States) Mhz</option>';
+	var loraBandSelect = '<select id="band" name="band" onchange="Blockly.Lora.bandChanged()">';
+	loraBandSelect += '<option data-band="868" '+(workspace.lora.band=="868"?"selected":"")+' value="868">868 (Europe) MHz</option>';
+	loraBandSelect += '<option data-band="915" '+(workspace.lora.band=="915"?"selected":"")+' value="915">915 (United States) MHz</option>';
 	loraBandSelect += "</select>";
 
 	// Build activation selection
@@ -166,14 +204,6 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 
 	// Build data rate selection
 	var loraDRSelect = '<select id="dr" name="dr">';
-	loraDRSelect += '<option data-dr="0" '+(workspace.lora.dr=="0"?"selected":"")+' value="0">0</option>';
-	loraDRSelect += '<option data-dr="1" '+(workspace.lora.dr=="1"?"selected":"")+' value="1">1</option>';
-	loraDRSelect += '<option data-dr="2" '+(workspace.lora.dr=="2"?"selected":"")+' value="2">2</option>';
-	loraDRSelect += '<option data-dr="3"' +(workspace.lora.dr=="3"?"selected":"")+' value="3">3</option>';
-	loraDRSelect += '<option data-dr="4" '+(workspace.lora.dr=="4"?"selected":"")+' value="4">4</option>';
-	loraDRSelect += '<option data-dr="5" '+(workspace.lora.dr=="5"?"selected":"")+' value="5">5</option>';
-	loraDRSelect += '<option data-dr="6" '+(workspace.lora.dr=="6"?"selected":"")+' value="6">6</option>';
-	loraDRSelect += '<option data-dr="7" '+(workspace.lora.dr=="7"?"selected":"")+' value="7">7</option>';
 	loraDRSelect += "</select>";
 
 	// Build retransmissions selection
@@ -398,6 +428,7 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 			form.find("#adr").val(this.checked);			
 		}).prop('checked', workspace.lora.adr == 'true');
 		
+		Blockly.Lora.bandChanged();
 		Blockly.Lora.activationChanged();
 	});
 };
