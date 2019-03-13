@@ -90,7 +90,9 @@ Blockly.Workspace.prototype.wcInit = function() {
 		this.lora = {
 			"band": "868",
 			"activation": "ABP",
+			"freq": "868100000",
 			"dr": "4",
+			"role": "",
 			"retx": "0",
 			"adr": "false",
 			"deveui": "",
@@ -520,6 +522,8 @@ Blockly.Workspace.prototype.configureLora = function(setup) {
 		if ((block.type == 'lora_join') || (block.type == 'lora_tx')) {
 			block.band = setup.band;
 			block.activation = setup.activation;
+			block.freq = setup.freq;
+			block.role = setup.role;
 			block.dr = setup.dr;
 			block.retx = setup.retx;
 			block.deveui = setup.deveui;
@@ -528,6 +532,11 @@ Blockly.Workspace.prototype.configureLora = function(setup) {
 			block.devaddr = setup.devaddr;
 			block.nwkskey = setup.nwkskey;
 			block.appskey = setup.appskey;
+		} else if (block.type == 'lora_start_gw') {
+			block.band = setup.band;
+			block.role = setup.role;
+			block.freq = setup.freq;
+			block.dr = setup.dr;
 		}
 	}
 };

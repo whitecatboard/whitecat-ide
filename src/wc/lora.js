@@ -50,16 +50,48 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 
 	xmlList.push(button);
 
-	if (Blockly.Blocks['when_i_receive_a_lora_frame']) {
+	if ((Blockly.Blocks['when_i_receive_a_lora_frame']) && (workspace.lora.role == "node")) {
 		var block = goog.dom.createDom('block');
 		block.setAttribute('type', 'when_i_receive_a_lora_frame');
 
 		xmlList.push(block);
 	}
 	
-	if (Blockly.Blocks['lora_join'] && (workspace.lora.activation == 'OTAA')) {
+	if (Blockly.Blocks['lora_start_gw'] && (workspace.lora.role == "gateway")) {
 		var mutation = goog.dom.createDom('mutation', '');
 		mutation.setAttribute('band', lora.band);
+		mutation.setAttribute('freq', lora.freq);
+		mutation.setAttribute('dr', lora.dr);
+		mutation.setAttribute('role', lora.role);
+
+		var block = goog.dom.createDom('block');
+		block.setAttribute('type', 'lora_start_gw');
+
+		block.appendChild(mutation);
+
+		xmlList.push(block);
+	}
+
+/*
+	if (Blockly.Blocks['lora_stop_gw'] && (workspace.lora.role == "gateway")) {
+		var mutation = goog.dom.createDom('mutation', '');
+		mutation.setAttribute('band', lora.band);
+		mutation.setAttribute('dr', lora.dr);
+		mutation.setAttribute('role', lora.role);
+
+		var block = goog.dom.createDom('block');
+		block.setAttribute('type', 'lora_stop_gw');
+
+		block.appendChild(mutation);
+
+		xmlList.push(block);
+	}
+*/
+		
+	if (Blockly.Blocks['lora_join'] && (workspace.lora.activation == 'OTAA') && (workspace.lora.role == "node")) {
+		var mutation = goog.dom.createDom('mutation', '');
+		mutation.setAttribute('band', lora.band);
+		mutation.setAttribute('role', lora.role);
 		mutation.setAttribute('activation', lora.activation);
 		mutation.setAttribute('dr', lora.dr);
 		mutation.setAttribute('retx', lora.retx);
@@ -79,9 +111,10 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 		xmlList.push(block);
 	}
 
-	if (Blockly.Blocks['lora_tx']) {
+	if ((Blockly.Blocks['lora_tx']) && (workspace.lora.role == "node")) {
 		var mutation = goog.dom.createDom('mutation', '');
 		mutation.setAttribute('band', lora.band);
+		mutation.setAttribute('role', lora.role);
 		mutation.setAttribute('activation', lora.activation);
 		mutation.setAttribute('dr', lora.dr);
 		mutation.setAttribute('retx', lora.retx);
@@ -130,13 +163,13 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 		xmlList.push(block);
 	}
 
-	if (Blockly.Blocks['text_pack']) {
+	if ((Blockly.Blocks['text_pack']) && (workspace.lora.role == "node")) {
 		var block = goog.dom.createDom('block');
 		block.setAttribute('type', 'text_pack');
 		xmlList.push(block);
 	}
 
-	if (Blockly.Blocks['text_unpack']) {
+	if ((Blockly.Blocks['text_unpack']) && (workspace.lora.role == "node")) {
 		var block = goog.dom.createDom('block');
 		block.setAttribute('type', 'text_unpack');
 		xmlList.push(block);
@@ -144,44 +177,6 @@ Blockly.Lora.flyoutCategory = function(workspace) {
 	
 
 	return xmlList;
-};
-
-Blockly.Lora.bandChanged = function() {
-	var form = jQuery("#lora_form");
-	var workspace = Code.workspace.blocks;
-	var dr = [];
-	
-	// Get selected unit
-	var band = form.find('#band').find(":selected").attr("value");
-	if (band == 868) {
-		dr.push(0);
-		dr.push(1);
-		dr.push(2);
-		dr.push(3);
-		dr.push(4);
-		dr.push(5);
-		dr.push(6);
-		dr.push(7);
-	} else if (band == 915) {
-		dr.push(0);
-		dr.push(1);
-		dr.push(2);
-		dr.push(3);
-		dr.push(4);
-		dr.push(8);
-		dr.push(9);
-		dr.push(10);
-		dr.push(11);
-		dr.push(12);
-		dr.push(13);
-	}
-
-	var options = '';
-	dr.forEach(function(item) {
-		options += '<option data-dr="'+item+'" '+(workspace.lora.dr==item?"selected":"")+' value="'+item+'">'+item+'</option>';
-	});
-	
-	form.find('#dr').html(options);
 };
 
 Blockly.Lora.configure = function(workspace, opt_callback, block) {
@@ -193,14 +188,24 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	// Build band selection
 	var loraBandSelect = '<select id="band" name="band" onchange="Blockly.Lora.bandChanged()">';
 	loraBandSelect += '<option data-band="868" '+(workspace.lora.band=="868"?"selected":"")+' value="868">868 (Europe) MHz</option>';
-	loraBandSelect += '<option data-band="915" '+(workspace.lora.band=="915"?"selected":"")+' value="915">915 (United States) MHz</option>';
+//	loraBandSelect += '<option data-band="915" '+(workspace.lora.band=="915"?"selected":"")+' value="915">915 (United States) MHz</option>';
 	loraBandSelect += "</select>";
 
+	// Build lora role selection
+	var loraRoleSelect = '<select id="role" name="role" onchange="Blockly.Lora.roleChanged()">';
+	loraRoleSelect += '<option data-role="node" '+(workspace.lora.role=="node"?"selected":"")+' value="node">'+Blockly.Msg.LORA_NODE+'</option>';
+	loraRoleSelect += '<option data-role="gateway" '+(workspace.lora.role=="gateway"?"selected":"")+' value="gateway">'+Blockly.Msg.LORA_GATEWAY+'</option>';
+	loraRoleSelect += "</select>";
+	
 	// Build activation selection
 	var loraActivationSelect = '<select id="activation" name="activation" onchange="Blockly.Lora.activationChanged()">';
 	loraActivationSelect += '<option data-band="ABP" '+(workspace.lora.activation=="ABP"?"selected":"")+' value="ABP">ABP</option>';
 	loraActivationSelect += '<option data-band="OTAA" '+(workspace.lora.activation=="OTAA"?"selected":"")+' value="OTAA">OTAA</option>';
 	loraActivationSelect += "</select>";
+
+	// Build frequency selection
+	var loraFreqSelect = '<select id="freq" name="freq">';
+	loraFreqSelect += "</select>";
 
 	// Build data rate selection
 	var loraDRSelect = '<select id="dr" name="dr">';
@@ -224,18 +229,25 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<label for="band">' + Blockly.Msg.LORA_BAND + ':&nbsp;&nbsp;</label>' + loraBandSelect;
 	dialogForm += '</div>';
 	dialogForm += '<div>';
+	dialogForm += '<label for="role">' + Blockly.Msg.LORA_ROLE + ':&nbsp;&nbsp;</label>' + loraRoleSelect;
+	dialogForm += '</div><br>';
+	dialogForm += '<div style="margin: 0px;border-bottom: 1px solid #e5e5e5;">';
+	dialogForm += '<label class="role-node" style="display: none;">'+Blockly.Msg.LORA_ROLE_NODE_TITLE+'&nbsp;&nbsp;</label>';
+	dialogForm += '<label class="role-gateway" style="display: none;">'+Blockly.Msg.LORA_ROLE_GATEWAY_TITLE+'&nbsp;&nbsp;</label>';
+	dialogForm += '</div><br>';
+	dialogForm += '<div class="role-node" style="display: none;">';
 	dialogForm += '<label for="activation">' + Blockly.Msg.LORA_ACTIVATION + ':&nbsp;&nbsp;</label>' + loraActivationSelect;
+	dialogForm += '</div>';
+	dialogForm += '<div class="role-gateway" style="display: none;">';
+	dialogForm += '<label for="freq">' + Blockly.Msg.LORA_FREQ + ':&nbsp;&nbsp;</label>' + loraFreqSelect;
 	dialogForm += '</div>';
 	dialogForm += '<div>';
 	dialogForm += '<label for="dr">' + Blockly.Msg.LORA_DR + ':&nbsp;&nbsp;</label>' + loraDRSelect;
 	dialogForm += '</div>';
-	dialogForm += '<div>';
+	dialogForm += '<div class="role-node" style="display: none;">';
 	dialogForm += '<label for="retx">' + Blockly.Msg.LORA_CONFIG_RETX + ':&nbsp;&nbsp;</label>' + loraRETXSelect;
 	dialogForm += '</div>';
 	dialogForm += '<div>';
-	dialogForm += '<label for="adr">' + Blockly.Msg.LORA_ADR + ':&nbsp;&nbsp;</label><br>';
-	dialogForm += '<input id="adr" name="adr" type="checkbox" data-group-cls="btn-group-sm" value="'+workspace.lora.adr+'">';
-	dialogForm += '</div>';
 	dialogForm += '<div><br>';
 			
 	dialogForm += '<div id="OTAA" style="display: none;">';
@@ -251,8 +263,8 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<div>';
 	dialogForm += '<label for="AppKey">AppKey:&nbsp;&nbsp;</label><input id="AppKey" name="AppKey" style="width:300px;" value="'+workspace.lora.appkey+'">';
 	dialogForm += '</div>';
-	dialogForm += '<br><span>'+Blockly.Msg.LORA_GET_OTAA_DATA_HELP+'</span><br>';
-	dialogForm += '<br><button type="button" class="btn" id="getOTAAData">'+Blockly.Msg.LORA_GET_DATA+'</button>&nbsp;<span id="waitingOTAA" class="waiting"><i class="spinner icon icon-spinner3"></i></span><br>';
+	//dialogForm += '<br><span>'+Blockly.Msg.LORA_GET_OTAA_DATA_HELP+'</span><br>';
+	//dialogForm += '<br><button type="button" class="btn btn-primary" id="getOTAAData">'+Blockly.Msg.LORA_GET_DATA+'</button>&nbsp;<span id="waitingOTAA" class="waiting"><i class="spinner icon icon-spinner3"></i></span><br>';
 	dialogForm += '</div>';
 
 	dialogForm += '<div id="ABP" style="display: none;">';
@@ -268,8 +280,8 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<div>';
 	dialogForm += '<label for="AppSKey">AppSKey:&nbsp;&nbsp;</label><input id="AppSKey" name="AppSKey" style="width:300px;" value="'+workspace.lora.appskey+'">';
 	dialogForm += '</div>';
-	dialogForm += '<br><span>'+Blockly.Msg.LORA_GET_ABP_DATA_HELP+'</span><br>';
-	dialogForm += '<br><button type="button" class="btn" id="getABPData">'+Blockly.Msg.LORA_GET_DATA+'</button>&nbsp;<span id="waitingABP" class="waiting"><i class="spinner icon icon-spinner3"></i></span><br>';
+	//dialogForm += '<br><span>'+Blockly.Msg.LORA_GET_ABP_DATA_HELP+'</span><br>';
+	//dialogForm += '<br><button type="button" class="btn btn-primary" id="getABPData">'+Blockly.Msg.LORA_GET_DATA+'</button>&nbsp;<span id="waitingABP" class="waiting"><i class="spinner icon icon-spinner3"></i></span><br>';
 	dialogForm += '</div>';
 	dialogForm += '<span class="error-msg" id="errors"></span>';
 
@@ -286,10 +298,12 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 					var form = jQuery("#lora_form");
 					
 					var band = form.find("#band").find(":selected").attr("value");
+					var role = form.find("#role").find(":selected").attr("value");
 					var activation = form.find("#activation").find(":selected").attr("value");
+					var freq = form.find("#freq").find(":selected").attr("value");
 					var dr = form.find("#dr").find(":selected").attr("value");
 					var retx = form.find("#retx").find(":selected").attr("value");
-					var adr = form.find("#adr").val();
+					var adr = false;
 					var DevEUI = form.find("#DevEUI").val();
 					var AppEUI = form.find("#AppEUI").val();
 					var AppKey = form.find("#AppKey").val();
@@ -303,36 +317,38 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 
 					var error = false;
 					form.find("#errors").html("");
-					if (activation == 'OTAA') {
-						if (!(key16.test(DevEUI))) {
-							form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'DevEUI'));
-							error = true;
-						}
+					if (role == "node") {
+						if (activation == 'OTAA') {
+							if (!(key16.test(DevEUI))) {
+								form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'DevEUI'));
+								error = true;
+							}
 
-						if (!(key16.test(AppEUI))) {
-							form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'AppEUI'));
-							error = true;
-						}
+							if (!(key16.test(AppEUI))) {
+								form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'AppEUI'));
+								error = true;
+							}
 
-						if (!(key32.test(AppKey))) {
-							form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'AppKey'));
-							error = true;
+							if (!(key32.test(AppKey))) {
+								form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'AppKey'));
+								error = true;
+							}						
+						} else {
+							if (!(key8.test(DevAddr))) {
+								form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'DevAddr'));
+								error = true;
+							}
+
+							if (!(key32.test(NwkSKey))) {
+								form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'NwkSKey'));
+								error = true;
+							}
+
+							if (!(key32.test(AppSKey))) {
+								form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'AppSKey'));
+								error = true;
+							}												
 						}						
-					} else {
-						if (!(key8.test(DevAddr))) {
-							form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'DevAddr'));
-							error = true;
-						}
-
-						if (!(key32.test(NwkSKey))) {
-							form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'NwkSKey'));
-							error = true;
-						}
-
-						if (!(key32.test(AppSKey))) {
-							form.find("#errors").html(form.find("#errors").html() + "<br>" + Blockly.Msg.LORA_INVALID.replace('%1', 'AppSKey'));
-							error = true;
-						}												
 					}
 					
 					if (error) {
@@ -341,8 +357,10 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 					
 					workspace.configureLora({
 						"band": band,
+						"freq": freq,
 						"activation": activation,
 						"dr": dr,
+						"role": role,
 						"retx": retx,
 						"adr": adr,
 						"deveui": DevEUI,
@@ -429,8 +447,70 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 		}).prop('checked', workspace.lora.adr == 'true');
 		
 		Blockly.Lora.bandChanged();
-		Blockly.Lora.activationChanged();
+		Blockly.Lora.roleChanged();
 	});
+};
+
+Blockly.Lora.bandChanged = function() {
+	var form = jQuery("#lora_form");
+	var workspace = Code.workspace.blocks;
+	var dr = [];
+	var freq = [];
+	
+	// Get selected band
+	var band = form.find('#band').find(":selected").attr("value");
+	if (band == 868) {
+		dr.push(0);
+		dr.push(1);
+		dr.push(2);
+		dr.push(3);
+		dr.push(4);
+		dr.push(5);
+		dr.push(6);
+		dr.push(7);
+		
+		freq.push(868100000);
+		freq.push(868300000);
+		freq.push(868500000);
+		freq.push(867100000);
+		freq.push(867300000);
+		freq.push(867500000);
+		freq.push(867700000);
+		freq.push(867900000);		
+	}
+
+	var options = '';
+	dr.forEach(function(item) {
+		options += '<option data-dr="'+item+'" '+(workspace.lora.dr==item?"selected":"")+' value="'+item+'">'+item+'</option>';
+	});
+	
+	form.find('#dr').html(options);
+
+	var options = '';
+	freq.forEach(function(item) {
+		options += '<option data-freq="'+item+'" '+(workspace.lora.freq==item?"selected":"")+' value="'+item+'">'+(item/1000000)+ " " + Blockly.Msg.MHZ +'</option>';
+	});
+	
+	form.find('#freq').html(options);
+};
+
+Blockly.Lora.roleChanged = function() {
+	var form = jQuery("#lora_form");
+		
+	// Get selected role
+	var role = form.find('#role').find(":selected").attr("value");
+	
+	if (role == "node") {
+		form.find(".role-node").show();
+		form.find(".role-gateway").hide();
+	} else if (role == "gateway") {
+		form.find(".role-node").hide();		
+		form.find(".role-gateway").show();
+	}
+
+	Blockly.Lora.activationChanged();
+	
+	form.find("#errors").html("");
 };
 
 Blockly.Lora.activationChanged = function() {
@@ -439,11 +519,21 @@ Blockly.Lora.activationChanged = function() {
 	// Get activation
 	var activation = form.find("#activation").find(":selected").attr("value");
 
-	if (activation == 'OTAA') {
-		form.find("#OTAA").show();		
+	// Get role
+	var role = form.find('#role').find(":selected").attr("value");
+
+	if (role == "node") {
+		if (activation == 'OTAA') {
+			form.find("#OTAA").show();		
+			form.find("#ABP").hide();		
+		} else {
+			form.find("#OTAA").hide();		
+			form.find("#ABP").show();				
+		}		
+	} else if (role == "gateway") {
 		form.find("#ABP").hide();		
-	} else {
-		form.find("#OTAA").hide();		
-		form.find("#ABP").show();				
+		form.find("#OTAA").hide();				
 	}
+	
+	form.find("#errors").html("");
 };
