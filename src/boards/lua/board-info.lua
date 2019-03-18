@@ -52,16 +52,20 @@ do
 	end
 	
 	function __m_exceptions(name)
-		io.write("\""..name.."\": ")
-		io.write("[")
-		if (_G[name] ~= nil) then
-			if (_G[name].error ~= nil) then
-				for key in pairs(_G[name].error) do
-					io.write("\""..key.."\",")
+	    local ena = (name ~= nil)
+		
+		if (ena) then
+			io.write("\""..name.."\": ")
+			io.write("[")
+			if (_G[name] ~= nil) then
+				if (_G[name].error ~= nil) then
+					for key in pairs(_G[name].error) do
+						io.write("\""..key.."\",")
+					end
 				end
 			end
+			io.write("],")
 		end
-		io.write("],")
 	end
 
 	function __cpu()
@@ -178,45 +182,49 @@ do
 	end
 
 	function __sensors()
-	    io.write("\"sensors\": ")
-		io.write("[")
-		for sk,sv in pairs(sensor.list(true)) do 
-			io.write("{")
-			for k,v in pairs(sv) do 
-				if (k == "properties") then
-					io.write("\"properties\":[")
-					for ask,asv in pairs(v) do 
-						io.write("{");
-						for tsk,tsv in pairs(asv) do 
-							io.write("\""..tsk.."\":\""..tsv.."\",")
+	    local ena = (sensor ~= nil)
+		
+		if ena then
+		    io.write("\"sensors\": ")
+			io.write("[")
+			for sk,sv in pairs(sensor.list(true)) do 
+				io.write("{")
+				for k,v in pairs(sv) do 
+					if (k == "properties") then
+						io.write("\"properties\":[")
+						for ask,asv in pairs(v) do 
+							io.write("{");
+							for tsk,tsv in pairs(asv) do 
+								io.write("\""..tsk.."\":\""..tsv.."\",")
+							end
+							io.write("},");
 						end
-						io.write("},");
-					end
-					io.write("],")
-				elseif (k == "provides") then
-					io.write("\"provides\":[")
-					for apk,apv in pairs(v) do 
-						io.write("{");
-						for tpk,tpv in pairs(apv) do 
-							io.write("\""..tpk.."\":\""..tpv.."\",")
+						io.write("],")
+					elseif (k == "provides") then
+						io.write("\"provides\":[")
+						for apk,apv in pairs(v) do 
+							io.write("{");
+							for tpk,tpv in pairs(apv) do 
+								io.write("\""..tpk.."\":\""..tpv.."\",")
+							end
+							io.write("},");
 						end
-						io.write("},");
-					end
-					io.write("],")
-				else
-					if (k == "callback") then
-						if (v) then
-							v = "true"
-						else
-							v = "false"
+						io.write("],")
+					else
+						if (k == "callback") then
+							if (v) then
+								v = "true"
+							else
+								v = "false"
+							end
 						end
+						io.write("\""..k.."\":\""..v.."\",")
 					end
-					io.write("\""..k.."\":\""..v.."\",")
 				end
+				io.write("},")
 			end
-			io.write("},")
+			io.write("],")
 		end
-		io.write("],")
 	end
 	
 	function __externalADC()
