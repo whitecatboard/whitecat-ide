@@ -41,17 +41,6 @@ Blockly.Generator.prototype.addCodeToSection = function(section, code, block) {
 	}
 };
 
-// Add a lua library dependency needed for the generated code
-Blockly.Generator.prototype.addDependency = function(library, block) {
-	library = goog.string.trim(library);
-
-	if ((library == "") || (library == "0")) return;
-	
-	if (codeSection["require"].indexOf('require("'+library+'")') == -1) {
-		codeSection["require"].push('require("'+library+'")');
-	}
-};
-
 Blockly.Generator.prototype.postFormat = function(code, block) {
 	// Trim code
 	// This clean spaces and new lines at the begin and at the end
@@ -131,6 +120,11 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	blocks = workspace.getTopBlocks(true);
 	
 	var initCode = '';
+	
+	if (Code.status.modules.vm) {
+		initCode += Blockly.Lua.indent(0,'-- enable blocks support in vm') + "\n";
+		initCode += Blockly.Lua.indent(0,'vm.blocks(true)') + "\n\n";
+	}
 	
 	initCode += Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";
 	initCode += Blockly.Lua.indent(0,'-- that must wait for this situation') + "\n";
@@ -306,7 +300,9 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 		codeSection[key] = [];
 	}
 	
-	codeSection["require"].push('require("block")');
+	if (!Code.status.modules.vm) {
+		codeSection["require"].push('require("block")');
+	}
 
 	// Get code
 	var line = this.oneBlockToCode(block);
@@ -320,14 +316,22 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	});
 
 	code += "function _code()\n";
-	code += "local previous = wcBlock.developerMode\n";
-	code += "wcBlock.developerMode = false\n";
+	
+	if (!Code.status.modules.vm) {
+		code += "local previous = wcBlock.developerMode\n";
+		code += "wcBlock.developerMode = false\n";
+	}
+		
 	if (goog.isArray(line)) {
 		code += "print(" + line[0] + ")\n";
 	} else {
 		code += "print(" + line + ")\n";
 	}
-	code += "wcBlock.developerMode = previous\n";
+	
+	if (!Code.status.modules.vm) {
+		code += "wcBlock.developerMode = previous\n";
+	}
+	
 	code += "end";
 
 	return code;
@@ -346,7 +350,9 @@ Blockly.Generator.prototype.blockCode = function(block) {
 		codeSection[key] = [];
 	}
 
-	codeSection["require"].push('require("block")');
+	if (!Code.status.modules.vm) {
+		codeSection["require"].push('require("block")');
+	}
 
 	// Get code
 	var line = this.oneBlockToCode(block);
@@ -361,14 +367,22 @@ Blockly.Generator.prototype.blockCode = function(block) {
 
 	code += "function _code()\n";
 	code += "thread.start(function()\n";
-	code += "local previous = wcBlock.developerMode\n";
-	code += "wcBlock.developerMode = false\n";
+	
+	if (!Code.status.modules.vm) {	
+		code += "local previous = wcBlock.developerMode\n";
+		code += "wcBlock.developerMode = false\n";
+	}
+	
 	if (goog.isArray(line)) {
 		code += line[0] + "\n";
 	} else {
 		code += line + "\n";
 	}
-	code += "wcBlock.developerMode = previous\n";
+	
+	if (!Code.status.modules.vm) {
+		code += "wcBlock.developerMode = previous\n";
+	}
+	
 	code += "end)\n";
 	code += "end";
 

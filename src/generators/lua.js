@@ -313,6 +313,10 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 }
 
 Blockly.Lua.require = function(lib) {
+	if (Code.status.modules.vm && (lib == "block")) {
+		return;
+	}
+			
 	if (codeSection["require"].indexOf('require("' + lib + '")') == -1) {
 		codeSection["require"].push('require("' + lib + '")');
 	}

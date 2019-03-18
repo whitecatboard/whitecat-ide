@@ -86,9 +86,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 	var magnitude = block.getFieldValue('PROVIDES');
 	var code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.require("block");
 	
 	// Generate code for get sensor value
 	// This code goes to the declaration section
@@ -114,9 +112,7 @@ Blockly.Lua['sensor_set'] = function(block) {
 	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
 	var code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.require("block");
 	
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+'"') + "\n\n";
@@ -133,9 +129,7 @@ Blockly.Lua['sensor_when'] = function(block) {
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.require("block");
 	
 	var tryCode = '';
 	

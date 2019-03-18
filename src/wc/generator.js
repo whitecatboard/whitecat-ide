@@ -41,9 +41,9 @@ Blockly.Generator.prototype.valueToCode = function(block, name, outerOrder) {
 	//  }  	
   //}
     
-  if (false && (!block.workspace.isFlyout) && (isNaN(code)) && (!(/^[a-zA-Z_]+[0-9a-zA-Z_]*$/.test(code)))) {
-    code = "--[[bs:"+Blockly.Lua.blockIdToNum(targetBlock.id)+":0]]" + code + "--[[be:"+Blockly.Lua.blockIdToNum(targetBlock.id)+":0]]"
-  }
+//  if (false && (!block.workspace.isFlyout) && (isNaN(code)) && (!(/^[a-zA-Z_]+[0-9a-zA-Z_]*$/.test(code)))) {
+//    code = "--[[bs:"+Blockly.Lua.blockIdToNum(targetBlock.id)+":0]]" + code + "--[[be:"+Blockly.Lua.blockIdToNum(targetBlock.id)+":0]]"
+//  }
   
   // Add parentheses if needed.
   var parensNeeded = false;
@@ -106,17 +106,18 @@ Blockly.Generator.prototype.blockToCode = function(block) {
   } else if (goog.isString(code)) {
     var id = block.id.replace(/\$/g, '$$$$');  // Issue 251.
     if (this.STATEMENT_PREFIX) {
-      code = this.STATEMENT_PREFIX.replace(/%1/g, '\'' + id + '\'') +
-          code;
+      	code = this.STATEMENT_PREFIX.replace(/%1/g, '\'' + id + '\'') + code;
     }
     
     if (!block.workspace.isFlyout && !block.isHatBlock()) {
       var flags = 0;      
 	  var lines = code.split(/\r\n|\r|\n/).length;
 	  
-      code = "--[[bs:"+Blockly.Lua.blockIdToNum(block.id)+":"+flags+"]]" + ((lines>1)?'\n':'') + 
-             ((lines > 1)?code:code.replace(/\n$/,'')) +
-		  	 "--[[be:"+Blockly.Lua.blockIdToNum(block.id)+":"+flags+"]]" + '\n';
+	  if (!Blockly.Lua.legacyGenCode) {
+		  code = "--[[bs:"+Blockly.Lua.blockIdToNum(block.id)+":"+flags+"]]" + ((lines>1)?'\n':'') + 
+           	     ((lines > 1)?code:code.replace(/\n$/,'')) +
+		  	 	 "--[[be:"+Blockly.Lua.blockIdToNum(block.id)+":"+flags+"]]" + '\n';
+	  }
     }
     
     return this.scrub_(block, code);

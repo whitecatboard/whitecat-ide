@@ -2596,6 +2596,9 @@ Code.setup = function() {
         Code.status = JSON.parse(JSON.stringify(Code.defaultStatus));
         Code.status = info.info;
         Code.settings.board = info.info.board;
+		
+		Blockly.Lua.developerMode = !Code.status.modules.vm;
+		Blockly.Lua.legacyGenCode = !Code.status.modules.vm;
 
         Status.show(Code.board.getDesc(Code.settings.board));
 
