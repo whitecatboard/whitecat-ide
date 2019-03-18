@@ -116,6 +116,31 @@ Blockly.Blocks.io.helper = {
 		return pins;
 	},
 	
+	hasExternalAdcUnit: function(unit) {
+		if (typeof Code.status.maps.externalAdcUnits[unit] != "undefined") {
+			if (typeof Code.status.externalADC[Code.status.maps.externalAdcUnits[unit][0]] != "undefined") {
+				return Code.status.externalADC[Code.status.maps.externalAdcUnits[unit][0]];
+			}
+		}
+			
+		return false;
+	},
+	
+	getFirstExternalAdcUnit: function() {
+		for (var supported_unit in Code.status.externalADC) {
+			if (Code.status.externalADC[supported_unit]) {
+				// First supported external ADC, find unit number in maps
+				for (var key in Code.status.maps.externalAdcUnits) {
+					if (Code.status.maps.externalAdcUnits[key][0] == supported_unit) {
+						return key;
+					}	
+				}
+			}
+		}
+		
+		return null;
+	},
+	
 	getExternalAdcUnits: function() {
 		var units = [];
 
@@ -571,6 +596,23 @@ Blockly.Blocks['getexternalanalogchannel'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.io.HUE);
 		this.setTooltip('');
+	},
+	
+	migrate: function(xmlElement) {
+		// Get ADC unit
+		var unit = Blockly.Block.helper.getField(xmlElement, "UNIT");
+		if (unit && (unit > 1)) {
+			// Unit is external, check if it's supported
+			if (!Blockly.Blocks.io.helper.hasExternalAdcUnit(unit)) {
+				// Not supported, change unit for first supported unit
+				var newUnit = Blockly.Blocks.io.helper.getFirstExternalAdcUnit();
+				if (newUnit) {
+					Blockly.Block.helper.setField(xmlElement, "UNIT", newUnit);
+				}
+			}
+		}
+		
+		return xmlElement;
 	},
 
 	hasWatcher: true,

@@ -62,6 +62,9 @@
 	    "33":  ["GPIO33", "IO33"  ]
 	},
 	"externalAdcUnits": {
+		"2": ["MCP3008", 8, 10, "channel"],
+		"3": ["MCP3208", 8, 12, "channel"],
+		"4": ["ADS1115", 4, 15, "channel"],
 		"5": ["ADS1015", 4, 12, "AIN"]
 	},	
 	"i2cUnits": {
