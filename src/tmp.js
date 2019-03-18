@@ -215,19 +215,31 @@ Blockly.Lua.inTryBlock = function(block) {
 }
 
 Blockly.Lua.blockStart = function(indent, block) {
-	if (Blockly.Lua.developerMode) {
-		return Blockly.Lua.indent(indent,'wcBlock.blockStart('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";
+	if (Blockly.Lua.developerMode || !Blockly.Lua.legacyGenCode) {    		
+		if (Blockly.Lua.legacyGenCode) {
+			return Blockly.Lua.indent(indent,'wcBlock.blockStart('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";
+		} else {
+		    var flags = block.isHatBlock()?1:0;
+			
+		    return Blockly.Lua.indent(indent, "--[[bs:" + Blockly.Lua.blockIdToNum(block.id) + ":"+flags+"]]") + "\n";			
+		}    
 	} else {
 		return '';
 	}
 }
 
 Blockly.Lua.blockEnd = function(indent, block) {
-	if (Blockly.Lua.developerMode) {
-		return Blockly.Lua.indent(indent,'wcBlock.blockEnd('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";	
+	if (Blockly.Lua.developerMode || !Blockly.Lua.legacyGenCode) {    		
+		if (Blockly.Lua.legacyGenCode) {
+			return Blockly.Lua.indent(indent,'wcBlock.blockEnd('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";	
+		} else {
+		    var flags = block.isHatBlock()?1:0;
+			
+		    return Blockly.Lua.indent(indent, "--[[be:" + Blockly.Lua.blockIdToNum(block.id) + ":"+flags+"]]") + "\n";		
+		}
 	} else {
 		return '';
-	}
+	};
 }
 
 Blockly.Lua.blockError = function(indent, block) {
@@ -258,6 +270,8 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	var tryCode = '';
 	var blockId = Blockly.Lua.blockIdToNum(block.id);
 
+	if (code == '') return '';
+	
 	if (typeof comment == "undefined") {
 		comment = "";
 	}
@@ -266,7 +280,7 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 		tryCode += "-- begin: " + comment + "\n";
 	}
 
-	if (!Blockly.Lua.developerMode || Blockly.Lua.inTryBlock(block)) {
+	if (!Blockly.Lua.developerMode || Blockly.Lua.inTryBlock(block) || !Blockly.Lua.legacyGenCode) {
 		tryCode += Blockly.Lua.indent(indent, code);
 	} else {
 		tryCode += Blockly.Lua.indent(0, 'try(') + '\n';
@@ -299,6 +313,10 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 }
 
 Blockly.Lua.require = function(lib) {
+	if (Code.status.modules.vm && (lib == "block")) {
+		return;
+	}
+			
 	if (codeSection["require"].indexOf('require("' + lib + '")') == -1) {
 		codeSection["require"].push('require("' + lib + '")');
 	}
@@ -329,7 +347,39 @@ Blockly.Lua.numToBlockId = function(num) {
 		return null;
 	}
 }
-/*
+
+Blockly.Lua.annotateOperator = function(block, op) {
+  var annotatedOp = op;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+    annotatedOp = op.replace(/ /g, '');
+    annotatedOp = ' ' + 
+                  '--[[bs:'+Blockly.Lua.blockIdToNum(block.id)+':0]] ' + annotatedOp + ' --[[be:'+Blockly.Lua.blockIdToNum(block.id)+':0]]' +
+                  ' ';
+  }
+  
+  return annotatedOp;
+}
+
+Blockly.Lua.annotateFunctionCall = function(block, code) {
+  var annotatedFunction = code;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+    annotatedFunction = '--[[bs:'+Blockly.Lua.blockIdToNum(block.id)+':0]]' + code + '--[[be:'+Blockly.Lua.blockIdToNum(block.id)+':0]]';
+  }
+  
+  return annotatedFunction;
+}
+
+Blockly.Lua.annotateVariable = function(block, code) {
+  var annotatedVariable = code;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+    annotatedVariable = '--[[bs:'+Blockly.Lua.blockIdToNum(block.id)+':0]]' + code + '--[[be:'+Blockly.Lua.blockIdToNum(block.id)+':0]]';
+  }
+  
+  return annotatedVariable;
+}/*
  * Whitecat Blocky Environment, bit manipulation code generation
  *
  * Copyright (C) 2015 - 2016
@@ -408,7 +458,7 @@ Blockly.Lua['bitwise_op'] = function(block) {
 		op2 = 'math.floor(' + op2 + ')';
 	}
 
-	return ['(' + op1 + ' ' + op + ' ' + op2 + ')', Blockly.Lua.ORDER_UNARY];
+	return ['(' + op1 + ' ' + Blockly.Lua.annotateOperator(block,op) + ' ' + op2 + ')', Blockly.Lua.ORDER_UNARY];
 }
 
 Blockly.Lua['bitwise_unary_op'] = function(block) {
@@ -419,7 +469,7 @@ Blockly.Lua['bitwise_unary_op'] = function(block) {
 		op = '~';
 	}
 
-	return ['(' + op + op1 + ')', Blockly.Lua.ORDER_UNARY];
+	return ['(' + Blockly.Lua.annotateOperator(block,op) + op1 + ')', Blockly.Lua.ORDER_UNARY];
 }/*
  * Whitecat Blocky Environment, can block code generation
  *
@@ -920,22 +970,20 @@ Blockly.Lua['when_board_starts'] = function(block) {
 	var code = '';
 	var initCode = '';
 
-	if (statement != '') {
-		Blockly.Lua.addDependency("block", block);
+	Blockly.Lua.require("block");
+	
+	code += Blockly.Lua.indent(0, '-- when board starts') + "\n";
+	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";
 
-		code += Blockly.Lua.indent(0, '-- when board starts') + "\n";
-		code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";
+	code += Blockly.Lua.blockStart(1, block);
+	code += Blockly.Lua.tryBlock(1, block, statement);
+	code += Blockly.Lua.blockEnd(1, block) + "\n";
 
-		code += Blockly.Lua.blockStart(1, block);
-		code += Blockly.Lua.tryBlock(1, block, statement);
-		code += Blockly.Lua.blockEnd(1, block) + "\n";
+	code += Blockly.Lua.indent(1,'-- board is started, broadcast to threads that are waiting') + "\n";
+	code += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(false)') + "\n";
 
-		code += Blockly.Lua.indent(1,'-- board is started, broadcast to threads that are waiting') + "\n";
-		code += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(false)') + "\n";
-
-		code += Blockly.Lua.indent(0, 'end)');
-	}
-
+	code += Blockly.Lua.indent(0, 'end)');
+	
 	return Blockly.Lua.postFormat(code, block);
 }
 
@@ -943,7 +991,7 @@ Blockly.Lua['thread'] = function(block) {
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var code = '';
 
-	Blockly.Lua.addDependency("block", block);
+	Blockly.Lua.require("block");
 
 	code += Blockly.Lua.indent(0, '-- thread') + "\n";
 	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";
@@ -968,7 +1016,7 @@ Blockly.Lua['when_i_receive'] = function(block) {
 	var initCode = '';
 	var tryCode = '';
 
-	Blockly.Lua.addDependency("block", block);
+	Blockly.Lua.require("block");
 
 	initCode += Blockly.Lua.indent(0, '-- event "' + when + '" declaration') + "\n";
 	initCode += Blockly.Lua.indent(0, '_event' + eventId + ' = event.create()') + "\n";
@@ -1012,7 +1060,7 @@ Blockly.Lua['execute_every'] = function(block) {
 	var timerId = 0;
 	var blockId = Blockly.Lua.blockIdToNum(block.id);
 
-	Blockly.Lua.addDependency("block", block);
+	Blockly.Lua.require("block");
 
 	// Convert time to milliseconds if needed
 	if (units == "seconds") {
@@ -1033,6 +1081,7 @@ Blockly.Lua['execute_every'] = function(block) {
 	}
 
 	code += Blockly.Lua.blockEnd(2, block);
+
 	code += Blockly.Lua.indent(2, 'tmr.delayms(' + every[0] + ')') + "\n";
 	code += Blockly.Lua.indent(1, 'end') + "\n";
 
@@ -1046,7 +1095,7 @@ Blockly.Lua['broadcast'] = function(block) {
 	var eventId = this.workspace.eventIndexOf(when);
 	var code = '';
 
-	Blockly.Lua.addDependency("block", block);
+	Blockly.Lua.require("block");
 
 	code += Blockly.Lua.indent(0, '_event' + eventId + ':broadcast(false)' + '  -- boardcast "' + when + '"');
 
@@ -1058,7 +1107,7 @@ Blockly.Lua['broadcast_and_wait'] = function(block) {
 	var eventId = this.workspace.eventIndexOf(when);
 	var code = '';
 
-	Blockly.Lua.addDependency("block", block);
+	Blockly.Lua.require("block");
 
 	code += Blockly.Lua.indent(0, '_event' + eventId + ':broadcast(true)' + '  -- boardcast and wait "' + when + '"');
 
@@ -1069,7 +1118,7 @@ Blockly.Lua['event_is_being_processed'] = function(block) {
 	var when = block.getFieldValue('WHEN');
 	var eventId = this.workspace.eventIndexOf(when);
 
-	Blockly.Lua.addDependency("block", block);
+	Blockly.Lua.require("block");
 
 	return ['_event' + eventId + ':pending()', Blockly.Lua.ORDER_HIGH];
 }
@@ -2254,7 +2303,7 @@ Blockly.Lua['logic_compare'] = function(block) {
     'GT': '>',
     'GTE': '>='
   };
-  var operator = OPERATORS[block.getFieldValue('OP')];
+  var operator = Blockly.Lua.annotateOperator(block,OPERATORS[block.getFieldValue('OP')]);
   var argument0 = Blockly.Lua.valueToCode(block, 'A',
       Blockly.Lua.ORDER_RELATIONAL) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'B',
@@ -2265,7 +2314,7 @@ Blockly.Lua['logic_compare'] = function(block) {
 
 Blockly.Lua['logic_operation'] = function(block) {
   // Operations 'and', 'or'.
-  var operator = (block.getFieldValue('OP') == 'AND') ? 'and' : 'or';
+  var operator = Blockly.Lua.annotateOperator(block,(block.getFieldValue('OP') == 'AND') ? 'and' : 'or');
   var order = (operator == 'and') ? Blockly.Lua.ORDER_AND :
       Blockly.Lua.ORDER_OR;
   var argument0 = Blockly.Lua.valueToCode(block, 'A', order);
@@ -2292,7 +2341,7 @@ Blockly.Lua['logic_negate'] = function(block) {
   // Negation.
   var argument0 = Blockly.Lua.valueToCode(block, 'BOOL',
       Blockly.Lua.ORDER_UNARY) || 'true';
-  var code = 'not ' + argument0;
+  var code = Blockly.Lua.annotateOperator(block,'not') + ' ' + argument0;
   return [code, Blockly.Lua.ORDER_UNARY];
 };
 
@@ -2767,17 +2816,6 @@ Blockly.Generator.prototype.addCodeToSection = function(section, code, block) {
 	}
 };
 
-// Add a lua library dependency needed for the generated code
-Blockly.Generator.prototype.addDependency = function(library, block) {
-	library = goog.string.trim(library);
-
-	if ((library == "") || (library == "0")) return;
-	
-	if (codeSection["require"].indexOf('require("'+library+'")') == -1) {
-		codeSection["require"].push('require("'+library+'")');
-	}
-};
-
 Blockly.Generator.prototype.postFormat = function(code, block) {
 	// Trim code
 	// This clean spaces and new lines at the begin and at the end
@@ -2844,11 +2882,11 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 			hasBoardStart = true;
 		}
 
-		if ((block.type == 'mqtt_publish') || ((block.type == 'mqtt_subscribe') && block.isInHatBlock())) {
+		if (((block.type == 'mqtt_publish') && block.isInHatBlock()) || (block.type == 'mqtt_subscribe')) {
 			hasMQTT = true;
 		}
 
-		if ((block.type == 'wifi_start') || ((block.type == 'wifi_stop') && block.isInHatBlock())) {
+		if ((((block.type == 'wifi_start') || (block.type == 'wifi_stop')) && block.isInHatBlock()) || (block.type == 'when_wifi_is_conneted') || (block.type == 'when_wifi_is_disconneted')) {
 			hasNetwork = true;
 		}
 	}
@@ -2857,6 +2895,11 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	blocks = workspace.getTopBlocks(true);
 	
 	var initCode = '';
+	
+	if (Code.status.modules.vm) {
+		initCode += Blockly.Lua.indent(0,'-- enable blocks support in vm') + "\n";
+		initCode += Blockly.Lua.indent(0,'vm.blocks(true)') + "\n\n";
+	}
 	
 	initCode += Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";
 	initCode += Blockly.Lua.indent(0,'-- that must wait for this situation') + "\n";
@@ -3032,7 +3075,9 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 		codeSection[key] = [];
 	}
 	
-	codeSection["require"].push('require("block")');
+	if (!Code.status.modules.vm) {
+		codeSection["require"].push('require("block")');
+	}
 
 	// Get code
 	var line = this.oneBlockToCode(block);
@@ -3046,14 +3091,22 @@ Blockly.Generator.prototype.blockWatcherCode = function(block) {
 	});
 
 	code += "function _code()\n";
-	code += "local previous = wcBlock.developerMode\n";
-	code += "wcBlock.developerMode = false\n";
+	
+	if (!Code.status.modules.vm) {
+		code += "local previous = wcBlock.developerMode\n";
+		code += "wcBlock.developerMode = false\n";
+	}
+		
 	if (goog.isArray(line)) {
 		code += "print(" + line[0] + ")\n";
 	} else {
 		code += "print(" + line + ")\n";
 	}
-	code += "wcBlock.developerMode = previous\n";
+	
+	if (!Code.status.modules.vm) {
+		code += "wcBlock.developerMode = previous\n";
+	}
+	
 	code += "end";
 
 	return code;
@@ -3072,7 +3125,9 @@ Blockly.Generator.prototype.blockCode = function(block) {
 		codeSection[key] = [];
 	}
 
-	codeSection["require"].push('require("block")');
+	if (!Code.status.modules.vm) {
+		codeSection["require"].push('require("block")');
+	}
 
 	// Get code
 	var line = this.oneBlockToCode(block);
@@ -3087,14 +3142,22 @@ Blockly.Generator.prototype.blockCode = function(block) {
 
 	code += "function _code()\n";
 	code += "thread.start(function()\n";
-	code += "local previous = wcBlock.developerMode\n";
-	code += "wcBlock.developerMode = false\n";
+	
+	if (!Code.status.modules.vm) {	
+		code += "local previous = wcBlock.developerMode\n";
+		code += "wcBlock.developerMode = false\n";
+	}
+	
 	if (goog.isArray(line)) {
 		code += line[0] + "\n";
 	} else {
 		code += line + "\n";
 	}
-	code += "wcBlock.developerMode = previous\n";
+	
+	if (!Code.status.modules.vm) {
+		code += "wcBlock.developerMode = previous\n";
+	}
+	
 	code += "end)\n";
 	code += "end";
 
@@ -3149,7 +3212,7 @@ Blockly.Lua['math_arithmetic'] = function(block) {
     POWER: [' ^ ', Blockly.Lua.ORDER_EXPONENTIATION]
   };
   var tuple = OPERATORS[block.getFieldValue('OP')];
-  var operator = tuple[0];
+  var operator = Blockly.Lua.annotateOperator(block,tuple[0]);
   var order = tuple[1];
   var argument0 = Blockly.Lua.valueToCode(block, 'A', order) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'B', order) || '0';
@@ -3166,7 +3229,7 @@ Blockly.Lua['math_single'] = function(block) {
     // Negation is a special case given its different operator precedence.
     arg = Blockly.Lua.valueToCode(block, 'NUM',
         Blockly.Lua.ORDER_UNARY) || '0';
-    return ['-' + arg, Blockly.Lua.ORDER_UNARY];
+    return [Blockly.Lua.annotateOperator(block,'-') + arg, Blockly.Lua.ORDER_UNARY];
   }
   if (operator == 'SIN' || operator == 'COS' || operator == 'TAN') {
     arg = Blockly.Lua.valueToCode(block, 'NUM',
@@ -3177,50 +3240,50 @@ Blockly.Lua['math_single'] = function(block) {
   }
   switch (operator) {
     case 'ABS':
-      code = 'math.abs(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.abs(' + arg + ')');
       break;
     case 'ROOT':
-      code = 'math.sqrt(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.sqrt(' + arg + ')');
       break;
     case 'LN':
-      code = 'math.log(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.log(' + arg + ')');
       break;
     case 'LOG10':
-      code = 'math.log(' + arg + ', 10)';
+      code = Blockly.Lua.annotateOperator(block,'math.log(' + arg + ', 10)');
       break;
     case 'EXP':
-      code = 'math.exp(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.exp(' + arg + ')');
       break;
     case 'POW10':
-      code = '10 ^ ' + arg;
+      code = '10 ' + Blockly.Lua.annotateOperator(block,'^') + ' '+ arg;
       break;
     case 'ROUND':
       // This rounds up.  Blockly does not specify rounding direction.
-      code = 'math.floor(' + arg + ' + .5)';
+      code = Blockly.Lua.annotateOperator(block,'math.floor(' + arg + ' + .5)');
       break;
     case 'ROUNDUP':
-      code = 'math.ceil(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.ceil(' + arg + ')');
       break;
     case 'ROUNDDOWN':
-      code = 'math.floor(' + arg + ')';
+      code = Blockly.Lua.annotateOperator(block,'math.floor(' + arg + ')');
       break;
     case 'SIN':
-      code = 'math.sin(math.rad(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.sin(math.rad(' + arg + '))');
       break;
     case 'COS':
-      code = 'math.cos(math.rad(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.cos(math.rad(' + arg + '))');
       break;
     case 'TAN':
-      code = 'math.tan(math.rad(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.tan(math.rad(' + arg + '))');
       break;
     case 'ASIN':
-      code = 'math.deg(math.asin(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.deg(math.asin(' + arg + '))');
       break;
     case 'ACOS':
-      code = 'math.deg(math.acos(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.deg(math.acos(' + arg + '))');
       break;
     case 'ATAN':
-      code = 'math.deg(math.atan(' + arg + '))';
+      code = Blockly.Lua.annotateOperator(block,'math.deg(math.atan(' + arg + '))');
       break;
     default:
       throw 'Unknown math operator: ' + operator;
@@ -3270,24 +3333,24 @@ Blockly.Lua['math_number_property'] = function(block) {
          '  end',
          '  return true',
          'end']);
-    code = functionName + '(' + number_to_check + ')';
+    code = Blockly.Lua.annotateOperator(block,functionName + '(' + number_to_check + ')');
     return [code, Blockly.Lua.ORDER_HIGH];
   }
   switch (dropdown_property) {
     case 'EVEN':
-      code = number_to_check + ' % 2 == 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' 2 == 0';
       break;
     case 'ODD':
-      code = number_to_check + ' % 2 == 1';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' 2 == 1';
       break;
     case 'WHOLE':
-      code = number_to_check + ' % 1 == 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' 1 == 0';
       break;
     case 'POSITIVE':
-      code = number_to_check + ' > 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'>') + ' 0';
       break;
     case 'NEGATIVE':
-      code = number_to_check + ' < 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'<') + ' 0';
       break;
     case 'DIVISIBLE_BY':
       var divisor = Blockly.Lua.valueToCode(block, 'DIVISOR',
@@ -3300,7 +3363,7 @@ Blockly.Lua['math_number_property'] = function(block) {
       // The normal trick to implement ?: with and/or doesn't work here:
       //   divisor == 0 and nil or number_to_check % divisor == 0
       // because nil is false, so allow a runtime failure. :-(
-      code = number_to_check + ' % ' + divisor + ' == 0';
+      code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' ' + divisor + ' == 0';
       break;
   }
   return [code, Blockly.Lua.ORDER_RELATIONAL];
@@ -3494,7 +3557,7 @@ Blockly.Lua['math_modulo'] = function(block) {
       Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'DIVISOR',
       Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
-  var code = argument0 + ' % ' + argument1;
+  var code = argument0 + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' ' + argument1;
   return [code, Blockly.Lua.ORDER_MULTIPLICATIVE];
 };
 
@@ -3506,8 +3569,9 @@ Blockly.Lua['math_constrain'] = function(block) {
       Blockly.Lua.ORDER_NONE) || '-math.huge';
   var argument2 = Blockly.Lua.valueToCode(block, 'HIGH',
       Blockly.Lua.ORDER_NONE) || 'math.huge';
-  var code = 'math.min(math.max(' + argument0 + ', ' + argument1 + '), ' +
-      argument2 + ')';
+  var code = Blockly.Lua.annotateFunctionCall(block,'math.min(math.max(' + argument0 + ', ' + argument1 + '), ' +
+      argument2 + ')');
+	  
   return [code, Blockly.Lua.ORDER_HIGH];
 };
 
@@ -3517,7 +3581,7 @@ Blockly.Lua['math_random_int'] = function(block) {
       Blockly.Lua.ORDER_NONE) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'TO',
       Blockly.Lua.ORDER_NONE) || '0';
-  var code = 'math.random(' + argument0 + ', ' + argument1 + ')';
+  var code = Blockly.Lua.annotateFunctionCall(block,'math.random(' + argument0 + ', ' + argument1 + ')');
   return [code, Blockly.Lua.ORDER_HIGH];
 };
 
@@ -3830,9 +3894,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 	var magnitude = block.getFieldValue('PROVIDES');
 	var code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.require("block");
 	
 	// Generate code for get sensor value
 	// This code goes to the declaration section
@@ -3850,7 +3912,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 		
 	codeSection["declaration"].push(getCode);
 
-	return ['_get'+block.name+'_' + magnitude.replace(/\s|-/g, '_') + '()', Blockly.Lua.ORDER_HIGH];	
+	return [Blockly.Lua.annotateFunctionCall(block,'_get'+block.name+'_' + magnitude.replace(/\s|-/g, '_') + '()'), Blockly.Lua.ORDER_HIGH];	
 };
 
 Blockly.Lua['sensor_set'] = function(block) {
@@ -3858,14 +3920,12 @@ Blockly.Lua['sensor_set'] = function(block) {
 	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
 	var code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.require("block");
 	
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+'"') + "\n\n";
 	tryCode += Blockly.Lua.sensors.helper.attach(block);
-	tryCode += Blockly.Lua.indent(1,'_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+':set("'+property+'", '+value+')') + "\n";
+	tryCode += Blockly.Lua.indent(1,Blockly.Lua.annotateFunctionCall(block, '_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+':set("'+property+'", '+value+')')) + "\n";
 
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block,tryCode)) + "\n";
 	
@@ -3877,9 +3937,7 @@ Blockly.Lua['sensor_when'] = function(block) {
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.require("block");
 	
 	var tryCode = '';
 	
@@ -4055,7 +4113,7 @@ Blockly.Lua['text_join'] = function(block) {
         Blockly.Lua.ORDER_CONCATENATION) || '\'\'';
     var element1 = Blockly.Lua.valueToCode(block, 'ADD1',
         Blockly.Lua.ORDER_CONCATENATION) || '\'\'';
-    var code = element0 + ' .. ' + element1;
+    var code = element0 + ' ' + Blockly.Lua.annotateOperator(block,'..') + ' ' + element1;
     return [code, Blockly.Lua.ORDER_CONCATENATION];
   } else {
     var elements = [];
@@ -4074,21 +4132,21 @@ Blockly.Lua['text_append'] = function(block) {
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
   var value = Blockly.Lua.valueToCode(block, 'TEXT',
       Blockly.Lua.ORDER_CONCATENATION) || '\'\'';
-  return varName + ' = ' + varName + ' .. ' + value + '\n';
+  return varName + ' = ' + varName + ' ' + Blockly.Lua.annotateOperator(block,'..') + ' ' + value + '\n';
 };
 
 Blockly.Lua['text_length'] = function(block) {
   // String or array length.
   var text = Blockly.Lua.valueToCode(block, 'VALUE',
       Blockly.Lua.ORDER_UNARY) || '\'\'';
-  return ['#' + text, Blockly.Lua.ORDER_UNARY];
+  return [Blockly.Lua.annotateOperator(block,'#') + ' ' + text, Blockly.Lua.ORDER_UNARY];
 };
 
 Blockly.Lua['text_isEmpty'] = function(block) {
   // Is the string null or array empty?
   var text = Blockly.Lua.valueToCode(block, 'VALUE',
       Blockly.Lua.ORDER_UNARY) || '\'\'';
-  return ['#' + text + ' == 0', Blockly.Lua.ORDER_RELATIONAL];
+  return [Blockly.Lua.annotateOperator(block,'#') + ' ' + text + ' == 0', Blockly.Lua.ORDER_RELATIONAL];
 };
 
 Blockly.Lua['text_indexOf'] = function(block) {
@@ -4123,7 +4181,7 @@ Blockly.Lua['text_indexOf'] = function(block) {
          'end']);
   }
   var code = functionName + '(' + text + ', ' + substring + ')';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_charAt'] = function(block) {
@@ -4171,7 +4229,7 @@ Blockly.Lua['text_charAt'] = function(block) {
       code = functionName + '(' + text + ', ' + start + ')';
     }
   }
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_getSubstring'] = function(block) {
@@ -4209,7 +4267,7 @@ Blockly.Lua['text_getSubstring'] = function(block) {
     throw 'Unhandled option (text_getSubstring)';
   }
   var code = 'string.sub(' + text + ', ' + start + ', ' + end + ')';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_changeCase'] = function(block) {
@@ -4246,7 +4304,7 @@ Blockly.Lua['text_changeCase'] = function(block) {
          'end']);
   }
   var code = functionName + '(' + text + ')';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_trim'] = function(block) {
@@ -4260,7 +4318,7 @@ Blockly.Lua['text_trim'] = function(block) {
   var text = Blockly.Lua.valueToCode(block, 'TEXT',
       Blockly.Lua.ORDER_NONE) || '\'\'';
   var code = 'string.gsub(' + text + ', "' + operator + '", "%1")';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [Blockly.Lua.annotateFunctionCall(block,code), Blockly.Lua.ORDER_HIGH];
 };
 
 Blockly.Lua['text_print'] = function(block) {
@@ -4516,7 +4574,10 @@ Blockly.Lua['exception_try'] = function(block) {
    if (catchStatement != '') {
 	   code += Blockly.Lua.indent(1, catchStatement);   	
    }
-   code += Blockly.Lua.blockErrorCatched(2, block);
+   
+   if (Blockly.Lua.legacyGenCode) {
+	   code += Blockly.Lua.blockErrorCatched(2, block);
+   }
 
    if (finallyStatement != '') {
 	   code += Blockly.Lua.indent(1, 'end, ') + "\n";
@@ -4540,13 +4601,19 @@ Blockly.Lua['exception_catch_error'] = function(block) {
 	if (error == "any") {
 		code += Blockly.Lua.indent(0, 'if (errCode ~= nil) then') + "\n";
 		code += Blockly.Lua.indent(0, doStatement);
-		code += Blockly.Lua.blockErrorCatched(1, block);
+		if (Blockly.Lua.legacyGenCode) {
+			code += Blockly.Lua.blockErrorCatched(1, block);
+		}
 		code += Blockly.Lua.indent(1, 'return') + "\n";
 		code += Blockly.Lua.indent(0, 'end') + "\n";		
 	} else {
 		code += Blockly.Lua.indent(0, 'if ((errCode ~= nil) and (errCode == '+error+')) then') + "\n";
 		code += Blockly.Lua.indent(0, doStatement);
-		code += Blockly.Lua.blockErrorCatched(1, block);
+		
+		if (Blockly.Lua.legacyGenCode) {
+			code += Blockly.Lua.blockErrorCatched(1, block);
+		}
+		
 		code += Blockly.Lua.indent(1, 'return') + "\n";
 		code += Blockly.Lua.indent(0, 'end') + "\n";		
 	}
