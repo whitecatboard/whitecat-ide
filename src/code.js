@@ -2181,6 +2181,8 @@ Code.newFirmware = function(info) {
     jQuery.ajax({
         url: Code.server + "?firmwareCheck&firmware=" + firmware + "&commit=" + info.info.commit,
         success: function(result) {
+			Code.renderContent(); 
+			
             if (result.status == "refuse") {
                 return;
             } else if (result.status == "warning") {
@@ -2190,7 +2192,7 @@ Code.newFirmware = function(info) {
             }
         },
         error: function(error) {
-            console.log(error);
+			Code.renderContent();
         }
     });    
 }
@@ -2607,22 +2609,26 @@ Code.setup = function() {
 
             Code.status.connected = true;
             Code.status.firmware = info.info.os + "-" + info.info.version.replace(" ", "-") + "-" + info.info.build;
-            Code.renderContent();            
-        });
-
-        if ((Code.agent.version == "") || (Code.agent.version < Code.minAgentVersion)) {
-            if (Code.checkNewAgentVersion) {
-                Code.showAlert(MSG['pleaseUpgradeAgent']);
-            }
+                	
+	        if ((Code.agent.version == "") || (Code.agent.version < Code.minAgentVersion)) {
+				Code.renderContent();
+	            if (Code.checkNewAgentVersion) {
+	                Code.showAlert(MSG['pleaseUpgradeAgent']);
+	            }
             
-            Code.checkNewAgentVersion = false;
-        } else {
-            if (Code.agent.version > 1.2) {
-                if (info.newBuild) {
-                    Code.newFirmware(info);
-                }
-            }    
-        }
+	            Code.checkNewAgentVersion = false;
+	        } else {
+	            if (Code.agent.version > 1.2) {
+	                if (info.newBuild) {
+	                    Code.newFirmware(info);
+	                } else {
+	                	Code.renderContent();
+	                }
+	            } else {
+	            	Code.renderContent();
+	            }
+	        }
+        });
     });
 
     Code.agent.addListener("boardConsoleOut", function(id, info) {

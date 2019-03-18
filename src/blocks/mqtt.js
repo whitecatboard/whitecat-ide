@@ -36,6 +36,7 @@ Blockly.Blocks.MQTT.HUE = 20;
 
 Blockly.Blocks['mqtt_publish'] = {
 	module: "mqtt",
+	traced: true,
 	init: function() {
 		this.appendDummyInput()
 			.appendField(Blockly.Msg.MQTT_PUBLISH);

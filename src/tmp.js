@@ -2816,6 +2816,17 @@ Blockly.Generator.prototype.addCodeToSection = function(section, code, block) {
 	}
 };
 
+// Add a lua library dependency needed for the generated code
+Blockly.Generator.prototype.addDependency = function(library, block) {
+	library = goog.string.trim(library);
+
+	if ((library == "") || (library == "0")) return;
+
+	if (codeSection["require"].indexOf('require("'+library+'")') == -1) {
+		codeSection["require"].push('require("'+library+'")');
+	}
+};
+
 Blockly.Generator.prototype.postFormat = function(code, block) {
 	// Trim code
 	// This clean spaces and new lines at the begin and at the end

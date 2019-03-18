@@ -16,6 +16,14 @@ Blockly.Block.prototype.isSensorBlock = function() {
 	return (hatBlocks.indexOf(this.type) != -1);
 }
 
+Blockly.Block.prototype.isTraced = function() {
+	if (typeof this.traced != "undefined") {
+		return this.traced;
+	}
+	
+	return this.isHatBlock();
+}
+
 Blockly.Block.prototype.isHatBlock = function() {
 	return ((this.previousConnection == null) && (this.nextConnection == null) && (this.outputConnection == null));
 }

@@ -36,6 +36,7 @@ Blockly.Blocks.Wifi.HUE = 20;
 
 Blockly.Blocks['wifi_start'] = {
 	module: "net.wf",
+	traced: true,
 	init: function() {
 	    this.appendDummyInput()
 	        .appendField(Blockly.Msg.WIFI_START);

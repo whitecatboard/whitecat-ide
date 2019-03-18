@@ -44,6 +44,8 @@ Blockly.Lua['mqtt_publish'] = function(block) {
 	}
 	
 	var tryCode = "";
+
+	tryCode += Blockly.Lua.blockStart(0, block);
 	
 	tryCode += Blockly.Lua.indent(0,'-- create the MQTT client and connect, if needed') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_mqtt_lock:lock()') + "\n";

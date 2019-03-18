@@ -219,8 +219,7 @@ Blockly.Lua.blockStart = function(indent, block) {
 		if (Blockly.Lua.legacyGenCode) {
 			return Blockly.Lua.indent(indent,'wcBlock.blockStart('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";
 		} else {
-		    var flags = block.isHatBlock()?1:0;
-			
+		    var flags = block.isTraced()?1:0;
 		    return Blockly.Lua.indent(indent, "--[[bs:" + Blockly.Lua.blockIdToNum(block.id) + ":"+flags+"]]") + "\n";			
 		}    
 	} else {
@@ -233,8 +232,7 @@ Blockly.Lua.blockEnd = function(indent, block) {
 		if (Blockly.Lua.legacyGenCode) {
 			return Blockly.Lua.indent(indent,'wcBlock.blockEnd('+Blockly.Lua.blockIdToNum(block.id)+')') + "\n";	
 		} else {
-		    var flags = block.isHatBlock()?1:0;
-			
+		    var flags = block.isTraced()?1:0;
 		    return Blockly.Lua.indent(indent, "--[[be:" + Blockly.Lua.blockIdToNum(block.id) + ":"+flags+"]]") + "\n";		
 		}
 	} else {

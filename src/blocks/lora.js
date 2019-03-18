@@ -331,6 +331,7 @@ Blockly.Blocks['lora_join'] = {
 
 Blockly.Blocks['lora_tx'] = {
 	module: "lora",
+	traced: true,
 	init: function() {
 		this.appendDummyInput()
 			.setAlign(Blockly.ALIGN_RIGHT)
