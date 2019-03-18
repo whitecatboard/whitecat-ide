@@ -252,6 +252,8 @@ Blockly.Blocks['lora_join'] = {
 		var container = document.createElement('mutation');
 
 		container.setAttribute('band', this.band);
+		container.setAttribute('freq', this.freq);
+		container.setAttribute('role', this.role);
 		container.setAttribute('activation', this.activation);
 		container.setAttribute("dr", this.dr);
 		container.setAttribute("adr", this.adr);
@@ -270,6 +272,8 @@ Blockly.Blocks['lora_join'] = {
 		this.interface = xmlElement.getAttribute('interface');
 
 		this.band = xmlElement.getAttribute('band');
+		this.freq = xmlElement.getAttribute('freq');
+		this.role = xmlElement.getAttribute('role');
 		this.activation = xmlElement.getAttribute("activation");
 		this.dr = xmlElement.getAttribute("dr");
 		this.adr = xmlElement.getAttribute("adr");
@@ -291,6 +295,8 @@ Blockly.Blocks['lora_join'] = {
 	configureLora: function(instance) {
 		instance.workspace.configureLora({
 			"band": instance.band,
+			"freq": instance.freq,
+			"role": instance.role,
 			"activation": instance.activation,
 			"dr": instance.dr,
 			"retx": instance.retx,
@@ -302,6 +308,24 @@ Blockly.Blocks['lora_join'] = {
 			"nwkskey": instance.nwkskey,
 			"appskey": instance.appskey
 		});
+	},
+	
+	migrate: function(xml) {
+		var childCount = xml.childNodes.length;
+	
+	    for (var i = 0; i < childCount; i++) {
+	      var xmlChild = xml.childNodes[i];
+	      var name = xmlChild.nodeName.toLowerCase(); 	
+	  
+		  if (name == "mutation") {
+			  if (!xmlChild.getAttribute("role")) {
+				  // If role is not present, assume that role is node
+				  xmlChild.setAttribute("role", "node");
+			  }
+		  }  
+	    }
+		
+		return xml;
 	},
 };
 
@@ -338,6 +362,7 @@ Blockly.Blocks['lora_tx'] = {
 	mutationToDom: Blockly.Blocks['lora_join'].mutationToDom,
 	domToMutation: Blockly.Blocks['lora_join'].domToMutation,
 	updateShape_: Blockly.Blocks['lora_join'].updateShape_,
+	migrate: Blockly.Blocks['lora_join'].migrate,
 };
 
 Blockly.Blocks['when_i_receive_a_lora_frame'] = {
@@ -394,4 +419,45 @@ Blockly.Blocks['when_i_receive_a_lora_frame'] = {
 			options.push(option);
 		}
 	},
+	migrate: Blockly.Blocks['lora_join'].migrate,
+};
+
+Blockly.Blocks['lora_start_gw'] = {
+	module: "lora",
+	init: function() {
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.LORA_START_GW);
+
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.lora.HUE);
+		this.setTooltip('');
+	},
+
+	configureLora: Blockly.Blocks['lora_join'].configureLora,
+	mutationToDom: Blockly.Blocks['lora_join'].mutationToDom,
+	domToMutation: Blockly.Blocks['lora_join'].domToMutation,
+	updateShape_: Blockly.Blocks['lora_join'].updateShape_,
+};
+
+Blockly.Blocks['lora_stop_gw'] = {
+	module: "lora",
+	init: function() {
+		this.appendDummyInput()
+			.setAlign(Blockly.ALIGN_RIGHT)
+			.appendField(Blockly.Msg.LORA_STOP_GW);
+
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(Blockly.Blocks.lora.HUE);
+		this.setTooltip('');
+	},
+
+	configureLora: Blockly.Blocks['lora_join'].configureLora,
+	mutationToDom: Blockly.Blocks['lora_join'].mutationToDom,
+	domToMutation: Blockly.Blocks['lora_join'].domToMutation,
+	updateShape_: Blockly.Blocks['lora_join'].updateShape_,
 };

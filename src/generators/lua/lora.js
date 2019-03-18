@@ -213,3 +213,30 @@ Blockly.Lua['lora_tx'] = function(block) {
 	
 	return code;
 };
+
+Blockly.Lua['lora_start_gw'] = function(block) {
+	var code = '';
+	var tryCode = '';
+	
+	tryCode += Blockly.Lua.blockStart(0, block);
+	tryCode += Blockly.Lua.indent(0, 'lora.attach(lora.BAND'+block.band+',lora.GATEWAY,nil,nil,'+block.freq+','+block.dr+')') + "\n";
+	tryCode += Blockly.Lua.blockEnd(0, block);
+	
+	code += Blockly.Lua.indent(0,'-- start lora gateway') + "\n";
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block,tryCode)) + "\n";
+	
+	return code;
+};
+
+Blockly.Lua['lora_stop_gw'] = function(block) {
+	var code = '';
+	var tryCode = '';
+	
+	tryCode += Blockly.Lua.blockStart(0, block);
+	tryCode += Blockly.Lua.blockEnd(0, block);
+
+	code += Blockly.Lua.indent(0,'-- stop lora gateway') + "\n";
+	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block,tryCode)) + "\n";
+		
+	return code;
+};
