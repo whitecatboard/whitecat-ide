@@ -10,6 +10,8 @@ java -jar ./../yuicompressor-2.4.8.jar wc/field_event.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/field_can_frame.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/field_exception.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/block.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/variables.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/field_variable.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/generator.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/block_svg.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/settings.js >> wc.js

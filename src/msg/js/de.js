@@ -648,9 +648,10 @@ Blockly.Msg.VARIABLES_DEFAULT_NAME = "etwas";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Erzeuge \"Schreibe %1\"";
 Blockly.Msg.VARIABLES_GET_HELPURL = "https://de.wikipedia.org/wiki/Variable_%28Programmierung%29";
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Gibt den Wert der Variable zurück.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "setze %1 auf %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Erzeuge \"Lese %1\"";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://de.wikipedia.org/wiki/Variable_%28Programmierung%29";
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Setzt den Wert einer Variable.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Eine Variable namens „%1“ ist bereits vorhanden.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

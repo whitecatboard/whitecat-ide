@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Undo";  // untranslated
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "element";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Crează 'set %1'";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Returnează valoarea acestei variabile.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "seteaza %1 la %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Crează 'get %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Setează această variabilă sa fie egală la intrare.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "A variable named '%1' already exists.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

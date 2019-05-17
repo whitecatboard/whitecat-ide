@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Urungkan";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "item";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Buat 'set %1'";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Kembalikan nilai variabel ini.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "tetapkan %1 untuk %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Buat 'get %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "tetapkan variabel ini dengan input yang sama.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Sebuah variabel dengan nama '%1' sudah ada.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

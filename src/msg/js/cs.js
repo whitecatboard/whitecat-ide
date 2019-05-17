@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Zpět";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "položka";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Vytvořit \"nastavit %1\"";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Vrátí hodnotu této proměnné.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "nastavit %1 na %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Vytvořit \"získat %1\"";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Nastaví tuto proměnnou, aby se rovnala vstupu.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "A variable named '%1' already exists.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

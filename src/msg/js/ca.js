@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Undo";  // untranslated
 Blockly.Msg.UPDATE = "Actualitzar";
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "element";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Crea 'modifica %1'";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Retorna el valor d'aquesta variable.";
+Blockly.Msg.VARIABLES_LOCAL = "variable local %1";
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Modifica aquesta variable al valor introduït.";
 Blockly.Msg.VARIABLES_SET = "modifica %1 a %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Crear 'recupera %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Modifica aquesta variable al valor introduït.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "A variable named '%1' already exists.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Dada invàlida. Ha de ser >= 0 i <= 255.";

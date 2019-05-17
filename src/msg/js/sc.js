@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Undo";  // untranslated
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "item";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Fait 'imposta %1'";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Torrat su valori de custa variabili.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "imposta %1 a %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Fait 'piga %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Imposta custa variabili uguali a s'input.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "A variable named '%1' already exists.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

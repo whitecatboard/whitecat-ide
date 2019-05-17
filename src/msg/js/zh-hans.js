@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "撤销";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "项目";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "创建“设定%1”";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "返回此变量的值。";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "赋值 %1 到 %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "创建“获得%1”";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "设置此变量，以使它和输入值相等。";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "已存在名为“%1”的变量。";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

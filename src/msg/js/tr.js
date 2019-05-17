@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Geri al";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "öge";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "'set %1' oluştur";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Bu değişkenin değerini verir.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "Atamak %1 e %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "'get %1' oluştur";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Bu değişkeni girilen değere eşitler.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "'%1' isimli değişken adı zaten var.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

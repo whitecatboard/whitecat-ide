@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Anulé";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "element";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Creé 'fissé %1'";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "A smon ël valor ëd sa variàbil.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "fissé %1 a %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Creé 'oten-e %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Fissé costa variàbil ugual al valor d'imission.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Na variàbil con ël nòm '%1' a esist già.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

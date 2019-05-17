@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Undo";  // untranslated
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "உருப்படி";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "'%1 நியமி' உருவாக்கு";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "இந்த மாறி மதிப்பை பின்கொடு";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "நியமி %1 இந்த மாறியிற்கு %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "'எடு %1' உருவாக்கு";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "மாறியின் மதிப்பாய் உள்ளீட்டு மதிப்பை வை.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "A variable named '%1' already exists.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

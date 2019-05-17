@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Dizober";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "elfenn";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Krouiñ 'termenañ %1'";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Distreiñ talvoud an argemm-mañ.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "termenañ %1 da %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Krouiñ 'kaout %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Termenañ a ra argemm-mañ evit ma vo par da dalvoudenn ar moned.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Un argemm anvet '%1' zo anezhañ dija.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

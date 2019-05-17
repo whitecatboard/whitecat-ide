@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Zhbëj";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "send";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Krijo 'vendos %1";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Pergjigjet me nje vlere te kesaj variable.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "vendos %1 ne %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Krijo 'merr %1";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Vendos kete variable te jete e barabarte me te dhenat ne hyrje.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Një variabël e quajtur '%1' tashmë ekziston.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

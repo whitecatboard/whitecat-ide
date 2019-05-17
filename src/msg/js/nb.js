@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Angre";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "element";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Opprett 'sett %1'";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Returnerer verdien av denne variabelen.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "sett %1 til %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Opprett 'hent %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Setter verdien av denne variablen lik parameteren.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "En variabel med navn «%1» finnes allerede.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

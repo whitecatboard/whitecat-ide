@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Отменить";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "элемент";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Создать блок \"присвоить\" для %1";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Возвращает значение этой переменной.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "присвоить %1 = %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Создать вставку %1";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Присваивает переменной значение вставки.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Переменная с именем '%1' уже существует.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

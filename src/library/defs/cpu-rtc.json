@@ -1,0 +1,94 @@
+{
+  "name": "cpu-rtc",
+  "blocks": [
+    {
+      "parentCategory": "System",
+      "category": "RTC",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9InAzeGg5QEtNQnh1eFU2KmN1IUw1IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJXeEgyeyRzPWhVfWJQWkRhdX1sKSI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJHe2w5SVdvTiNeNTZGaHRNWn4jUiI+PGZpZWxkIG5hbWU9IlRFWFQiPnB1c2g8L2ZpZWxkPjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iLHQwdXo1NzROK18paVM4LjZBUkQiPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPlZBTFVFPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5UUlVFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJhR2h5NnRBYEIwcEJpXm1JaEY4aiI+PC9zaGFkb3c+PC92YWx1ZT48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJUJHklSEdFMXplZVhCVWVOJTZvZyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJJPShUKntSRkFgVmxgL08tNDRHKiI+PGZpZWxkIG5hbWU9IlRFWFQiPmludG8gUlRDIG1lbW9yeTwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9ImdjbkdqLz9CKklPcXQzPyQ/IyhlIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IlRYdUszQSsuNk42aj8yfE5wdEAxIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJUT1BUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9InRHU1d3V0ZLJG9kSUJNRHZNVmxoIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJCT1RUT01UWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9In1NeXM4JSovOVcjMEVPMiQwOk52Ij48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0ie1Nfe19ZMX1oWjRaJG5ZN01pfTkiPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "cpu_rtc_push",
+        "message0": "push %1 %2 into RTC memory",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "VALUE"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "push %1 %2 into RTC memory"
+        },
+        "ca": {
+          "message0": "guardar %1 %2 a la memòria RTC"
+        },
+        "es": {
+          "message0": "guardar %1 %2 en la memoria RTC"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "VALUE": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "NAME": "free",
+        "VALUE": "free"
+      },
+      "code": {
+        "default": "cnRjLm1lbS5wdXNoKCQoVkFMVUUpJCk=",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "System",
+      "category": "RTC",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9ImZoaFNPIyMsXWF6VEVKSilDTDZYIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkxFRlQiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+QVVUTzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNPTk5FQ1RJT05TIj5MRUZUPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IklOUFVUUyI+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0iQltPR3FIUkgsJTtGUjVVMGF2TmQiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iJTpSRU9MWkA3T114YHY2ZUZjOyMiPjxmaWVsZCBuYW1lPSJURVhUIj5wb3AgZnJvbSBSVEMgbWVtb3J5PC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PHZhbHVlIG5hbWU9IlRPT0xUSVAiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iVnVJQnZ8VGJXflkwdy5IZkJAIXIiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9IkhFTFBVUkwiPjxibG9jayB0eXBlPSJ0ZXh0IiBpZD0iZ1A/KmxKNDcjQGgzW3xgUzFrdDAiIGRlbGV0YWJsZT0iZmFsc2UiIG1vdmFibGU9ImZhbHNlIj48ZmllbGQgbmFtZT0iVEVYVCI+PC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PHZhbHVlIG5hbWU9Ik9VVFBVVFRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0ic1VEKUIkUzQuQTNOOXNnJWQ1XmAiPjwvc2hhZG93PjwvdmFsdWU+PHZhbHVlIG5hbWU9IkNPTE9VUiI+PGJsb2NrIHR5cGU9ImNvbG91cl9odWUiIGlkPSJdMk5RIyo9aDprWXApUX46KXNwcCI+PG11dGF0aW9uIGNvbG91cj0iIzViNjdhNSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iSFVFIj4yMzA8L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48L2Jsb2NrPjwveG1sPg==",
+      "spec": {
+        "type": "cpu_rtc_pop",
+        "message0": "pop from RTC memory",
+        "output": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "pop from RTC memory"
+        },
+        "ca": {
+          "message0": "recuperar de la memòria RTC"
+        },
+        "es": {
+          "message0": "recuperar de la memoria RTC"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {},
+      "subtype": {},
+      "code": {
+        "default": "cnRjLm1lbS5wb3AoKQ==",
+        "functions": ""
+      }
+    }
+  ]
+}

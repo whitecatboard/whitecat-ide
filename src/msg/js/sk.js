@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Späť";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "prvok";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Vytvoriť \"nastaviť %1\"";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Vráti hodnotu tejto premennej.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "nastaviť %1 na %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Vytvoriť \"získať %1\"";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Nastaví túto premennú, aby sa rovnala vstupu.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Premenná s názvom %1 už existuje.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

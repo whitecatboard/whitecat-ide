@@ -103,6 +103,60 @@
         "default": "Y3B1LnNwZWVkKCk=",
         "functions": ""
       }
+    },
+    {
+      "parentCategory": "System",
+      "category": "CPU",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9Iiowe285NHNdR0t6YyV7U3prPXhMIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkxFRlQiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+QVVUTzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNPTk5FQ1RJT05TIj5MRUZUPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IklOUFVUUyI+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0icWp0eyVJQSlkL0x7YH5nUWp4U3wiPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iZ1o9ailEYSlIOVthYjtxVnJ3RWQiPjxmaWVsZCBuYW1lPSJURVhUIj5yZXNldCByZWFzb24gaXM8L2ZpZWxkPjxuZXh0PjxibG9jayB0eXBlPSJmaWVsZF9kcm9wZG93biIgaWQ9IlRVfE1QZ0NSYGp4RiE5ZCl1Rz8/Ij48bXV0YXRpb24gb3B0aW9ucz0iWyZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7XSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iRklFTEROQU1FIj5SRUFTT048L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+cG93ZXIgb248L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUwIj5jcHUuUkVTRVRfUE9XRVJPTjwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIxIj5zb2Z0d2FyZSByZXNldDwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTEiPmNwdS5SRVNFVF9TVzwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIyIj5kZWVwIHNsZWVwPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMiI+Y3B1LlJFU0VUX0RFRVBTTEVFUDwvZmllbGQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkVfSyorUU44dDR6OVhNc0l1OWVgIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IjZBQWFzWytVemdXIU4vIVAvb2hHIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJPVVRQVVRUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9ImhlSn11Wn4vYUReJTUyLUltXmUsIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9ib29sZWFuIiBpZD0iI1pxZ1k3TFp5PVV6KHksOlApLi0iPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9Ilh7NzN3clVNNUQoamY/NkpRdz9CIj48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "cpu_reset_reason",
+        "message0": "reset reason is %1",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "REASON",
+            "options": [
+              [
+                "power on",
+                "cpu.RESET_POWERON"
+              ],
+              [
+                "software reset",
+                "cpu.RESET_SW"
+              ],
+              [
+                "deep sleep",
+                "cpu.RESET_DEEPSLEEP"
+              ]
+            ]
+          }
+        ],
+        "output": "Boolean",
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "reset reason is %1"
+        },
+        "ca": {
+          "message0": "la causa reinici és %1"
+        },
+        "es": {
+          "message0": "la causa del reinicio es %1"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {},
+      "subtype": {},
+      "code": {
+        "default": "KGNwdS5yZXNldHJlYXNvbigpID09ICQoUkVBU09OKSQp",
+        "functions": ""
+      }
     }
   ]
 }

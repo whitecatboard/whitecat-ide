@@ -28,6 +28,18 @@ Blockly.Block.prototype.isHatBlock = function() {
 	return ((this.previousConnection == null) && (this.nextConnection == null) && (this.outputConnection == null));
 }
 
+Blockly.Block.prototype.getTop = function() {
+	var block = this;
+	var topBlock = null;
+	
+	while (block) {
+		topBlock = block;
+		block = block.getSurroundParent();		
+	}
+	
+	return topBlock;
+}
+
 Blockly.Block.prototype.isInHatBlock = function() {
 	var block = this;
 	do {
@@ -360,3 +372,40 @@ Blockly.Block.helper.setField = function(xml, field, value) {
 		}
 	}
 }
+
+Blockly.Block.prototype.getVars = function() {
+  var vars = [];
+  for (var i = 0, input; input = this.inputList[i]; i++) {
+    for (var j = 0, field; field = input.fieldRow[j]; j++) {
+      if (field instanceof Blockly.FieldVariable) {
+        vars.push(field.getValue());
+      }
+    }
+  }
+  return vars;
+};
+
+Blockly.Block.prototype.getLocalVars = function() {
+  var vars = [];
+  
+  var blocks = [
+	'variables_local', 'procedures_defnoreturn', 'procedures_defreturn'
+  ];
+
+  for (var i = 0, input; input = this.inputList[i]; i++) {
+    for (var j = 0, field; field = input.fieldRow[j]; j++) {
+      if (field instanceof Blockly.FieldVariable) {
+		  if (this.type == 'variables_local') {
+	          vars.push(field.getValue());		  	
+		  } else {
+		  	for (var k = 0, block; block = blocks[k]; k++) {
+				if (this.isInBlock(block)) {
+	  	          vars.push(field.getValue());		  						
+				}
+			}
+		  }
+      }
+    }
+  }
+  return vars;
+};

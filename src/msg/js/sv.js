@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Ångra";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "föremål";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Skapa \"välj %1\"";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Returnerar värdet av denna variabel.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "ange %1 till %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Skapa 'hämta %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Gör så att den här variabeln blir lika med inputen.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "En variabel som heter \"%1\" finns redan.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

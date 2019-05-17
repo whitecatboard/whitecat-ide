@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "पूर्ववत करें";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "आइटम";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "सेट '%1' बनाएँ";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "इस चर का मान रिटर्न करता है।";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "सेट करें %1 को %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Create 'get %1'";  // untranslated
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "इस चर को इनपुट के बराबर सेट करता है।";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "प्राचल नाम '%1' पहले से मौजूद है।";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "ದುಂಬುದಲೆಕೊ";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "ವಸ್ತು";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "'%1' ರಚನೆ ಮಲ್ಪುಲೆ";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "ಈ ವ್ಯತ್ಯಯೊದ ಮೌಲ್ಯೊನು ಪಿರಕೊರು.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "%1 ಡ್ದು %2 ಮಲ್ಪುಲೆ";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "'%1' ರಚನೆ ಮಲ್ಪುಲೆ";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "ಉಲಯಿ ಬರ್ಪುನವು ಸಮಪಾಲ್ ಇಪ್ಪುನಂಚ ವ್ಯತ್ಯಾಸೊ ಮಾಲ್ಪು";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "A variable named '%1' already exists.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

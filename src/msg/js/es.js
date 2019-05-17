@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Deshacer";
 Blockly.Msg.UPDATE = "Actualizar";
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "elemento";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Crear 'establecer %1'";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Devuelve el valor de esta variable.";
+Blockly.Msg.VARIABLES_LOCAL = "local %1";
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Establece el alcance de esta variable a local.";
 Blockly.Msg.VARIABLES_SET = "establecer %1 a %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Crear 'obtener %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Establece esta variable para que sea igual a la entrada.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Ya existe una variable llamada \"%1\".";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Datp inválido. Ha de ser >= 0 y <= 255.";

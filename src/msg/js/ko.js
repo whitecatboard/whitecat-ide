@@ -648,9 +648,10 @@ Blockly.Msg.VARIABLES_DEFAULT_NAME = "항목";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "'집합 %1' 생성";
 Blockly.Msg.VARIABLES_GET_HELPURL = "https://ko.wikipedia.org/wiki/%EB%B3%80%EC%88%98_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99)";
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "변수에 저장 되어있는 값을 돌려줍니다.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "%1를 %2로 설정";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "'%1 값 읽기' 블럭 생성";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://ko.wikipedia.org/wiki/%EB%B3%80%EC%88%98_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99)";
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "변수의 값을 입력한 값으로 변경해 줍니다.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "'%1' 변수는 이미 존재합니다.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

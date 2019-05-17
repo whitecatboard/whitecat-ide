@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "取り消す";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "項目";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "'セット%1を作成します。";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "この変数の値を返します。";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "セット %1 宛先 %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "'%1 を取得' を作成します。";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "この入力を変数と等しくなるように設定します。";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "変数名 '%1' は既に存在しています。";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

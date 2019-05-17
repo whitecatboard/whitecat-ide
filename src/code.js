@@ -2427,7 +2427,11 @@ Code.tabRefresh = function() {
     }
 
     if (!Code.status.connected) {
-        jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #rebootButton").addClass("disabled");
+		if (Code.workspace.type != 'block_editor') {
+        	jQuery("#loadButton, #saveButton, #saveAsButton, #stopButton, #runButton, #rebootButton").addClass("disabled");
+		} else {
+        	jQuery("#loadButton, #saveAsButton, #stopButton, #runButton, #rebootButton").addClass("disabled");			
+		}
     } else {
         if (Code.workspace.type != 'block_editor') {
             jQuery("#stopButton, #runButton, #rebootButton").removeClass("disabled");

@@ -648,9 +648,10 @@ Blockly.Msg.VARIABLES_DEFAULT_NAME = "item";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Maak \"verander %1\"";
 Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Geeft de waarde van deze variabele.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "stel %1 in op %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Maak 'opvragen van %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Verandert de waarde van de variabele naar de waarde van de invoer.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "Er bestaat al een variabele met de naam \"%1\".";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

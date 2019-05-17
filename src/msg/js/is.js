@@ -648,9 +648,10 @@ Blockly.Msg.VARIABLES_DEFAULT_NAME = "atriði";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Búa til 'stilla %1'";
 Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Skilar gildi þessarar breytu.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "stilla %1 á %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Búa til 'sækja %1'";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Stillir þessa breytu á innihald inntaksins.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "A variable named '%1' already exists.";  // untranslated
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

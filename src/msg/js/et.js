@@ -646,11 +646,12 @@ Blockly.Msg.UNDO = "Võta tagasi";
 Blockly.Msg.UPDATE = "Update";  // untranslated
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "objekt";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Tekita 'määra „%1“ väärtuseks' plokk";
-Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#get";  // untranslated
+Blockly.Msg.VARIABLES_GET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_GET_TOOLTIP = "Tagastab selle muutuja väärtuse.";
+Blockly.Msg.VARIABLES_LOCAL = "local variable %1";  // untranslated
+Blockly.Msg.VARIABLES_LOCAL_TOOLTIP = "Sets the scope for this variable to local.";  // untranslated
 Blockly.Msg.VARIABLES_SET = "määra %1 väärtuseks %2";
 Blockly.Msg.VARIABLES_SET_CREATE_GET = "Tekita '„%1“ väärtus' plokk";
-Blockly.Msg.VARIABLES_SET_HELPURL = "https://github.com/google/blockly/wiki/Variables#set";  // untranslated
 Blockly.Msg.VARIABLES_SET_TOOLTIP = "Määrab selle muutuja väärtuse võrdseks sisendi väärtusega.";
 Blockly.Msg.VARIABLE_ALREADY_EXISTS = "'%1'-nimeline muutuja on juba olemas.";
 Blockly.Msg.WARNING_CAN_INVALID_DATA = "Invalid data. Must be >= 0 and <= 255.";  // untranslated

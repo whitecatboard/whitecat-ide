@@ -52,3 +52,10 @@ Blockly.Lua['variables_set'] = function(block) {
 		block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 	return varName + ' = ' + argument0 + '\n';
 };
+
+Blockly.Lua['variables_local'] = function(block) {
+	var varName = Blockly.Lua.variableDB_.getName(
+		block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+		
+	return 'local ' + varName + '\n';
+};
