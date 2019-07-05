@@ -1,0 +1,523 @@
+{
+  "name": "sound",
+  "blocks": [
+    {
+      "parentCategory": "Actuators",
+      "category": "Sound",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9IkdFRH5gYlFHdV9pXmY1bD1LRElvIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJrS3tSP0BMNUVHOn4rOH5jYSxCSyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSI3KWlKSCwzblNgSmJbMUhBfkpxTCI+PGZpZWxkIG5hbWU9IlRFWFQiPmF0dGFjaDwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0iJWFqM0B4V21bMVVYWDdGd0ZCYG8iPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7XSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iRklFTEROQU1FIj5UWVBFPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjAiPlBXTTwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTAiPnNvdW5kLlBXTTwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIxIj5EQUM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUxIj5zb3VuZC5EQUM8L2ZpZWxkPjxuZXh0PjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSI0ampaPUB+cnsraipZM2JuMmo0SCI+PGZpZWxkIG5hbWU9IlRFWFQiPnNvdW5kIGdlbmVyYXRvciBvbjwvZmllbGQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSJNfHNLMlBuaT1VMFNMc3dvYHZjfCI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+UElOPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5GQUxTRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+b3V0cHV0X3BpbnM8L2ZpZWxkPjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IlZjWkhJISMuMF8lTlZ9dExGbyEpIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9vdGhlciIgaWQ9IjoteztodkdFVkMpQjQkMF5eXStJIj48ZmllbGQgbmFtZT0iVFlQRSI+UGluPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVE9PTFRJUCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJ9anJySENtVFklYiNzJWVObT1mKiIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iSEVMUFVSTCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSIuSXxXQl9md3AkYVArQz9TL1JfVCIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iVE9QVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJoVl1uX2tReFMqfXlueU5zZ19uTyI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQk9UVE9NVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJ7T3FOL3A9XlN2LjRNQkZreGo2NSI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9Imhwd1FqTGtWJEd7Lyl6PWRBZTZwIj48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "sound_attach",
+        "message0": "conectar generador de sonido %1 a %2 %3",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "TYPE",
+            "options": [
+              [
+                "PWM",
+                "sound.PWM"
+              ],
+              [
+                "DAC",
+                "sound.DAC"
+              ]
+            ]
+          },
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "PIN",
+            "check": "Pin"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "attach %1 sound generator on %2 %3"
+        },
+        "ca": {
+          "message0": "connectar generador de so %1 a %2 %3"
+        },
+        "es": {
+          "message0": "conectar generador de sonido %1 a %2 %3"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {},
+      "subtype": {
+        "PIN": "output_pins"
+      },
+      "code": {
+        "default": "X3NvdW5kID0gc291bmQuYXR0YWNoKCQoVFlQRSkkLCB7KEJsb2NrbHkuTHVhLmlvLmhlbHBlci5uYW1lRGlnaXRhbChibG9jaykpfSk=",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Sound",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9IlBPU29wKEI7bENHN1dufkgzcS9YIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJCNUwoV2R8ejoxLEpKYC5MVWI7USI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJnbnYlNDB1TnpRPX1XQWJWIzlsdCI+PGZpZWxkIG5hbWU9IlRFWFQiPnBsYXkgbm90ZTwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0iYG9Rckg2ZmhtMyQ5Ykx4Z3ZYR2siPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7XSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iRklFTEROQU1FIj5OT1RFPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjAiPkE8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUwIj5BPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjEiPkEjPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMSI+QSM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMiI+QmI8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUyIj5CYjwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIzIj5CPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMyI+QjwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI0Ij5DPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVNCI+QzwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI1Ij5DIzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTUiPkMjPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjYiPkRiPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVNiI+RGI8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSNyI+RDwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTciPkQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSOCI+RCM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFU4Ij5EIzwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI5Ij5FYiA8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFU5Ij5FYiA8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMTAiPkU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUxMCI+RTwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIxMSI+RjwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTExIj5GPC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjEyIj5GIzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTEyIj5GIzwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIxMyI+R2I8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUxMyI+R2I8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMTQiPkc8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUxNCI+RzwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIxNSI+RyM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUxNSI+RyM8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMTYiPkFiPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMTYiPkFiPC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iZUkuailzY0RAe28tIzk3SFh4U3YiPjxmaWVsZCBuYW1lPSJURVhUIj5vY3RhdmU8L2ZpZWxkPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X3ZhbHVlIiBpZD0iYjQ6fEteO2AkdFgzKncqMyp3UjciPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPk9DVEFWRTwvZmllbGQ+PGZpZWxkIG5hbWU9IlNIQURPVyI+VFJVRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHZhbHVlIG5hbWU9IlRZUEUiPjxzaGFkb3cgdHlwZT0idHlwZV9udWxsIiBpZD0iOjgzdnBUNE5yMGBZOzJJYnpneVQiPjwvc2hhZG93PjxibG9jayB0eXBlPSJ0eXBlX251bWJlciIgaWQ9InBGaW18UkctWXQrZD9wXkxMOCQrIj48L2Jsb2NrPjwvdmFsdWU+PG5leHQ+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0iQl5ULn1zNUZxaWdGWS09TEw1cUciPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iMjo6VzFZYmQtOChneEFiK2BUfWciPjxmaWVsZCBuYW1lPSJURVhUIj5kdXJhdGlvbjwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0iKGQ5aWN3Ykw1VEVdQntoL3xDV2MiPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90O10iPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkZJRUxETkFNRSI+RFVSQVRJT048L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+MTwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTAiPjE8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMSI+MS8yPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMSI+MjwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIyIj4xLzQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUyIj40PC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjMiPjEvODwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTMiPjg8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSNCI+MS8xNjwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTQiPjE2PC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjUiPjEvMzI8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFU1Ij4zMjwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI2Ij4xLzY0PC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVNiI+NjQ8L2ZpZWxkPjxuZXh0PjxibG9jayB0eXBlPSJmaWVsZF9kcm9wZG93biIgaWQ9Iit6QXgrLCU5WkhwKkRdYSpacTllIj48bXV0YXRpb24gb3B0aW9ucz0iWyZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90O10iPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkZJRUxETkFNRSI+RFVSQVRJT05fRVhUUkE8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+IDwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTAiPiA8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMSI+LjwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTEiPi48L2ZpZWxkPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVE9PTFRJUCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJ0QnhdYDBTT2BGWyFhJGBjOS5EXSIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iSEVMUFVSTCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSI5TEVSWVFQW2lRZXpPLm1vQUpHXSIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iVE9QVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSIuV1lSRUFCQUUhNFVjTGNbbExDayI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQk9UVE9NVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSI5emZtaHh5QzJ4bFU6YlAlTHUjYCI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9IkoyMmBCbGFxU3B2RUkwQSRIT0FEIj48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "sound_play_note",
+        "message0": "tocar nota %1 octava %2 %3 duración %4 %5",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "NOTE",
+            "options": [
+              [
+                "A",
+                "A"
+              ],
+              [
+                "A#",
+                "A#"
+              ],
+              [
+                "Bb",
+                "Bb"
+              ],
+              [
+                "B",
+                "B"
+              ],
+              [
+                "C",
+                "C"
+              ],
+              [
+                "C#",
+                "C#"
+              ],
+              [
+                "Db",
+                "Db"
+              ],
+              [
+                "D",
+                "D"
+              ],
+              [
+                "D#",
+                "D#"
+              ],
+              [
+                "Eb ",
+                "Eb "
+              ],
+              [
+                "E",
+                "E"
+              ],
+              [
+                "F",
+                "F"
+              ],
+              [
+                "F#",
+                "F#"
+              ],
+              [
+                "Gb",
+                "Gb"
+              ],
+              [
+                "G",
+                "G"
+              ],
+              [
+                "G#",
+                "G#"
+              ],
+              [
+                "Ab",
+                "Ab"
+              ]
+            ]
+          },
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "OCTAVE",
+            "check": "Number"
+          },
+          {
+            "type": "field_dropdown",
+            "name": "DURATION",
+            "options": [
+              [
+                "1",
+                "1"
+              ],
+              [
+                "1/2",
+                "2"
+              ],
+              [
+                "1/4",
+                "4"
+              ],
+              [
+                "1/8",
+                "8"
+              ],
+              [
+                "1/16",
+                "16"
+              ],
+              [
+                "1/32",
+                "32"
+              ],
+              [
+                "1/64",
+                "64"
+              ]
+            ]
+          },
+          {
+            "type": "field_dropdown",
+            "name": "DURATION_EXTRA",
+            "options": [
+              [
+                " ",
+                " "
+              ],
+              [
+                ".",
+                "."
+              ]
+            ]
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "play note %1 octave %2 %3 duration %4 %5"
+        },
+        "ca": {
+          "message0": "tocar nota %1 octava %2 %3 durada %4 %5"
+        },
+        "es": {
+          "message0": "tocar nota %1 octava %2 %3 duración %4 %5"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "OCTAVE": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "OCTAVE": "free"
+      },
+      "code": {
+        "default": "X3NvdW5kX3BsYXlfbm90ZSgiJChOT1RFKSQiLCAkKE9DVEFWRSkkLCAiJChEVVJBVElPTikkIiwgIiQoRFVSQVRJT05fRVhUUkEpJCIp",
+        "functions": "ZnVuY3Rpb24gX3NvdW5kX3BsYXlfbm90ZShub3RlLCBvY3RhdmUsIGR1cmF0aW9uLCBkdXJhdGlvbl9leHRyYSkKICAgIG5vdGUgPSBub3RlLi5kdXJhdGlvbgogICAgCiAgICBpZiAobm90IChkdXJhdGlvbl9leHRyYSA9PSAiICIpKSB0aGVuCiAgICAgICAgbm90ZSA9IG5vdGUuLmR1cmF0aW9uX2V4dHJhCiAgICBlbmQKICAgIAogICAgX3NvdW5kOnBsYXlub3RlKG5vdGUsIG9jdGF2ZSkKZW5k",
+        "undefined": ""
+      }
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Sound",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9InMzZURKayppU1JWX0YycSpsaVhTIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJqKX4zR2xmYiszQlBDbHkoLTJTNiI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJTbm8sZWE4WWtaOGhfZHF7R3tBRyI+PGZpZWxkIG5hbWU9IlRFWFQiPnRpbWUgc2lnbmF0dXJlPC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfZHJvcGRvd24iIGlkPSJxXUN8O3RGZGpVJX0hTVBgd1h5OiI+PG11dGF0aW9uIG9wdGlvbnM9IlsmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7XSI+PC9tdXRhdGlvbj48ZmllbGQgbmFtZT0iRklFTEROQU1FIj5TSUdOQVRVUkU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+NC80PC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMCI+NF80PC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjEiPjMvNDwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTEiPjNfNDwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIyIj4yLzQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUyIj4yXzQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMyI+Ni84PC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMyI+Nl84PC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0iYHE9c2hxSl1mMkdNW2FdeTB2Mi8iPjxmaWVsZCBuYW1lPSJURVhUIj5hdDwvZmllbGQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSJqSEB5dnUsZDJ6LmhbV2NsLHpZYiI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+QlBTPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5UUlVFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJ8ZHhiKklQL0osX10xZ04tXlgrUyI+PC9zaGFkb3c+PGJsb2NrIHR5cGU9InR5cGVfbnVtYmVyIiBpZD0iWixgSzp8dVFLPzNMZS5rV09dT1giPjwvYmxvY2s+PC92YWx1ZT48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJyZTpNZ29HPX47eTpnbWVVRWhFMyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJxTGpiJHYqLmsyXTBQKnojVF8xeiI+PGZpZWxkIG5hbWU9IlRFWFQiPmJwczwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkR7M1lsTkdWVFF7TTkvfEhEMHt5IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IjJAQjFCfkhDUVQ1RlA0WEdSQnpGIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJUT1BUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IlZxYiRJZFFvUF1ULUFFZk1HWkNRIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJCT1RUT01UWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IllfIVRJWFt6Kz9rZHtST1k9fEVuIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0ifTBtU2ZZJVNtWmY0ZGN1KGEqTV4iPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "sound_time_signature",
+        "message0": "time signature %1 at %2 %3 bps",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "SIGNATURE",
+            "options": [
+              [
+                "4/4",
+                "4_4"
+              ],
+              [
+                "3/4",
+                "3_4"
+              ],
+              [
+                "2/4",
+                "2_4"
+              ],
+              [
+                "6/8",
+                "6_8"
+              ]
+            ]
+          },
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "BPS",
+            "check": "Number"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "time signature %1 at %2 %3 bpm"
+        },
+        "ca": {
+          "message0": "establir compàs de %1 a un ritme de %2 %3 ppm"
+        },
+        "es": {
+          "message0": "establecer compás de %1 a un ritmo de %2 %3 ppm"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "BPS": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "UPPER": "free",
+        "lower": "free",
+        "BPS": "free"
+      },
+      "code": {
+        "default": "X3NvdW5kX3NldF90aW1lX3NpZ25hdHVyZSgiJChTSUdOQVRVUkUpJCIsICQoQlBTKSQpCg==",
+        "functions": "ZnVuY3Rpb24gX3NvdW5kX3NldF90aW1lX3NpZ25hdHVyZShzaWcsIGJwcykKICAgIGxvY2FsIHVwcGVyCiAgICBsb2NhbCBsb3dlcgogICAgCiAgICAtLSBHZXQgdXBwZXIgLyBsb3dlciB2YWx1ZXMgZnJvbSBzaWduYXR1cmUKICAgIGlmIChzaWcgPT0gIjRfNCIpIHRoZW4KICAgICAgICB1cHBlciA9IDQKICAgICAgICBsb3dlciA9IDQKICAgIGVsc2VpZiAoc2lnID09ICIzXzQiKSB0aGVuCiAgICAgICAgdXBwZXIgPSAzCiAgICAgICAgbG93ZXIgPSA0CiAgICBlbHNlaWYgKHNpZyA9PSAiMl80IikgdGhlbgogICAgICAgIHVwcGVyID0gMgogICAgICAgIGxvd2VyID0gNAogICAgZWxzZWlmIChzaWcgPT0gIjZfOCIpIHRoZW4KICAgICAgICB1cHBlciA9IDYKICAgICAgICBsb3dlciA9IDgKICAgIGVuZAogICAgCiAgICAtLSBTZXQgdGltZSBzaWduYXR1cmUKICAgIF9zb3VuZDp0aW1lc2lnbmF0dXJlKHVwcGVyLCBsb3dlciwgYnBzKQplbmQ=",
+        "undefined": "X3NvdW5kX3NldF90aW1lX3NpZ25hdHVyZSgiJChTSUdOQVRVUkUpJCIsICQoQlBTKSQpCg=="
+      }
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Sound",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9Ik5SMHwqOF96MiolczNMO0RKbEZsIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSJrU0NZPSh6SHFpIyxXdU9QZndLTyI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJzSzozVmJRbTNgOHozbVFaV3l4LSI+PGZpZWxkIG5hbWU9IlRFWFQiPnBsYXkgc2lsZW5jZSBkdXJhdGlvbjwvZmllbGQ+PG5leHQ+PGJsb2NrIHR5cGU9ImZpZWxkX2Ryb3Bkb3duIiBpZD0iKGQ5aWN3Ykw1VEVdQntoL3xDV2MiPjxtdXRhdGlvbiBvcHRpb25zPSJbJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90O10iPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkZJRUxETkFNRSI+RFVSQVRJT048L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMCI+MTwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTAiPjE8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMSI+MS8yPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMSI+MjwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIyIj4xLzQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUyIj40PC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjMiPjEvODwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTMiPjg8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSNCI+MS8xNjwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTQiPjE2PC9maWVsZD48ZmllbGQgbmFtZT0iVVNFUjUiPjEvMzI8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFU1Ij4zMjwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI2Ij4xLzY0PC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVNiI+NjQ8L2ZpZWxkPjwvYmxvY2s+PC9uZXh0PjwvYmxvY2s+PC9zdGF0ZW1lbnQ+PC9ibG9jaz48L3N0YXRlbWVudD48dmFsdWUgbmFtZT0iVE9PTFRJUCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJGcG5wQz9YXlI2LCw0O0FReH59fCIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iSEVMUFVSTCI+PGJsb2NrIHR5cGU9InRleHQiIGlkPSJKcyx3eWNpejAwTjdheEQlbDBfbyIgZGVsZXRhYmxlPSJmYWxzZSIgbW92YWJsZT0iZmFsc2UiPjxmaWVsZCBuYW1lPSJURVhUIj48L2ZpZWxkPjwvYmxvY2s+PC92YWx1ZT48dmFsdWUgbmFtZT0iVE9QVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJyO0N+T0gzOlBpeVt8e3IyXWVqLyI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQk9UVE9NVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSI0cEQzXXBrN1FidFtdKGRwe14kRyI+PC9zaGFkb3c+PC92YWx1ZT48dmFsdWUgbmFtZT0iQ09MT1VSIj48YmxvY2sgdHlwZT0iY29sb3VyX2h1ZSIgaWQ9InxWZ08tSFsuZTVjYkUtYEk2QzF+Ij48bXV0YXRpb24gY29sb3VyPSIjNWI2N2E1Ij48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJIVUUiPjIzMDwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjwvYmxvY2s+PC94bWw+",
+      "spec": {
+        "type": "sound_play_silence",
+        "message0": "tocar silencio duración%1",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "DURATION",
+            "options": [
+              [
+                "1",
+                "1"
+              ],
+              [
+                "1/2",
+                "2"
+              ],
+              [
+                "1/4",
+                "4"
+              ],
+              [
+                "1/8",
+                "8"
+              ],
+              [
+                "1/16",
+                "16"
+              ],
+              [
+                "1/32",
+                "32"
+              ],
+              [
+                "1/64",
+                "64"
+              ]
+            ]
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "play silence duration %1"
+        },
+        "ca": {
+          "message0": "tocar sil·lenci durada %1"
+        },
+        "es": {
+          "message0": "tocar silencio duración%1"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {},
+      "subtype": {},
+      "code": {
+        "default": "X3NvdW5kOnBsYXlzaWxlbmNlKCIkKERVUkFUSU9OKSQiKQ==",
+        "functions": "",
+        "undefined": "X3NvdW5kOnBsYXlzaWxlbmNlKCIkKERVUkFUSU9OKSQiKQ=="
+      }
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Sound",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9InNzPS13bkZELVVJenRUeF95JGshIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkJPVEg8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfZHVtbXkiIGlkPSI3OzVKd3Y1JFlXI11fTnFhNENYcCI+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSJ6LD1uJVVeRCNIRCRgOTJhW1R3ZSI+PGZpZWxkIG5hbWU9IlRFWFQiPmJhcjwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSIoUmpjM20zNXUzIyhxZmt3dSNCKSI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+QkFSPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5UUlVFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSJRXUdBRDIwZFMrYmltOlpHXzA3YiI+PC9zaGFkb3c+PGJsb2NrIHR5cGU9InR5cGVfbnVtYmVyIiBpZD0icCEoSF1DMD8rN2JsemVzfWJYMmIiPjwvYmxvY2s+PC92YWx1ZT48bmV4dD48YmxvY2sgdHlwZT0iaW5wdXRfc3RhdGVtZW50IiBpZD0iJXw2cWw2KGlMOEJPNXFBSkM3Qn4iPjxmaWVsZCBuYW1lPSJJTlBVVE5BTUUiPk5PVEVTPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48dmFsdWUgbmFtZT0iVFlQRSI+PHNoYWRvdyB0eXBlPSJ0eXBlX251bGwiIGlkPSIyMilPJVYoR3lLcjNCXnMwZUJ2aCI+PC9zaGFkb3c+PC92YWx1ZT48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkMzajZ6MFtBS1ByRTJKfmYvPUxrIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkJGMCFpN1lGKWFUPyw7MWZjbndlIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJUT1BUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IlpIZGEwMFlBS21ieXhqIVdNdlBZIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJCT1RUT01UWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IkhgVyx3WC5vQEpFVFhNQkdJbFZuIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0ibSxRSnAvZSouKTAhM0JnezUqTEAiPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "sound_bar",
+        "message0": "compás %1 %2 %3",
+        "args0": [
+          {
+            "type": "input_dummy"
+          },
+          {
+            "type": "input_value",
+            "name": "BAR",
+            "check": "Number"
+          },
+          {
+            "type": "input_statement",
+            "name": "NOTES"
+          }
+        ],
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "bar %1 %2 %3"
+        },
+        "ca": {
+          "message0": "compàs %1 %2 %3"
+        },
+        "es": {
+          "message0": "compás %1 %2 %3"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "BAR": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "BAR": "free"
+      },
+      "code": {
+        "default": "QChOT1RFUylA",
+        "functions": ""
+      }
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Sound",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9IkZFK3B4a2ZZcTI2KXQvXUg9X1ZCIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkJPVEgiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+QVVUTzwvZmllbGQ+PGZpZWxkIG5hbWU9IkNPTk5FQ1RJT05TIj5CT1RIPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IklOUFVUUyI+PGJsb2NrIHR5cGU9ImlucHV0X2R1bW15IiBpZD0icHRrKEckdEx2MjReanw2TC86P0siPjxmaWVsZCBuYW1lPSJBTElHTiI+TEVGVDwvZmllbGQ+PGZpZWxkIG5hbWU9IlNVQlRZUEUiPmZyZWU8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iRklFTERTIj48YmxvY2sgdHlwZT0iZmllbGRfc3RhdGljIiBpZD0icjVlMmJeO3FIRnF6dn0vVXx0KWciPjxmaWVsZCBuYW1lPSJURVhUIj5zZXQgdm9sdW1lPC9maWVsZD48bmV4dD48YmxvY2sgdHlwZT0iZmllbGRfZHJvcGRvd24iIGlkPSJKNTVBRkVvbTJmK211LkdFWjAhOiI+PG11dGF0aW9uIG9wdGlvbnM9IlsmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDssJnF1b3Q7dGV4dCZxdW90OywmcXVvdDt0ZXh0JnF1b3Q7LCZxdW90O3RleHQmcXVvdDtdIj48L211dGF0aW9uPjxmaWVsZCBuYW1lPSJGSUVMRE5BTUUiPlZPTFVNRTwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIwIj4wJTwvZmllbGQ+PGZpZWxkIG5hbWU9IkNQVTAiPjA8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMSI+MjUlPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMSI+MC4yNTwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVIyIj41MCU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJDUFUyIj4wLjU8L2ZpZWxkPjxmaWVsZCBuYW1lPSJVU0VSMyI+NzUlPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVMyI+MC43NTwvZmllbGQ+PGZpZWxkIG5hbWU9IlVTRVI0Ij4xMDAlPC9maWVsZD48ZmllbGQgbmFtZT0iQ1BVNCI+MTwvZmllbGQ+PC9ibG9jaz48L25leHQ+PC9ibG9jaz48L3N0YXRlbWVudD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IllheTIoQ0godjhgWW0oYiE1QUd2IiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IjVwSTs9bFtIeDBRMkNodVkqP3NIIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJUT1BUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9IlpMfVM9YVsrJHBCK3ZtP1B5Tl1lIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJCT1RUT01UWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9ImdtcVBpRyg4dlA7LyU0LF95dTc9Ij48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0iIT9SIzQub34sb31JaHcpQ1kvQ2EiPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "sound_set_volume",
+        "message0": "establecer volumen a %1",
+        "args0": [
+          {
+            "type": "field_dropdown",
+            "name": "VOLUME",
+            "options": [
+              [
+                "0%",
+                "0"
+              ],
+              [
+                "25%",
+                "0.25"
+              ],
+              [
+                "50%",
+                "0.5"
+              ],
+              [
+                "75%",
+                "0.75"
+              ],
+              [
+                "100%",
+                "1"
+              ]
+            ]
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "parentStatement": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": "set volume to %1"
+        },
+        "ca": {
+          "message0": "establir volum a %1"
+        },
+        "es": {
+          "message0": "establecer volumen a %1"
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {},
+      "subtype": {},
+      "code": {
+        "default": "X3NvdW5kOnNldHZvbHVtZSgkKFZPTFVNRSkkKQ==",
+        "functions": ""
+      }
+    }
+  ]
+}
