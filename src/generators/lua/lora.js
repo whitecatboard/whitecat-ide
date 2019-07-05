@@ -106,8 +106,8 @@ Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
 		codeSection["require"].push('require("block")');
 	}
 	
-	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
-	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+	//tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
+	//tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
 
 	tryCode += Blockly.Lua.indent(0,'lora.whenReceived(function(port, payload)') + "\n";
 	
