@@ -605,52 +605,6 @@ Blockly.Workspace.prototype.removeSensor = function(sensor) {
 	}
 }
 
-/**
- * Select this block.  Highlight it visually as block has an error.
- */
-Blockly.BlockSvg.prototype.addError = function() {
-  Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_),
-                    'blocklyError');
-  // Move the selected block to the top of the stack.
-  var block = this;
-  do {
-    var root = block.getSvgRoot();
-    root.parentNode.appendChild(root);
-    block = block.getParent();
-  } while (block);
-};
-
-/**
- * Unselect this block.  Remove its highlighting as block has not an error.
- */
-Blockly.BlockSvg.prototype.removeError = function() {
-  Blockly.utils.removeClass(/** @type {!Element} */ (this.svgGroup_),
-                       'blocklyError');
-};
-
-/**
- * Select this block.  Highlight it visually as block is running.
- */
-Blockly.BlockSvg.prototype.addStart = function() {
-  Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_),
-                    'blocklyStarted');
-  // Move the selected block to the top of the stack.
-  var block = this;
-  do {
-    var root = block.getSvgRoot();
-    root.parentNode.appendChild(root);
-    block = block.getParent();
-  } while (block);
-};
-
-/**
- * Unselect this block.  Remove its highlighting as block is not running.
- */
-Blockly.BlockSvg.prototype.removeStart = function() {
-  Blockly.utils.removeClass(/** @type {!Element} */ (this.svgGroup_),
-                       'blocklyStarted');
-};
-
 Blockly.Css.CONTENT.push(
   '.blocklyStarted>.blocklyPath {',
     'stroke: #00c800;',
@@ -676,43 +630,6 @@ Blockly.Css.CONTENT.push(
     'display: none;',
   '}'
 );
-
-/**
- * Change the colour of a block.
- */
-Blockly.BlockSvg.prototype.updateColour = function() {
-  if (this.disabled) {
-    // Disabled blocks don't have colour.
-    return;
-  }
-  var hexColour = this.getColour();
-  var rgb = goog.color.hexToRgb(hexColour);
-  if (this.isShadow()) {
-    //rgb = goog.color.lighten(rgb, 0.6);
-    hexColour = goog.color.rgbArrayToHex(rgb);
-    this.svgPathLight_.style.display = 'none';
-    this.svgPathDark_.setAttribute('fill', hexColour);
-  } else {
-    this.svgPathLight_.style.display = '';
-    var hexLight = goog.color.rgbArrayToHex(goog.color.lighten(rgb, 0.3));
-    var hexDark = goog.color.rgbArrayToHex(goog.color.darken(rgb, 0.2));
-    this.svgPathLight_.setAttribute('stroke', hexLight);
-    this.svgPathDark_.setAttribute('fill', hexDark);
-  }
-  this.svgPath_.setAttribute('fill', hexColour);
-
-  var icons = this.getIcons();
-  for (var i = 0; i < icons.length; i++) {
-    icons[i].updateColour();
-  }
-
-  // Bump every dropdown to change its colour.
-  for (var x = 0, input; input = this.inputList[x]; x++) {
-    for (var y = 0, field; field = input.fieldRow[y]; y++) {
-      field.setText(null);
-    }
-  }
-};
 
 Blockly.WorkspaceSvg.prototype.removeErrors = function() {
 	var blocks = this.getAllBlocks();
