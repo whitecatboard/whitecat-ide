@@ -373,8 +373,10 @@ Blockly.Block.helper.setField = function(xml, field, value) {
 	}
 }
 
+/*
 Blockly.Block.prototype.getVars = function() {
   var vars = [];
+  
   for (var i = 0, input; input = this.inputList[i]; i++) {
     for (var j = 0, field; field = input.fieldRow[j]; j++) {
       if (field instanceof Blockly.FieldVariable) {
@@ -388,24 +390,24 @@ Blockly.Block.prototype.getVars = function() {
 Blockly.Block.prototype.getLocalVars = function() {
   var vars = [];
   
-  var blocks = [
-	'variables_local', 'procedures_defnoreturn', 'procedures_defreturn'
-  ];
-
+  if ((this.type == "procedures_defnoreturn") || (this.type == "procedures_defreturn")) {
+	  // For procedures and functions, arguments are always local variable names
+	  this.arguments_.forEach(function(argument) {
+          vars.push(argument);		  							  	
+	  });
+  }
+  
+  // Variables marked as local
   for (var i = 0, input; input = this.inputList[i]; i++) {
     for (var j = 0, field; field = input.fieldRow[j]; j++) {
       if (field instanceof Blockly.FieldVariable) {
 		  if (this.type == 'variables_local') {
 	          vars.push(field.getValue());		  	
-		  } else {
-		  	for (var k = 0, block; block = blocks[k]; k++) {
-				if (this.isInBlock(block)) {
-	  	          vars.push(field.getValue());		  						
-				}
-			}
 		  }
       }
     }
   }
+  
   return vars;
 };
+*/

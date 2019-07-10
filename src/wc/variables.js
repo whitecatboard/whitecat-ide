@@ -1,5 +1,6 @@
 'use strict';
 
+/*
 Blockly.Variables.allUsedLocalVariables = function(root) {
   var blocks;
   if (root instanceof Blockly.Block) {
@@ -32,7 +33,7 @@ Blockly.Variables.allUsedLocalVariables = function(root) {
   }
   return variableList;
 };
-
+*/
 
 Blockly.Variables.flyoutCategory = function(workspace) {
   var variableList = workspace.variableList;

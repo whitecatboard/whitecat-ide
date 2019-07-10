@@ -6,6 +6,7 @@
  * @return {!Array.<string>} Array of variable names.
  * @this {Blockly.FieldVariable}
  */
+/*
 Blockly.FieldVariable.dropdownCreate = function() {
   if (this.sourceBlock_ && this.sourceBlock_.workspace) {
     // Get a copy of the list, so that adding rename and new variable options
@@ -15,6 +16,15 @@ Blockly.FieldVariable.dropdownCreate = function() {
 	var allLocals = Blockly.Variables.allUsedLocalVariables(this.sourceBlock_.workspace);
 	var myLocals = Blockly.Variables.allUsedLocalVariables(this.sourceBlock_.getTop());
 
+	console.log("variableList");
+	console.log(variableList);
+
+	console.log("allLocals");
+	console.log(allLocals);
+
+	console.log("myLocals");
+	console.log(myLocals);
+	
 	// Remove my locals from all locals
 	allLocals = allLocals.filter( function( el ) {
 	  return myLocals.indexOf( el ) < 0;
@@ -47,3 +57,4 @@ Blockly.FieldVariable.dropdownCreate = function() {
   }
   return options;
 };
+*/
