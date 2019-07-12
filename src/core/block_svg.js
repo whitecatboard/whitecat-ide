@@ -734,17 +734,6 @@ Blockly.BlockSvg.prototype.onMouseUp_ = function(e) {
  * @private
  */
 
-// WHITECAT IDE
-Blockly.BlockSvg.prototype.showHelp_ = function() {
-  var thisInstance = this;
-
-  var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
-  if (url) {
-	  Code.Help._show(url);
-  }
-};
-// WHITECAT IDE
-
 /**
  * Show the context menu for this block.
  * @param {!Event} e Mouse event.
