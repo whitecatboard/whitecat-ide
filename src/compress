@@ -2,6 +2,7 @@
 java -jar ./../yuicompressor-2.4.8.jar blockly_compressed.js > wc.js
 java -jar ./../yuicompressor-2.4.8.jar blocks_compressed.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/xml.js >> wc.js
+java -jar ./../yuicompressor-2.4.8.jar wc/toolbox.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/workspace.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/sensors.js >> wc.js
 java -jar ./../yuicompressor-2.4.8.jar wc/wifi.js >> wc.js
