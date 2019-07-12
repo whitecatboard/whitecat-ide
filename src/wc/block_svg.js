@@ -247,3 +247,12 @@ Blockly.BlockSvg.prototype.updateColour = function() {
     }
   }
 };
+
+Blockly.BlockSvg.prototype.showHelp_ = function() {
+  var thisInstance = this;
+
+  var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
+  if (url) {
+	  Code.Help._show(url);
+  }
+};
