@@ -412,7 +412,7 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 		}
 
 		// Create the category
-		cat = jQuery('<category id="cat' + block.category + '" colour="' + parentCat.attr("colour") + '" name="' + catName + '"></category>');
+		cat = jQuery('<category id="cat' + block.category + '" colour="' + parentCat.attr("colour") + '" name="' + catName + '"></category>');			
 
 		// Append the category in order
 		var inserted = false;
@@ -463,29 +463,89 @@ blockLibrary.prototype.get = function(xml, callback) {
 
 		// Parse each lirary block
 		self.libs.forEach(function(lib, idx) {
-			lib.blocks.forEach(function(block, idx) {
-				// Get the json spec for block
+			// Has order?
+			if (typeof lib.order != "undefined") {
+				var includedBlocks = [];
+				var includeSep = false;
+				
+				lib.order.forEach(function(order, idx) {
+					lib.blocks.forEach(function(block, idx) {
+						if (block.spec.type == order) {
+							// Get the json spec for block
+							var spec = block.spec;
 
-				var spec = block.spec;
+							// Translate messages
+							for (var prop in spec) {
+								if (/message[0-9]*/.test(prop)) {
+									if (block.msg[Code.settings.language][prop] != "") {
+										block.spec[prop] = block.msg[Code.settings.language][prop];
+									}
+								}
+							}
 
-				// Translate messages
-				for (var prop in spec) {
-					if (/message[0-9]*/.test(prop)) {
-						if (block.msg[Code.settings.language][prop] != "") {
-							block.spec[prop] = block.msg[Code.settings.language][prop];
+							// If colour in spec is not an integer, evaluate
+							if (isNaN(parseInt(spec.colour))) {
+								spec.colour = eval(spec.colour);
+							}
+
+							// Create block
+							xml = self.createBlocks(xml, block);	
+						
+							includedBlocks.push(block.spec.type);	
+							includeSep = false;					
+						}
+					});							
+				});	
+				
+				lib.blocks.forEach(function(block, idx) {
+					if (!includedBlocks.includes(block.spec.type)) {
+						// Get the json spec for block
+						var spec = block.spec;
+
+						// Translate messages
+						for (var prop in spec) {
+							if (/message[0-9]*/.test(prop)) {
+								if (block.msg[Code.settings.language][prop] != "") {
+									block.spec[prop] = block.msg[Code.settings.language][prop];
+								}
+							}
+						}
+
+						// If colour in spec is not an integer, evaluate
+						if (isNaN(parseInt(spec.colour))) {
+							spec.colour = eval(spec.colour);
+						}
+
+						// Create block
+						xml = self.createBlocks(xml, block);	
+						
+						includedBlocks.push(block.spec.type);						
+					}
+				});	
+			} else {
+				lib.blocks.forEach(function(block, idx) {
+					// Get the json spec for block
+					var spec = block.spec;
+
+					// Translate messages
+					for (var prop in spec) {
+						if (/message[0-9]*/.test(prop)) {
+							if (block.msg[Code.settings.language][prop] != "") {
+								block.spec[prop] = block.msg[Code.settings.language][prop];
+							}
 						}
 					}
-				}
 
-				// If colour in spec is not an integer, evaluate
-				if (isNaN(parseInt(spec.colour))) {
-					spec.colour = eval(spec.colour);
-				}
+					// If colour in spec is not an integer, evaluate
+					if (isNaN(parseInt(spec.colour))) {
+						spec.colour = eval(spec.colour);
+					}
 
-				// Create block
-				xml = self.createBlocks(xml, block);
-			});
-
+					// Create block
+					xml = self.createBlocks(xml, block);
+				});				
+			}
+			
 			// Add translations
 			if (typeof lib.messages != "undefined") {
 				lib.messages.forEach(function(message) {
@@ -495,8 +555,6 @@ blockLibrary.prototype.get = function(xml, callback) {
 				});
 			}
 		});
-
-
 
 		callback(xml);
 	}
