@@ -209,6 +209,14 @@ board.prototype.getMaps = function(id, callback) {
 		if (board.hasOwnProperty("externalAdcUnits")) {
 			maps["externalAdcUnits"] = board.externalAdcUnits;
 		}
+
+		if (board.hasOwnProperty("externalGPIO")) {
+			if (board["externalGPIO"].hasOwnProperty("MCP23S17")) {
+				for (key in board["externalGPIO"]["MCP23S17"]) {
+					maps["digitalPins"][key] = board["externalGPIO"]["MCP23S17"][key];
+				}				
+			}
+		}
 		
 		callback(maps);		
 	});

@@ -61,6 +61,26 @@
 	    "32":  ["GPIO32", "IO32"  ],
 	    "33":  ["GPIO33", "IO33"  ]
 	},
+	"externalGPIO": {
+		"MCP23S17": {
+			 "40":  ["GPIO40" , true, true , true,  true,  "IO40"   ],			
+			 "41":  ["GPIO41" , true, true , true,  true,  "IO41"   ],			
+			 "42":  ["GPIO42" , true, true , true,  true,  "IO42"   ],			
+			 "43":  ["GPIO43" , true, true , true,  true,  "IO43"   ],			
+			 "44":  ["GPIO44" , true, true , true,  true,  "IO44"   ],			
+			 "45":  ["GPIO45" , true, true , true,  true,  "IO45"   ],			
+			 "46":  ["GPIO46" , true, true , true,  true,  "IO46"   ],			
+			 "47":  ["GPIO47" , true, true , true,  true,  "IO47"   ],			
+			 "48":  ["GPIO48" , true, true , true,  true,  "IO48"   ],			
+			 "49":  ["GPIO49" , true, true , true,  true,  "IO49"   ],			
+			 "50":  ["GPIO50" , true, true , true,  true,  "IO50"   ],			
+			 "51":  ["GPIO51" , true, true , true,  true,  "IO51"   ],			
+			 "52":  ["GPIO52" , true, true , true,  true,  "IO52"   ],			
+			 "53":  ["GPIO53" , true, true , true,  true,  "IO53"   ],			
+			 "54":  ["GPIO54" , true, true , true,  true,  "IO54"   ],			
+			 "55":  ["GPIO55" , true, true , true,  true,  "IO55"   ]
+		 }
+	},
 	"externalAdcUnits": {
 		"2": ["MCP3008", 8, 10, "channel"],
 		"3": ["MCP3208", 8, 12, "channel"],
