@@ -828,6 +828,78 @@
         "default": "LS0gY2hhbmdlIGZvcmVncm91bmQgY29sb3IKZ2Rpc3BsYXkuc2V0YmFja2dyb3VuZCh7KCIkKENPTE9SKSQiLnJlcGxhY2UoIiMiLCIweCIpKX0p",
         "functions": ""
       }
+    },
+    {
+      "parentCategory": "Actuators",
+      "category": "Display",
+      "xmlSpec": "PHhtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+PGJsb2NrIHR5cGU9ImZhY3RvcnlfYmFzZSIgaWQ9Imc6Uyp1WW9+b3gjYG5pZEdWemMjIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSIgeD0iMTAiIHk9IjE1Ij48bXV0YXRpb24gY29ubmVjdGlvbnM9IkxFRlQiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IklOTElORSI+SU5UPC9maWVsZD48ZmllbGQgbmFtZT0iQ09OTkVDVElPTlMiPkxFRlQ8L2ZpZWxkPjxzdGF0ZW1lbnQgbmFtZT0iSU5QVVRTIj48YmxvY2sgdHlwZT0iaW5wdXRfdmFsdWUiIGlkPSJJcX4ycXBdQHRBRzo9RiRvOEBXViI+PGZpZWxkIG5hbWU9IklOUFVUTkFNRSI+UjwvZmllbGQ+PGZpZWxkIG5hbWU9IlNIQURPVyI+VFJVRTwvZmllbGQ+PGZpZWxkIG5hbWU9IkFMSUdOIj5MRUZUPC9maWVsZD48ZmllbGQgbmFtZT0iU1VCVFlQRSI+ZnJlZTwvZmllbGQ+PHN0YXRlbWVudCBuYW1lPSJGSUVMRFMiPjxibG9jayB0eXBlPSJmaWVsZF9zdGF0aWMiIGlkPSIzIzNFfHwuXzlvZ3RPayttbDA5OCI+PGZpZWxkIG5hbWU9IlRFWFQiPihSPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9Ijl8W2tkeFEyV0dobkFgW2VrMkNWIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSJUfCpmWFZJblhwZjt7NElCPz0sVyI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9InFQJU1LMEdER1hiLyV+KmQyKGAqIj48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5HPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5UUlVFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9Iks0LToxdi1AWyE1a1BHdEVwNngkIj48ZmllbGQgbmFtZT0iVEVYVCI+LCBHPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9Ijl8W2tkeFEyV0dobkFgW2VrMkNWIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSJhNWxofl8/UUE9MyxwQExORC5OcSI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF92YWx1ZSIgaWQ9IlQ0TUcqUDV7JC1mS0glaXBoVXw7Ij48ZmllbGQgbmFtZT0iSU5QVVROQU1FIj5CPC9maWVsZD48ZmllbGQgbmFtZT0iU0hBRE9XIj5UUlVFPC9maWVsZD48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9IipAcmdUUnhNLlRPJXYsKnF6YXY9Ij48ZmllbGQgbmFtZT0iVEVYVCI+LCBCPC9maWVsZD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9Ijl8W2tkeFEyV0dobkFgW2VrMkNWIj48L3NoYWRvdz48YmxvY2sgdHlwZT0idHlwZV9udW1iZXIiIGlkPSJaW1kvYDNWbElrdld2a1UhVTBMTyI+PC9ibG9jaz48L3ZhbHVlPjxuZXh0PjxibG9jayB0eXBlPSJpbnB1dF9kdW1teSIgaWQ9Ik00YXI1S3p6dGBTLUtdJH5xX3hwIj48ZmllbGQgbmFtZT0iQUxJR04iPkxFRlQ8L2ZpZWxkPjxmaWVsZCBuYW1lPSJTVUJUWVBFIj5mcmVlPC9maWVsZD48c3RhdGVtZW50IG5hbWU9IkZJRUxEUyI+PGJsb2NrIHR5cGU9ImZpZWxkX3N0YXRpYyIgaWQ9ImMsKTFgeVMySHlxKFswb1A6JC9FIj48ZmllbGQgbmFtZT0iVEVYVCI+KTwvZmllbGQ+PC9ibG9jaz48L3N0YXRlbWVudD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvbmV4dD48L2Jsb2NrPjwvc3RhdGVtZW50Pjx2YWx1ZSBuYW1lPSJUT09MVElQIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9Ijd6b1FhP0duWGspdUNIYi9SNGIjIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJIRUxQVVJMIj48YmxvY2sgdHlwZT0idGV4dCIgaWQ9IkApZllKfH1zLlNMUXg4aEFVNy5ZIiBkZWxldGFibGU9ImZhbHNlIiBtb3ZhYmxlPSJmYWxzZSI+PGZpZWxkIG5hbWU9IlRFWFQiPjwvZmllbGQ+PC9ibG9jaz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJPVVRQVVRUWVBFIj48c2hhZG93IHR5cGU9InR5cGVfbnVsbCIgaWQ9Ilkyc25kY0BySyg9ZDBGNSlkam1UIj48L3NoYWRvdz48L3ZhbHVlPjx2YWx1ZSBuYW1lPSJDT0xPVVIiPjxibG9jayB0eXBlPSJjb2xvdXJfaHVlIiBpZD0iOWFCdExeZXpQTmpOWVdJI35jX3EiPjxtdXRhdGlvbiBjb2xvdXI9IiM1YjY3YTUiPjwvbXV0YXRpb24+PGZpZWxkIG5hbWU9IkhVRSI+MjMwPC9maWVsZD48L2Jsb2NrPjwvdmFsdWU+PC9ibG9jaz48L3htbD4=",
+      "spec": {
+        "type": "display_color",
+        "message0": "(R %1 , G %2 , B %3 )",
+        "args0": [
+          {
+            "type": "input_value",
+            "name": "R",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "G",
+            "check": "Number"
+          },
+          {
+            "type": "input_value",
+            "name": "B",
+            "check": "Number"
+          }
+        ],
+        "inputsInline": true,
+        "output": null,
+        "colour": 230,
+        "tooltip": "",
+        "helpUrl": ""
+      },
+      "msg": {
+        "en": {
+          "message0": ""
+        },
+        "ca": {
+          "message0": ""
+        },
+        "es": {
+          "message0": ""
+        }
+      },
+      "whatcher": false,
+      "dependency": [
+        "block"
+      ],
+      "shadow": {
+        "R": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "G": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        },
+        "B": {
+          "value": "0",
+          "name": "NUM",
+          "type": "math_number"
+        }
+      },
+      "subtype": {
+        "R": "free",
+        "G": "free",
+        "B": "free"
+      },
+      "code": {
+        "default": "X2Rpc3BsYXlfY29sb3IoJChSKSQsJChHKSQsJChCKSQp",
+        "functions": "ZnVuY3Rpb24gX2Rpc3BsYXlfY29sb3IocixnLGIpCiAgICByZXR1cm4ge3IsIGcsIGJ9CmVuZA=="
+      }
     }
   ]
 }
