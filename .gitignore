@@ -13,3 +13,6 @@ src/blockly_uncompressed.js
 src/lua_compressed.js
 src/wc.js
 src/blocks_compressed.js
+tmp/
+build/
+node_modules/
