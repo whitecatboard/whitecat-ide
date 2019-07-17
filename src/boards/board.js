@@ -31,19 +31,14 @@
 
 function board() {
 	var thisInstance = this;
-	
-	// List of supported boards
-	thisInstance.list = [
-		{id: "N1ESP32", desc: "Whitecat N1 ESP32"}
-	];
+		
+	thisInstance.list = [];
 	
 	// Get the supported boards
 	jQuery.ajax({
 		url: "https://raw.githubusercontent.com/whitecatboard/Lua-RTOS-ESP32/master/boards/boards.json",
 		success: function(result) {
-			var boards = JSON.parse(result);
-			
-			thisInstance.list = [];
+			var boards = JSON.parse(result);		
 			
 			boards.forEach(function(element, index) {
 				var id = "";
@@ -64,6 +59,40 @@ function board() {
 			});
 		},
 		error: function() {
+			// Try to get supported board from local installation
+			if (typeof require != "undefined") {
+				if (typeof require('nw.gui') != "undefined") {
+				    var fs = require("fs");
+				    var path = require('path');
+
+				    var file = 'boards/defs/boards.json';
+				    var filePath = path.join(process.cwd(), file);  
+
+					try {
+						var data = fs.readFileSync(filePath, "utf8");
+						var boards = JSON.parse(data);
+						
+						boards.forEach(function(element, index) {
+							var id = "";
+				
+							if (element.brand != "") {
+								id = element.brand + "-";
+							}
+				
+							id = id + element.type;
+				
+							if (element.subtype != "") {
+								id = id + "-" + element.subtype ;
+							}
+
+							thisInstance.list.push({id: id, desc: element.description});
+				
+							Status.messages[element.description] =  {tag: "boardAttached", type: statusType.Info, zone: "statusBar1"};
+						});
+					} catch (error) {
+					}
+				}
+			}
 		}
 	});	
 }
