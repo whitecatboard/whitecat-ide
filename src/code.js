@@ -65,11 +65,14 @@ var Code = {};
 if (typeof require != "undefined") {
     if (typeof require('nw.gui') != "undefined") {
         Code.folder = "";
+		Code.isLocal = true;
     } else {
         Code.folder = "https://ide.whitecatboard.org";
+		Code.isLocal = false;
     }
 } else {
     Code.folder = "https://ide.whitecatboard.org";
+	Code.isLocal = false;
 }
 
 Code.server = "https://ide.whitecatboard.org";

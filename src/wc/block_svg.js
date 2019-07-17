@@ -143,6 +143,16 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     menuOptions.push(deleteOption);
   }
 
+  // Option to get block definition.
+  if (Code.isLocal) {
+	  var defOption = {enabled: true};
+	  defOption.text = "Get definition";
+	  defOption.callback = function() {
+		  block.showDef_();
+	  };
+	  menuOptions.push(defOption);
+  } 
+
   // Option to get help.
   var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
   var helpOption = {enabled: !!url};
@@ -255,4 +265,8 @@ Blockly.BlockSvg.prototype.showHelp_ = function() {
   if (url) {
 	  Code.Help._show(url);
   }
+};
+
+Blockly.BlockSvg.prototype.showDef_ = function() {
+  alert(Blockly.Xml.domToText(Blockly.Xml.blockToDom(this)));
 };
