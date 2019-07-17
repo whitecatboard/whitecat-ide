@@ -1,5 +1,13 @@
 {
   "name": "sound",
+  "order": [
+    "sound_attach",
+    "sound_set_volume",
+    "sound_time_signature",
+    "sound_bar",
+    "sound_play_note",
+    "sound_play_silence"
+  ],
   "blocks": [
     {
       "parentCategory": "Actuators",
