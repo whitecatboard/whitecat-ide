@@ -89,7 +89,7 @@ Blockly.Workspace.prototype.wcInit = function() {
 	if (typeof this.lora == "undefined") {
 		this.lora = {
 			"band": "868",
-			"activation": "ABP",
+			"activation": "OTAA",
 			"freq": "868100000",
 			"dr": "4",
 			"role": "",

@@ -199,8 +199,8 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	
 	// Build activation selection
 	var loraActivationSelect = '<select id="activation" name="activation" onchange="Blockly.Lora.activationChanged()">';
-	loraActivationSelect += '<option data-band="ABP" '+(workspace.lora.activation=="ABP"?"selected":"")+' value="ABP">ABP</option>';
 	loraActivationSelect += '<option data-band="OTAA" '+(workspace.lora.activation=="OTAA"?"selected":"")+' value="OTAA">OTAA</option>';
+	loraActivationSelect += '<option data-band="ABP" '+(workspace.lora.activation=="ABP"?"selected":"")+' value="ABP">ABP</option>';
 	loraActivationSelect += "</select>";
 
 	// Build frequency selection
@@ -257,7 +257,7 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<div>';
 	
 	if (Code.status.hasOwnProperty("eui")) {
-		dialogForm += '<label for="DevEUI">DevEUI:&nbsp;&nbsp;</label>'+Code.status.eui+'<input id="DevEUI" name="DevEUI" type="hidden" value="'+Code.status.eui+'" disabled>';				
+		dialogForm += '<label for="DevEUI">DevEUI:&nbsp;&nbsp;</label>'+Code.status.eui+'<input id="DevEUI" name="DevEUI" type="hidden" value="'+Code.status.eui+'">';				
 	} else {
 		dialogForm += '<label for="DevEUI">DevEUI:&nbsp;&nbsp;</label><input id="DevEUI" name="DevEUI" style="width:300px;" value="'+workspace.lora.deveui+'">';		
 	}
