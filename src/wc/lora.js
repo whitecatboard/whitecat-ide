@@ -255,7 +255,13 @@ Blockly.Lora.configure = function(workspace, opt_callback, block) {
 	dialogForm += '<label>'+Blockly.Msg.LORA_ACTIVATION_DATA+'&nbsp;&nbsp;</label>';
 	dialogForm += '</div><br>';
 	dialogForm += '<div>';
-	dialogForm += '<label for="DevEUI">DevEUI:&nbsp;&nbsp;</label><input id="DevEUI" name="DevEUI" style="width:300px;" value="'+workspace.lora.deveui+'">';
+	
+	if (Code.status.hasOwnProperty("eui")) {
+		dialogForm += '<label for="DevEUI">DevEUI:&nbsp;&nbsp;</label>'+Code.status.eui+'<input id="DevEUI" name="DevEUI" type="hidden" value="'+Code.status.eui+'" disabled>';				
+	} else {
+		dialogForm += '<label for="DevEUI">DevEUI:&nbsp;&nbsp;</label><input id="DevEUI" name="DevEUI" style="width:300px;" value="'+workspace.lora.deveui+'">';		
+	}
+	
 	dialogForm += '</div>';
 	dialogForm += '<div>';
 	dialogForm += '<label for="AppEUI">AppEUI:&nbsp;&nbsp;</label><input id="AppEUI" name="AppEUI" style="width:300px;" value="'+workspace.lora.appeui+'">';

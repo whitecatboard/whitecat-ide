@@ -1,6 +1,8 @@
 do
 	local first_mod = false
-	local prev_mod = false;
+	local prev_mod = false
+	local prev_pin_map = false
+	local prev_exception = false
 	
 	function __m_ena(n,i)
 	    local ena = (i ~= nil)
@@ -23,24 +25,43 @@ do
 		local sv
 		local signal
 		local pin
+		local prev_signal
+		local prev_unit
+		
+		if (prev_pin_map) then
+			io.write(",")
+		end
 		
 		io.write("\""..name.."\":[")
 		
 		if (_G[name] ~= nil) then
 			if (_G[name].pins ~= nil) then
 				for unit,sv in pairs(_G[name].pins(true)) do
+				    if (prev_unit) then
+				        io.write(",")
+				    end
+				    
+				    prev_signal = false
 					io.write("{\""..sv.id.."\":{")
 					for signal,pin in pairs(sv) do
 						if (signal ~= "id") then
-							io.write("\""..signal.."\":\""..pin.."\",")
+						    if (prev_signal) then
+						        io.write(",")
+						    end
+						    
+							io.write("\""..signal.."\":\""..pin.."\"")
+							prev_signal = true
 						end
 					end 
-					io.write("},},")
+					io.write("}}")
+    				prev_unit = true
 				end
+				
+				prev_pin_map = true
 			end
 		end
 		
-		io.write("],")
+		io.write("]")
 	end
 	
 	function __m_pin_maps()
@@ -53,18 +74,30 @@ do
 	
 	function __m_exceptions(name)
 	    local ena = (name ~= nil)
+	    local prev = false
 		
 		if (ena) then
-			io.write("\""..name.."\": ")
+    		if (prev_exception) then
+    			io.write(",")
+    		end
+		
+		    io.write("\""..name.."\": ")
 			io.write("[")
 			if (_G[name] ~= nil) then
 				if (_G[name].error ~= nil) then
 					for key in pairs(_G[name].error) do
-						io.write("\""..key.."\",")
+					    if (prev) then
+					        io.write(",")
+					    end
+					    
+						io.write("\""..key.."\"")
+						prev = true
 					end
 				end
 			end
-			io.write("],")
+			io.write("]")
+			
+			prev_exception = true
 		end
 	end
 
@@ -88,7 +121,11 @@ do
 	    io.write("\"board\": \""..type.."\",")
 	    io.write("\"subtype\": \""..subtype.."\",")
 	    io.write("\"brand\": \""..brand.."\",")
-		
+	    
+	    if (lora ~= nil) then
+    	    io.write("\"eui\": \""..lora.getDevEui().."\",")
+	    end
+
 		isOTA = (not (string.find(subtype, "OTA") == nil)) or (not (string.find(subtype, "OTA-") == nil))
 		
 		if (isOTA) then
@@ -127,12 +164,14 @@ do
 	    end
 
 	    io.write("\"shell\": "..shell..",")
-	    io.write("\"history\": "..history..",")
+	    io.write("\"history\": "..history)
 		
 		io.write("}")
     end
     
 	function __mods()
+	    prev_mod = false
+	    
 	    io.write("\"modules\": ")
 		io.write("{")
 	    __m_ena("thread",thread)
@@ -183,33 +222,87 @@ do
 
 	function __sensors()
 	    local ena = (sensor ~= nil)
+	    local prev_property
+	    local prev_property_type
+	    local prev_provide
+	    local prev_provide_type
+	    local prev_sensor
+	    local prev_part
 		
 		if ena then
+		    prev_sensor = false
+
 		    io.write("\"sensors\": ")
 			io.write("[")
 			for sk,sv in pairs(sensor.list(true)) do 
+    		    prev_part = false
+			    
+			    if (prev_sensor) then
+			        io.write(",")
+			    end
+			    
 				io.write("{")
 				for k,v in pairs(sv) do 
 					if (k == "properties") then
+        			    prev_property = false
+					    
+					    if (prev_part) then
+        			        io.write(",")
+					    end
+					    
 						io.write("\"properties\":[")
-						for ask,asv in pairs(v) do 
+						for ask,asv in pairs(v) do
+    					    prev_property_type = false
+    					    
+						    if (prev_property) then
+						        io.write(",")
+					        end
+					        
 							io.write("{");
 							for tsk,tsv in pairs(asv) do 
-								io.write("\""..tsk.."\":\""..tsv.."\",")
+							    if (prev_property_type) then
+							        io.write(",")
+							    end
+							    
+								io.write("\""..tsk.."\":\""..tsv.."\"")
+								
+								prev_property_type = true
 							end
-							io.write("},");
+							io.write("}")
+							prev_property = true
 						end
-						io.write("],")
+						io.write("]")
+						prev_part = true
 					elseif (k == "provides") then
+        			    prev_provide = false
+					    
+					    if (prev_part) then
+        			        io.write(",")
+					    end
+
 						io.write("\"provides\":[")
 						for apk,apv in pairs(v) do 
+    					    prev_provide_type = false
+    					    
+						    if (prev_provide) then
+						        io.write(",");
+					        end
+					        
 							io.write("{");
 							for tpk,tpv in pairs(apv) do 
-								io.write("\""..tpk.."\":\""..tpv.."\",")
+							    if (prev_provide_type) then
+							        io.write(",")
+							    end
+
+								io.write("\""..tpk.."\":\""..tpv.."\"")
+								
+								prev_provide_type = true
 							end
-							io.write("},");
+							io.write("}");
+							prev_provide = true
 						end
-						io.write("],")
+						io.write("]")
+						prev_part = true
 					else
 						if (k == "callback") then
 							if (v) then
@@ -218,10 +311,18 @@ do
 								v = "false"
 							end
 						end
-						io.write("\""..k.."\":\""..v.."\",")
+					    
+					    if (prev_part) then
+        			        io.write(",")
+					    end
+					    
+					    io.write("\""..k.."\":\""..v.."\"")
+					    prev_part = true
 					end
 				end
-				io.write("},")
+				io.write("}")
+				
+				prev_sensor = true
 			end
 			io.write("],")
 		end
@@ -229,6 +330,7 @@ do
 	
 	function __externalADC()
 		prev_mod = false
+		
 	    io.write("\"externalADC\": ")
 		io.write("{")
 	    __m_ena("MCP3008",adc.MCP3008)
