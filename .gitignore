@@ -16,3 +16,6 @@ src/blocks_compressed.js
 tmp/
 build/
 node_modules/
+cache/
+src/tmp.js
+package-lock.json
