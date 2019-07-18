@@ -78,6 +78,8 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 
 			block.appendChild(mutation);
 
+			console.log(block);
+			
 			xmlList.push(block);
 		}
 
@@ -129,6 +131,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 				block.appendChild(field);
 
 				block.appendChild(mutation);
+				console.log(block);
 
 				xmlList.push(block);				
 			}
@@ -165,6 +168,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			block.appendChild(field);
 
 			block.appendChild(mutation);
+			console.log(block);
 
 			xmlList.push(block);
 		}
@@ -210,6 +214,7 @@ Blockly.Sensors.flyoutCategory = function(workspace) {
 			block.appendChild(field);
 
 			block.appendChild(mutation);
+			console.log(block);
 
 			xmlList.push(block);
 		}

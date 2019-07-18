@@ -247,6 +247,24 @@ board.prototype.getMaps = function(id, callback) {
 			}
 		}
 		
+		maps = thisInstance.processVariants(maps, board);
+		
 		callback(maps);		
 	});
+}
+
+// Process board variants
+board.prototype.processVariants = function(maps, board) {
+	maps["toolbox"] = "";
+	
+	if (board.hasOwnProperty("variants")) {
+		for (key in board.variants) {
+			var variant = board.variants[key];
+			if (variant.hasOwnProperty("toolbox")) {
+				maps["toolbox"] = atob(variant.toolbox);
+			}
+		}
+	}
+	
+	return maps;
 }

@@ -1141,7 +1141,7 @@ Code.buildToolBox = function(callback) {
 
     Code.lib.get(xml, function(xml) {
         var toolbox = document.getElementById('toolbox');
-        toolbox.innerHTML = xml;
+        toolbox.innerHTML = xml + Code.status.maps.toolbox;
 
         callback();
     });

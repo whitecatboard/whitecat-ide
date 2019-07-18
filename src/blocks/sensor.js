@@ -74,6 +74,7 @@ Blockly.Blocks['sensor_attach'] = {
 		container.setAttribute('interface', this.interface);
 		container.setAttribute('name', this.name);
 		container.setAttribute('sid', this.sid);
+		container.setAttribute('label', this.label);
 		
 		for(var i=0; i < this.interface.split(",").length; i++) {
 			container.setAttribute('interface'+i+'_unit', this['interface'+i+'_unit']);
@@ -88,6 +89,12 @@ Blockly.Blocks['sensor_attach'] = {
 		this.interface = xmlElement.getAttribute('interface');
 		this.name = xmlElement.getAttribute('name');
 		this.sid = xmlElement.getAttribute('sid');
+		
+		if (xmlElement.getAttribute('label')) {
+			this.label = xmlElement.getAttribute('label');
+		} else {
+			this.label = "";
+		}
 			
 		for(var i=0; i < this.interface.split(",").length; i++) {
 			this['interface'+i+'_unit'] = xmlElement.getAttribute('interface'+i+'_unit');
@@ -106,7 +113,11 @@ Blockly.Blocks['sensor_attach'] = {
 			label = Blockly.Msg[label];
 		}
 		
-		this.getField("NAME").setText(Blockly.Msg.SENSOR_ATTACH.replace("%1", this.name).replace("%2", label));
+		if (this.label != "") {
+			this.getField("NAME").setText(this.label);
+		} else {
+			this.getField("NAME").setText(Blockly.Msg.SENSOR_ATTACH.replace("%1", this.name).replace("%2", label));			
+		}
 	},
 
 	customContextMenu: function(options) {
@@ -202,7 +213,12 @@ Blockly.Blocks['sensor_read'] = {
 			label = Blockly.Msg[label];
 		}
 
-		this.getField("NAME").setText(Blockly.Msg.SENSOR_READ2.replace("%1", this.name).replace("%2", label));
+		if (this.label != "") {
+			this.getField("NAME").setText(this.label);
+		} else {
+			this.getField("NAME").setText(Blockly.Msg.SENSOR_READ2.replace("%1", this.name).replace("%2", label));			
+		}
+		
 		this.getField("PROVIDES").menuGenerator_ = provides;
 	},
 
@@ -257,7 +273,12 @@ Blockly.Blocks['sensor_set'] = {
 			label = Blockly.Msg[label];
 		}
 
-		this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1", this.name).replace("%2", label));
+		if (this.label != "") {
+			this.getField("NAME").setText(this.label);
+		} else {
+			this.getField("NAME").setText(Blockly.Msg.SENSOR_SET3.replace("%1", this.name).replace("%2", label));
+		}
+		
 		this.getField("PROPERTIES").menuGenerator_ = properties;
 	},
 
@@ -303,8 +324,13 @@ Blockly.Blocks['sensor_when'] = {
 		if (typeof Blockly.Msg[label] != "undefined") {
 			label = Blockly.Msg[label];
 		}
-
-		this.getField("NAME").setText(Blockly.Msg.SENSOR_WHEN2.replace("%1", this.name).replace("%2", label));
+		
+		if (this.label != "") {
+			this.getField("NAME").setText(this.label);
+		} else {
+			this.getField("NAME").setText(Blockly.Msg.SENSOR_WHEN2.replace("%1", this.name).replace("%2", label));
+		}
+		
 		this.getField("PROVIDES").menuGenerator_ = provides;
 	},
 

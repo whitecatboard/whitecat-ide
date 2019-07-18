@@ -1,0 +1,130 @@
+<sep gap="16"></sep>
+<category name="WHITECAT EDU HAT 1">
+  <category name="Buttons" colour="#2ca5e2">
+    <block type="sensor_when" colour="#2ca5e2">
+      <field name="NAME">changes for button IO40</field>
+	  <field name="PROVIDES">on</field>
+	  <mutation interface="GPIO" sid="PUSH_SWITCH" name="sensorButtonIO40" interface0_unit="40" interface0_subunit="undefined" interface0_device="undefined" label="changes for button IO40"></mutation>
+	</block>
+	<block type="sensor_read" colour="#2ca5e2">
+	  <field name="NAME">from button IO40</field>
+	  <mutation interface="GPIO" name="sensorButtonIO40" sid="PUSH_SWITCH" label="from button IO40" interface0_unit="40" interface0_subunit="undefined" interface0_device="undefined"></mutation>
+	  <field name="PROVIDES">on</field>
+	</block>
+    <block type="sensor_when" colour="#2ca5e2">
+      <field name="NAME">changes for button IO41</field>
+	  <field name="PROVIDES">on</field>
+	  <mutation interface="GPIO" sid="PUSH_SWITCH" name="sensorButtonIO41" interface0_unit="41" interface0_subunit="undefined" interface0_device="undefined" label="changes for button IO41"></mutation>
+	</block>
+	<block type="sensor_read" colour="#2ca5e2">
+	  <field name="NAME">from button IO41</field>
+	  <mutation interface="GPIO" name="sensorButtonIO41" sid="PUSH_SWITCH" label="from button IO41" interface0_unit="41" interface0_subunit="undefined" interface0_device="undefined"></mutation>
+	  <field name="PROVIDES">on</field>
+	</block>
+    <block type="sensor_when" colour="#2ca5e2">
+      <field name="NAME">changes for button IO42</field>
+	  <field name="PROVIDES">on</field>
+	  <mutation interface="GPIO" sid="PUSH_SWITCH" name="sensorButtonIO42" interface0_unit="42" interface0_subunit="undefined" interface0_device="undefined" label="changes for button IO42"></mutation>
+	</block>
+	<block type="sensor_read" colour="#2ca5e2">
+	  <field name="NAME">from button IO42</field>
+	  <mutation interface="GPIO" name="sensorButtonIO42" sid="PUSH_SWITCH" label="from button IO42" interface0_unit="42" interface0_subunit="undefined" interface0_device="undefined"></mutation>
+	  <field name="PROVIDES">on</field>
+	</block>
+    <block type="sensor_when" colour="#2ca5e2">
+      <field name="NAME">changes for button IO43</field>
+	  <field name="PROVIDES">on</field>
+	  <mutation interface="GPIO" sid="PUSH_SWITCH" name="sensorButtonIO43" interface0_unit="43" interface0_subunit="undefined" interface0_device="undefined" label="changes for button IO43"></mutation>
+	</block>
+	<block type="sensor_read" colour="#2ca5e2">
+	  <field name="NAME">from button IO43</field>
+	  <mutation interface="GPIO" name="sensorButtonIO43" sid="PUSH_SWITCH" label="from button IO43" interface0_unit="43" interface0_subunit="undefined" interface0_device="undefined"></mutation>
+	  <field name="PROVIDES">on</field>
+	</block>
+    <block type="sensor_when" colour="#2ca5e2">
+      <field name="NAME">changes for button IO44</field>
+	  <field name="PROVIDES">on</field>
+	  <mutation interface="GPIO" sid="PUSH_SWITCH" name="sensorButtonIO44" interface0_unit="44" interface0_subunit="undefined" interface0_device="undefined" label="changes for button IO44"></mutation>
+	</block>
+	<block type="sensor_read" colour="#2ca5e2">
+	  <field name="NAME">from button IO44</field>
+	  <mutation interface="GPIO" name="sensorButtonIO44" sid="PUSH_SWITCH" label="from button IO44" interface0_unit="44" interface0_subunit="undefined" interface0_device="undefined"></mutation>
+	  <field name="PROVIDES">on</field>
+	</block>
+  </category>
+  <category name="Display" colour="#4a6cd4">
+	<block type="display_init" colour="#4a6cd4">
+		<field name="CHIPSET">gdisplay.ST7735G_144</field>
+		<field name="ORIENTATION">gdisplay.LANDSCAPE</field>
+		<field name="FRAME_BUFFER">FALSE</field>
+	</block>
+	<block type="display_on" colour="#4a6cd4"></block>
+	<block type="display_off" colour="#4a6cd4"></block>
+	<block type="display_width" colour="#4a6cd4"></block>
+	<block type="display_height" colour="#4a6cd4"></block>
+	<block type="display_orient" colour="#4a6cd4"><field name="ORIENTATION">gdisplay.LANDSCAPE</field></block>
+	<block type="display_clear" colour="#4a6cd4"><value name="COLOR"><shadow type="display_color_sel"><field name="COLOR">#ff0000</field></shadow></value></block>
+	<block type="display_color_sel" colour="#4a6cd4"><field name="COLOR">#ff0000</field></block>
+	<block type="display_color" colour="#4a6cd4">
+	  <value name="R"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="G"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="B"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	</block>
+	<block type="display_select_foreground" colour="#4a6cd4"><value name="COLOR"><shadow type="display_color_sel"><field name="COLOR">#ff0000</field></shadow></value></block>
+	<block type="display_set_background" colour="#4a6cd4"><value name="COLOR"><shadow type="display_color_sel"><field name="COLOR">#ff0000</field></shadow></value></block>
+	<block type="display_draw_pixel" colour="#4a6cd4">
+	  <value name="X"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="Y"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="COLOR"><shadow type="display_color_sel"><field name="COLOR">#ff0000</field></shadow></value>
+	</block>
+	<block type="display_draw_line" colour="#4a6cd4">
+	  <value name="X1"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="Y1"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="X2"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="Y2"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="COLOR"><shadow type="display_color_sel"><field name="COLOR">#ff0000</field></shadow></value>
+	</block>
+	<block type="display_select_font" colour="#4a6cd4"><field name="FONT">gdisplay.FONT_DEFAULT</field></block>
+	<block type="display_write_text" colour="#4a6cd4">
+	  <value name="TEXT"><shadow type="text"><field name="TEXT"></field></shadow></value>
+	  <value name="X"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="Y"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	</block>
+	<block type="display_align_x_sel" colour="#4a6cd4"><field name="ALIGN">gdisplay.RIGHT</field></block>
+	<block type="display_align_y_sel" colour="#4a6cd4"><field name="ALIGN">0</field></block>
+  </category>
+  <category name="Neopixel" colour="#4a6cd4">
+	<block type="neopixel_set_pixels" colour="#4a6cd4">
+	  <value name="PIN"><shadow type="output_digital_pin"><field name="PIN">14</field></shadow></value>
+	  <value name="PIXELS"><shadow type="math_number"><field name="NUM">4</field></shadow></value>
+	</block>
+	<block type="neopixel_clear" colour="#4a6cd4">
+	  <value name="PIN"><shadow type="output_digital_pin"><field name="PIN">14</field></shadow></value>
+	</block>
+	<block type="neopixel_color_sel" colour="#4a6cd4">
+	  <field name="COLOR">#ff0000</field>
+	</block>
+	<block type="neopixel_color" colour="#4a6cd4">
+	  <value name="R"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="G"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	  <value name="B"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+	</block>
+	<block type="neopixel_set_pixel" colour="#4a6cd4">
+	  <value name="PIN"><shadow type="output_digital_pin"><field name="PIN">14</field></shadow></value>
+	  <value name="PIXEL"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+	  <value name="COLOR"><shadow type="neopixel_color_sel"><field name="COLOR">#ff0000</field></shadow></value>
+	</block>
+  </category>
+  <category name="Sensors" colour="#2ca5e2">
+	<block type="sensor_read" colour="#2ca5e2">
+      <field name="NAME">from BME280</field>
+	  <mutation interface="I2C" name="sensorBME280" sid="BME280" label="from BME280" interface0_unit="0" interface0_subunit="undefined" interface0_device="undefined"></mutation>
+	  <field name="PROVIDES">humidity</field>
+	</block>
+	<block type="sensor_read">
+	  <field name="NAME">from POT</field>
+	  <mutation interface="ADC" name="sensorPOT" sid="LINEAR_POT" label="from POT" interface0_unit="5" interface0_subunit="1" interface0_device="undefined"></mutation>
+	  <field name="PROVIDES">val</field>
+	</block>
+  </category>
+</category>
