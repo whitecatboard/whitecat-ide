@@ -88,7 +88,8 @@ Blockly.Lua['forever'] = function(block) {
 	//
 	code += Blockly.Lua.indent(0, '-- forever') + "\n";
 	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";
-	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n\n";
+	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n";
+	code += Blockly.Lua.indent(1, '_eventBoardStarted:done()') + "\n\n";
 	code += Blockly.Lua.blockStart(1, block);
 	code += Blockly.Lua.indent(1, 'while true do') + "\n";
 	code += Blockly.Lua.tryBlock(2, block, '_chunk_' + chunk + '()') + "\n";
@@ -165,7 +166,8 @@ Blockly.Lua['when_i_receive'] = function(block) {
     //    end
     // end)
 	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
-	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+	tryCode += Blockly.Lua.indent(0, '_eventBoardStarted:wait()') + "\n";
+	tryCode += Blockly.Lua.indent(0, '_eventBoardStarted:done()') + "\n\n";
 	tryCode += Blockly.Lua.indent(0, 'while true do') + "\n";
 	tryCode += Blockly.Lua.tryBlock(1, block, '_chunk_' + chunk + '()') + "\n";	
 	tryCode += Blockly.Lua.indent(0, 'end') + "\n";
@@ -217,7 +219,8 @@ Blockly.Lua['execute_every'] = function(block) {
     // end)
 	code += Blockly.Lua.indent(0, '-- every ' + every[0] + ' milliseconds') + "\n";
 	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";
-	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n\n";
+	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n";
+	code += Blockly.Lua.indent(1, '_eventBoardStarted:done()') + "\n\n";
 	code += Blockly.Lua.indent(1, 'while true do') + "\n";
 	code += Blockly.Lua.tryBlock(2, block, '_chunk_' + chunk + '()') + "\n";
 	code += Blockly.Lua.indent(1, 'end') + "\n";

@@ -97,7 +97,8 @@ Blockly.Lua['mqtt_subscribe'] = function(block) {
 	code += Blockly.Lua.indent(0,'-- subscribe to MQTT topic ' + topic) + "\n";
 	
 	code += Blockly.Lua.indent(0,'thread.start(function()') + "\n";
-	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n\n";
+	code += Blockly.Lua.indent(1, '_eventBoardStarted:wait()') + "\n";
+	code += Blockly.Lua.indent(1, '_eventBoardStarted:done()') + "\n\n";
 	code += Blockly.Lua.tryBlock(1, block, tryCode);
 	code += Blockly.Lua.indent(0,'end)') + "\n";
 		

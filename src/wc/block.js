@@ -48,7 +48,10 @@ Blockly.Block.prototype.constructor = function(workspace, prototypeName, opt_id)
 	if (!self.isInFlyout) {
 		if (self.isHatBlock()) {
 			Code.workspace.blocks.addChangeListener(function(e) {
-				var changed = false;
+				var isChanged = false;
+				var isNew = false;
+				var isDeleted = false;
+				
 				var workspace = Blockly.Workspace.getById(e.workspaceId);
 				var block = workspace.getBlockById(e.blockId);
 		
@@ -70,42 +73,36 @@ Blockly.Block.prototype.constructor = function(workspace, prototypeName, opt_id)
 					}
 		
 					if ((oldTopBlock == self) || (newTopBlock == self)) {
-						changed = true;
+						isChanged = true;
 					}			
 				} else if (e.type == Blockly.Events.CHANGE) {
 					topBlock = workspace.getBlockById(e.blockId).getTop();
 					if (topBlock == self) {
-						changed = true;
+						isChanged = true;
+					}
+				} else if (e.type == Blockly.Events.CREATE) {
+					if (block == self) {
+						isNew = true;
+					}
+				} else if (e.type == Blockly.Events.DELETE) {
+					if (e.blockId == self.id) {
+						isDeleted = true;
 					}
 				}
 		
-				if (changed) {
+				if (isChanged) {
+					console.log("isChanged");
 					Blockly.Lua.updateChunk(self);
 				}
 				
-				/*
-				if (e.type == Blockly.Events.MOVE) {
-					var workspace = Blockly.Workspace.getById(e.workspaceId);
-					var block = workspace.getBlockById(e.blockId);
-				
-					if (workspace && block) {
-						var topBlock = block.getTop();
-						
-						if ((block.id == self.id) || (topBlock && topBlock.id == self.id) || (e.newParentId != e.oldParentId)) {
-							Blockly.Lua.updateChunk(self);
-						} 
-					}	
+				if (isNew) {
+					console.log("isNew");
+					Blockly.Lua.newChunk(self);
 				}
-				*/
 				
-				//if ((e.type == Blockly.Events.CHANGE) || (e.type == Blockly.Events.MOVE)) {
-					//var workspace = Blockly.Workspace.getById(e.workspaceId);
-					//var block = workspace.getBlockById(e.blockId);
-
-					//if (block.getTop() == self) {
-					//	Blockly.Lua.updateChunk(self);
-					//}
-					//}
+				if (isDeleted) {
+					console.log("isDeleted");
+				}
 			});
 		}
 	}

@@ -534,7 +534,8 @@ Blockly.Lua['when_digital_pin'] = function(block) {
 	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
-	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+	tryCode += Blockly.Lua.indent(0, '_eventBoardStarted:wait()') + "\n";
+	tryCode += Blockly.Lua.indent(0, '_eventBoardStarted:done()') + "\n\n";
 
 	tryCode += Blockly.Lua.io.helper.attachDigital(block, false);
 	tryCode += Blockly.Lua.indent(0,'pio.pin.interrupt(' + Blockly.Lua.io.helper.nameDigital(block)+', function()') + "\n";

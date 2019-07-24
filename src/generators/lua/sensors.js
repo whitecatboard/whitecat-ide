@@ -148,7 +148,8 @@ Blockly.Lua['sensor_when'] = function(block) {
 	var tryCode = '';
 	
 	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
-	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+	tryCode += Blockly.Lua.indent(0, '_eventBoardStarted:wait()') + "\n";
+	tryCode += Blockly.Lua.indent(0, '_eventBoardStarted:done()') + "\n\n";
 
 	tryCode += Blockly.Lua.indent(0,Blockly.Lua.sensors.helper.attach(block));
 	

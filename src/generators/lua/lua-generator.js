@@ -290,7 +290,11 @@ Blockly.Generator.prototype.usesMQTT = function(workspace) {
 	return false;
 };
 
-Blockly.Generator.prototype.updateChunk = function(block) {
+Blockly.Generator.prototype.updateChunk = function(block, send) {
+	if (typeof send == "undefined") {
+		send = true;
+	}
+	
 	if (!block || block.disabled) {
 		return;
 	}
@@ -324,13 +328,42 @@ Blockly.Generator.prototype.updateChunk = function(block) {
 	if (newChunk) {
 		block.lastChunk = code;
 		
-		Code.agent.send({
-			command: "boardRunCommand",
-			arguments: {
-				code: btoa("function _code()" + code + "end")
-			}
-		}, function(id, info) {});		
+		if (send) {
+			Code.agent.send({
+				command: "boardRunCommand",
+				arguments: {
+					code: btoa("function _code()" + code + "end")
+				}
+			}, function(id, info) {});		
+		} else {
+			return code;
+		}
 	}
+}
+
+Blockly.Generator.prototype.newChunk = function(block) {
+	// Get block code
+	var blockCode = this.oneBlockToCode(block);
+
+	// Get chunk code
+	var chunkCode = this.updateChunk(block, false);
+	
+	// Compute final code
+	var code = '';
+	
+	code += chunkCode;
+	code += blockCode;
+	code += 'thread.start(function() tmr.delayms(100) _eventBoardStarted:broadcast(false) end)';
+	
+	console.log("function _code()\n" + code + "\nend");
+	
+	// Update
+	Code.agent.send({
+		command: "boardRunCommand",
+		arguments: {
+			code: btoa("function _code()\n" + code + "\nend")
+		}
+	}, function(id, info) {});		
 }
 
 Blockly.Generator.prototype.oneBlockToCode = function(block) {
