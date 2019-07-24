@@ -247,7 +247,9 @@ Blockly.Lua['broadcast_and_wait'] = function(block) {
 
 	Blockly.Lua.addDependency("block", block);
 
-	code += Blockly.Lua.indent(0, '_event' + eventId + ':broadcast(true)' + '  -- boardcast and wait "' + when + '"');
+	code += Blockly.Lua.indent(0, 'if (not (_event' + eventId + ' == nil)) then' + '\n');
+	code += Blockly.Lua.indent(1, '_event' + eventId + ':broadcast(true)' + '  -- boardcast and wait "' + when + '"' + '\n');
+	code += Blockly.Lua.indent(0, 'end');
 
 	return Blockly.Lua.postFormat(code, block);
 }
