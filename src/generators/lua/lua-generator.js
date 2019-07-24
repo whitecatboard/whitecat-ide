@@ -1,44 +1,75 @@
-// Code sections
-var codeSection = [];
-var codeSectionBlock = [];
+Blockly.Generator.section = [
+	{"id": "require", "fragment": []},
+	{"id": "events", "fragment": []},
+	{"id": "functions", "fragment": []},
+	{"id": "declaration", "fragment": []},
+	{"id": "chunks", "fragment": []},
+	{"id": "default", "fragment": []},
+	{"id": "start", "fragment": []},
+	{"id": "afterStart", "fragment": []}
+];
 
-codeSection["require"] = [];
-codeSection["events"] = [];
-codeSection["functions"] = [];
-codeSectionBlock["functions"] = [];
-codeSection["declaration"] = [];
-codeSection["start"] = [];
-codeSection["afterStart"] = [];
-codeSection["default"] = [];
+Blockly.Generator.chunk = 0;
 
-// Order of code sections
-var codeSectionOrder = [];
-codeSectionOrder.push("require");
-codeSectionOrder.push("events");
-codeSectionOrder.push("functions");
-codeSectionOrder.push("declaration");
-codeSectionOrder.push("default");
-codeSectionOrder.push("start");
-codeSectionOrder.push("afterStart");
-
-// Whe indent using a tab
+// We indent using a tab
 Blockly.Generator.prototype.INDENT = '\t';
 
-// Add a fragment of code to a section
-Blockly.Generator.prototype.addCodeToSection = function(section, code, block) {
-	var include = true;
-
-	section = goog.string.trim(section);
-	code = goog.string.trim(code);
+Blockly.Generator.prototype.initialise = function(workspace, chunk) {
+	if (typeof chunk == "undefined") {
+		chunk = false;
+	}
 	
-	if (section == "functions") {
-		include = (codeSectionBlock["functions"].indexOf(block.type) == -1);
-		codeSectionBlock["functions"].push(block.type);
+	if (!chunk) {
+		Blockly.Generator.section.forEach(function(section) {
+			section.fragment = [];
+		});
+	
+		var maxChunk = -1;
+		
+		for (id in workspace.blockDB_) {
+			if (typeof workspace.blockDB_[id].chunkId != "undefined") {
+				if (workspace.blockDB_[id].chunkId > maxChunk) {
+					maxChunk = workspace.blockDB_[id].chunkId;
+				}
+			}			
+		}
+
+		Blockly.Generator.chunk = maxChunk + 1;		
+	}
+	
+	this.init(workspace, chunk);
+};
+
+Blockly.Generator.prototype.getChunkId = function(block) {
+	if (typeof block.chunkId == "undefined") {
+		Blockly.Generator.chunk = Blockly.Generator.chunk + 1;
+		block.chunkId = Blockly.Generator.chunk;
 	}
 
-	if (include) {
-		codeSection[section].push(code + "\n");
-	}
+	return block.chunkId;
+}
+
+// Add a fragment of code to a section
+Blockly.Generator.prototype.addFragment = function(section_id, fragment_id, block, code) {
+	Blockly.Generator.section.forEach(function(section) {
+		if (section.id == section_id) {
+			var insert = true;
+			
+			section.fragment.forEach(function(fragment) {
+				if (fragment.id == fragment_id) {
+					fragment.code = code;
+					insert = false;
+					return;
+				}
+			});
+			
+			if (insert) {
+				section.fragment.push({"id": fragment_id, "code": code});
+			}			
+			
+			return;
+		}
+	});
 };
 
 // Add a lua library dependency needed for the generated code
@@ -46,9 +77,15 @@ Blockly.Generator.prototype.addDependency = function(library, block) {
 	library = goog.string.trim(library);
 
 	if ((library == "") || (library == "0")) return;
-
-	if (codeSection["require"].indexOf('require("'+library+'")') == -1) {
-		codeSection["require"].push('require("'+library+'")');
+	
+	if (library == "block") {
+		if (Blockly.Lua.developerMode || !Blockly.Lua.legacyGenCode) {    		
+			if (Blockly.Lua.legacyGenCode) {
+				this.addFragment("require", library, block, 'require("'+library+'")');
+			}
+		}			
+	} else {
+		this.addFragment("require", library, block, 'require("'+library+'")');
 	}
 };
 
@@ -80,8 +117,6 @@ Blockly.Generator.prototype.statementToCodeNoIndent = function(block, name) {
 
 Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	if (!workspace) {
-		// Backwards compatability from before there could be multiple workspaces.
-		console.warn('No workspace specified in workspaceToCode call.  Guessing.');
 		workspace = Blockly.getMainWorkspace();
 	}
 
@@ -91,24 +126,15 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 	 *
 	 * This part define sections of code
 	 */
-	var section = "default";
-	var key;
-
-	// Clean sections
-	for (key in codeSection) {
-		codeSection[key] = [];
-	}
-
-	for (key in codeSectionBlock) {
-		codeSectionBlock[key] = [];
-	}
+	var section;
+	
+	this.initialise(workspace);
 	
 	// Check if code use some type of blocks
 	var hasBoardStart = false;
 	var hasMQTT = false;
 	var hasNetwork = false;
 	
-	this.init(workspace);
 	var blocks = workspace.getAllBlocks();
 	for (var x = 0, block; block = blocks[x]; x++) {
 		if (block.disabled || block.getInheritedDisabled()) {
@@ -127,9 +153,7 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		}
 	}
 	
-	// Initialization code
-	blocks = workspace.getTopBlocks(true);
-	
+	// Initialization code	
 	var initCode = '';
 	
 	if (Code.status.modules.vm) {
@@ -137,16 +161,17 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		initCode += Blockly.Lua.indent(0,'vm.blocks(true)') + "\n\n";
 	}
 	
-	initCode += Blockly.Lua.indent(0,'-- this event is for sync the end of the board start with threads') + "\n";
-	initCode += Blockly.Lua.indent(0,'-- that must wait for this situation') + "\n";
-	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n\n";
+	initCode += Blockly.Lua.indent(0,'-- this event is used to sync the termination of the "when board start" block with other hat blocks') + "\n";
+	initCode += Blockly.Lua.indent(0,'_eventBoardStarted = event.create()') + "\n";
 	
 	if (hasMQTT) {
-		initCode += Blockly.Lua.indent(0,'-- this lock is for protect the mqtt client connection') + "\n";
-		initCode += Blockly.Lua.indent(0,'_mqtt_lock = thread.createmutex()') + "\n\n";		
+		initCode += '\n';
+		initCode += Blockly.Lua.indent(0,'-- this lock is used to protect the mqtt client connection') + "\n";
+		initCode += Blockly.Lua.indent(0,'_mqtt_lock = thread.createmutex()') + "\n";		
 	}
 
 	if (hasNetwork) {		
+		initCode += '\n';
 		initCode += Blockly.Lua.indent(0,'-- network callback') + "\n";
 		initCode += Blockly.Lua.indent(0, 'net.callback(function(event)') +  "\n";
 		initCode += Blockly.Lua.indent(1, 'if ((event.interface == "wf") and (event.type == "up")) then') + "\n";
@@ -163,30 +188,35 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 		initCode += Blockly.Lua.indent(0, 'end)') +  "\n";
 	}
 	
-	codeSection["events"].push(initCode);
+	Blockly.Lua.addFragment("events", "_init_code", null, initCode);
 	
 	// Begin
+	blocks = workspace.getTopBlocks(true);
+	
 	for (var x = 0, block; block = blocks[x]; x++) {
 	    if (!block.isHatBlock()) {
-	      // Don't include code for blocks that are outside a hat block
+	      // Don't include code for blocks that are outside a hat block.
 	      continue;
 	    }	
     
-		// Put code in default section
+		// By default, put code in the default section
 		section = "default";
 
-		// If this block has the section function get section that block's code will be
-		// allocated
+			
+		// Check if block has the section() function, which tell us in which section
+		// we must put the block's code 
 		if (typeof block.section !== "undefined") {
 			section = block.section();
 		}
 
+		// Get block code
 		var line = this.blockToCode(block);
 		if (goog.isArray(line)) {
 			// Value blocks return tuples of code and operator order.
 			// Top-level blocks don't care about operator order.
 			line = line[0];
 		}
+		
 		if (line) {
 			if (block.outputConnection && this.scrubNakedValue) {
 				// This block is a naked value.  Ask the language's code generator if
@@ -195,43 +225,46 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 			}
 
 			// Put code in its section
-		  codeSection[section].push(line);	
+			Blockly.Lua.addFragment(section, "_block_code" + block.id, block, line);
 		}
 	}
 
-	// If when board start has not defined simulate and empty when board start block
+	// If the program hasn't a "when board start" block, simulate that it has and empty one. This
+	// is required to activate hat blocks.
 	if (!hasBoardStart) {
 		initCode = Blockly.Lua.indent(0,'thread.start(function()') + "\n";
 		initCode += Blockly.Lua.indent(1,'-- board is started') + "\n";
 		initCode += Blockly.Lua.indent(1,'_eventBoardStarted:broadcast(false)') + "\n";
 		initCode += Blockly.Lua.indent(0,'end)') + "\n";
-		codeSection["start"].push(initCode);		
+		
+		Blockly.Lua.addFragment("start", "activate_hat_blocks", null, initCode);
 	}
 
 	// Put definitions into declaration section
 	for (var name in Blockly.Lua.definitions_) {
-		codeSection["declaration"].push(Blockly.Lua.definitions_[name]);
+		Blockly.Lua.addFragment("declaration", name, null, Blockly.Lua.definitions_[name]);
 	}
-
-	// Clean up temporary data
-	delete Blockly.Lua.definitions_;
-	delete Blockly.Lua.functionNames_;
-	
-	Blockly.Lua.variableDB_.reset();
 
 	// Generate code from code sections
 	var code = "";
-	var tmpCode = "";
-
-	codeSectionOrder.forEach(function(section, index) {
-		if (codeSection[section] != ""){
-			tmpCode = codeSection[section].join('\n'); // Blank line between each section.	
-			code += tmpCode + '\n';
-
-			if (section == "require") {
-				code += "\n";
-			}			
-		}		
+	Blockly.Generator.section.forEach(function(section) {
+		var hasFragment = false;
+		var first = false;
+		
+		section.fragment.forEach(function(fragment) {
+			if (!first) {
+				code += '\n';
+			}
+			
+			code += fragment.code;
+			
+			hasFragment = true;
+			first = false;
+		});
+		
+		if (hasFragment) {
+			code += '\n';
+		}
 	});
 
 	// Final scrubbing of whitespace.
@@ -244,11 +277,8 @@ Blockly.Generator.prototype.workspaceToCode = function(workspace) {
 
 Blockly.Generator.prototype.usesMQTT = function(workspace) {
 	if (!workspace) {
-		// Backwards compatability from before there could be multiple workspaces.
-		console.warn('No workspace specified in workspaceToCode call.  Guessing.');
 		workspace = Blockly.getMainWorkspace();
 	}
-
 
 	var blocks = workspace.getAllBlocks();
 	for (var x = 0, block; block = blocks[x]; x++) {
@@ -259,6 +289,39 @@ Blockly.Generator.prototype.usesMQTT = function(workspace) {
 
 	return false;
 };
+
+Blockly.Generator.prototype.updateChunk = function(block) {
+	if (!block || block.disabled) {
+		return;
+	}
+
+	this.initialise(Blockly.getMainWorkspace(), true);
+	
+	// Generate code for block
+	var func = this[block.type];
+	var code = func.call(block, block);
+	
+	// In this case we are not interested into hole block's code, so
+	// we only need to update it's chunks.
+	var code = '';
+	
+	Blockly.Generator.section.forEach(function(section) {
+		if (section.id == "chunks") {
+			section.fragment.forEach(function(fragment) {
+				code += fragment.code;
+			});
+		}
+	});
+	
+	console.log(code);
+	
+	Code.agent.send({
+		command: "boardRunCommand",
+		arguments: {
+			code: btoa("function _code()" + code + "end")
+		}
+	}, function(id, info) {});
+}
 
 Blockly.Generator.prototype.oneBlockToCode = function(block) {
 	if (!block) {

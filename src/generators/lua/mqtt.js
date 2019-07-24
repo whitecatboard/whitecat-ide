@@ -39,9 +39,7 @@ Blockly.Lua['mqtt_publish'] = function(block) {
     var qos = block.getFieldValue('QOS');
 	var code = '';
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 	
 	var tryCode = "";
 
@@ -72,9 +70,7 @@ Blockly.Lua['mqtt_subscribe'] = function(block) {
     var qos = block.getFieldValue('QOS');
 	var code = '';
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 	
 	var tryCode = '';	
 

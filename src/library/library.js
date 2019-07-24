@@ -279,7 +279,7 @@ blockLibrary.prototype.createBlocks = function(xml, block) {
 			}
 
 			if (code != "") {
-				Blockly.Lua.addCodeToSection("functions", code + "\n", b);
+				Blockly.Lua.addFragment("functions", block.spec.type, b, code);
 			}
 		}
 

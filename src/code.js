@@ -618,7 +618,7 @@ Code.buildToolBox = function(callback) {
         '<block type="execute_every">' + 
         '<value name="TIME">' +
         '<shadow type="math_number">' +
-        '<field name="NUM"></field>' +
+        '<field name="NUM">100</field>' +
         '</shadow>' +
         '</block>' +
         '<block type="when_i_receive"></block>' +

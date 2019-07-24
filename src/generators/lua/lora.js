@@ -102,9 +102,7 @@ Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
 	var tryCode = '';
 	var code = '';
 	
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 	
 	//tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
 	//tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
@@ -130,9 +128,7 @@ Blockly.Lua['when_i_receive_a_lora_frame'] = function(block) {
 Blockly.Lua['lora_join'] = function(block) {
 	var code = '';
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 	
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(0,'if (_lora == nil) then') + "\n";
@@ -171,9 +167,7 @@ Blockly.Lua['lora_tx'] = function(block) {
 		confirmed = "true";
 	}
 
-	if (codeSection["require"].indexOf('require("block")') == -1) {
-		codeSection["require"].push('require("block")');
-	}
+	Blockly.Lua.addDependency("block", block);
 	
 	var tryCode = '';	
 

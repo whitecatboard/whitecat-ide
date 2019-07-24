@@ -93,7 +93,7 @@ Blockly.Lua['i2csetspeed'] = function(block) {
 	var speed = Blockly.Lua.valueToCode(block, 'SPEED', Blockly.Lua.ORDER_NONE);
 	var tryCode = '', code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.i2c.helper.attach(block);
 	tryCode += Blockly.Lua.indent(0, Blockly.Lua.i2c.helper.instance(block) + ':setspeed('+speed+')' + "\n");
@@ -107,7 +107,7 @@ Blockly.Lua['i2cstartcondition'] = function(block) {
 	var module = block.getFieldValue('MODULE');
 	var tryCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.i2c.helper.attach(block);
 	tryCode += Blockly.Lua.indent(0, Blockly.Lua.i2c.helper.instance(block) + ':start()' + "\n");
@@ -121,7 +121,7 @@ Blockly.Lua['i2cstopcondition'] = function(block) {
 	var module = block.getFieldValue('MODULE');
 	var tryCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.i2c.helper.attach(block);
 	tryCode += Blockly.Lua.indent(0, Blockly.Lua.i2c.helper.instance(block) + ':stop()') + "\n";
@@ -137,7 +137,7 @@ Blockly.Lua['i2caddress'] = function(block) {
 	var direction = block.getFieldValue('DIRECTION');
 	var tryCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.i2c.helper.attach(block);
 	tryCode += Blockly.Lua.indent(0, Blockly.Lua.i2c.helper.instance(block) + ':address(' + address + ', ' + (direction == "read" ? "true" : "false") + ')') + "\n";
@@ -152,14 +152,14 @@ Blockly.Lua['i2cread'] = function(block) {
 	var module = block.getFieldValue('MODULE');
 	var tryCode = '', getCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	var tryCode = '';
 	tryCode += Blockly.Lua.i2c.helper.attach(block);
 	tryCode += Blockly.Lua.indent(0, '-- read from ' + Blockly.Lua.i2c.helper.name(block)) + "\n";
 	tryCode += Blockly.Lua.indent(0, 'val = ' + Blockly.Lua.i2c.helper.instance(block) + ':read()') + "\n";
 
-	getCode += Blockly.Lua.indent(0, "function _read" + Blockly.Lua.i2c.helper.name(block) + "()") + "\n";
+	getCode += Blockly.Lua.indent(0, "function _read_" + Blockly.Lua.i2c.helper.name(block) + "()") + "\n";
 	getCode += Blockly.Lua.indent(1, "local val") + "\n\n";
 
 	getCode += Blockly.Lua.indent(1, Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
@@ -167,9 +167,9 @@ Blockly.Lua['i2cread'] = function(block) {
 	getCode += Blockly.Lua.indent(1, "return val") + "\n";
 	getCode += Blockly.Lua.indent(0, "end") + "\n";
 
-	codeSection["functions"].push(getCode);
+	Blockly.Lua.addFragment("functions", "_read_" + Blockly.Lua.i2c.helper.name(block), block, getCode);
 
-	code += Blockly.Lua.indent(0, "_read" + Blockly.Lua.i2c.helper.name(block) + "()") + "\n";
+	code += Blockly.Lua.indent(0, "_read_" + Blockly.Lua.i2c.helper.name(block) + "()") + "\n";
 
 	if (block.nextConnection) {
 		code += '\n';
@@ -183,7 +183,7 @@ Blockly.Lua['i2cwrite'] = function(block) {
 	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
 	var tryCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.i2c.helper.attach(block);
 	tryCode += Blockly.Lua.indent(0, Blockly.Lua.i2c.helper.instance(block) + ':write(' + value + ')') + "\n";

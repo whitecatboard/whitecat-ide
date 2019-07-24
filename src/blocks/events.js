@@ -63,7 +63,7 @@ Blockly.Blocks['when_board_starts'] = {
 	}
 };
 
-Blockly.Blocks['thread'] = {
+Blockly.Blocks['forever'] = {
 	module: "event",
 	init: function() {
 		this.appendStatementInput('DO')
@@ -73,8 +73,10 @@ Blockly.Blocks['thread'] = {
 		this.setNextStatement(false, null);
 		this.setColour(Blockly.Blocks.events.HUE);
 		this.setTooltip(Blockly.Msg.EVENT_THREAD_TOOLTIP);
-	},
+	}
 };
+
+Blockly.Blocks['thread'] = Blockly.Blocks['forever'];
 
 Blockly.Blocks['when_i_receive'] = {
 	module: "event",

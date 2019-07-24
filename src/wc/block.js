@@ -33,6 +33,8 @@ Blockly.Block.helper = {
 
 Blockly.Block.prototype.__constructor = Blockly.Block.prototype.constructor;
 Blockly.Block.prototype.constructor = function(workspace, prototypeName, opt_id) {
+	var self = this;
+	
 	// Call Blockly.Block constructor
 	this.__constructor(workspace, prototypeName, opt_id);
 	
@@ -42,6 +44,71 @@ Blockly.Block.prototype.constructor = function(workspace, prototypeName, opt_id)
 	// allows to update the IDE help fromn the web server, without changes in the
 	// blocks programming.
     this.setHelpUrl(this.getHelpUrl());
+	
+	if (!self.isInFlyout) {
+		if (self.isHatBlock()) {
+			Code.workspace.blocks.addChangeListener(function(e) {
+				var changed = false;
+				var workspace = Blockly.Workspace.getById(e.workspaceId);
+				var block = workspace.getBlockById(e.blockId);
+		
+				var oldTopBlock;
+				var newTopBlock;
+				var topBlock;
+		
+				if (e.type == Blockly.Events.MOVE) {
+					if (e.oldParentId != undefined) {
+						oldTopBlock = workspace.getBlockById(e.oldParentId).getTop();
+					} else {
+						oldTopBlock = null;
+					}
+
+					if (e.newParentId != undefined) {
+						newTopBlock = workspace.getBlockById(e.newParentId).getTop();
+					} else {
+						newTopBlock = null;
+					}
+		
+					if ((oldTopBlock == self) || (newTopBlock == self)) {
+						changed = true;
+					}			
+				} else if (e.type == Blockly.Events.CHANGE) {
+					topBlock = workspace.getBlockById(e.blockId).getTop();
+					if (topBlock == self) {
+						changed = true;
+					}
+				}
+		
+				if (changed) {
+					Blockly.Lua.updateChunk(self);
+				}
+				
+				/*
+				if (e.type == Blockly.Events.MOVE) {
+					var workspace = Blockly.Workspace.getById(e.workspaceId);
+					var block = workspace.getBlockById(e.blockId);
+				
+					if (workspace && block) {
+						var topBlock = block.getTop();
+						
+						if ((block.id == self.id) || (topBlock && topBlock.id == self.id) || (e.newParentId != e.oldParentId)) {
+							Blockly.Lua.updateChunk(self);
+						} 
+					}	
+				}
+				*/
+				
+				//if ((e.type == Blockly.Events.CHANGE) || (e.type == Blockly.Events.MOVE)) {
+					//var workspace = Blockly.Workspace.getById(e.workspaceId);
+					//var block = workspace.getBlockById(e.blockId);
+
+					//if (block.getTop() == self) {
+					//	Blockly.Lua.updateChunk(self);
+					//}
+					//}
+			});
+		}
+	}
 }
 
 Blockly.Block.prototype.isReporterBlock = function() {
@@ -233,6 +300,8 @@ Blockly.Block.prototype.getHelpUrl = function()  {
 }
 
 Blockly.Block.prototype.updateBoardAtFieldChange = function(field) {
+	return;
+	
 	var thisInstance = this;
 	
 	if (!thisInstance.isInFlyout) {
@@ -279,6 +348,8 @@ Blockly.Block.prototype.updateBoardAtFieldChange = function(field) {
 }
 
 Blockly.Block.prototype.updateBoardAtBlockCreate = function() {
+	return;
+	
 	var thisInstance = this;
 	
 	if (!thisInstance.isInFlyout) {

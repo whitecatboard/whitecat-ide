@@ -324,7 +324,7 @@ Blockly.Lua['setdigitalpin'] = function(block) {
 	var value = block.getFieldValue('VALUE');
 	var tryCode = '', code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.io.helper.attachDigital(block, true);
 	tryCode += Blockly.Lua.indent(0,'pio.pin.setval('+value+', ' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
@@ -339,11 +339,10 @@ Blockly.Lua['invertdigitalpin'] = function(block) {
 	var value = block.getFieldValue('VALUE');
 	var tryCode = '', code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.io.helper.attachDigital(block, true);
 	tryCode += Blockly.Lua.indent(0,'pio.pin.inv(' + Blockly.Lua.io.helper.nameDigital(block)+')') + "\n";
-
 
 	code += Blockly.Lua.tryBlock(0, block, tryCode, 'invert digital pin value ' + Blockly.Lua.io.helper.nameDigital(block));
 	
@@ -353,7 +352,7 @@ Blockly.Lua['invertdigitalpin'] = function(block) {
 Blockly.Lua['getdigitalpin'] = function(block) {
 	var tryCode = '', getCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	var tryCode = '';
 	tryCode += Blockly.Lua.io.helper.attachDigital(block, false);
@@ -367,7 +366,7 @@ Blockly.Lua['getdigitalpin'] = function(block) {
 	getCode += Blockly.Lua.indent(1, "return val") + "\n";
 	getCode += Blockly.Lua.indent(0, "end") + "\n";
 
-	codeSection["functions"].push(getCode);
+	Blockly.Lua.addFragment("functions", "_getDigitalPin" + Blockly.Lua.io.helper.instanceDigital(block), block, getCode);
 
 	code += Blockly.Lua.indent(0, "_getDigitalPin" + Blockly.Lua.io.helper.instanceDigital(block) + "()");
 
@@ -378,7 +377,7 @@ Blockly.Lua['getanalogpin'] = function(block) {
 	var format = block.getFieldValue('FORMAT');
 	var tryCode = '', getCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	var tryCode = '';
 	tryCode += Blockly.Lua.io.helper.attachAnalog(block, false);
@@ -399,7 +398,7 @@ Blockly.Lua['getanalogpin'] = function(block) {
 	getCode += Blockly.Lua.indent(1, "return val") + "\n";
 	getCode += Blockly.Lua.indent(0, "end") + "\n";
 
-	codeSection["functions"].push(getCode);
+	Blockly.Lua.addFragment("functions", "_getAnalogPin_" + Blockly.Lua.io.helper.nameAnalog(block) + "_" + format, block, getCode);
 
 	code += Blockly.Lua.indent(0, "_getAnalogPin_" + Blockly.Lua.io.helper.nameAnalog(block) + "_" + format + "()");
 
@@ -410,7 +409,7 @@ Blockly.Lua['getexternalanalogchannel'] = function(block) {
 	var format = block.getFieldValue('FORMAT');
 	var tryCode = '', getCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	var tryCode = '';
 	tryCode += Blockly.Lua.io.helper.attachExternalAnalog(block, false);
@@ -430,7 +429,7 @@ Blockly.Lua['getexternalanalogchannel'] = function(block) {
 	getCode += Blockly.Lua.indent(1, "return val") + "\n";
 	getCode += Blockly.Lua.indent(0, "end") + "\n";
 
-	codeSection["functions"].push(getCode);
+	Blockly.Lua.addFragment("functions", "_getAnalogPin_" + Blockly.Lua.io.helper.nameExternalAnalog(block) + "_" + format, block, getCode);
 
 	code += Blockly.Lua.indent(0, "_getAnalogPin_" + Blockly.Lua.io.helper.nameExternalAnalog(block) + "_" + format + "()");
 
@@ -518,7 +517,7 @@ Blockly.Lua['setpwmpin'] = function(block) {
     var duty = Blockly.Lua.valueToCode(block, 'DUTY', Blockly.Lua.ORDER_NONE) || '\'\'';	
 	var tryCode = '', code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.io.helper.attachPwm(block);
 
@@ -532,7 +531,7 @@ Blockly.Lua['when_digital_pin'] = function(block) {
 	var when = block.getFieldValue('WHEN');
 	var tryCode = '', code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
 	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
