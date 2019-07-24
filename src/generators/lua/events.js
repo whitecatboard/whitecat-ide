@@ -260,5 +260,5 @@ Blockly.Lua['event_is_being_processed'] = function(block) {
 
 	Blockly.Lua.addDependency("block", block);
 
-	return ['_event' + eventId + ':pending()', Blockly.Lua.ORDER_HIGH];
+	return ['(function() if (not (_event' + eventId + '== nil)) then return _event' + eventId + ':pending() else return false end end)()', Blockly.Lua.ORDER_HIGH];
 }
