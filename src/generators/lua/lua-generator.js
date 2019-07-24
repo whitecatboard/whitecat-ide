@@ -313,14 +313,24 @@ Blockly.Generator.prototype.updateChunk = function(block) {
 		}
 	});
 	
-	console.log(code);
-	
-	Code.agent.send({
-		command: "boardRunCommand",
-		arguments: {
-			code: btoa("function _code()" + code + "end")
-		}
-	}, function(id, info) {});
+	// Check if we have a new chunk to send
+	var newChunk = false;
+	if (typeof block.lastChunk == "undefined") {
+		newChunk = true;
+	} else {
+		newChunk = (block.lastChunk != code);
+	}
+
+	if (newChunk) {
+		block.lastChunk = code;
+		
+		Code.agent.send({
+			command: "boardRunCommand",
+			arguments: {
+				code: btoa("function _code()" + code + "end")
+			}
+		}, function(id, info) {});		
+	}
 }
 
 Blockly.Generator.prototype.oneBlockToCode = function(block) {
