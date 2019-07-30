@@ -137,7 +137,7 @@ Blockly.Lua['sensor_when'] = function(block) {
 	
 	chunkCode += Blockly.Lua.indent(0, '-- when ' + magnitude + ' ' + block.label + ' chunks') + "\n";
 
-	chunkCode += Blockly.Lua.indent(0, 'function _chunk_' + chunk + '()') + "\n";
+	chunkCode += Blockly.Lua.indent(0, 'function _chunk_' + chunk + '(value)') + "\n";
 	chunkCode += Blockly.Lua.blockStart(1, block);
 	chunkCode += Blockly.Lua.indent(1, statement) + "\n";
 	chunkCode += Blockly.Lua.blockEnd(1, block);
@@ -157,7 +157,7 @@ Blockly.Lua['sensor_when'] = function(block) {
 	tryCode += Blockly.Lua.indent(1, 'local value = magnitude.' + magnitude) + "\n\n";	
 	tryCode += Blockly.Lua.indent(1, 'if value == nil then return end') + "\n\n";
 
-	tryCode += Blockly.Lua.indent(1, ' _chunk_' + chunk + '()') + "\n\n";
+	tryCode += Blockly.Lua.indent(1, ' _chunk_' + chunk + '(value)') + "\n\n";
 
 	tryCode += Blockly.Lua.indent(0, 'end)') + "\n";	
 	
