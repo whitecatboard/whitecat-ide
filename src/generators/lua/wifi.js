@@ -77,7 +77,7 @@ Blockly.Lua['when_wifi_is_conneted'] = function(block) {
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
 	code += Blockly.Lua.indent(0,'end') + "\n";
 
-	codeSection["declaration"].push(code);
+	Blockly.Lua.addFragment("declaration", "_wifi_connected_callback", block, code);
 
 	return "";
 };
@@ -98,7 +98,7 @@ Blockly.Lua['when_wifi_is_disconneted'] = function(block) {
 	code += Blockly.Lua.indent(0,Blockly.Lua.tryBlock(0, block, tryCode)) + "\n";
 	code += Blockly.Lua.indent(0,'end') + "\n";
 
-	codeSection["declaration"].push(code);
+	Blockly.Lua.addFragment("declaration", "_wifi_disconnected_callback", block, code);
 
 	return "";
 };

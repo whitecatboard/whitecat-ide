@@ -96,22 +96,36 @@ Blockly.Lua.ORDER_NONE = 99;
  * Initialise the database of variable names.
  * @param {!Blockly.Workspace} workspace Workspace to generate code from.
  */
-Blockly.Lua.init = function(workspace) {
-	Blockly.Lua.blockNums = 0;
-	Blockly.Lua.blockNum = [];
-	Blockly.Lua.blockId = [];
+Blockly.Lua.init = function(workspace, chunk) {
+	if (typeof chunk == "undefined") {
+		chunk = false;
+	}
 	
-	// Create a dictionary of definitions to be printed before the code.
-	Blockly.Lua.definitions_ = Object.create(null);
-	// Create a dictionary mapping desired function names in definitions_
-	// to actual function names (to avoid collisions with user functions).
-	Blockly.Lua.functionNames_ = Object.create(null);
+	if (typeof Blockly.Lua.blockNums == "undefined") {
+		Blockly.Lua.blockNums = 0;
+	}
+	
+	if (typeof Blockly.Lua.blockNum == "undefined") {
+		Blockly.Lua.blockNum = [];
+	}
+	
+	if (typeof Blockly.Lua.blockId == "undefined") {
+		Blockly.Lua.blockId = [];
+	}
+	
+	if (!chunk) {
+		// Create a dictionary of definitions to be printed before the code.
+		Blockly.Lua.definitions_ = Object.create(null);
+		// Create a dictionary mapping desired function names in definitions_
+		// to actual function names (to avoid collisions with user functions).
+		Blockly.Lua.functionNames_ = Object.create(null);
 
-	if (!Blockly.Lua.variableDB_) {
-		Blockly.Lua.variableDB_ =
-			new Blockly.Names(Blockly.Lua.RESERVED_WORDS_);
-	} else {
-		Blockly.Lua.variableDB_.reset();
+		if (!Blockly.Lua.variableDB_) {
+			Blockly.Lua.variableDB_ =
+				new Blockly.Names(Blockly.Lua.RESERVED_WORDS_);
+		} else {
+			Blockly.Lua.variableDB_.reset();
+		}
 	}
 };
 
@@ -308,16 +322,6 @@ Blockly.Lua.tryBlock = function(indent, block, code, comment) {
 	}
 
 	return tryCode;
-}
-
-Blockly.Lua.require = function(lib) {
-	if (Code.status.modules.vm && (lib == "block")) {
-		return;
-	}
-			
-	if (codeSection["require"].indexOf('require("' + lib + '")') == -1) {
-		codeSection["require"].push('require("' + lib + '")');
-	}
 }
 
 Blockly.Lua.indent = function(n, code) {

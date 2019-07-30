@@ -86,7 +86,7 @@ Blockly.Lua['sensor_read'] = function(block) {
 	var magnitude = block.getFieldValue('PROVIDES');
 	var code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 	
 	// Generate code for get sensor value
 	// This code goes to the declaration section
@@ -102,8 +102,8 @@ Blockly.Lua['sensor_read'] = function(block) {
 	getCode += Blockly.Lua.indent(1, 'return value\n');
 	getCode += Blockly.Lua.indent(0, 'end\n');
 		
-	codeSection["declaration"].push(getCode);
-
+	Blockly.Lua.addFragment("declaration", '_get'+block.name+'_' + magnitude.replace(/\s|-/g, '_'), block, getCode);
+	
 	return [Blockly.Lua.annotateFunctionCall(block,'_get'+block.name+'_' + magnitude.replace(/\s|-/g, '_') + '()'), Blockly.Lua.ORDER_HIGH];	
 };
 
@@ -112,7 +112,7 @@ Blockly.Lua['sensor_set'] = function(block) {
 	var value = Blockly.Lua.valueToCode(block, 'VALUE', Blockly.Lua.ORDER_NONE);
 	var code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 	
 	var tryCode = '';	
 	tryCode += Blockly.Lua.indent(1,'local instance = "_'+block.name+'_'+Blockly.Lua.sensors.helper.nameSensor(block)+'"') + "\n\n";
@@ -128,13 +128,28 @@ Blockly.Lua['sensor_when'] = function(block) {
 	var magnitude = block.getFieldValue('PROVIDES');
 	var statement = Blockly.Lua.statementToCodeNoIndent(block, 'DO');
 	var code = '';
+	var chunkCode = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
+	
+	// Add chunk fragment
+	var chunk = Blockly.Lua.getChunkId(block);
+	
+	chunkCode += Blockly.Lua.indent(0, '-- when ' + magnitude + ' ' + block.label + ' chunks') + "\n";
+
+	chunkCode += Blockly.Lua.indent(0, 'function _chunk_' + chunk + '(value)') + "\n";
+	chunkCode += Blockly.Lua.blockStart(1, block);
+	chunkCode += Blockly.Lua.indent(1, statement) + "\n";
+	chunkCode += Blockly.Lua.blockEnd(1, block);
+	chunkCode += Blockly.Lua.indent(0, 'end') + "\n";
+	
+	Blockly.Lua.addFragment("chunks","_chunk_" + chunk, block, chunkCode);	
 	
 	var tryCode = '';
 	
 	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
-	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+	tryCode += Blockly.Lua.indent(0, '_eventBoardStarted:wait()') + "\n";
+	tryCode += Blockly.Lua.indent(0, '_eventBoardStarted:done()') + "\n\n";
 
 	tryCode += Blockly.Lua.indent(0,Blockly.Lua.sensors.helper.attach(block));
 	
@@ -142,17 +157,12 @@ Blockly.Lua['sensor_when'] = function(block) {
 	tryCode += Blockly.Lua.indent(1, 'local value = magnitude.' + magnitude) + "\n\n";	
 	tryCode += Blockly.Lua.indent(1, 'if value == nil then return end') + "\n\n";
 
-	tryCode += Blockly.Lua.blockStart(2, block);
+	tryCode += Blockly.Lua.indent(1, ' _chunk_' + chunk + '(value)') + "\n\n";
 
-	if (statement != "") {
-		tryCode += Blockly.Lua.indent(2, statement);
-	}
-	
-	tryCode += Blockly.Lua.blockEnd(2, block);
-
-	tryCode += Blockly.Lua.indent(1, 'end)') + "\n";	
+	tryCode += Blockly.Lua.indent(0, 'end)') + "\n";	
 	
 
+	code += Blockly.Lua.indent(0, '-- when ' + magnitude + ' ' + block.label) + "\n";
 	code += Blockly.Lua.indent(0, 'thread.start(function()') + "\n";	
 	code += Blockly.Lua.tryBlock(1, block,tryCode);	
 	code += Blockly.Lua.indent(0, 'end)') + "\n";	

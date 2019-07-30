@@ -101,13 +101,11 @@ Blockly.Lua.can.helper = {
 	name: function(block) {
 		var module = block.getFieldValue('MODULE');
 		
-		return  Code.status.maps.canUnits[module];
+		return  'can.CAN' + module;
 	},
 	
 	instance: function(block) {
-		var module = block.getFieldValue('MODULE');
-
-		return "_can" + Blockly.Lua.can.helper.name(block);
+		return this.name(block).replace(".", "_");
 	},
 
 	attach: function(block, speed) {
@@ -118,7 +116,7 @@ Blockly.Lua.can.helper = {
 			code += Blockly.Lua.indent(0, '-- attach can bus at ' + speed + ' khz') + "\n";
 			code += Blockly.Lua.indent(0, 'if (' + Blockly.Lua.can.helper.instance(block) + ' == nil) then') + "\n";
 			code += Blockly.Lua.indent(1, Blockly.Lua.can.helper.instance(block) + ' = true') + "\n";
-			code += Blockly.Lua.indent(1, 'can.attach(can.' + Blockly.Lua.can.helper.name(block) + ', ' + speed + ' * 1000)') + "\n";
+			code += Blockly.Lua.indent(1, 'can.attach(' + Blockly.Lua.can.helper.name(block) + ', ' + speed + ' * 1000)') + "\n";
 			code += Blockly.Lua.indent(0, 'end') + "\n";			
 		}
 
@@ -155,7 +153,7 @@ Blockly.Lua['cansetspeed'] = function(block) {
 	var speed = Blockly.Lua.valueToCode(block, 'SPEED', Blockly.Lua.ORDER_NONE);
 	var tryCode = '', code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.can.helper.attach(block, speed);
 	if (tryCode != "") {
@@ -173,14 +171,14 @@ Blockly.Lua['cansetfilter'] = function(block) {
 	var to = Blockly.Lua.valueToCode(block, 'TO', Blockly.Lua.ORDER_NONE);
 	var tryCode = '', code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.can.helper.attach(block, 500);
 	if (tryCode != "") {
 		tryCode += "\r\n";
 	}
 
-	tryCode += Blockly.Lua.indent(0, 'can.addfilter(can.' + Blockly.Lua.can.helper.name(block) + ', ' + from + ', ' + to + ')') + "\n";
+	tryCode += Blockly.Lua.indent(0, 'can.addfilter(' + Blockly.Lua.can.helper.name(block) + ', ' + from + ', ' + to + ')') + "\n";
 	
 	code += Blockly.Lua.tryBlock(0, block, tryCode, 'add filter for ' + Blockly.Lua.can.helper.name(block) + ' from id '+from+' to id '+ to);
 
@@ -192,7 +190,7 @@ Blockly.Lua['canread'] = function(block) {
 	var frame = block.getFieldValue('FRAME');
 	var tryCode = '', getCode = '', code = '';
 
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	var tryCode = '';
 	tryCode += Blockly.Lua.can.helper.attach(block, 500);
@@ -201,7 +199,7 @@ Blockly.Lua['canread'] = function(block) {
 	}
 
 	tryCode += Blockly.Lua.indent(0, '-- read from ' + Blockly.Lua.can.helper.name(block)) + "\n";
-	tryCode += Blockly.Lua.indent(0, 'id, type, len, data = can.receive(can.' + Blockly.Lua.can.helper.name(block) + ')') + "\n\n";
+	tryCode += Blockly.Lua.indent(0, 'id, type, len, data = can.receive(' + Blockly.Lua.can.helper.name(block) + ')') + "\n\n";
 
 	tryCode += Blockly.Lua.indent(0, '-- unpack data') + "\n";
 	tryCode += Blockly.Lua.indent(0, 'd0, d1, d2, d3, d4, d5, d6, d7 = string.unpack(string.rep(\'B\', len), data)') + "\n\n";
@@ -220,7 +218,7 @@ Blockly.Lua['canread'] = function(block) {
 	tryCode += Blockly.Lua.indent(0, 'frame.d7 = d7') + "\n";
 	
 	getCode += Blockly.Lua.indent(0, '-- read from CAN bus into frame ' + frame) + "\n";
-	getCode += Blockly.Lua.indent(0, "function _read" + Blockly.Lua.can.helper.name(block) + "_" + frame + "()") + "\n";
+	getCode += Blockly.Lua.indent(0, "function _read_" + Blockly.Lua.can.helper.instance(block) + "()") + "\n";
 	getCode += Blockly.Lua.indent(1, "local id, type, len") + "\n";
 	getCode += Blockly.Lua.indent(1, "local d0, d1, d2, d3, d4, d5, d6, d7 = 0") + "\n";
 	getCode += Blockly.Lua.indent(1, "local frame = {}") + "\n\n";
@@ -230,9 +228,9 @@ Blockly.Lua['canread'] = function(block) {
 	getCode += Blockly.Lua.indent(1, "return frame") + "\n";
 	getCode += Blockly.Lua.indent(0, "end") + "\n";
 
-	codeSection["functions"].push(getCode);
+	Blockly.Lua.addFragment("functions", "_read_" + Blockly.Lua.can.helper.instance(block),  block, getCode);
 
-	code += frame + ' = ' + Blockly.Lua.indent(0, "_read" + Blockly.Lua.can.helper.name(block) + "_" + frame + "()") + "\n";
+	code += frame + ' = ' + Blockly.Lua.indent(0, "_read_" + Blockly.Lua.can.helper.instance(block) + "()") + "\n";
 
 	return code;
 };
@@ -266,14 +264,14 @@ Blockly.Lua['canframewrite'] = function(block) {
 	var frame = block.getFieldValue('FRAME');
 	var tryCode = '', code = '';
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 
 	tryCode += Blockly.Lua.can.helper.attach(block, 500);
 	if (tryCode != "") {
 		tryCode += "\r\n";
 	}
 
-	tryCode += Blockly.Lua.indent(0, 'can.send(can.' + Blockly.Lua.can.helper.name(block) + ', ' + 
+	tryCode += Blockly.Lua.indent(0, 'can.send(' + Blockly.Lua.can.helper.name(block) + ', ' + 
 	    Blockly.Lua.can.helper.safeName(frame) + '.id, ' +
 	    Blockly.Lua.can.helper.safeName(frame) + '.type, ' +
 	    Blockly.Lua.can.helper.safeName(frame) + '.len, ' + 

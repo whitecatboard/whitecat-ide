@@ -83,9 +83,9 @@ Blockly.Lua['servo_move'] = function(block) {
 	initCode += Blockly.Lua.indent(0, '-- servos') + "\n";
 	initCode += Blockly.Lua.indent(0, '_servo_pio = {}') + "\n";
 	
-	Blockly.Lua.addCodeToSection("declaration", initCode, block);
+	Blockly.Lua.addFragment("declaration", "_servo_pio", block, initCode);
 	
-	Blockly.Lua.require("block");
+	Blockly.Lua.addDependency("block", block);
 	
 	tryCode += Blockly.Lua.servo.helper.attach(block);	
 	tryCode += Blockly.Lua.indent(0, Blockly.Lua.servo.helper.instance(block) + ':write('+value+')') + "\n";
