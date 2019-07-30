@@ -36,7 +36,7 @@ goog.require('Blockly.Lua');
 Blockly.Lua.servo.helper = {
 	isServo: function(block, test) {
 		return (
-			((test.type == 'servo_move') && (block.getFieldValue('PIN') == test.getFieldValue('PIN')))
+			((test.type == 'servo_move') && (Blockly.Lua.servo.helper.instance(block) == Blockly.Lua.servo.helper.instance(test)))
 		);						
 	},
 	
