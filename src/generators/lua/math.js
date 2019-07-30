@@ -52,6 +52,11 @@ Blockly.Lua['math_arithmetic'] = function(block) {
   var argument0 = Blockly.Lua.valueToCode(block, 'A', order) || '0';
   var argument1 = Blockly.Lua.valueToCode(block, 'B', order) || '0';
   var code = argument0 + operator + argument1;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+  
   return [code, order];
 };
 
@@ -123,6 +128,11 @@ Blockly.Lua['math_single'] = function(block) {
     default:
       throw 'Unknown math operator: ' + operator;
   }
+  
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+  
   return [code, Blockly.Lua.ORDER_HIGH];
 };
 
@@ -169,6 +179,11 @@ Blockly.Lua['math_number_property'] = function(block) {
          '  return true',
          'end']);
     code = Blockly.Lua.annotateOperator(block,functionName + '(' + number_to_check + ')');
+	
+    if (!Blockly.Lua.legacyGenCode) {
+  	  code = '(' + code + ')';
+    }
+	
     return [code, Blockly.Lua.ORDER_HIGH];
   }
   switch (dropdown_property) {
@@ -201,6 +216,11 @@ Blockly.Lua['math_number_property'] = function(block) {
       code = number_to_check + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' ' + divisor + ' == 0';
       break;
   }
+  
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+  
   return [code, Blockly.Lua.ORDER_RELATIONAL];
 };
 
@@ -393,6 +413,11 @@ Blockly.Lua['math_modulo'] = function(block) {
   var argument1 = Blockly.Lua.valueToCode(block, 'DIVISOR',
       Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
   var code = argument0 + ' ' + Blockly.Lua.annotateOperator(block,'%') + ' ' + argument1;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+  
   return [code, Blockly.Lua.ORDER_MULTIPLICATIVE];
 };
 
@@ -407,6 +432,10 @@ Blockly.Lua['math_constrain'] = function(block) {
   var code = Blockly.Lua.annotateFunctionCall(block,'math.min(math.max(' + argument0 + ', ' + argument1 + '), ' +
       argument2 + ')');
 	  
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+
   return [code, Blockly.Lua.ORDER_HIGH];
 };
 
@@ -417,6 +446,11 @@ Blockly.Lua['math_random_int'] = function(block) {
   var argument1 = Blockly.Lua.valueToCode(block, 'TO',
       Blockly.Lua.ORDER_NONE) || '0';
   var code = Blockly.Lua.annotateFunctionCall(block,'math.random(' + argument0 + ', ' + argument1 + ')');
+
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+
   return [code, Blockly.Lua.ORDER_HIGH];
 };
 

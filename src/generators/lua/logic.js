@@ -68,6 +68,11 @@ Blockly.Lua['logic_compare'] = function(block) {
   var argument1 = Blockly.Lua.valueToCode(block, 'B',
       Blockly.Lua.ORDER_RELATIONAL) || '0';
   var code = argument0 + ' ' + operator + ' ' + argument1;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+  
   return [code, Blockly.Lua.ORDER_RELATIONAL];
 };
 
@@ -93,6 +98,11 @@ Blockly.Lua['logic_operation'] = function(block) {
     }
   }
   var code = argument0 + ' ' + operator + ' ' + argument1;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+  
   return [code, order];
 };
 
@@ -101,6 +111,11 @@ Blockly.Lua['logic_negate'] = function(block) {
   var argument0 = Blockly.Lua.valueToCode(block, 'BOOL',
       Blockly.Lua.ORDER_UNARY) || 'true';
   var code = Blockly.Lua.annotateOperator(block,'not') + ' ' + argument0;
+  
+  if (!Blockly.Lua.legacyGenCode) {
+	  code = '(' + code + ')';
+  }
+  
   return [code, Blockly.Lua.ORDER_UNARY];
 };
 
