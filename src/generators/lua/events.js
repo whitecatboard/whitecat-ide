@@ -90,8 +90,8 @@ Blockly.Lua['when_i_receive'] = function(block) {
 	
 	Blockly.Lua.addCodeToSection("events", initCode, block);
 
-	tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
-	tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
+	//tryCode += Blockly.Lua.indent(0,'-- we need to wait for the completion of the board start') + "\n";
+	//tryCode += Blockly.Lua.indent(0,'_eventBoardStarted:wait()') + "\n\n";
 	tryCode += Blockly.Lua.indent(0, 'while true do') + "\n";
 	tryCode += Blockly.Lua.indent(1, '-- wait for event "' + when + '"') + "\n";
 	tryCode += Blockly.Lua.indent(1, '_event' + eventId + ':wait()') + "\n\n";
