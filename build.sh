@@ -18,3 +18,4 @@ rm -f -r tmp/compress
 rm -f -r tmp/i18n
 
 node ./build.js
+

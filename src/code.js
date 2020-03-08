@@ -2821,7 +2821,60 @@ window.addEventListener('load', function() {
         }
     }
 
-    Code.setup();
+	// In desktop version, run create agent if not yet running
+	Code.wccagent = null;
+	if (typeof require != "undefined") {
+	    if (typeof require('nw.gui') != "undefined") {
+			const exec = require('child_process').exec
+
+			function isRunning(win, mac, linux){
+			    return new Promise(function(resolve, reject){
+			        const plat = process.platform
+			        const cmd = plat == 'win32' ? 'tasklist' : (plat == 'darwin' ? 'ps -A' : (plat == 'linux' ? 'ps -A' : ''))
+			        const proc = plat == 'win32' ? win : (plat == 'darwin' ? mac : (plat == 'linux' ? linux : ''))
+			        if(cmd === '' || proc === ''){
+			            resolve(false)
+			        }
+			        exec(cmd, function(err, stdout, stderr) {
+			            resolve(stdout.toLowerCase().indexOf(proc.toLowerCase()) > -1)
+			        })
+			    })
+			};
+			
+			isRunning("wccagent.exe","wccagent","wccagent").then((running) => {
+				if (!running) {
+					var agentPath = null;
+					var agentFile = null;
+			
+					if (process.platform == "darwin") {
+						agentFile = "wccagent";
+						agentPath = "bin/darwin";
+					} else if (process.platform == "win32") {
+						agentFile = "wccagent.exe";
+						agentPath = "bin/win32";
+					} else if (process.platform == "linux") {
+						agentFile = "wccagent";
+						agentPath = "bin/linux";
+					}
+
+			
+					if (agentFile && agentPath) {
+						var spawn = require('child_process').spawn;
+						Code.wccagent = spawn(agentPath + "/" + agentFile, [], {
+						    stdio: 'ignore',
+						    detached: true
+						});											
+					}					
+				}
+				
+			    Code.setup();
+			});
+		} else {
+		    Code.setup();
+		}
+	} else {
+	    Code.setup();		
+	}
 });
 
 if (typeof require != "undefined") {
@@ -2830,10 +2883,14 @@ if (typeof require != "undefined") {
         var win = gui.Window.get();
 
         win.on('close', function(event) {
-            Code.agent.send({
-                command: "detachIde",
-                arguments: {}
-            }, function(id, info) {});
+			if (!Code.wccagent) {
+	            Code.agent.send({
+	                command: "detachIde",
+	                arguments: {}
+	            }, function(id, info) {});				
+			} else {
+				Code.wccagent.kill();
+			}
 
             win.close(true);
         });

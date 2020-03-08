@@ -3,8 +3,8 @@ var nw = new NwBuilder({
     files: ['./tmp/**'],
     appName: "The Whitecat IDE",
     macIcns: "./src/whitecat.icns",
-    platforms: ['osx64', 'win64'],
-    zip: true
+    platforms: ['osx64', 'win32', 'linux32'],
+    zip: false
 });
 
 // Log stuff you want
