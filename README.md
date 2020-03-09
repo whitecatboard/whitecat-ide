@@ -10,7 +10,7 @@ The Whitecat IDE is available at:
 
 * Desktop version:
 
-  - [Linux 64](https://downloads.whitecatboard.org/ide/TheWhitecatIDE-2.0-linux-x64-installer.run)
+  - [Linux 64](http://downloads.whitecatboard.org/ide/TheWhitecatIDE-linux-x64-installer.run)
 
 # What's Lua RTOS?
 
