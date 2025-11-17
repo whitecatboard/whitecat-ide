@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini Basketball Stars</title>
+<style>
+    body { margin: 0; background: #202020; overflow: hidden; }
+    canvas { background: #333; display: block; margin: auto; }
+    #scoreboard {
+        position: absolute; 
+        top: 10px; 
+        left: 50%; 
+        transform: translateX(-50%);
+        color: white; 
+        font-family: Arial; 
+        font-size: 24px;
+    }
+</style>
+</head>
+<body>
+
+<div id="scoreboard">YOU: 0 — AI: 0</div>
+<canvas id="gameCanvas" width="900" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let you = {
+    x: 150, y: 380, w: 40, h: 80,
+    vy: 0,
+    isJumping: false,
+    hasBall: true,
+    power: 0,
+};
+
+let ai = {
+    x: 700, y: 380, w: 40, h: 80,
+    vy: 0,
+    isJumping: false,
+    hasBall: false,
+};
+
+let ball = {
+    x: you.x + 20, y: you.y - 10,
+    vx: 0, vy: 0,
+    radius: 10,
+    inAir: false
+};
+
+let hoop = { x: 820, y: 200 };
+let scoreYou = 0, scoreAI = 0;
+let keys = {};
+
+document.addEventListener("keydown", e => keys[e.code] = true);
+document.addEventListener("keyup", e => keys[e.code] = false);
+
+// GAME LOOP
+function update() {
+    movePlayer();
+    aiBehavior();
+    updateBall();
+    draw();
+    requestAnimationFrame(update);
+}
+
+function movePlayer() {
+    if (keys["ArrowLeft"]) you.x -= 4;
+    if (keys["ArrowRight"]) you.x += 4;
+
+    // Jump
+    if (keys["Space"] && !you.isJumping) {
+        you.vy = -12;
+        you.isJumping = true;
+    }
+
+    you.y += you.vy;
+    you.vy += 0.5; // gravity
+    if (you.y >= 380) { you.y = 380; you.vy = 0; you.isJumping = false; }
+
+    // Power shot hold
+    if (you.hasBall && keys["KeyZ"]) {
+        you.power = Math.min(you.power + 0.5, 20);
+    }
+
+    // Shoot release
+    if (you.hasBall && !keys["KeyZ"] && you.power > 0) {
+        shootBallYou();
+        you.power = 0;
+    }
+}
+
+function shootBallYou() {
+    ball.inAir = true;
+    you.hasBall = false;
+    ball.x = you.x + 20; ball.y = you.y;
+    ball.vx = 5 + you.power / 2;
+    ball.vy = -you.power;
+}
+
+function aiBehavior() {
+    if (!ai.hasBall && !ball.inAir) return;
+
+    // AI shoots automatically when it catches the ball
+    if (ai.hasBall) {
+        ball.x = ai.x + 20;
+        ball.y = ai.y;
+        ai.hasBall = false;
+        ball.inAir = true;
+        ball.vx = -6;
+        ball.vy = -12;
+    }
+}
+
+function updateBall() {
+    if (!ball.inAir) return;
+
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+    ball.vy += 0.4;
+
+    // Hoop scoring
+    if (ball.x > hoop.x - 10 && ball.x < hoop.x + 10 &&
+        ball.y > hoop.y - 10 && ball.y < hoop.y + 10) {
+        scoreYou++;
+        resetBall();
+    }
+
+    // Floor bounce (reset position)
+    if (ball.y > 500) resetBall();
+}
+
+function resetBall() {
+    you.hasBall = true;
+    ai.hasBall = false;
+    ball.inAir = false;
+    ball.x = you.x + 20;
+    ball.y = you.y - 10;
+    document.getElementById("scoreboard").innerText =
+        `YOU: ${scoreYou} — AI: ${scoreAI}`;
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width
+
